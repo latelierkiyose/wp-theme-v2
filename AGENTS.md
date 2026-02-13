@@ -9,7 +9,8 @@ L'Atelier Kiyose est un centre de bien-être et développement personnel situé 
 3. **Bols tibétains** - Sonothérapie et rééquilibrage énergétique
 4. **Ateliers philosophie** - Débats démocratiques pour enfants et adolescents
 
-**Public cible**: Femmes adultes (art-thérapie, rigologie, bols tibétains, ateliers créatifs)
+**Public cible principal**: Femmes adultes (art-thérapie, rigologie, bols tibétains, ateliers créatifs)
+**Public secondaire**: Enfants et adolescents (ateliers philosophie) — le ton et le design des pages philo doivent rester accessibles à ce public plus jeune
 
 Site actuel: https://www.latelierkiyose.fr/
 Ancien thème: https://github.com/latelierkiyose/wp-theme
@@ -73,13 +74,15 @@ Ancien thème: https://github.com/latelierkiyose/wp-theme
 ```
 wp-theme-v2/
 ├── style.css              # Stylesheet principal + métadonnées du thème
-├── functions.php          # Fonctions et hooks du thème
-├── index.php              # Template par défaut
+├── screenshot.png         # Capture d'écran du thème (1200x900px recommandé)
+├── functions.php          # Fonctions et hooks du thème (charge les fichiers inc/)
+├── index.php              # Template par défaut (fallback)
 ├── header.php             # En-tête du site
 ├── footer.php             # Pied de page
-├── sidebar.php            # Barre latérale (si nécessaire)
+├── 404.php                # Page d'erreur 404
+├── search.php             # Résultats de recherche
 │
-├── templates/             # Templates de pages
+├── templates/             # Templates de pages (avec header "Template Name:")
 │   ├── page-home.php         # Page d'accueil
 │   ├── page-services.php     # Template services génériques
 │   ├── page-contact.php      # Page contact
@@ -92,18 +95,18 @@ wp-theme-v2/
 │
 ├── assets/
 │   ├── css/
-│   │   ├── main.css          # Styles principaux
-│   │   ├── components/       # Composants réutilisables
-│   │   └── responsive.css    # Media queries
+│   │   ├── main.css          # Styles principaux (mobile-first, media queries colocalisées)
+│   │   └── components/       # Composants réutilisables
 │   ├── js/
 │   │   ├── main.js           # JavaScript principal
 │   │   └── modules/          # Modules JS
+│   ├── fonts/                # Polices auto-hébergées (RGPD)
 │   └── images/               # Images du thème
 │
 ├── inc/                   # Fonctionnalités PHP modulaires
 │   ├── setup.php             # Configuration du thème
 │   ├── enqueue.php           # Chargement des assets
-│   ├── custom-post-types.php # CPT si nécessaire
+│   ├── custom-post-types.php # CPT Témoignages
 │   ├── customizer.php        # Options du customizer
 │   └── accessibility.php     # Fonctions accessibilité
 │
@@ -131,13 +134,18 @@ wp-theme-v2/
 | `page.php` | Pages standards |
 | `single.php` | Articles de blog |
 | `archive.php` | Archives blog |
-| `templates/page-*.php` | Pages spécifiques (home, services, contact, etc.) |
+| `search.php` | Résultats de recherche |
+| `404.php` | Page d'erreur 404 |
+| `templates/page-*.php` | Pages spécifiques (assignées via `Template Name:` dans l'admin WP) |
+
+> **Note** : Les fichiers dans `templates/` ne bénéficient pas de la résolution automatique par slug WordPress. Chaque fichier doit contenir un header `/* Template Name: Nom du template */` et être assigné manuellement dans l'éditeur de page WordPress.
 
 ### Conventions
 - **Prefixe**: `kiyose_` pour toutes les fonctions PHP
 - **Text domain**: `kiyose` (pas d'i18n nécessaire pour ce projet)
 - **Hooks**: Utiliser les hooks WordPress standard, créer des hooks custom si nécessaire
 - **CSS BEM**: Utiliser la méthodologie BEM pour les classes CSS
+- **Chargement modulaire**: `functions.php` charge les fichiers `inc/*.php` via `require_once get_template_directory() . '/inc/fichier.php';`
 
 ## Fonctionnalités
 
@@ -196,7 +204,7 @@ wp-theme-v2/
 - Catégories (Conseils, Annonces, Réflexions, etc.)
 - Article unique avec date de publication
 - Partage sur réseaux sociaux
-- Pas de système de commentaires (à décider)
+- Commentaires désactivés (`remove_post_type_support( 'post', 'comments' )` dans `setup.php`)
 
 ### 5. Témoignages
 
@@ -205,7 +213,11 @@ wp-theme-v2/
 **Affichage:**
 - Cartes de citations
 - Attribution (prénom, contexte: individu/entreprise/structure)
-- Peut utiliser Custom Post Type "Témoignage" pour faciliter la gestion
+
+**Implémentation**: Custom Post Type `kiyose_testimony` (déclaré dans `inc/custom-post-types.php`)
+- Champs: citation (contenu), prénom, contexte (individu/entreprise/structure)
+- Pas d'archive publique dédiée (affichés via template parts sur homepage et page témoignages)
+- Query custom dans les templates pour afficher les témoignages
 
 ### 6. À Propos
 
@@ -260,12 +272,56 @@ wp-theme-v2/
 - Configuration via WordPress Admin: `/wp-admin/nav-menus.php`
 - Accessible au clavier (WCAG 2.2 AA)
 
+**Menu mobile (hamburger):**
+- Bouton hamburger avec `aria-expanded="false/true"` et `aria-controls="mobile-menu"`
+- Ouverture: overlay plein écran ou slide-in depuis la droite
+- Focus trap activé quand le menu est ouvert (Tab circule uniquement dans le menu)
+- `body` scroll verrouillé quand le menu est ouvert (`overflow: hidden`)
+- Fermeture: bouton close, touche Esc, ou clic sur overlay
+- Retour du focus sur le bouton hamburger à la fermeture
+- Transition: 200-300ms, respecte `prefers-reduced-motion`
+
 **Footer:**
 - Liens réseaux sociaux (Facebook, Instagram, LinkedIn @latelierkiyose)
 - Newsletter Brevo
 - Mentions légales / Politique de confidentialité
 - Copyright
 - SIRET
+
+### 10. Page 404
+
+**Template**: `404.php`
+
+**Contenu:**
+- Message clair indiquant que la page n'existe pas
+- Lien vers la page d'accueil
+- Formulaire de recherche
+- Suggestion de pages populaires (services, calendrier)
+- Design cohérent avec le reste du site (pas une page "technique")
+
+### 11. Recherche
+
+**Template**: `search.php`
+
+**Contenu:**
+- Formulaire de recherche avec champ et bouton accessible
+- Liste des résultats avec titre, extrait, date
+- Pagination des résultats
+- Message explicite quand aucun résultat n'est trouvé
+- Réutilise `template-parts/content-blog.php` pour l'affichage des résultats
+
+### 12. Mentions légales & Politique de confidentialité
+
+**Template**: `page.php` (pages WordPress standard)
+
+**Contenu obligatoire (loi LCEN, France):**
+- Identité: Virginie Le Mignon, L'atelier Kiyose
+- SIRET: 49219620900026
+- Adresse: Le Grand Vron, 86510 Brux
+- Hébergeur: nom, adresse, contact
+- Responsable de publication
+- Politique de confidentialité (RGPD): données collectées, finalités, durée de conservation, droits des utilisateurs
+- Politique cookies (liée au plugin Complianz)
 
 ## Standards & Contraintes
 
@@ -320,13 +376,14 @@ wp-theme-v2/
 - Images responsives (`srcset`, `sizes`)
 - Touch targets minimum 44x44px (WCAG 2.2)
 - Pas de scroll horizontal
-- Menus hamburger accessibles sur mobile
+- Container principal avec `max-width: 1200px` pour limiter la longueur des lignes sur grands écrans
+- Menus hamburger accessibles sur mobile (voir section Navigation)
 
 ### Performance
 
 **Objectifs Core Web Vitals:**
 - LCP (Largest Contentful Paint): < 2.5s
-- FID (First Input Delay): < 100ms
+- INP (Interaction to Next Paint): < 200ms
 - CLS (Cumulative Layout Shift): < 0.1
 
 **Optimisations requises:**
@@ -361,7 +418,7 @@ wp-theme-v2/
 **Caractéristiques du logo actuel (à conserver)**:
 - Typographie script calligraphique élégante et chaleureuse
 - Composition: "l'atelier" (minuscules) + "Kiyose" (capitale initiale)
-- Couleur principale: Bordeaux foncé (approx. #5A0F0F)
+- Couleur principale: Bordeaux foncé (`#5D0505` — couleur officielle de la palette)
 - Éléments décoratifs: Courbes dorées organiques, points colorés
 - Style: Chaleureux, créatif, artisanal, évoquant la créativité et l'authenticité
 
@@ -383,13 +440,13 @@ wp-theme-v2/
 | ![#D7A4A4](https://img.shields.io/badge/-D7A4A4-D7A4A4?style=flat-square) | `#D7A4A4` | Couleur primaire - Accents, boutons, liens | Rose poudré |
 | ![#C9ABA7](https://img.shields.io/badge/-C9ABA7-C9ABA7?style=flat-square) | `#C9ABA7` | Couleur secondaire - Backgrounds sections | Taupe rosé |
 | ![#E6A528](https://img.shields.io/badge/-E6A528-E6A528?style=flat-square) | `#E6A528` | Accent or/kintsugi - Éléments décoratifs | Or miel |
-| ![#5b0505](https://img.shields.io/badge/-5b0505-5b0505?style=flat-square) | `#5b0505` | ⚠️ À vérifier - Code semble incorrect (rouge foncé?) | Jaune clair? |
-| ![#F4C976](https://img.shields.io/badge/-F4C976-F4C976?style=flat-square) | `#F4C976` | ⚠️ À vérifier - Code semble incorrect (jaune?) | Bordeaux? |
+| ![#F4C975](https://img.shields.io/badge/-F4C975-F4C975?style=flat-square) | `#F4C975` | Accent doré clair - Dégradés, highlights | Jaune doré |
+| ![#5D0505](https://img.shields.io/badge/-5D0505-5D0505?style=flat-square) | `#5D0505` | Texte fort, logo, titres importants | Bordeaux foncé |
 | ![#EFE5E4](https://img.shields.io/badge/-EFE5E4-EFE5E4?style=flat-square) | `#EFE5E4` | Couleur de fond - Background principal | Beige clair |
 
-**⚠️ Note importante**: Incohérences détectées entre les codes couleurs affichés sur la palette et le rendu visuel. À clarifier avec Virginie avant implémentation.
+> **Note** : L'image `references/palette.jpg` contient une inversion entre les cercles 4 et 5 (les codes hex affichés sous les cercles sont échangés par rapport aux couleurs visibles). Les codes ci-dessus reflètent les couleurs réelles.
 
-**Variables CSS (version provisoire)**:
+**Variables CSS**:
 ```css
 :root {
   /* Couleurs principales */
@@ -397,15 +454,17 @@ wp-theme-v2/
   --color-secondary: #C9ABA7;        /* Taupe rosé */
   --color-accent: #E6A528;           /* Or miel */
   --color-background: #EFE5E4;       /* Beige clair */
+  --color-burgundy: #5D0505;         /* Bordeaux foncé (logo, titres) */
 
-  /* Couleurs fonctionnelles (à définir selon validation contraste) */
-  --color-text: #333333;             /* Texte principal (à ajuster) */
-  --color-text-light: #666666;       /* Texte secondaire (à ajuster) */
+  /* Couleurs fonctionnelles */
+  --color-text: #333333;             /* Texte principal */
+  --color-text-light: #666666;       /* Texte secondaire */
   --color-border: #C9ABA7;           /* Bordures */
 
   /* Or Kintsugi */
   --color-gold: #E6A528;             /* Or principal */
-  --color-gold-light: rgba(230, 165, 40, 0.3); /* Or transparent */
+  --color-gold-light: #F4C975;       /* Jaune doré clair */
+  --color-gold-transparent: rgba(230, 165, 40, 0.3); /* Or transparent (overlays) */
 }
 ```
 
@@ -417,10 +476,9 @@ wp-theme-v2/
 - ⚠️ Si certaines couleurs ne passent pas les tests de contraste, prévoir des ajustements (assombrir/éclaircir)
 
 **Actions de validation requises**:
-1. Clarifier les codes couleurs #5b0505 et #F4C976 avec Virginie
-2. Tester tous les contrastes texte/fond avec les couleurs officielles
-3. Ajuster si nécessaire pour conformité WCAG 2.2 AA
-4. Créer des variantes (hover, focus, disabled) pour les états interactifs
+1. Tester tous les contrastes texte/fond avec les couleurs officielles
+2. Ajuster si nécessaire pour conformité WCAG 2.2 AA
+3. Créer des variantes (hover, focus, disabled) pour les états interactifs
 
 ### Identité visuelle Kintsugi
 
@@ -437,19 +495,14 @@ L'identité visuelle s'inspire du Kintsugi japonais - l'art de réparer les cér
 - Technique: SVG paths pour tracés organiques, ou CSS avec border-image
 
 ```css
-:root {
-  --color-gold: #E6A528;
-  --color-gold-light: rgba(230, 165, 40, 0.3);
-}
-
 .section-divider {
   height: 2px;
   background: linear-gradient(
     90deg,
     transparent 0%,
-    var(--color-gold-light) 20%,
+    var(--color-gold-transparent) 20%,
     var(--color-gold) 50%,
-    var(--color-gold-light) 80%,
+    var(--color-gold-transparent) 80%,
     transparent 100%
   );
   position: relative;
@@ -493,7 +546,9 @@ L'identité visuelle s'inspire du Kintsugi japonais - l'art de réparer les cér
 **Approche:**
 - **Titre (serif)**: Police élégante et chaleureuse (ex: Playfair Display, Lora, Crimson Text)
 - **Corps (sans-serif)**: Police lisible et moderne (ex: Inter, Open Sans, Nunito)
-- Toutes les polices doivent être optimisées (subset, preload si nécessaire)
+- **Hébergement**: Auto-hébergées dans `assets/fonts/` (conformité RGPD — pas de chargement depuis Google Fonts CDN)
+- Toutes les polices doivent être optimisées (subset latin, formats woff2 + woff, preload pour les polices critiques)
+- Déclaration via `@font-face` dans `main.css`, chargement via `kiyose_enqueue_styles()` dans `inc/enqueue.php`
 
 **Échelle typographique:**
 ```css
@@ -533,7 +588,7 @@ L'identité visuelle s'inspire du Kintsugi japonais - l'art de réparer les cér
 ### Composants UI principaux
 
 **Boutons:**
-- **Primary**: Fond rose poudré (#D7A4A4), texte blanc, border-radius arrondi
+- **Primary**: Fond rose poudré (#D7A4A4), texte bordeaux (#5D0505), border-radius arrondi
 - **Secondary**: Outline rose poudré (#D7A4A4), fond transparent
 - **States**: Hover (assombrir 10%), Focus (outline visible), Active, Disabled
 - Taille minimum: 44x44px (touch target WCAG 2.2)
@@ -617,6 +672,11 @@ L'identité visuelle s'inspire du Kintsugi japonais - l'art de réparer les cér
 - SVG pour icônes et logos
 - Optimisation avant upload (TinyPNG, Squoosh)
 
+**Tailles WordPress custom** (dans `inc/setup.php`):
+- Déclarer les tailles nécessaires via `add_image_size()` (ex: hero, service-card, testimony-thumb)
+- Supprimer les tailles par défaut inutiles de WordPress pour réduire l'espace disque
+- Utiliser `wp_get_attachment_image()` avec les tailles custom pour le rendu
+
 **Responsive images:**
 ```html
 <img
@@ -647,7 +707,7 @@ L'identité visuelle s'inspire du Kintsugi japonais - l'art de réparer les cér
 - Shortcode Events Manager dans `templates/page-calendar.php`
 - Widget homepage pour afficher les prochains événements
 - Personnalisation CSS pour matcher le design du thème
-- Templates Events Manager custom dans `/wp-content/themes/wp-theme-v2/plugins/events-manager/` si nécessaire
+- Templates Events Manager custom dans `plugins/events-manager/` (relatif au thème) si nécessaire
 
 ### Newsletter (En place)
 
@@ -659,11 +719,11 @@ L'identité visuelle s'inspire du Kintsugi japonais - l'art de réparer les cér
 
 ### Formulaires Contact
 
-**Contact Form 7** ou **WPForms** (Lite)
-- Formulaire contact personnalisé
-- Protection anti-spam (reCAPTCHA ou honeypot)
-- Validation accessible
-- Hooks pour styling custom
+**Contact Form 7** ✅
+- Formulaire contact personnalisé via shortcode
+- Protection anti-spam (honeypot + reCAPTCHA v3)
+- Validation accessible (messages d'erreur ARIA)
+- Styling custom via CSS BEM (override des classes CF7 par défaut)
 
 ### SEO & Performance
 
