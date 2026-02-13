@@ -354,33 +354,73 @@ wp-theme-v2/
 
 ## Design System
 
+### Logo
+
+**Fichier de référence**: `references/logo-kiyose.png`
+
+**Caractéristiques du logo actuel (à conserver)**:
+- Typographie script calligraphique élégante et chaleureuse
+- Composition: "l'atelier" (minuscules) + "Kiyose" (capitale initiale)
+- Couleur principale: Bordeaux foncé (approx. #5A0F0F)
+- Éléments décoratifs: Courbes dorées organiques, points colorés
+- Style: Chaleureux, créatif, artisanal, évoquant la créativité et l'authenticité
+
+**Utilisation dans le thème**:
+- Logo dans le header (version complète)
+- Favicon (version simplifiée si nécessaire)
+- Format: SVG optimisé pour le web (vectoriel + léger)
+- Fallback PNG pour compatibilité
+- Attribut `alt="L'atelier Kiyose"` pour accessibilité
+
 ### Palette de couleurs
 
-**Couleurs principales (à conserver de l'identité actuelle):**
-- **Rose pêche clair**: `#FCEBD2` - Backgrounds, sections
-- **Bourgogne/Rose foncé**: `#F4BFBF` - Accents, boutons, liens
-- **À définir**: Couleurs complémentaires pour textes, bordures, états (hover, focus, disabled)
+**Fichier de référence**: `references/palette.jpg`
 
-**Exigences accessibilité:**
-- Tous les textes doivent avoir contraste ≥ 4.5:1 sur leur fond
-- Boutons et éléments interactifs ≥ 3:1
-- États focus visibles avec contraste suffisant
-- Utiliser un outil comme [Contrast Checker](https://webaim.org/resources/contrastchecker/) pour valider
+**Palette officielle**:
 
-**Variables CSS recommandées:**
+| Couleur | Code Hex | Usage prévu | Nom |
+|---------|----------|-------------|-----|
+| ![#D7A4A4](https://via.placeholder.com/15/D7A4A4/D7A4A4.png) | `#D7A4A4` | Couleur primaire - Accents, boutons, liens | Rose poudré |
+| ![#C9ABA7](https://via.placeholder.com/15/C9ABA7/C9ABA7.png) | `#C9ABA7` | Couleur secondaire - Backgrounds sections | Taupe rosé |
+| ![#E6A528](https://via.placeholder.com/15/E6A528/E6A528.png) | `#E6A528` | Accent or/kintsugi - Éléments décoratifs | Or miel |
+| ![#5b0505](https://via.placeholder.com/15/5b0505/5b0505.png) | `#5b0505` | ⚠️ À vérifier - Code semble incorrect (rouge foncé?) | Jaune clair? |
+| ![#F4C976](https://via.placeholder.com/15/F4C976/F4C976.png) | `#F4C976` | ⚠️ À vérifier - Code semble incorrect (jaune?) | Bordeaux? |
+| ![#EFE5E4](https://via.placeholder.com/15/EFE5E4/EFE5E4.png) | `#EFE5E4` | Couleur de fond - Background principal | Beige clair |
+
+**⚠️ Note importante**: Incohérences détectées entre les codes couleurs affichés sur la palette et le rendu visuel. À clarifier avec Virginie avant implémentation.
+
+**Variables CSS (version provisoire)**:
 ```css
 :root {
-  --color-primary: #F4BFBF;      /* Bourgogne/rose */
-  --color-secondary: #FCEBD2;     /* Rose pêche clair */
-  --color-text: #333333;          /* Texte principal */
-  --color-text-light: #666666;    /* Texte secondaire */
-  --color-background: #FFFFFF;    /* Fond principal */
-  --color-border: #E0E0E0;        /* Bordures */
-  --color-gold: #D4AF37;          /* Or Kintsugi */
-  --color-gold-light: rgba(212, 175, 55, 0.3); /* Or clair */
-  /* ... autres couleurs à définir */
+  /* Couleurs principales */
+  --color-primary: #D7A4A4;          /* Rose poudré */
+  --color-secondary: #C9ABA7;        /* Taupe rosé */
+  --color-accent: #E6A528;           /* Or miel */
+  --color-background: #EFE5E4;       /* Beige clair */
+
+  /* Couleurs fonctionnelles (à définir selon validation contraste) */
+  --color-text: #333333;             /* Texte principal (à ajuster) */
+  --color-text-light: #666666;       /* Texte secondaire (à ajuster) */
+  --color-border: #C9ABA7;           /* Bordures */
+
+  /* Or Kintsugi */
+  --color-gold: #E6A528;             /* Or principal */
+  --color-gold-light: rgba(230, 165, 40, 0.3); /* Or transparent */
 }
 ```
+
+**Exigences accessibilité**:
+- ✅ Tous les textes doivent avoir contraste ≥ 4.5:1 sur leur fond
+- ✅ Boutons et éléments interactifs ≥ 3:1
+- ✅ États focus visibles avec contraste suffisant
+- ⚠️ **CRITIQUE**: Valider tous les contrastes avec [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/) avant implémentation
+- ⚠️ Si certaines couleurs ne passent pas les tests de contraste, prévoir des ajustements (assombrir/éclaircir)
+
+**Actions de validation requises**:
+1. Clarifier les codes couleurs #5b0505 et #F4C976 avec Virginie
+2. Tester tous les contrastes texte/fond avec les couleurs officielles
+3. Ajuster si nécessaire pour conformité WCAG 2.2 AA
+4. Créer des variantes (hover, focus, disabled) pour les états interactifs
 
 ### Identité visuelle Kintsugi
 
@@ -391,15 +431,15 @@ L'identité visuelle s'inspire du Kintsugi japonais - l'art de réparer les cér
 
 **1. Lignes dorées subtiles**
 - Séparateurs de sections inspirés des fissures réparées à l'or
-- Couleur: Or chaud (`#D4AF37` ou `#FFD700`) avec opacité ajustable
+- Couleur: Or miel (`#E6A528`) - couleur officielle de la palette
 - Épaisseur: 1-2px, style: irrégulier/organique (pas de lignes droites parfaites)
 - Utilisation: Entre les sections de la homepage, autour des cartes de services
 - Technique: SVG paths pour tracés organiques, ou CSS avec border-image
 
 ```css
 :root {
-  --color-gold: #D4AF37;
-  --color-gold-light: rgba(212, 175, 55, 0.3);
+  --color-gold: #E6A528;
+  --color-gold-light: rgba(230, 165, 40, 0.3);
 }
 
 .section-divider {
@@ -419,7 +459,7 @@ L'identité visuelle s'inspire du Kintsugi japonais - l'art de réparer les cér
 
 **2. Effets vitrail (overlays colorés)**
 - Overlays semi-transparents évoquant "l'être humain comme un vitrail"
-- Utilisation: Backgrounds de sections avec dégradés de la palette (rose pêche, bourgogne)
+- Utilisation: Backgrounds de sections avec dégradés de la palette (taupe rosé, rose poudré)
 - Opacité: 0.05-0.15 pour ne pas nuire à la lisibilité
 - Technique: Multiple background-images avec blend-modes ou pseudo-elements ::before/::after
 
@@ -432,15 +472,14 @@ L'identité visuelle s'inspire du Kintsugi japonais - l'art de réparer les cér
   width: 100%;
   height: 100%;
   background:
-    radial-gradient(ellipse at 20% 30%, rgba(252, 235, 210, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 70%, rgba(244, 191, 191, 0.15) 0%, transparent 50%);
+    radial-gradient(ellipse at 20% 30%, rgba(201, 171, 167, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(215, 164, 164, 0.15) 0%, transparent 50%);
   pointer-events: none;
   z-index: 0;
 }
 ```
 
 **3. Imagerie Kintsugi**
-- Photos ou illustrations de céramiques Kintsugi dans la section Hero ou À Propos
 - Graphisme subtil: motifs de fissures dorées en arrière-plan (opacity très faible)
 - Icône: Possibilité d'utiliser un symbole Kintsugi stylisé comme élément graphique récurrent
 
@@ -494,13 +533,13 @@ L'identité visuelle s'inspire du Kintsugi japonais - l'art de réparer les cér
 ### Composants UI principaux
 
 **Boutons:**
-- **Primary**: Fond bourgogne/rose, texte blanc, border-radius arrondi
-- **Secondary**: Outline bourgogne/rose, fond transparent
+- **Primary**: Fond rose poudré (#D7A4A4), texte blanc, border-radius arrondi
+- **Secondary**: Outline rose poudré (#D7A4A4), fond transparent
 - **States**: Hover (assombrir 10%), Focus (outline visible), Active, Disabled
 - Taille minimum: 44x44px (touch target WCAG 2.2)
 
 **Cartes (Services, Témoignages):**
-- Fond blanc ou rose pêche très clair
+- Fond blanc ou beige clair (#EFE5E4)
 - Ombre légère (box-shadow subtile)
 - Border-radius arrondi
 - Padding généreux
@@ -531,7 +570,7 @@ L'identité visuelle s'inspire du Kintsugi japonais - l'art de réparer les cér
 - Bulles SVG apparaissent au survol/focus d'éléments interactifs
 - Animation déclenchée uniquement par interaction utilisateur
 - Timing: apparition fade-in 300ms, disparition fade-out 200ms
-- Couleurs: palette rose pêche avec opacité 0.6-0.8
+- Couleurs: palette officielle (rose poudré, taupe rosé) avec opacité 0.6-0.8
 - Positionnement: ne jamais chevaucher du contenu important
 - Accessible au clavier (déclenchement sur focus)
 
