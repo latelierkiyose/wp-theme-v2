@@ -380,12 +380,12 @@ wp-theme-v2/
 
 | Couleur | Code Hex | Usage prévu | Nom |
 |---------|----------|-------------|-----|
-| ![#D7A4A4](https://via.placeholder.com/15/D7A4A4/D7A4A4.png) | `#D7A4A4` | Couleur primaire - Accents, boutons, liens | Rose poudré |
-| ![#C9ABA7](https://via.placeholder.com/15/C9ABA7/C9ABA7.png) | `#C9ABA7` | Couleur secondaire - Backgrounds sections | Taupe rosé |
-| ![#E6A528](https://via.placeholder.com/15/E6A528/E6A528.png) | `#E6A528` | Accent or/kintsugi - Éléments décoratifs | Or miel |
-| ![#5b0505](https://via.placeholder.com/15/5b0505/5b0505.png) | `#5b0505` | ⚠️ À vérifier - Code semble incorrect (rouge foncé?) | Jaune clair? |
-| ![#F4C976](https://via.placeholder.com/15/F4C976/F4C976.png) | `#F4C976` | ⚠️ À vérifier - Code semble incorrect (jaune?) | Bordeaux? |
-| ![#EFE5E4](https://via.placeholder.com/15/EFE5E4/EFE5E4.png) | `#EFE5E4` | Couleur de fond - Background principal | Beige clair |
+| ![#D7A4A4](https://img.shields.io/badge/-D7A4A4-D7A4A4?style=flat-square) | `#D7A4A4` | Couleur primaire - Accents, boutons, liens | Rose poudré |
+| ![#C9ABA7](https://img.shields.io/badge/-C9ABA7-C9ABA7?style=flat-square) | `#C9ABA7` | Couleur secondaire - Backgrounds sections | Taupe rosé |
+| ![#E6A528](https://img.shields.io/badge/-E6A528-E6A528?style=flat-square) | `#E6A528` | Accent or/kintsugi - Éléments décoratifs | Or miel |
+| ![#5b0505](https://img.shields.io/badge/-5b0505-5b0505?style=flat-square) | `#5b0505` | ⚠️ À vérifier - Code semble incorrect (rouge foncé?) | Jaune clair? |
+| ![#F4C976](https://img.shields.io/badge/-F4C976-F4C976?style=flat-square) | `#F4C976` | ⚠️ À vérifier - Code semble incorrect (jaune?) | Bordeaux? |
+| ![#EFE5E4](https://img.shields.io/badge/-EFE5E4-EFE5E4?style=flat-square) | `#EFE5E4` | Couleur de fond - Background principal | Beige clair |
 
 **⚠️ Note importante**: Incohérences détectées entre les codes couleurs affichés sur la palette et le rendu visuel. À clarifier avec Virginie avant implémentation.
 
