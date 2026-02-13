@@ -9,8 +9,41 @@ L'Atelier Kiyose est un centre de bien-être et développement personnel situé 
 3. **Bols tibétains** - Sonothérapie et rééquilibrage énergétique
 4. **Ateliers philosophie** - Débats démocratiques pour enfants et adolescents
 
+**Public cible**: Femmes adultes (art-thérapie, rigologie, bols tibétains, ateliers créatifs)
+
 Site actuel: https://www.latelierkiyose.fr/
 Ancien thème: https://github.com/latelierkiyose/wp-theme
+
+## Ton et voix de la marque
+
+**Positionnement**: Professionnelle de la joie et de la créativité
+
+**Valeurs fondamentales**:
+- **Authenticité** - Être vrai, sans masque, dans sa vulnérabilité
+- **Originalité** - Approches créatives et uniques, hors des sentiers battus
+- **Connexion** - Lien profond avec soi-même et avec les autres
+- **Rire** - Légèreté et libération par le jeu et l'humour
+- **Créativité** - Expression et transformation par le processus artistique
+- **Alchimie** - Transformation profonde par le processus créatif, transmutation des blessures en lumière
+
+**Ton éditorial**:
+- Chaleureux et accueillant, créant un espace sécurisant
+- Joyeux sans être superficiel, équilibre entre légèreté et profondeur
+- Professionnel mais accessible, pas de jargon technique inutile
+- Créatif et poétique, utiliser des métaphores (vitrail, lumière, fêlures, or)
+- Équilibre entre sérieux (expertise, qualifications) et légèreté (rire, jeu)
+
+**Style d'écriture**:
+- Phrases courtes et claires
+- Vocabulaire positif et transformationnel
+- Utiliser le "vous" pour s'adresser directement aux femmes
+- Métaphore Kintsugi récurrente: imperfections → beauté, fêlures → lumière
+- CTAs invitants et doux (ex: "Venez explorer", "Laissez passer votre lumière")
+
+**Exemples de messaging**:
+- Hero tagline: "Transformez vos fêlures en lumière" ou "L'art de révéler votre beauté intérieure"
+- Services: "Un espace pour explorer, créer, rire et transformer"
+- À Propos: Développer l'histoire personnelle de Virginie avec authenticité et vulnérabilité
 
 ## Objectif de la refonte
 
@@ -148,7 +181,7 @@ wp-theme-v2/
 - Affichage des événements avec:
   - Date et heure
   - Type d'atelier
-  - Lieu
+  - Lieu (Brux / Poitiers / En ligne)
   - Tarif
   - Places disponibles
   - Bouton "Réserver"
@@ -196,7 +229,9 @@ wp-theme-v2/
   - Message (requis)
   - Protection reCAPTCHA ou honeypot
 - Informations de contact:
-  - Adresse: Le Grand Vron, 86510 Brux
+  - Cabinet principal: Le Grand Vron, 86510 Brux
+  - Ateliers également proposés à Poitiers
+  - Séances en ligne disponibles
   - Téléphone: 06 58 37 32 05
   - SIRET: 49219620900026
 - Liens réseaux sociaux
@@ -341,9 +376,78 @@ wp-theme-v2/
   --color-text-light: #666666;    /* Texte secondaire */
   --color-background: #FFFFFF;    /* Fond principal */
   --color-border: #E0E0E0;        /* Bordures */
+  --color-gold: #D4AF37;          /* Or Kintsugi */
+  --color-gold-light: rgba(212, 175, 55, 0.3); /* Or clair */
   /* ... autres couleurs à définir */
 }
 ```
+
+### Identité visuelle Kintsugi
+
+**Philosophie de design:**
+L'identité visuelle s'inspire du Kintsugi japonais - l'art de réparer les céramiques avec de la poudre d'or. Cette métaphore guide le design: les imperfections et fêlures laissent passer la lumière, transformant les blessures en beauté.
+
+**Éléments visuels Kintsugi:**
+
+**1. Lignes dorées subtiles**
+- Séparateurs de sections inspirés des fissures réparées à l'or
+- Couleur: Or chaud (`#D4AF37` ou `#FFD700`) avec opacité ajustable
+- Épaisseur: 1-2px, style: irrégulier/organique (pas de lignes droites parfaites)
+- Utilisation: Entre les sections de la homepage, autour des cartes de services
+- Technique: SVG paths pour tracés organiques, ou CSS avec border-image
+
+```css
+:root {
+  --color-gold: #D4AF37;
+  --color-gold-light: rgba(212, 175, 55, 0.3);
+}
+
+.section-divider {
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-gold-light) 20%,
+    var(--color-gold) 50%,
+    var(--color-gold-light) 80%,
+    transparent 100%
+  );
+  position: relative;
+  margin: var(--spacing-3xl) 0;
+}
+```
+
+**2. Effets vitrail (overlays colorés)**
+- Overlays semi-transparents évoquant "l'être humain comme un vitrail"
+- Utilisation: Backgrounds de sections avec dégradés de la palette (rose pêche, bourgogne)
+- Opacité: 0.05-0.15 pour ne pas nuire à la lisibilité
+- Technique: Multiple background-images avec blend-modes ou pseudo-elements ::before/::after
+
+```css
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(252, 235, 210, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(244, 191, 191, 0.15) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+```
+
+**3. Imagerie Kintsugi**
+- Photos ou illustrations de céramiques Kintsugi dans la section Hero ou À Propos
+- Graphisme subtil: motifs de fissures dorées en arrière-plan (opacity très faible)
+- Icône: Possibilité d'utiliser un symbole Kintsugi stylisé comme élément graphique récurrent
+
+**Contraintes accessibilité:**
+- Tous les éléments dorés sont purement décoratifs (pas d'information transmise uniquement par la couleur)
+- Contraste suffisant maintenu pour tous les textes (≥ 4.5:1)
+- Overlays et backgrounds n'interfèrent jamais avec la lisibilité du contenu
 
 ### Typographie
 
@@ -416,13 +520,46 @@ wp-theme-v2/
 
 ### Animations & Transitions
 
-**Principes:**
+**Principes généraux:**
 - Animations subtiles et rapides (200-300ms)
 - Respecter `prefers-reduced-motion` (désactiver animations si activé)
 - Pas d'animations automatiques qui distraient
 - Transitions sur hover/focus pour feedback utilisateur
 
-**Exemples:**
+**Bulles décoratives interactives:**
+- Pas d'animation automatique (conformité WCAG 2.2 AA)
+- Bulles SVG apparaissent au survol/focus d'éléments interactifs
+- Animation déclenchée uniquement par interaction utilisateur
+- Timing: apparition fade-in 300ms, disparition fade-out 200ms
+- Couleurs: palette rose pêche avec opacité 0.6-0.8
+- Positionnement: ne jamais chevaucher du contenu important
+- Accessible au clavier (déclenchement sur focus)
+
+**Exemples d'implémentation:**
+```css
+/* Bulles désactivées par défaut */
+.bubble {
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Apparition au survol de cartes de services */
+.service-card:hover .bubble,
+.service-card:focus-within .bubble {
+  opacity: 0.7;
+  transform: translateY(-5px);
+}
+
+/* Respecter prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .bubble {
+    transition: none;
+    transform: none;
+  }
+}
+```
+
+**Autres transitions:**
 ```css
 @media (prefers-reduced-motion: no-preference) {
   .button {
