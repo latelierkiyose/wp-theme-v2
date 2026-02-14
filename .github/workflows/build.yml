@@ -71,14 +71,16 @@ jobs:
       - name: Create ZIP artifact
         run: |
           cd build
-          zip -r latelierkiyose-${{ github.sha }}.zip latelierkiyose/
+          SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
+          DATE=$(date +'%Y-%m-%d')
+          zip -r latelierkiyose-theme-${DATE}-${SHORT_SHA}.zip latelierkiyose/
           cd ..
 
       - name: Upload artifact
         uses: actions/upload-artifact@v6
         with:
           name: theme-build-${{ github.sha }}
-          path: build/latelierkiyose-${{ github.sha }}.zip
+          path: build/latelierkiyose-theme-*.zip
           retention-days: 5
 
       - name: Generate release tag
@@ -87,8 +89,10 @@ jobs:
           SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
           DATE=$(date +'%Y-%m-%d')
           TAG="build-${DATE}-${SHORT_SHA}"
+          ZIPNAME="latelierkiyose-theme-${DATE}-${SHORT_SHA}.zip"
           echo "tag=${TAG}" >> $GITHUB_OUTPUT
           echo "date=${DATE}" >> $GITHUB_OUTPUT
+          echo "zipname=${ZIPNAME}" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -102,8 +106,14 @@ jobs:
             **Commit**: ${{ github.sha }}
             **Date**: ${{ steps.release_tag.outputs.date }}
             
-            Download the theme ZIP file below and upload it to WordPress.
-          files: build/latelierkiyose-${{ github.sha }}.zip
+            ## 📦 Download the WordPress Theme
+            
+            **⬇️ Download this file**: `${{ steps.release_tag.outputs.zipname }}`
+            
+            ⚠️ **Important**: Do NOT download "Source code (zip)" or "Source code (tar.gz)" - these contain the entire repository, not just the theme.
+            
+            The theme ZIP contains only the `latelierkiyose/` folder ready to upload to WordPress.
+          files: build/${{ steps.release_tag.outputs.zipname }}
           prerelease: true
           draft: false
 
