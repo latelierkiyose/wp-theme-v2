@@ -117,6 +117,17 @@ latelierkiyose/
 | Bordeaux foncé | `#5D0505` | Logo, titres importants |
 | Beige clair | `#EFE5E4` | Arrière-plan principal |
 
+> **Note contraste**: Certaines combinaisons de la palette nécessitent des ajustements pour conformité WCAG AA. Voir `doc/design-system.md` pour les détails.
+
+## Typographie (accès rapide)
+
+| Usage | Police | Graisses |
+|-------|--------|----------|
+| Titres (serif) | Lora | Regular (400), Bold (700), Italic (400i) |
+| Corps (sans-serif) | Nunito | Regular (400), SemiBold (600), Bold (700) |
+
+Auto-hébergées dans `assets/fonts/` (conformité RGPD).
+
 ## Workflow d'assignation de templates
 
 1. Ajouter l'en-tête au fichier template:

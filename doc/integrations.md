@@ -16,9 +16,10 @@
 
 **Brevo** (anciennement Sendinblue) ✅
 - Plugin déjà utilisé pour la newsletter
-- Formulaire dans footer + homepage
+- Formulaire intégré via **shortcode du plugin Brevo** dans footer + homepage
 - Champs: Email (requis), Prénom (requis), Nom (optionnel)
 - Double opt-in RGPD conforme
+- Styling custom via CSS BEM (override des classes Brevo par défaut)
 
 ## Formulaires Contact
 

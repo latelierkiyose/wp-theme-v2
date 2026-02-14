@@ -30,6 +30,9 @@
 	--color-gold-transparent: rgba(230, 165, 40, 0.3); /* Or transparent (overlays) */
 
 	/* Typographie */
+	--font-heading: 'Lora', Georgia, 'Times New Roman', serif;
+	--font-body: 'Nunito', 'Segoe UI', Roboto, sans-serif;
+
 	--font-size-xs: 0.75rem;    /* 12px */
 	--font-size-sm: 0.875rem;   /* 14px */
 	--font-size-base: 1rem;     /* 16px - taille minimum pour body */
@@ -227,6 +230,7 @@
 	min-width: 44px;
 	min-height: 44px;
 	padding: var(--spacing-md) var(--spacing-xl);
+	font-family: var(--font-body);
 	font-size: var(--font-size-base);
 	font-weight: 600;
 	text-decoration: none;
@@ -280,6 +284,7 @@
 }
 
 .card__title {
+	font-family: var(--font-heading);
 	font-size: var(--font-size-xl);
 	color: var(--color-burgundy);
 	margin-bottom: var(--spacing-md);

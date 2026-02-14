@@ -49,6 +49,12 @@
 2. Ajuster si nécessaire pour conformité WCAG 2.2 AA
 3. Créer des variantes (survol, focus, désactivé) pour les états interactifs
 
+**Ajustements de contraste autorisés**:
+Les couleurs de la palette peuvent être légèrement assombries ou éclaircies pour atteindre les ratios WCAG AA, tout en restant dans l'esprit de la palette. Combinaisons connues à ajuster :
+- Texte `#5D0505` sur bouton `#D7A4A4` : ratio 3.8:1 (insuffisant pour texte normal ≤18pt) — assombrir le fond ou éclaircir le texte
+- Rose poudré `#D7A4A4` sur beige `#EFE5E4` : ratio 1.48:1 — ne jamais utiliser cette combinaison pour du texte
+- Les variantes ajustées doivent être documentées comme variables CSS dédiées (ex: `--color-primary-dark`)
+
 ## Identité visuelle Kintsugi
 
 **Philosophie de design:**
@@ -80,12 +86,21 @@ L'identité visuelle s'inspire du Kintsugi japonais - l'art de réparer les cér
 
 ## Typographie
 
-**Approche:**
-- **Titre (serif)**: Police élégante et chaleureuse (ex: Playfair Display, Lora, Crimson Text)
-- **Corps (sans-serif)**: Police lisible et moderne (ex: Inter, Open Sans, Nunito)
-- **Hébergement**: Auto-hébergées dans `assets/fonts/` (conformité RGPD — pas de chargement depuis Google Fonts CDN)
-- Toutes les polices doivent être optimisées (subset latin, formats woff2 + woff, preload pour les polices critiques)
-- Déclaration via `@font-face` dans `main.css`, chargement via `kiyose_enqueue_styles()` dans `inc/enqueue.php`
+**Polices retenues:**
+- **Titres (serif)**: **Lora** — Élégante et chaleureuse, cohérente avec l'identité bien-être
+- **Corps (sans-serif)**: **Nunito** — Arrondie, très lisible, ton doux et accessible
+
+**Hébergement**: Auto-hébergées dans `assets/fonts/` (conformité RGPD — pas de chargement depuis Google Fonts CDN)
+
+**Optimisation:**
+- Subset latin uniquement
+- Formats: woff2 (principal) + woff (fallback)
+- Preload pour les polices critiques (Lora Regular, Nunito Regular)
+- Déclaration via `@font-face` dans `assets/css/fonts.css`, chargement via `kiyose_enqueue_styles()` dans `inc/enqueue.php`
+
+**Graisses à inclure:**
+- Lora: Regular (400), Bold (700), Regular Italic (400i)
+- Nunito: Regular (400), SemiBold (600), Bold (700)
 
 **Échelle typographique**: Voir `references/css-examples.css` pour les variables CSS complètes.
 
@@ -125,6 +140,16 @@ L'identité visuelle s'inspire du Kintsugi japonais - l'art de réparer les cér
 - Animation douce (200-300ms)
 - Accessible au clavier (Tab, Entrée, Échap, flèches)
 - Piège de focus (focus trap) dans le menu déroulant ouvert
+
+**Carousel témoignages:**
+- Composant accessible conforme WCAG 2.2 AA
+- Structure: `role="region"` avec `aria-roledescription="carousel"` et `aria-label`
+- Slides: `role="group"` avec `aria-roledescription="slide"` et `aria-label="X sur Y"`
+- Contrôles: boutons précédent/suivant + bouton pause/play
+- Navigation clavier: flèches gauche/droite pour changer de slide
+- `aria-live="polite"` sur le conteneur de slides (passe à `"off"` en mode autoplay)
+- Autoplay: désactivé par défaut si `prefers-reduced-motion: reduce`
+- Module JS dédié: `assets/js/modules/carousel.js`
 
 ## Animations & Transitions
 

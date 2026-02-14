@@ -8,13 +8,13 @@
 - **Hero** - Présentation de Virginie et de l'atelier avec CTA principal
 - **Les 4 Piliers** - Cartes cliquables vers chaque service (Art-thérapie, Rigologie, Bols tibétains, Philo)
 - **Prochaines dates** - Widget Events Manager avec 3-4 prochains événements
-- **Témoignages** - Carousel ou grille de 3 témoignages récents
+- **Témoignages** - Carousel accessible (voir design system pour spécifications ARIA)
 - **Newsletter** - Formulaire d'inscription Brevo (email, prénom, nom optionnel)
 - **Actualités** - 3 derniers articles du blog
 
 ## 2. Pages Services (4 piliers)
 
-**Templates**: Pages individuelles avec `page.php` ou template personnalisé par service
+**Templates**: Un template générique `templates/page-services.php` partagé par les 4 pages de services. Le contenu spécifique à chaque service est géré depuis l'éditeur WordPress.
 
 **Structure commune:**
 - Titre du service avec sous-titre descriptif
@@ -36,6 +36,7 @@
 **Template**: `templates/page-calendar.php`
 
 **Contenu:**
+- Le contenu réel sera récupéré du site actuel (https://www.latelierkiyose.fr/)
 - Intégration **Events Manager** (plugin déjà utilisé)
 - Affichage des événements avec:
   - Date et heure
@@ -89,7 +90,7 @@
 - Formulaire de contact avec validation (Contact Form 7)
 - **Informations de contact**: Voir `references/business-info.json` pour coordonnées complètes
 - Liens réseaux sociaux
-- Carte Google Maps (optionnel)
+- Adresse complète affichée en texte (pas de carte interactive)
 
 ## 8. Newsletter
 
@@ -99,7 +100,7 @@
 - Email (requis)
 - Prénom (requis)
 - Nom (optionnel)
-- Intégration avec **Brevo** (plugin déjà utilisé)
+- Intégration avec **Brevo** via shortcode du plugin (plugin déjà utilisé)
 - Conformité RGPD
 
 ## 9. Navigation & Footer

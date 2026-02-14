@@ -20,7 +20,7 @@ wp-theme-v2/
     │
     ├── templates/             # Templates de pages (avec header "Template Name:")
     │   ├── page-home.php         # Page d'accueil
-    │   ├── page-services.php     # Template services génériques
+    │   ├── page-services.php     # Template générique partagé par les 4 pages de services
     │   ├── page-contact.php      # Page contact
     │   ├── page-about.php        # Page à propos
     │   └── page-calendar.php     # Calendrier/Tarifs
@@ -36,7 +36,7 @@ wp-theme-v2/
     │   │   └── components/       # Composants réutilisables
     │   ├── js/
     │   │   ├── main.js           # JavaScript principal
-    │   │   └── modules/          # Modules JS
+    │   │   └── modules/          # Modules JS (carousel.js, mobile-menu.js, etc.)
     │   ├── fonts/                # Polices auto-hébergées (RGPD)
     │   └── images/               # Images du thème
     │
@@ -95,7 +95,7 @@ Les fichiers dans `templates/` ne bénéficient pas de la résolution automatiqu
 ### Nommage
 - **Préfixe PHP**: `kiyose_` pour toutes les fonctions
 - **Préfixe hooks**: `kiyose_` pour les hooks custom
-- **Text domain**: `kiyose` (pas d'i18n nécessaire pour ce projet)
+- **Text domain**: `kiyose` (le site est en français uniquement ; pas de traductions à fournir, mais les fonctions i18n `__()`, `esc_html_e()`, etc. sont utilisées comme bonne pratique WordPress)
 
 ### CSS
 - **Méthodologie**: BEM (Block Element Modifier)
@@ -213,12 +213,16 @@ wp_nav_menu( array(
 
 ### Polices
 
+**Polices retenues**:
+- **Titres (serif)**: Lora — Regular (400), Bold (700), Regular Italic (400i)
+- **Corps (sans-serif)**: Nunito — Regular (400), SemiBold (600), Bold (700)
+
 **Hébergement**: Auto-hébergées dans `assets/fonts/` (conformité RGPD)
 
 **Optimisation**:
 - Subset latin uniquement
 - Formats: woff2 (principal) + woff (fallback)
-- Preload pour polices critiques
+- Preload pour polices critiques (Lora Regular, Nunito Regular)
 
 **Déclaration**:
 ```php
