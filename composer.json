@@ -1,7 +1,6 @@
 {
 	"name": "latelierkiyose/wp-theme",
 	"description": "Thème WordPress sur mesure pour L'Atelier Kiyose",
-	"version": "0.1.0",
 	"type": "wordpress-theme",
 	"license": "GPL-2.0-or-later",
 	"require-dev": {
