@@ -2,7 +2,7 @@
 
 ## Statut du projet
 
-**État actuel**: PRD 0014 terminé — Kintsugi et finitions visuelles
+**État actuel**: PRD 0015 terminé — CI/CD et déploiement
 - Squelette du thème: ✅ Opérationnel (PRD 0001)
 - Design tokens: ✅ Implémentés (PRD 0002)
   - Variables CSS: couleurs, typographie, espacements, animations
@@ -132,6 +132,15 @@
   - Alternance de fonds entre sections (blanc / beige clair / taupe rosé léger)
   - Tous les éléments décoratifs marqués aria-hidden="true"
   - WCAG 2.2 AA: Aucune information transmise uniquement par couleur/décoration
+- CI/CD: ✅ Implémenté (PRD 0015)
+  - GitHub Actions workflow pour intégration continue
+  - Job de tests: PHPCS + PHPUnit (conditionnel)
+  - Job de build: Création d'artefact ZIP déployable
+  - Build déclenché uniquement sur push vers main
+  - Artefact ZIP excluant tests et fichiers de dev
+  - Rétention des artefacts: 30 jours
+  - Support des branches main et develop
+  - Validation Composer en amont des tests
 - Configuration: ✅ PHPCS, Composer, CI/CD GitHub Actions
 - Prochaines étapes: Tests finaux et optimisations pré-production
 
