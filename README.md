@@ -103,7 +103,3 @@ wp-theme-v2/
 - Site actuel : https://www.latelierkiyose.fr/
 - Ancien thème : https://github.com/latelierkiyose/wp-theme
 - PRD : [doc/prd/](doc/prd/)
-
-## 📝 Licence
-
-GPL v2 or later
