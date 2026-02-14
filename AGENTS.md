@@ -2,7 +2,7 @@
 
 ## Statut du projet
 
-**État actuel**: PRD 0010 terminé — Page de contact implémentée
+**État actuel**: PRD 0011 terminé — Page À propos implémentée
 - Squelette du thème: ✅ Opérationnel (PRD 0001)
 - Design tokens: ✅ Implémentés (PRD 0002)
   - Variables CSS: couleurs, typographie, espacements, animations
@@ -93,8 +93,19 @@
   - Sticky sidebar sur desktop
   - WCAG 2.2 AA: Contrastes validés (≥4.5:1), focus visible, targets 44x44px, labels visibles
   - Note: Installation de Contact Form 7 requise (hors périmètre PRD)
+- Page À propos: ✅ Implémentée (PRD 0011)
+  - Template: templates/page-about.php (Template Name: "À propos")
+  - Structure simple: Header avec titre + contenu Gutenberg
+  - Contenu géré dans l'éditeur: Introduction, philosophie Kintsugi, parcours, qualifications
+  - Styles CSS: about-page.css avec support complet Gutenberg
+  - Blocs stylés: Colonnes (photo + texte), images, listes, citations, séparateurs
+  - Images avec coins arrondis et ombre légère
+  - Enqueue conditionnel (charge uniquement sur page-about.php)
+  - Layout aéré et centré (max-width: 900px)
+  - Responsive: Colonnes empilées sur mobile, images adaptatives
+  - WCAG 2.2 AA: Hiérarchie sémantique, contrastes validés, navigation clavier
 - Configuration: ✅ PHPCS, Composer, CI/CD GitHub Actions
-- Prochaines étapes: Pages À propos, Calendrier (PRD 0011-0012)
+- Prochaines étapes: Page Calendrier (PRD 0012)
 
 
 ## Contexte

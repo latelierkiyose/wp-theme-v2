@@ -1,0 +1,224 @@
+/**
+ * About Page Template Styles
+ * Template: page-about.php
+ * 
+ * @package Kiyose
+ */
+
+/* ============================================
+   ABOUT PAGE LAYOUT
+   ============================================ */
+
+.about-page {
+	width: 100%;
+	max-width: 900px;
+	margin: 0 auto;
+	padding: var(--spacing-2xl) var(--spacing-md);
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+
+.about-page__header {
+	margin-bottom: var(--spacing-3xl);
+	text-align: center;
+}
+
+.about-page__title {
+	font-family: var(--font-heading);
+	font-size: var(--font-size-3xl);
+	font-weight: 700;
+	color: var(--color-burgundy);
+	margin-bottom: 0;
+	line-height: var(--line-height-tight);
+}
+
+/* ============================================
+   CONTENT (Gutenberg Blocks)
+   ============================================ */
+
+.about-page__content {
+	font-family: var(--font-body);
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-relaxed);
+	color: var(--color-text);
+}
+
+/* Paragraphes */
+.about-page__content p {
+	margin-bottom: var(--spacing-lg);
+}
+
+.about-page__content p:last-child {
+	margin-bottom: 0;
+}
+
+/* Titres */
+.about-page__content h2 {
+	font-family: var(--font-heading);
+	font-size: var(--font-size-2xl);
+	font-weight: 700;
+	color: var(--color-burgundy);
+	margin-top: var(--spacing-3xl);
+	margin-bottom: var(--spacing-lg);
+	line-height: var(--line-height-tight);
+}
+
+.about-page__content h3 {
+	font-family: var(--font-heading);
+	font-size: var(--font-size-xl);
+	font-weight: 700;
+	color: var(--color-burgundy);
+	margin-top: var(--spacing-2xl);
+	margin-bottom: var(--spacing-md);
+	line-height: var(--line-height-tight);
+}
+
+.about-page__content h4 {
+	font-family: var(--font-heading);
+	font-size: var(--font-size-lg);
+	font-weight: 700;
+	color: var(--color-text);
+	margin-top: var(--spacing-xl);
+	margin-bottom: var(--spacing-md);
+	line-height: var(--line-height-normal);
+}
+
+/* Listes (qualifications, certifications, etc.) */
+.about-page__content ul,
+.about-page__content ol {
+	margin-bottom: var(--spacing-lg);
+	padding-left: var(--spacing-xl);
+}
+
+.about-page__content li {
+	margin-bottom: var(--spacing-sm);
+}
+
+.about-page__content ul {
+	list-style-type: disc;
+}
+
+.about-page__content ol {
+	list-style-type: decimal;
+}
+
+/* Gutenberg Columns Block (photo + texte côte à côte) */
+.about-page__content .wp-block-columns {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--spacing-xl);
+	margin-bottom: var(--spacing-2xl);
+	align-items: start;
+}
+
+.about-page__content .wp-block-column {
+	flex: 1;
+	min-width: 0; /* Prevent overflow */
+}
+
+/* Images (Virginie's photo, etc.) */
+.about-page__content img {
+	max-width: 100%;
+	height: auto;
+	border-radius: 12px;
+	box-shadow: 0 4px 16px rgba(93, 5, 5, 0.12);
+	margin: var(--spacing-xl) 0;
+}
+
+.about-page__content figure {
+	margin: var(--spacing-xl) 0;
+}
+
+.about-page__content figcaption {
+	font-size: var(--font-size-sm);
+	color: var(--color-text-light);
+	font-style: italic;
+	text-align: center;
+	margin-top: var(--spacing-sm);
+}
+
+.about-page__content .wp-block-image {
+	margin: var(--spacing-xl) 0;
+}
+
+.about-page__content .wp-block-image img {
+	margin: 0;
+}
+
+/* Citations (philosophie Kintsugi, etc.) */
+.about-page__content blockquote,
+.about-page__content .wp-block-quote {
+	border-left: 4px solid var(--color-gold);
+	padding-left: var(--spacing-lg);
+	margin: var(--spacing-xl) 0;
+	font-style: italic;
+	color: var(--color-text-light);
+}
+
+.about-page__content blockquote p,
+.about-page__content .wp-block-quote p {
+	margin-bottom: var(--spacing-md);
+}
+
+/* Séparateurs */
+.about-page__content hr,
+.about-page__content .wp-block-separator {
+	border: none;
+	border-top: 2px solid var(--color-gold);
+	margin: var(--spacing-2xl) 0;
+	opacity: 0.5;
+}
+
+/* ============================================
+   RESPONSIVE - MOBILE
+   ============================================ */
+
+@media (max-width: 767px) {
+	.about-page {
+		padding: var(--spacing-xl) var(--spacing-md);
+	}
+
+	.about-page__title {
+		font-size: var(--font-size-2xl);
+	}
+
+	/* Stack columns on mobile */
+	.about-page__content .wp-block-columns {
+		flex-direction: column;
+	}
+
+	.about-page__content .wp-block-column {
+		width: 100%;
+	}
+}
+
+/* ============================================
+   RESPONSIVE - TABLET
+   ============================================ */
+
+@media (min-width: 768px) {
+	.about-page {
+		padding: var(--spacing-3xl) var(--spacing-xl);
+	}
+
+	.about-page__title {
+		font-size: var(--font-size-4xl);
+	}
+
+	.about-page__content {
+		font-size: var(--font-size-lg);
+	}
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+/* Support prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+	.about-page__content * {
+		transition: none;
+	}
+}
