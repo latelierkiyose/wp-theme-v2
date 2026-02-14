@@ -101,6 +101,31 @@
 	);
 }
 
+/* Header (white) to main content (beige by default) */
+.section-divider--header {
+	background: white;
+	padding: 0;
+	margin: 0;
+}
+
+.section-divider--header::after {
+	background: linear-gradient(
+		90deg,
+		transparent 0%,
+		var(--color-gold-transparent) 20%,
+		var(--color-gold) 50%,
+		var(--color-gold-transparent) 80%,
+		transparent 100%
+	);
+}
+
+/* Remove spacing adjustment - let sections keep their normal padding */
+.section-divider--header + section,
+.section-divider--header + .site-main section:first-of-type,
+.section-divider--header + .site-main .hero-section {
+	padding-top: var(--spacing-3xl);
+}
+
 /**
  * Organic variant with dual gradient for a more textured effect.
  */

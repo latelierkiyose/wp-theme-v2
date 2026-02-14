@@ -53,6 +53,9 @@
 	</div>
 </header>
 
+<!-- Header divider (Kintsugi decoration) -->
+<div class="section-divider section-divider--header" role="presentation" aria-hidden="true"></div>
+
 <!-- Mobile Menu Overlay -->
 <div class="mobile-menu-overlay" aria-hidden="true"></div>
 
