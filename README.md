@@ -54,6 +54,10 @@ Si vous n'avez pas PHP installé localement, utilisez les wrappers Docker :
 ## Chargement des données de production
 
 1. Télécharger le répertoire `uploads` depuis l'environnement à recopier
+```sh
+kiyose_ssh_user=<user>
+scp -r ${kiyose_ssh_user}@ftp.cluster029.hosting.ovh.net:/home/${kiyose_ssh_user}/www/wp-content/uploads .
+```
 2. Charger un dump de la base de données
 3. Changer l'URL de base
 ```sql
