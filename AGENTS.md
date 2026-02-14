@@ -46,6 +46,12 @@ Pour plus d'informations, consulter les documents suivants dans `doc/`:
 - **[Plugins & Intégrations](doc/integrations.md)** - Events Manager, Brevo, CF7, SEO, sécurité
 - **[Validation Checklist](doc/validation-checklist.md)** - Checklist complète pour validation des features et pré-production
 
+### Spécifications produit (PRD)
+- **[PRD](doc/prd/)** - Product Requirements Documents pour les fonctionnalités majeures
+  - Format standardisé pour documenter les nouvelles fonctionnalités
+  - Chaque PRD dans son propre répertoire: `prd/NNNN-nom-de-la-spec/`
+  - Numérotation séquentielle à 4 chiffres (ex: 0001, 0002)
+
 ### Références
 - **[Exemples CSS](references/css-examples.css)** - Code CSS réutilisable (variables, composants, Kintsugi)
 - **[Informations entreprise](references/business-info.json)** - Données de contact et informations légales
