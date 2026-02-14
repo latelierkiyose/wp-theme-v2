@@ -2,7 +2,7 @@
 
 ## Statut du projet
 
-**État actuel**: PRD 0006 terminé — Blog implémenté
+**État actuel**: PRD 0007 terminé — CPT Témoignages implémenté
 - Squelette du thème: ✅ Opérationnel (PRD 0001)
 - Design tokens: ✅ Implémentés (PRD 0002)
   - Variables CSS: couleurs, typographie, espacements, animations
@@ -37,8 +37,14 @@
   - template-parts/content-blog.php: Carte d'article réutilisable
   - Commentaires désactivés sur les posts
   - Styles CSS: blog-card.css, blog-archive.css, blog-single.css
+- CPT Témoignages: ✅ Implémenté (PRD 0007)
+  - Custom Post Type `kiyose_testimony` avec meta box contexte
+  - template-parts/content-testimony.php: Carte de témoignage réutilisable
+  - Fonction helper kiyose_get_testimony_context_label()
+  - Styles CSS: testimony.css avec bordure dorée et guillemets décoratifs
+  - Tests PHPUnit: test-custom-post-types.php
 - Configuration: ✅ PHPCS, Composer, CI/CD GitHub Actions
-- Prochaines étapes: Implémenter PRD 0007 (CPT Témoignages)
+- Prochaines étapes: Implémenter PRD 0008 (Page d'accueil)
 
 
 ## Contexte

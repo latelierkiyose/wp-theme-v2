@@ -1,0 +1,99 @@
+/**
+ * Testimony Card Component
+ * 
+ * Displays testimonials with a decorative quote mark,
+ * elegant styling, and context attribution.
+ *
+ * @package Kiyose
+ * @since   0.1.6
+ */
+
+.testimony-card {
+	position: relative;
+	padding: var(--spacing-xl);
+	padding-left: var(--spacing-2xl);
+	margin: 0;
+	background-color: #ffffff;
+	border-left: 4px solid var(--color-accent);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	transition: box-shadow var(--transition-base);
+}
+
+.testimony-card:hover {
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* Decorative opening quote */
+.testimony-card::before {
+	content: '"';
+	position: absolute;
+	top: var(--spacing-lg);
+	left: var(--spacing-md);
+	font-size: 3rem;
+	line-height: 1;
+	color: var(--color-accent);
+	font-family: var(--font-heading);
+	opacity: 0.6;
+}
+
+.testimony-card__quote {
+	font-style: italic;
+	font-size: var(--font-size-lg);
+	line-height: var(--line-height-relaxed);
+	color: var(--color-text);
+	margin-bottom: var(--spacing-lg);
+}
+
+/* Remove default paragraph margins in quote */
+.testimony-card__quote p {
+	margin: 0 0 var(--spacing-md) 0;
+}
+
+.testimony-card__quote p:last-child {
+	margin-bottom: 0;
+}
+
+.testimony-card__attribution {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-xs);
+	border-top: 1px solid var(--color-border);
+	padding-top: var(--spacing-md);
+}
+
+.testimony-card__name {
+	font-weight: 700;
+	font-size: var(--font-size-base);
+	font-style: normal;
+	color: var(--color-burgundy);
+}
+
+.testimony-card__context {
+	font-size: var(--font-size-sm);
+	color: var(--color-text-light);
+	font-style: normal;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+	.testimony-card {
+		padding: var(--spacing-lg);
+		padding-left: var(--spacing-xl);
+	}
+
+	.testimony-card::before {
+		font-size: 2rem;
+		left: var(--spacing-sm);
+	}
+
+	.testimony-card__quote {
+		font-size: var(--font-size-base);
+	}
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+	.testimony-card {
+		transition: none;
+	}
+}
