@@ -120,6 +120,36 @@ function kiyose_enqueue_assets() {
 add_action( 'wp_enqueue_scripts', 'kiyose_enqueue_assets' );
 
 /**
+ * Enqueue testimonials grid styles conditionally.
+ *
+ * Only loads when the [kiyose_testimonials] shortcode is present on the page.
+ *
+ * @since 0.1.7
+ */
+function kiyose_enqueue_testimonials_styles() {
+	global $post;
+	if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'kiyose_testimonials' ) ) {
+		wp_enqueue_style(
+			'kiyose-testimonials-grid',
+			get_template_directory_uri() . '/assets/css/components/testimonials-grid.css',
+			array( 'kiyose-variables' ),
+			KIYOSE_VERSION
+		);
+
+		// Check if carousel mode is used.
+		if ( strpos( $post->post_content, 'display="carousel"' ) !== false ) {
+			wp_enqueue_style(
+				'kiyose-carousel',
+				get_template_directory_uri() . '/assets/css/components/carousel.css',
+				array( 'kiyose-variables' ),
+				KIYOSE_VERSION
+			);
+		}
+	}
+}
+add_action( 'wp_enqueue_scripts', 'kiyose_enqueue_testimonials_styles' );
+
+/**
  * Preload critical fonts.
  *
  * @since 1.0.0

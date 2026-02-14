@@ -1,0 +1,81 @@
+/**
+ * Testimonials Grid Component
+ * L'Atelier Kiyose
+ * 
+ * Grille responsive pour l'affichage de témoignages via shortcode [kiyose_testimonials]
+ */
+
+/* ============================================
+   GRILLE DE TÉMOIGNAGES
+   ============================================ */
+
+.testimonials-grid {
+	display: grid;
+	gap: var(--spacing-lg);
+	margin-block: var(--spacing-xl);
+}
+
+/* ============================================
+   COLONNES RESPONSIVE
+   ============================================ */
+
+/* 1 colonne */
+.testimonials-grid--columns-1 {
+	grid-template-columns: 1fr;
+}
+
+/* 2 colonnes */
+.testimonials-grid--columns-2 {
+	grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+	.testimonials-grid--columns-2 {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+/* 3 colonnes (défaut) */
+.testimonials-grid--columns-3 {
+	grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+	.testimonials-grid--columns-3 {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (min-width: 1024px) {
+	.testimonials-grid--columns-3 {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+/* 4 colonnes */
+.testimonials-grid--columns-4 {
+	grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+	.testimonials-grid--columns-4 {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (min-width: 1024px) {
+	.testimonials-grid--columns-4 {
+		grid-template-columns: repeat(4, 1fr);
+	}
+}
+
+/* ============================================
+   MESSAGE VIDE
+   ============================================ */
+
+.testimonials-empty {
+	text-align: center;
+	color: var(--color-text-light);
+	font-style: italic;
+	padding: var(--spacing-xl);
+}

@@ -2,7 +2,7 @@
 
 ## Statut du projet
 
-**État actuel**: PRD 0007 terminé — CPT Témoignages implémenté
+**État actuel**: PRD 0007b terminé — Shortcode témoignages avec carousel implémenté
 - Squelette du thème: ✅ Opérationnel (PRD 0001)
 - Design tokens: ✅ Implémentés (PRD 0002)
   - Variables CSS: couleurs, typographie, espacements, animations
@@ -43,6 +43,21 @@
   - Fonction helper kiyose_get_testimony_context_label()
   - Styles CSS: testimony.css avec bordure dorée et guillemets décoratifs
   - Tests PHPUnit: test-custom-post-types.php
+- Shortcode Témoignages: ✅ Implémenté (PRD 0007b)
+  - Shortcode `[kiyose_testimonials]` avec attributs: display, limit, context, columns
+  - Mode grille: Responsive (1-4 colonnes) avec Grid CSS
+  - Mode carousel: Défilement automatique accessible WCAG 2.2 AA
+    - Autoplay avec pause/play (démarrage automatique si pas de prefers-reduced-motion)
+    - Navigation clavier (flèches gauche/droite)
+    - Boutons Previous/Next/Pause accessibles (44x44px minimum)
+    - ARIA roles complets (region, group, aria-live, aria-hidden)
+    - Transitions CSS fluides avec support prefers-reduced-motion
+    - JavaScript ES6 module (KiyoseCarousel class)
+  - Filtrage par contexte (individual, enterprise, structure)
+  - Styles CSS: testimonials-grid.css, carousel.css
+  - Enqueue conditionnel des styles (charge uniquement si shortcode présent)
+  - Tests PHPUnit: test-shortcodes.php
+  - Note technique: Utilise des vérifications if explicites au lieu de l'optional chaining `?.` pour compatibilité navigateurs
 - Configuration: ✅ PHPCS, Composer, CI/CD GitHub Actions
 - Prochaines étapes: Implémenter PRD 0008 (Page d'accueil)
 
