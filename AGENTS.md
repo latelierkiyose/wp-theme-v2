@@ -2,11 +2,16 @@
 
 ## Statut du projet
 
-**État actuel**: PRD 0001 terminé — Squelette du thème opérationnel
-- Structure du thème: ✅ Créée
-- Fichiers implémentés: style.css, functions.php, inc/setup.php, inc/enqueue.php, index.php, assets/
+**État actuel**: PRD 0002 terminé — Design tokens et polices implémentés
+- Squelette du thème: ✅ Opérationnel (PRD 0001)
+- Design tokens: ✅ Implémentés (PRD 0002)
+  - Variables CSS: couleurs, typographie, espacements, animations
+  - Polices auto-hébergées: Lora (serif) et Nunito (sans-serif)
+  - Reset CSS et styles de base
+  - Contraste WCAG 2.2 AA validé
 - Configuration: ✅ PHPCS, Composer, CI/CD GitHub Actions
-- Prochaines étapes: Implémenter PRD 0002 (Design tokens)
+- Prochaines étapes: Implémenter PRD 0003 (Layout et navigation)
+
 
 ## Contexte
 

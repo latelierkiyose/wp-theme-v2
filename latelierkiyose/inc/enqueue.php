@@ -10,12 +10,28 @@
  * Enqueue theme assets (CSS and JS).
  */
 function kiyose_enqueue_assets() {
-	// CSS principal.
+	// Fonts CSS.
+	wp_enqueue_style(
+		'kiyose-fonts',
+		get_template_directory_uri() . '/assets/css/fonts.css',
+		array(),
+		KIYOSE_VERSION
+	);
+
+	// Variables CSS.
+	wp_enqueue_style(
+		'kiyose-variables',
+		get_template_directory_uri() . '/assets/css/variables.css',
+		array(),
+		KIYOSE_VERSION
+	);
+
+	// Main stylesheet (depends on fonts and variables).
 	wp_enqueue_style(
 		'kiyose-main',
 		get_template_directory_uri() . '/assets/css/main.css',
-		array(),
-		'0.1.0'
+		array( 'kiyose-fonts', 'kiyose-variables' ),
+		KIYOSE_VERSION
 	);
 
 	// JS principal.
@@ -23,11 +39,24 @@ function kiyose_enqueue_assets() {
 		'kiyose-main',
 		get_template_directory_uri() . '/assets/js/main.js',
 		array(),
-		'0.1.0',
+		KIYOSE_VERSION,
 		true
 	);
 }
 add_action( 'wp_enqueue_scripts', 'kiyose_enqueue_assets' );
+
+/**
+ * Preload critical fonts.
+ *
+ * @since 1.0.0
+ */
+function kiyose_preload_fonts() {
+	?>
+	<link rel="preload" href="<?php echo esc_url( get_template_directory_uri() . '/assets/fonts/lora-v37-latin-regular.woff2' ); ?>" as="font" type="font/woff2" crossorigin>
+	<link rel="preload" href="<?php echo esc_url( get_template_directory_uri() . '/assets/fonts/nunito-v32-latin-regular.woff2' ); ?>" as="font" type="font/woff2" crossorigin>
+	<?php
+}
+add_action( 'wp_head', 'kiyose_preload_fonts' );
 
 /**
  * Add defer attribute to the main script.
