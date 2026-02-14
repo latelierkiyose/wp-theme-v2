@@ -1,4 +1,4 @@
-# Système de design
+# Design system
 
 ## Logo
 
@@ -63,8 +63,8 @@ L'identité visuelle s'inspire du Kintsugi japonais - l'art de réparer les cér
 - Utilisation: Entre les sections de la homepage, autour des cartes de services
 - **Implémentation**: Voir `references/css-examples.css#section-divider`
 
-**2. Effets vitrail (surcouches colorées)**
-- Surcouches semi-transparentes évoquant "l'être humain comme un vitrail"
+**2. Effets vitrail (overlays colorés)**
+- Overlays semi-transparents évoquant "l'être humain comme un vitrail"
 - Utilisation: Arrière-plans de sections avec dégradés (taupe rosé, rose poudré)
 - Opacité: 0.05-0.15 pour ne pas nuire à la lisibilité
 - **Implémentation**: Voir `references/css-examples.css#overlays-vitrail`
@@ -76,7 +76,7 @@ L'identité visuelle s'inspire du Kintsugi japonais - l'art de réparer les cér
 **Contraintes accessibilité:**
 - Tous les éléments dorés sont purement décoratifs (pas d'information transmise uniquement par la couleur)
 - Contraste suffisant maintenu pour tous les textes (≥ 4.5:1)
-- Surcouches et arrière-plans n'interfèrent jamais avec la lisibilité du contenu
+- Overlays et arrière-plans n'interfèrent jamais avec la lisibilité du contenu
 
 ## Typographie
 

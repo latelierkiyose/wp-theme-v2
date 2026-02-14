@@ -5,10 +5,10 @@
 **Template**: `templates/page-home.php`
 
 **Sections:**
-- **Hero** - Présentation de Virginie et de l'atelier avec appel à l'action principal
+- **Hero** - Présentation de Virginie et de l'atelier avec CTA principal
 - **Les 4 Piliers** - Cartes cliquables vers chaque service (Art-thérapie, Rigologie, Bols tibétains, Philo)
 - **Prochaines dates** - Widget Events Manager avec 3-4 prochains événements
-- **Témoignages** - Carrousel ou grille de 3 témoignages récents
+- **Témoignages** - Carousel ou grille de 3 témoignages récents
 - **Newsletter** - Formulaire d'inscription Brevo (email, prénom, nom optionnel)
 - **Actualités** - 3 derniers articles du blog
 
@@ -22,7 +22,7 @@
 - Bénéfices / Approche / Méthodologie
 - Formats et durées proposés
 - Tarifs indicatifs
-- Appel à l'action vers contact/calendrier
+- CTA vers contact/calendrier
 - Galerie photos (optionnel)
 
 **Services à créer:**
@@ -116,10 +116,10 @@
 
 **Menu mobile (hamburger):**
 - Bouton hamburger avec `aria-expanded="false/true"` et `aria-controls="mobile-menu"`
-- Ouverture: surcouche plein écran ou glissement depuis la droite (slide-in)
-- Piège de focus activé quand le menu est ouvert (Tab circule uniquement dans le menu)
+- Ouverture: overlay plein écran ou slide-in depuis la droite
+- Focus trap activé quand le menu est ouvert (Tab circule uniquement dans le menu)
 - Défilement du `body` verrouillé quand le menu est ouvert (`overflow: hidden`)
-- Fermeture: bouton close, touche Échap, ou clic sur surcouche
+- Fermeture: bouton close, touche Échap, ou clic sur overlay
 - Retour du focus sur le bouton hamburger à la fermeture
 - Transition: 200-300ms, respecte `prefers-reduced-motion`
 

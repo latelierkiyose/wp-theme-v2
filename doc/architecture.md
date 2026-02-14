@@ -205,7 +205,7 @@ wp_nav_menu( array(
 - Bouton avec `aria-expanded="false/true"` et `aria-controls="mobile-menu"`
 - Focus trap quand ouvert
 - Body scroll verrouillé (`overflow: hidden`)
-- Fermeture: bouton close, touche Esc, ou clic overlay
+- Fermeture: bouton close, touche Échap, ou clic overlay
 - Focus retourne au bouton hamburger à la fermeture
 - Transition respectant `prefers-reduced-motion`
 

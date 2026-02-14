@@ -25,7 +25,7 @@ Ancien thème: https://github.com/latelierkiyose/wp-theme
 
 ## Documentation détaillée
 
-**Langue de la documentation**: Toute la documentation est rédigée en français. Les termes techniques peuvent rester en anglais lorsqu'ils sont communément utilisés dans l'écosystème WordPress/web (exemples : overlay, CTA, design system, prepared statement, focus trap, lazy loading, callback, hook, template, etc.).
+**Langue de la documentation**: Toute la documentation est rédigée en français. Les termes techniques peuvent rester en anglais lorsqu'ils sont communément utilisés dans l'écosystème WordPress/web (exemples : overlay, CTA, design system, prepared statement, focus trap, lazy loading, callback, hook, template, etc.). **Éviter les sur-traductions** : ne pas traduire en français des termes techniques habituellement utilisés en anglais par les développeurs.
 
 Pour plus d'informations, consulter les documents suivants dans `doc/`:
 
@@ -142,7 +142,7 @@ Pour la documentation complète des standards, voir **[doc/standards.md](doc/sta
 2. **Objectifs**: [Objectif](doc/goal.md) (problèmes à résoudre, critères de succès)
 3. **Architecture**: [Architecture](doc/architecture.md) (structure technique détaillée)
 4. **Standards**: [Standards](doc/standards.md) (WPCS, accessibilité, sécurité)
-5. **Design**: [Système de design](doc/design-system.md) (palette, typographie, composants)
+5. **Design**: [Design system](doc/design-system.md) (palette, typographie, composants)
 6. **Fonctionnalités**: [Fonctionnalités](doc/features.md) (pages et fonctionnalités détaillées)
 
 ### Avant de coder

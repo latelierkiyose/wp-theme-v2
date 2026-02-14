@@ -152,7 +152,7 @@ wp_verify_nonce( $_POST['nonce_field_name'], 'action_name' );
 - **[Architecture](architecture.md)** - Structure technique détaillée
 - **[Standards](standards.md)** - WPCS, accessibilité, exigences de tests
 - **[Fonctionnalités](features.md)** - Spécifications complètes des pages et fonctionnalités
-- **[Système de design](design-system.md)** - Couleurs, typographie, composants
+- **[Design system](design-system.md)** - Couleurs, typographie, composants
 - **[Ton](tone.md)** - Voix de la marque et messaging
 - **[Intégrations](integrations.md)** - Plugins et services tiers
 - **[Checklist de validation](validation-checklist.md)** - Checklist de tests et QA

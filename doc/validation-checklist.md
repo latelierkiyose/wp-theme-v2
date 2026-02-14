@@ -16,11 +16,11 @@ Utilisez cette checklist pour valider chaque fonctionnalité et avant la mise en
 - [ ] Focus visible sur tous les éléments interactifs
 - [ ] Ordre de tabulation logique (suit l'ordre visuel)
 - [ ] Liens et boutons activables avec Entrée/Espace
-- [ ] Menus déroulants navigables avec flèches
-- [ ] Modales/surcouches fermables avec Échap
-- [ ] Piège de focus dans les modales quand ouvertes
+- [ ] Dropdowns navigables avec flèches
+- [ ] Modales/overlays fermables avec Échap
+- [ ] Focus trap dans les modales quand ouvertes
 - [ ] Focus retourne au déclencheur à la fermeture de modale
-- [ ] Aucun piège clavier
+- [ ] Aucun keyboard trap
 
 ### Structure sémantique et ARIA
 - [ ] Un seul `<h1>` par page
@@ -192,7 +192,7 @@ Utilisez cette checklist pour valider chaque fonctionnalité et avant la mise en
 
 ### Navigation
 - [ ] Menu principal complet et fonctionnel
-- [ ] Menu déroulant accessible au clavier
+- [ ] Dropdown menu accessible au clavier
 - [ ] Menu mobile hamburger fonctionnel
 - [ ] Fil d'ariane si applicable
 - [ ] Pied de page avec tous les liens légaux
