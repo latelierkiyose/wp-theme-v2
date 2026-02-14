@@ -289,6 +289,28 @@ function kiyose_enqueue_testimonials_styles() {
 add_action( 'wp_enqueue_scripts', 'kiyose_enqueue_testimonials_styles' );
 
 /**
+ * Enqueue signets styles conditionally.
+ *
+ * Only loads when the [kiyose_signets] shortcode is present on the page.
+ *
+ * @since 0.2.4
+ */
+function kiyose_enqueue_signets_styles() {
+	global $post;
+
+	// Enqueue signets CSS when shortcode is present.
+	if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'kiyose_signets' ) ) {
+		wp_enqueue_style(
+			'kiyose-signets',
+			get_template_directory_uri() . '/assets/css/components/signets.css',
+			array( 'kiyose-variables' ),
+			KIYOSE_VERSION
+		);
+	}
+}
+add_action( 'wp_enqueue_scripts', 'kiyose_enqueue_signets_styles' );
+
+/**
  * Preload critical fonts.
  *
  * @since 1.0.0

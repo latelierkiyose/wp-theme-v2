@@ -243,6 +243,88 @@ Le nouveau thème utilise un Custom Post Type pour les témoignages.
    ```
 3. Mettre à jour la page
 
+### 3.9 Migration des signets de navigation
+
+Le nouveau thème remplace les anciens blocs "Colonnes" utilisés pour la navigation interne par un shortcode `[kiyose_signets]` plus sémantique et accessible.
+
+**Pages concernées** : Art-thérapie, Rigologie, Bols tibétains, Ateliers philosophie (toute page avec navigation par ancres).
+
+**⚡ Génération automatique des IDs** :
+
+Le thème ajoute **automatiquement** des IDs aux H2 qui n'en ont pas. Vous n'avez donc **pas besoin de modifier vos H2 existants** ! Les IDs sont générés depuis le texte du titre (ex: "Ma Démarche" → `id="ma-demarche"`).
+
+**Migration recommandée** :
+
+1. Éditer la page concernée (ex: Art-thérapie)
+2. Identifier les anciens blocs "Colonnes" avec la classe `signets` :
+   ```html
+   <div class="wp-block-columns signets">...</div>
+   ```
+3. **Mode auto-scan** (recommandé) :
+   - Remplacer le bloc par :
+     ```
+     [kiyose_signets][/kiyose_signets]
+     ```
+   - Le shortcode scannera automatiquement tous les H2 de la page et générera les liens
+   - Les IDs manquants seront ajoutés automatiquement au rendu
+
+4. **Mode manuel** (optionnel, si vous voulez contrôler les liens affichés) :
+   - Remplacer le bloc par :
+     ```
+     [kiyose_signets]
+     Ma Démarche | #ma-demarche
+     Mes Outils | #mes-outils
+     Mes Ateliers | #mes-ateliers
+     [/kiyose_signets]
+     ```
+   - Format : `Texte du lien | #ancre` (un lien par ligne, séparateur `|`)
+   - ⚠️ Attention : l'ancre doit correspondre exactement à l'ID généré automatiquement (version slugifiée du titre H2)
+
+5. Mettre à jour la page
+6. Tester la navigation : cliquer sur chaque lien du menu doit scroller vers la section correspondante
+
+**Comment connaître l'ID généré automatiquement ?** :
+
+Les IDs sont générés avec `sanitize_title()` :
+- "Ma Démarche" → `ma-demarche`
+- "Mes Outils" → `mes-outils`
+- "Parcours thématiques" → `parcours-thematiques`
+- Règle : minuscules, espaces → tirets, accents retirés
+
+**Si vous voulez forcer un ID spécifique** :
+
+Dans l'éditeur Gutenberg :
+1. Sélectionner le H2
+2. Sidebar droite > Avancé > Ancrage HTML
+3. Entrer l'ID personnalisé sans le `#` (ex: `mademarche`)
+4. Utiliser cet ID dans le shortcode manuel
+
+**Exemple complet pour Art-thérapie** :
+
+Avant (ancien système) :
+```html
+<div class="wp-block-columns signets">
+  <div class="wp-block-column"><a href="#mademarche">Ma Démarche</a></div>
+  <div class="wp-block-column"><a href="#mesoutils">Mes Outils</a></div>
+  <!-- ... -->
+</div>
+```
+
+Après (nouveau shortcode en mode auto) :
+```
+[kiyose_signets][/kiyose_signets]
+```
+
+C'est tout ! Les IDs sont ajoutés automatiquement et les liens fonctionnent. ✅
+
+**Avantages du nouveau système** :
+- ✅ **IDs automatiques** : pas besoin de modifier les H2 manuellement
+- ✅ Plus sémantique (navigation ARIA complète)
+- ✅ Meilleure accessibilité clavier et lecteurs d'écran
+- ✅ Design responsive optimisé (4 colonnes desktop → empilé mobile)
+- ✅ Styles cohérents avec le design system
+- ✅ Auto-scan possible : zéro configuration dans la plupart des cas
+
 ### 3.8 Intégrations plugins
 
 **Contact Form 7** (Page Contact) :

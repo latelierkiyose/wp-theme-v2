@@ -186,4 +186,100 @@ class Test_Shortcodes extends WP_UnitTestCase {
 
 		wp_reset_postdata();
 	}
+
+	/**
+	 * Test that kiyose_signets shortcode is registered.
+	 */
+	public function test_kiyose_signets_shortcode_is_registered() {
+		$this->assertTrue( shortcode_exists( 'kiyose_signets' ) );
+	}
+
+	/**
+	 * Test signets shortcode with manual content.
+	 */
+	public function test_signets_shortcode_with_manual_content() {
+		$content = "Ma Démarche | #mademarche\nMes Outils | #mesoutils\nMes Ateliers | #mesateliers";
+		$output  = do_shortcode( '[kiyose_signets]' . $content . '[/kiyose_signets]' );
+
+		$this->assertStringContainsString( 'class="kiyose-signets"', $output );
+		$this->assertStringContainsString( 'role="navigation"', $output );
+		$this->assertStringContainsString( 'kiyose-signets__list', $output );
+		$this->assertStringContainsString( 'kiyose-signets__item', $output );
+		$this->assertStringContainsString( 'kiyose-signets__link', $output );
+		$this->assertStringContainsString( 'href="#mademarche"', $output );
+		$this->assertStringContainsString( 'Ma Démarche', $output );
+		$this->assertStringContainsString( 'href="#mesoutils"', $output );
+		$this->assertStringContainsString( 'Mes Outils', $output );
+		$this->assertStringContainsString( 'href="#mesateliers"', $output );
+		$this->assertStringContainsString( 'Mes Ateliers', $output );
+	}
+
+	/**
+	 * Test signets shortcode auto-scans H2 headings.
+	 */
+	public function test_signets_shortcode_autoscans_h2_headings() {
+		// Create a test post with H2 headings.
+		$post_id = $this->factory->post->create(
+			array(
+				'post_type'    => 'page',
+				'post_status'  => 'publish',
+				'post_content' => '<h2 id="section-one">Section One</h2><p>Content</p><h2>Section Two</h2><p>More content</p>',
+			)
+		);
+
+		// Set global post.
+		global $post;
+		$post = get_post( $post_id );
+
+		$output = do_shortcode( '[kiyose_signets][/kiyose_signets]' );
+
+		$this->assertStringContainsString( 'kiyose-signets', $output );
+		$this->assertStringContainsString( 'href="#section-one"', $output );
+		$this->assertStringContainsString( 'Section One', $output );
+		$this->assertStringContainsString( 'href="#section-two"', $output );
+		$this->assertStringContainsString( 'Section Two', $output );
+	}
+
+	/**
+	 * Test signets shortcode returns empty when no content and no H2.
+	 */
+	public function test_signets_shortcode_returns_empty_when_no_links() {
+		// Create a test post without H2 headings.
+		$post_id = $this->factory->post->create(
+			array(
+				'post_type'    => 'page',
+				'post_status'  => 'publish',
+				'post_content' => '<p>No headings here</p>',
+			)
+		);
+
+		global $post;
+		$post = get_post( $post_id );
+
+		$output = do_shortcode( '[kiyose_signets][/kiyose_signets]' );
+
+		$this->assertEmpty( $output );
+	}
+
+	/**
+	 * Test signets shortcode handles empty lines in manual content.
+	 */
+	public function test_signets_shortcode_handles_empty_lines() {
+		$content = "Ma Démarche | #mademarche\n\n\nMes Outils | #mesoutils\n";
+		$output  = do_shortcode( '[kiyose_signets]' . $content . '[/kiyose_signets]' );
+
+		$count = substr_count( $output, 'kiyose-signets__item' );
+		$this->assertEquals( 2, $count );
+	}
+
+	/**
+	 * Test signets shortcode sanitizes anchor links.
+	 */
+	public function test_signets_shortcode_sanitizes_links() {
+		$content = "Test | #test<script>alert('xss')</script>";
+		$output  = do_shortcode( '[kiyose_signets]' . $content . '[/kiyose_signets]' );
+
+		$this->assertStringNotContainsString( '<script>', $output );
+		$this->assertStringNotContainsString( 'alert', $output );
+	}
 }
