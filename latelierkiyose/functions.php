@@ -7,7 +7,7 @@
  */
 
 // Theme version.
-define( 'KIYOSE_VERSION', '0.1.9' );
+define( 'KIYOSE_VERSION', '0.2.3' );
 
 // Setup du thème.
 require_once get_template_directory() . '/inc/setup.php';
@@ -20,6 +20,9 @@ require_once get_template_directory() . '/inc/accessibility.php';
 
 // Custom Post Types.
 require_once get_template_directory() . '/inc/custom-post-types.php';
+
+// Meta boxes.
+require_once get_template_directory() . '/inc/meta-boxes.php';
 
 // Shortcodes.
 require_once get_template_directory() . '/inc/shortcodes.php';

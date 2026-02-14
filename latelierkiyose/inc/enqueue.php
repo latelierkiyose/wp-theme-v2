@@ -100,11 +100,43 @@ function kiyose_enqueue_assets() {
 		KIYOSE_VERSION
 	);
 
+	// Homepage components.
+	wp_enqueue_style(
+		'kiyose-hero',
+		get_template_directory_uri() . '/assets/css/components/hero.css',
+		array( 'kiyose-variables' ),
+		KIYOSE_VERSION
+	);
+
+	wp_enqueue_style(
+		'kiyose-service-card',
+		get_template_directory_uri() . '/assets/css/components/service-card.css',
+		array( 'kiyose-variables' ),
+		KIYOSE_VERSION
+	);
+
+	wp_enqueue_style(
+		'kiyose-home-sections',
+		get_template_directory_uri() . '/assets/css/components/home-sections.css',
+		array( 'kiyose-variables' ),
+		KIYOSE_VERSION
+	);
+
+	// Service page component (conditional loading for page-services.php template).
+	if ( is_page_template( 'templates/page-services.php' ) ) {
+		wp_enqueue_style(
+			'kiyose-service-page',
+			get_template_directory_uri() . '/assets/css/components/service-page.css',
+			array( 'kiyose-variables' ),
+			KIYOSE_VERSION
+		);
+	}
+
 	// Main stylesheet (depends on fonts, variables, and components).
 	wp_enqueue_style(
 		'kiyose-main',
 		get_template_directory_uri() . '/assets/css/main.css',
-		array( 'kiyose-fonts', 'kiyose-variables', 'kiyose-header', 'kiyose-navigation', 'kiyose-footer', 'kiyose-page', 'kiyose-search', 'kiyose-404', 'kiyose-blog-card', 'kiyose-blog-archive', 'kiyose-blog-single', 'kiyose-testimony' ),
+		array( 'kiyose-fonts', 'kiyose-variables', 'kiyose-header', 'kiyose-navigation', 'kiyose-footer', 'kiyose-page', 'kiyose-search', 'kiyose-404', 'kiyose-blog-card', 'kiyose-blog-archive', 'kiyose-blog-single', 'kiyose-testimony', 'kiyose-hero', 'kiyose-service-card', 'kiyose-home-sections' ),
 		KIYOSE_VERSION
 	);
 
@@ -128,6 +160,18 @@ add_action( 'wp_enqueue_scripts', 'kiyose_enqueue_assets' );
  */
 function kiyose_enqueue_testimonials_styles() {
 	global $post;
+
+	// Enqueue carousel on home page template.
+	if ( is_page_template( 'templates/page-home.php' ) ) {
+		wp_enqueue_style(
+			'kiyose-carousel',
+			get_template_directory_uri() . '/assets/css/components/carousel.css',
+			array( 'kiyose-variables' ),
+			KIYOSE_VERSION
+		);
+	}
+
+	// Enqueue testimonials grid when shortcode is present.
 	if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'kiyose_testimonials' ) ) {
 		wp_enqueue_style(
 			'kiyose-testimonials-grid',

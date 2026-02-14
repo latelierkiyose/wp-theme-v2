@@ -2,7 +2,7 @@
 
 ## Statut du projet
 
-**État actuel**: PRD 0007b terminé — Shortcode témoignages avec carousel implémenté
+**État actuel**: PRD 0009 terminé — Template services implémenté
 - Squelette du thème: ✅ Opérationnel (PRD 0001)
 - Design tokens: ✅ Implémentés (PRD 0002)
   - Variables CSS: couleurs, typographie, espacements, animations
@@ -58,8 +58,31 @@
   - Enqueue conditionnel des styles (charge uniquement si shortcode présent)
   - Tests PHPUnit: test-shortcodes.php
   - Note technique: Utilise des vérifications if explicites au lieu de l'optional chaining `?.` pour compatibilité navigateurs
+- Page d'accueil: ✅ Implémentée (PRD 0008)
+  - Template: templates/page-home.php (Template Name: "Page d'accueil")
+  - Section Hero: Tagline, sous-titre, CTA, overlay vitrail
+  - Section 4 Piliers: Grille responsive de cartes de services (1 col mobile → 2 tablet → 4 desktop)
+  - Section Prochaines dates: Intégration Events Manager avec placeholder
+  - Section Témoignages: Carousel accessible réutilisant KiyoseCarousel
+  - Section Newsletter: Placeholder pour formulaire Brevo (PRD 0013)
+  - Section Actualités: 3 derniers articles du blog avec grille responsive (1 col mobile → 3 desktop)
+  - Template part: template-parts/content-service.php (carte de service cliquable)
+  - Styles CSS: hero.css, service-card.css, home-sections.css
+  - Carousel CSS chargé conditionnellement sur page d'accueil
+  - WCAG 2.2 AA: Hiérarchie h1→h2→h3, landmarks ARIA, navigation clavier
+- Template services: ✅ Implémenté (PRD 0009)
+  - Template: templates/page-services.php (Template Name: "Page de service")
+  - Template générique pour les 4 pages de services (art-thérapie, rigologie, bols tibétains, ateliers philosophie)
+  - Structure: Header avec titre + image hero optionnelle, contenu Gutenberg, footer avec CTAs
+  - CTAs: Boutons "Me contacter" et "Voir le calendrier" en bas de page
+  - Styles CSS: service-page.css avec styles pour blocs Gutenberg (titres, paragraphes, listes, images, citations, etc.)
+  - Enqueue conditionnel (charge uniquement sur pages utilisant le template)
+  - Image à la une utilise la taille 'kiyose-hero' (1920x800)
+  - Boutons accessibles (44x44px minimum, focus visible)
+  - Responsive: Layout centré (max-width: 900px), CTAs empilés sur mobile
+  - WCAG 2.2 AA: Contrastes validés, navigation clavier, hiérarchie sémantique
 - Configuration: ✅ PHPCS, Composer, CI/CD GitHub Actions
-- Prochaines étapes: Implémenter PRD 0008 (Page d'accueil)
+- Prochaines étapes: Pages Contact, À propos, Calendrier (PRD 0010-0012)
 
 
 ## Contexte

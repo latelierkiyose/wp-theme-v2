@@ -1,0 +1,232 @@
+/**
+ * Home Page Sections - L'Atelier Kiyose
+ * 
+ * Styles for all sections on the homepage: services, events, testimonials, newsletter, blog.
+ * WCAG 2.2 AA compliant with proper spacing and responsive design.
+ * 
+ * @package Kiyose
+ * @since   0.1.9
+ */
+
+/* ============================================
+   COMMON SECTION STYLES
+   ============================================ */
+
+.home-page section {
+	padding: var(--spacing-3xl) var(--spacing-md);
+}
+
+.home-page section h2 {
+	font-family: var(--font-heading);
+	font-size: var(--font-size-3xl);
+	color: var(--color-burgundy);
+	text-align: center;
+	margin-bottom: var(--spacing-2xl);
+}
+
+/* ============================================
+   SERVICES SECTION (4 PILIERS)
+   ============================================ */
+
+.home-services {
+	background-color: white;
+}
+
+.home-services__grid {
+	display: grid;
+	gap: var(--spacing-xl);
+	grid-template-columns: 1fr;
+	max-width: 1400px;
+	margin: 0 auto;
+}
+
+/* ============================================
+   EVENTS SECTION
+   ============================================ */
+
+.home-events {
+	background-color: var(--color-background);
+	text-align: center;
+}
+
+.home-events__list {
+	max-width: 1000px;
+	margin: 0 auto var(--spacing-2xl);
+}
+
+.home-events__placeholder {
+	font-style: italic;
+	color: var(--color-text-light);
+	margin: var(--spacing-xl) 0;
+}
+
+.home-events__cta {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 44px;
+	min-height: 44px;
+	padding: var(--spacing-md) var(--spacing-xl);
+	font-family: var(--font-body);
+	font-size: var(--font-size-base);
+	font-weight: 600;
+	text-decoration: none;
+	border: 2px solid transparent;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: all var(--transition-base);
+}
+
+/* ============================================
+   TESTIMONIALS SECTION
+   ============================================ */
+
+.home-testimonials {
+	background-color: white;
+}
+
+.home-testimonials__empty {
+	text-align: center;
+	font-style: italic;
+	color: var(--color-text-light);
+	margin: var(--spacing-xl) 0;
+}
+
+/* ============================================
+   NEWSLETTER SECTION
+   ============================================ */
+
+.home-newsletter {
+	background-color: var(--color-secondary);
+	text-align: center;
+}
+
+.home-newsletter__content {
+	max-width: 700px;
+	margin: 0 auto;
+}
+
+.home-newsletter__title {
+	color: var(--color-burgundy);
+}
+
+.home-newsletter__description {
+	font-size: var(--font-size-lg);
+	color: var(--color-text);
+	margin-bottom: var(--spacing-xl);
+	line-height: 1.6;
+}
+
+.home-newsletter__form-placeholder {
+	background-color: rgba(255, 255, 255, 0.6);
+	padding: var(--spacing-xl);
+	border-radius: 8px;
+	border: 2px dashed var(--color-border);
+}
+
+.home-newsletter__form-placeholder p {
+	margin: 0;
+	color: var(--color-text-light);
+	font-style: italic;
+}
+
+/* ============================================
+   BLOG SECTION
+   ============================================ */
+
+.home-blog {
+	background-color: var(--color-background);
+	text-align: center;
+}
+
+.home-blog__grid {
+	display: grid;
+	gap: var(--spacing-xl);
+	grid-template-columns: 1fr;
+	max-width: 1400px;
+	margin: 0 auto var(--spacing-2xl);
+}
+
+.home-blog__cta {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 44px;
+	min-height: 44px;
+	padding: var(--spacing-md) var(--spacing-xl);
+	font-family: var(--font-body);
+	font-size: var(--font-size-base);
+	font-weight: 600;
+	text-decoration: none;
+	border: 2px solid transparent;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: all var(--transition-base);
+}
+
+.home-blog__empty {
+	font-style: italic;
+	color: var(--color-text-light);
+	margin: var(--spacing-xl) 0;
+}
+
+/* ============================================
+   RESPONSIVE - TABLET
+   ============================================ */
+
+@media (min-width: 768px) {
+	.home-page section {
+		padding: var(--spacing-3xl) var(--spacing-xl);
+	}
+
+	/* Services grid: 2 columns on tablet */
+	.home-services__grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	/* Blog grid: 2 columns on tablet */
+	.home-blog__grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+/* ============================================
+   RESPONSIVE - DESKTOP
+   ============================================ */
+
+@media (min-width: 1024px) {
+	.home-page section {
+		padding: var(--spacing-3xl) var(--spacing-2xl);
+	}
+
+	.home-page section h2 {
+		font-size: var(--font-size-4xl);
+		margin-bottom: var(--spacing-3xl);
+	}
+
+	/* Services grid: 4 columns on desktop */
+	.home-services__grid {
+		grid-template-columns: repeat(4, 1fr);
+	}
+
+	/* Blog grid: 3 columns on desktop */
+	.home-blog__grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@media (prefers-reduced-motion: no-preference) {
+	.home-events__cta:hover,
+	.home-blog__cta:hover {
+		transform: translateY(-2px);
+	}
+
+	.home-events__cta:active,
+	.home-blog__cta:active {
+		transform: translateY(0);
+	}
+}
