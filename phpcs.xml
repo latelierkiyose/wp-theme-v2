@@ -8,6 +8,7 @@
 	<!-- Exclusions -->
 	<exclude-pattern>*/vendor/*</exclude-pattern>
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<exclude-pattern>*/bin/*</exclude-pattern><!-- Scripts CLI one-time -->
 
 	<!-- Ruleset WordPress -->
 	<rule ref="WordPress"/>

@@ -61,13 +61,20 @@ get_header();
 		<h2 id="services-title" class="home-services__title">Nos activités</h2>
 		<div class="home-services__grid">
 			<?php
-			// Récupérer les pages des 4 piliers via leur slug.
-			$kiyose_service_slugs = array( 'art-therapie', 'rigologie', 'bols-tibetains', 'ateliers-philosophie' );
+			// Récupérer les pages de services marquées pour affichage sur la page d'accueil.
+			$kiyose_service_pages = get_posts(
+				array(
+					'post_type'      => 'page',
+					'meta_key'       => 'kiyose_show_on_homepage', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Query intentionnelle.
+					'meta_value'     => '1', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Query intentionnelle.
+					'orderby'        => 'menu_order',
+					'order'          => 'ASC',
+					'posts_per_page' => -1,
+				)
+			);
 
-			foreach ( $kiyose_service_slugs as $kiyose_slug ) {
-				$kiyose_service_page = get_page_by_path( $kiyose_slug );
-
-				if ( $kiyose_service_page ) {
+			if ( ! empty( $kiyose_service_pages ) ) {
+				foreach ( $kiyose_service_pages as $kiyose_service_page ) {
 					// Setup post data pour get_template_part.
 					global $post;
 					$post = $kiyose_service_page; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
@@ -77,6 +84,12 @@ get_header();
 
 					wp_reset_postdata();
 				}
+			} else {
+				?>
+				<p class="home-services__empty">
+					<?php esc_html_e( 'Aucun service n\'est actuellement configuré pour l\'affichage sur la page d\'accueil.', 'kiyose' ); ?>
+				</p>
+				<?php
 			}
 			?>
 		</div>

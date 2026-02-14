@@ -316,3 +316,109 @@ function kiyose_save_home_hero_meta( $post_id ) {
 	}
 }
 add_action( 'save_post_page', 'kiyose_save_home_hero_meta' );
+
+/**
+ * Enregistrer la meta box pour l'affichage sur la page d'accueil.
+ *
+ * Cette meta box est visible uniquement sur les pages utilisant le template "Page de service".
+ *
+ * @since 0.1.17
+ */
+function kiyose_register_homepage_display_meta_box() {
+	add_meta_box(
+		'kiyose_homepage_display',
+		__( 'Affichage page d\'accueil', 'kiyose' ),
+		'kiyose_homepage_display_meta_box_callback',
+		'page',
+		'side',
+		'default'
+	);
+}
+add_action( 'add_meta_boxes', 'kiyose_register_homepage_display_meta_box' );
+
+/**
+ * Callback pour afficher le contenu de la meta box.
+ *
+ * @since 0.1.17
+ *
+ * @param WP_Post $post L'objet post actuel.
+ */
+function kiyose_homepage_display_meta_box_callback( $post ) {
+	// Vérifier le template de la page.
+	$page_template = get_post_meta( $post->ID, '_wp_page_template', true );
+
+	// N'afficher la meta box que pour les pages avec template "Page de service".
+	if ( 'templates/page-services.php' !== $page_template ) {
+		?>
+		<p class="description" style="background: #fff8e5; border-left: 4px solid #f0b849; padding: 12px; margin: 0;">
+			<strong><?php esc_html_e( 'Information :', 'kiyose' ); ?></strong><br>
+			<?php esc_html_e( 'Cette option est disponible uniquement pour les pages utilisant le template "Page de service".', 'kiyose' ); ?>
+		</p>
+		<?php
+		return;
+	}
+
+	// Récupérer la valeur actuelle.
+	$show_on_homepage = get_post_meta( $post->ID, 'kiyose_show_on_homepage', true );
+
+	// Nonce pour la sécurité.
+	wp_nonce_field( 'kiyose_save_homepage_display', 'kiyose_homepage_display_nonce' );
+
+	?>
+	<p>
+		<label for="kiyose_show_on_homepage">
+			<input
+				type="checkbox"
+				id="kiyose_show_on_homepage"
+				name="kiyose_show_on_homepage"
+				value="1"
+				<?php checked( $show_on_homepage, '1' ); ?>
+			/>
+			<?php esc_html_e( 'Afficher dans la section "Nos activités"', 'kiyose' ); ?>
+		</label>
+	</p>
+	<p class="description">
+		<?php esc_html_e( 'Pour contrôler l\'ordre d\'affichage, utilisez le champ "Ordre" dans la section "Attributs de page" ci-dessous.', 'kiyose' ); ?>
+	</p>
+	<?php
+}
+
+/**
+ * Sauvegarder la meta box lors de la sauvegarde de la page.
+ *
+ * @since 0.1.17
+ *
+ * @param int $post_id L'ID du post.
+ */
+function kiyose_save_homepage_display_meta_box( $post_id ) {
+	// Vérifier le nonce.
+	if ( ! isset( $_POST['kiyose_homepage_display_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['kiyose_homepage_display_nonce'] ) ), 'kiyose_save_homepage_display' ) ) {
+		return;
+	}
+
+	// Vérifier l'autosave.
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+
+	// Vérifier les permissions.
+	if ( ! current_user_can( 'edit_page', $post_id ) ) {
+		return;
+	}
+
+	// Vérifier le template de la page.
+	$page_template = get_post_meta( $post_id, '_wp_page_template', true );
+	if ( 'templates/page-services.php' !== $page_template ) {
+		// Si ce n'est pas une page de service, supprimer la meta pour éviter les incohérences.
+		delete_post_meta( $post_id, 'kiyose_show_on_homepage' );
+		return;
+	}
+
+	// Sauvegarder la valeur.
+	if ( isset( $_POST['kiyose_show_on_homepage'] ) && '1' === $_POST['kiyose_show_on_homepage'] ) {
+		update_post_meta( $post_id, 'kiyose_show_on_homepage', '1' );
+	} else {
+		delete_post_meta( $post_id, 'kiyose_show_on_homepage' );
+	}
+}
+add_action( 'save_post_page', 'kiyose_save_homepage_display_meta_box' );

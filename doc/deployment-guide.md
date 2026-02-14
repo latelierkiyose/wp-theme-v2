@@ -175,7 +175,34 @@ Pour chaque page ci-dessous, faire :
 | À propos | À propos |
 | Calendrier & Tarifs | Calendrier et tarifs |
 
-### 3.5 Configuration WordPress
+### 3.5 Configuration des services affichés sur la page d'accueil
+
+**Option 1: Via script de migration automatique (recommandé)** :
+
+Se connecter en SSH au serveur et exécuter :
+
+```bash
+cd /path/to/wordpress
+wp eval-file wp-content/themes/latelierkiyose/bin/migrate-homepage-services.php
+```
+
+Le script va automatiquement :
+- Marquer les 4 pages de services existantes pour affichage sur la page d'accueil
+- Assigner un ordre d'affichage par défaut (1 à 4)
+
+**Option 2: Configuration manuelle** :
+
+Pour chaque page de service (Art-thérapie, Rigologie, Bols tibétains, Ateliers philosophie) :
+
+1. Aller dans Pages > Modifier la page
+2. Dans la sidebar droite, section "Affichage page d'accueil"
+3. Cocher "Afficher dans la section 'Nos activités'"
+4. Dans la section "Attributs de page", définir un "Ordre" (1, 2, 3, 4) pour contrôler l'ordre d'affichage
+5. Cliquer sur "Mettre à jour"
+
+**Note** : Seules les pages utilisant le template "Page de service" peuvent être affichées sur la page d'accueil.
+
+### 3.6 Configuration WordPress
 
 **Page d'accueil statique** :
 1. Aller dans Réglages > Lecture
@@ -195,7 +222,7 @@ Pour chaque page ci-dessous, faire :
 3. Sélectionner ou uploader une image (recommandé : 1920x800px)
 4. Mettre à jour la page
 
-### 3.6 Témoignages
+### 3.7 Témoignages
 
 Le nouveau thème utilise un Custom Post Type pour les témoignages.
 
@@ -216,7 +243,7 @@ Le nouveau thème utilise un Custom Post Type pour les témoignages.
    ```
 3. Mettre à jour la page
 
-### 3.7 Intégrations plugins
+### 3.8 Intégrations plugins
 
 **Contact Form 7** (Page Contact) :
 1. Vérifier que le plugin Contact Form 7 est installé et activé
