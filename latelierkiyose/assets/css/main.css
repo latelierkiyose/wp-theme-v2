@@ -203,3 +203,63 @@ select {
 button {
 	cursor: pointer;
 }
+
+/* ============================================
+   LAYOUT
+   ============================================ */
+
+/**
+ * Container
+ */
+.container {
+	width: 100%;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 var(--spacing-md);
+}
+
+@media (min-width: 768px) {
+	.container {
+		padding: 0 var(--spacing-xl);
+	}
+}
+
+@media (min-width: 1024px) {
+	.container {
+		padding: 0 var(--spacing-2xl);
+	}
+}
+
+/**
+ * Main content area
+ */
+#main-content {
+	min-height: 60vh;
+	padding: var(--spacing-2xl) 0;
+}
+
+/* ============================================
+   GRID UTILITIES
+   ============================================ */
+
+.grid {
+	display: grid;
+	gap: var(--spacing-lg);
+	grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+	.grid--2-cols {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (min-width: 1024px) {
+	.grid--3-cols {
+		grid-template-columns: repeat(3, 1fr);
+	}
+
+	.grid--4-cols {
+		grid-template-columns: repeat(4, 1fr);
+	}
+}

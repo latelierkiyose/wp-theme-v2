@@ -1,0 +1,162 @@
+/**
+ * Footer Component Styles
+ * L'Atelier Kiyose
+ */
+
+/* ============================================
+   SITE FOOTER
+   ============================================ */
+
+.site-footer {
+	background-color: white;
+	border-top: 1px solid var(--color-border);
+	padding: var(--spacing-3xl) 0 var(--spacing-xl);
+	margin-top: var(--spacing-3xl);
+}
+
+.site-footer__container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 var(--spacing-md);
+	display: grid;
+	gap: var(--spacing-2xl);
+}
+
+/* ============================================
+   SOCIAL LINKS
+   ============================================ */
+
+.site-footer__social {
+	display: flex;
+	gap: var(--spacing-md);
+	justify-content: center;
+}
+
+.site-footer__social a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 44px;
+	min-height: 44px;
+	padding: var(--spacing-sm);
+	background-color: var(--color-background);
+	border-radius: 50%;
+	color: var(--color-burgundy);
+	text-decoration: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.site-footer__social a {
+		transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+	}
+
+	.site-footer__social a:hover {
+		transform: translateY(-2px);
+	}
+}
+
+.site-footer__social a:hover {
+	background-color: var(--color-primary);
+	color: white;
+}
+
+.site-footer__social a:focus-visible {
+	outline: 2px solid var(--color-burgundy);
+	outline-offset: 2px;
+}
+
+.site-footer__social svg {
+	width: 24px;
+	height: 24px;
+}
+
+/* ============================================
+   NEWSLETTER
+   ============================================ */
+
+.site-footer__newsletter {
+	text-align: center;
+}
+
+/* ============================================
+   LEGAL LINKS
+   ============================================ */
+
+.site-footer__legal {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--spacing-md) var(--spacing-xl);
+	justify-content: center;
+	align-items: center;
+}
+
+.site-footer__legal a {
+	font-size: var(--font-size-sm);
+	color: var(--color-text);
+	text-decoration: none;
+	padding: var(--spacing-xs) var(--spacing-sm);
+	border-radius: 4px;
+	min-height: 44px;
+	display: inline-flex;
+	align-items: center;
+}
+
+.site-footer__legal a:hover {
+	color: var(--color-primary);
+	text-decoration: underline;
+}
+
+.site-footer__legal a:focus-visible {
+	outline: 2px solid var(--color-burgundy);
+	outline-offset: 2px;
+}
+
+/* ============================================
+   COPYRIGHT
+   ============================================ */
+
+.site-footer__copyright {
+	text-align: center;
+	padding-top: var(--spacing-lg);
+	border-top: 1px solid var(--color-border);
+}
+
+.site-footer__copyright p {
+	font-size: var(--font-size-sm);
+	color: var(--color-text-light);
+	margin: 0;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+/* Mobile (default) */
+@media (max-width: 767px) {
+	.site-footer {
+		padding: var(--spacing-2xl) 0 var(--spacing-lg);
+	}
+
+	.site-footer__container {
+		gap: var(--spacing-xl);
+	}
+
+	.site-footer__legal {
+		flex-direction: column;
+		gap: var(--spacing-sm);
+	}
+}
+
+/* Tablet and desktop */
+@media (min-width: 768px) {
+	.site-footer__container {
+		padding: 0 var(--spacing-xl);
+	}
+}
+
+/* Desktop large */
+@media (min-width: 1024px) {
+	.site-footer__container {
+		padding: 0 var(--spacing-2xl);
+	}
+}

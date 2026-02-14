@@ -2,15 +2,22 @@
 
 ## Statut du projet
 
-**État actuel**: PRD 0002 terminé — Design tokens et polices implémentés
+**État actuel**: PRD 0003 terminé — Layout et navigation desktop implémentés
 - Squelette du thème: ✅ Opérationnel (PRD 0001)
 - Design tokens: ✅ Implémentés (PRD 0002)
   - Variables CSS: couleurs, typographie, espacements, animations
   - Polices auto-hébergées: Lora (serif) et Nunito (sans-serif)
   - Reset CSS et styles de base
   - Contraste WCAG 2.2 AA validé
+- Layout et navigation: ✅ Implémentés (PRD 0003)
+  - Header avec logo et navigation principale
+  - Footer avec réseaux sociaux, liens légaux et copyright
+  - Skip link pour accessibilité
+  - Landmarks ARIA (banner, navigation, main, contentinfo)
+  - Dropdowns accessibles au clavier avec ARIA
+  - Responsive desktop (≥1024px)
 - Configuration: ✅ PHPCS, Composer, CI/CD GitHub Actions
-- Prochaines étapes: Implémenter PRD 0003 (Layout et navigation)
+- Prochaines étapes: Implémenter PRD 0004 (Menu mobile)
 
 
 ## Contexte

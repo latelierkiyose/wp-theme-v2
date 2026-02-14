@@ -26,11 +26,33 @@ function kiyose_enqueue_assets() {
 		KIYOSE_VERSION
 	);
 
-	// Main stylesheet (depends on fonts and variables).
+	// Component stylesheets.
+	wp_enqueue_style(
+		'kiyose-header',
+		get_template_directory_uri() . '/assets/css/components/header.css',
+		array( 'kiyose-variables' ),
+		KIYOSE_VERSION
+	);
+
+	wp_enqueue_style(
+		'kiyose-navigation',
+		get_template_directory_uri() . '/assets/css/components/navigation.css',
+		array( 'kiyose-variables' ),
+		KIYOSE_VERSION
+	);
+
+	wp_enqueue_style(
+		'kiyose-footer',
+		get_template_directory_uri() . '/assets/css/components/footer.css',
+		array( 'kiyose-variables' ),
+		KIYOSE_VERSION
+	);
+
+	// Main stylesheet (depends on fonts, variables, and components).
 	wp_enqueue_style(
 		'kiyose-main',
 		get_template_directory_uri() . '/assets/css/main.css',
-		array( 'kiyose-fonts', 'kiyose-variables' ),
+		array( 'kiyose-fonts', 'kiyose-variables', 'kiyose-header', 'kiyose-navigation', 'kiyose-footer' ),
 		KIYOSE_VERSION
 	);
 
@@ -67,7 +89,9 @@ add_action( 'wp_head', 'kiyose_preload_fonts' );
  */
 function kiyose_defer_main_script( $tag, $handle ) {
 	if ( 'kiyose-main' === $handle ) {
-		return str_replace( ' src', ' defer src', $tag );
+		$tag = str_replace( ' src', ' defer src', $tag );
+		$tag = str_replace( '<script', '<script type="module"', $tag );
+		return $tag;
 	}
 	return $tag;
 }

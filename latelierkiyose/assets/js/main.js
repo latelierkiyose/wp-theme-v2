@@ -4,3 +4,10 @@
  * @package Kiyose
  * @since   0.1.0
  */
+
+import Dropdown from './modules/dropdown.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+	// Initialize accessible dropdown navigation
+	new Dropdown();
+});

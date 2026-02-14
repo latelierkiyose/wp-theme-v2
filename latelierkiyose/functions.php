@@ -14,3 +14,6 @@ require_once get_template_directory() . '/inc/setup.php';
 
 // Chargement des assets.
 require_once get_template_directory() . '/inc/enqueue.php';
+
+// Accessibilité.
+require_once get_template_directory() . '/inc/accessibility.php';
