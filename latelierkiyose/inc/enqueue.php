@@ -179,6 +179,30 @@ function kiyose_enqueue_assets() {
 add_action( 'wp_enqueue_scripts', 'kiyose_enqueue_assets' );
 
 /**
+ * Override Events Manager styles with higher priority.
+ *
+ * Ensures our custom styles are loaded after Events Manager's default styles.
+ *
+ * @since 1.0.0
+ */
+function kiyose_override_events_manager_styles() {
+	// Only on calendar page template.
+	if ( ! is_page_template( 'templates/page-calendar.php' ) ) {
+		return;
+	}
+
+	// Enqueue our custom Events Manager styles with high priority.
+	wp_enqueue_style(
+		'kiyose-events-manager',
+		get_template_directory_uri() . '/assets/css/components/events-manager.css',
+		array( 'kiyose-variables' ),
+		KIYOSE_VERSION,
+		'all'
+	);
+}
+add_action( 'wp_enqueue_scripts', 'kiyose_override_events_manager_styles', 100 );
+
+/**
  * Enqueue testimonials grid styles conditionally.
  *
  * Only loads when the [kiyose_testimonials] shortcode is present on the page.

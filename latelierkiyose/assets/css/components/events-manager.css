@@ -1,0 +1,578 @@
+/**
+ * Events Manager Override Styles
+ * L'Atelier Kiyose
+ * 
+ * Custom styles for Events Manager plugin integration on the Calendar page.
+ * Overrides default Events Manager styles to match the site's design system.
+ * 
+ * IMPORTANT: Uses high specificity selectors and !important to override plugin defaults.
+ * 
+ * @package Kiyose
+ * @since 1.0.0
+ * @see doc/design-system.md
+ */
+
+/* ============================================
+   RESET LINK COLORS (HIGH PRIORITY)
+   ============================================ */
+
+/* Override all default link colors from Events Manager */
+article.calendar-page a:not(.em-booking-button):not(.button),
+.calendar-page a:not(.em-booking-button):not(.button),
+.calendar-page__content a:not(.em-booking-button):not(.button),
+body .calendar-page a,
+body .calendar-page__content a,
+.em-events-list a,
+.em-item a,
+.em-item-title a {
+	color: var(--color-burgundy) !important;
+}
+
+article.calendar-page a:not(.em-booking-button):not(.button):hover,
+article.calendar-page a:not(.em-booking-button):not(.button):focus,
+.calendar-page a:not(.em-booking-button):not(.button):hover,
+.calendar-page a:not(.em-booking-button):not(.button):focus,
+body .calendar-page a:hover,
+body .calendar-page a:focus,
+.em-events-list a:hover,
+.em-events-list a:focus,
+.em-item a:hover,
+.em-item a:focus,
+.em-item-title a:hover,
+.em-item-title a:focus {
+	color: var(--color-primary) !important;
+}
+
+/* Specific override for Events Manager event links */
+.em-events-list .em-item .em-item-title a,
+.em-events-list-item a,
+.em-event-link {
+	color: var(--color-burgundy) !important;
+	text-decoration: none;
+}
+
+.em-events-list .em-item .em-item-title a:hover,
+.em-events-list .em-item .em-item-title a:focus,
+.em-events-list-item a:hover,
+.em-events-list-item a:focus,
+.em-event-link:hover,
+.em-event-link:focus {
+	color: var(--color-primary) !important;
+	text-decoration: underline;
+}
+
+/* ============================================
+   CALENDAR PAGE LAYOUT
+   ============================================ */
+
+.calendar-page {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: var(--spacing-2xl) var(--spacing-lg);
+}
+
+/* Force all links to use design system colors */
+.calendar-page a {
+	color: var(--color-burgundy) !important;
+}
+
+.calendar-page a:hover,
+.calendar-page a:focus {
+	color: var(--color-primary) !important;
+}
+
+/* Reset button styles (buttons should use their own colors) */
+.calendar-page .em-booking-button,
+.calendar-page .button,
+.calendar-page input[type="submit"],
+.calendar-page .em-calnav a {
+	/* Colors defined in button sections below */
+}
+
+.calendar-page__header {
+	text-align: center;
+	margin-bottom: var(--spacing-3xl);
+}
+
+.calendar-page__title {
+	font-family: var(--font-heading);
+	font-size: var(--font-size-4xl);
+	color: var(--color-burgundy);
+	margin-bottom: var(--spacing-lg);
+	line-height: var(--line-height-tight);
+}
+
+.calendar-page__intro {
+	font-family: var(--font-body);
+	font-size: var(--font-size-lg);
+	color: var(--color-text);
+	line-height: var(--line-height-relaxed);
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+.calendar-page__content {
+	margin-top: var(--spacing-2xl);
+}
+
+/* ============================================
+   EVENTS MANAGER — EVENTS LIST
+   ============================================ */
+
+/* Reset default Events Manager styles */
+.calendar-page__content .em-events-list,
+.calendar-page__content .em-events-list-item {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.calendar-page__content .em-events-list {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: var(--spacing-lg);
+	margin-bottom: var(--spacing-2xl);
+}
+
+/* Month headers - always full width */
+.calendar-page__content .em-events-list > h2,
+.calendar-page__content .em-events-list > h3,
+.calendar-page__content .em-events-list-date,
+.calendar-page__content .em-date-header,
+.calendar-page__content .em-events-list > li.em-event-date-header,
+.calendar-page__content .em-events-list > .em-list-header {
+	grid-column: 1 / -1;
+	font-family: var(--font-heading);
+	font-size: var(--font-size-3xl);
+	color: var(--color-burgundy);
+	margin: var(--spacing-xl) 0 var(--spacing-md) 0;
+	padding-bottom: var(--spacing-sm);
+	border-bottom: 2px solid var(--color-accent);
+}
+
+/* Event card styling */
+.calendar-page__content .em-item {
+	background-color: white;
+	border-radius: 12px;
+	overflow: hidden;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+	transition: all var(--transition-base);
+	padding: var(--spacing-lg);
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-md);
+}
+
+.calendar-page__content .em-item:hover,
+.calendar-page__content .em-item:focus-within {
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+	transform: translateY(-4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.calendar-page__content .em-item {
+		transition: none;
+	}
+
+	.calendar-page__content .em-item:hover,
+	.calendar-page__content .em-item:focus-within {
+		transform: none;
+	}
+}
+
+/* Event title */
+.calendar-page__content .em-item-title,
+.calendar-page__content .em-item h3,
+.calendar-page__content .em-item .event-title,
+.calendar-page .em-item-title,
+.calendar-page .em-item h3 {
+	font-family: var(--font-heading);
+	font-size: var(--font-size-2xl);
+	color: var(--color-burgundy);
+	margin: 0 0 var(--spacing-sm) 0;
+	line-height: var(--line-height-tight);
+}
+
+.calendar-page__content .em-item-title a,
+.calendar-page__content .em-item h3 a,
+.calendar-page__content .em-item .event-title a,
+.calendar-page .em-item-title a,
+.calendar-page .em-item h3 a,
+.calendar-page .em-events-list .em-item a {
+	color: var(--color-burgundy) !important;
+	text-decoration: none;
+	transition: color var(--transition-fast);
+}
+
+.calendar-page__content .em-item-title a:hover,
+.calendar-page__content .em-item-title a:focus,
+.calendar-page__content .em-item h3 a:hover,
+.calendar-page__content .em-item h3 a:focus,
+.calendar-page .em-item-title a:hover,
+.calendar-page .em-item-title a:focus,
+.calendar-page .em-item h3 a:hover,
+.calendar-page .em-item h3 a:focus {
+	color: var(--color-primary) !important;
+	text-decoration: underline;
+}
+
+/* Event meta information */
+.calendar-page__content .em-item-meta,
+.calendar-page__content .em-event-meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--spacing-md);
+	font-family: var(--font-body);
+	font-size: var(--font-size-base);
+	color: var(--color-text);
+	margin-bottom: var(--spacing-md);
+}
+
+.calendar-page__content .em-item-meta-line {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-xs);
+}
+
+/* Date and time */
+.calendar-page__content .em-item-date,
+.calendar-page__content .em-item-time,
+.calendar-page__content .event-date,
+.calendar-page__content .event-time {
+	font-weight: 600;
+	color: var(--color-burgundy);
+}
+
+/* Location */
+.calendar-page__content .em-item-location,
+.calendar-page__content .event-location {
+	color: var(--color-text-light);
+}
+
+/* Categories / Event type */
+.calendar-page__content .em-item-categories,
+.calendar-page__content .event-categories {
+	display: inline-flex;
+	gap: var(--spacing-xs);
+}
+
+.calendar-page__content .em-item-categories a,
+.calendar-page__content .event-categories a {
+	display: inline-block;
+	padding: var(--spacing-xs) var(--spacing-sm);
+	background-color: var(--color-background);
+	color: var(--color-burgundy);
+	border-radius: 4px;
+	font-size: var(--font-size-sm);
+	text-decoration: none;
+	transition: background-color var(--transition-fast);
+}
+
+.calendar-page__content .em-item-categories a:hover,
+.calendar-page__content .em-item-categories a:focus {
+	background-color: var(--color-primary);
+}
+
+/* Event description/excerpt */
+.calendar-page__content .em-item-excerpt,
+.calendar-page__content .em-item-description,
+.calendar-page__content .event-excerpt {
+	font-family: var(--font-body);
+	font-size: var(--font-size-base);
+	color: var(--color-text);
+	line-height: var(--line-height-relaxed);
+	margin-bottom: var(--spacing-md);
+}
+
+/* Price information */
+.calendar-page__content .em-item-price,
+.calendar-page__content .event-price {
+	font-family: var(--font-body);
+	font-size: var(--font-size-lg);
+	font-weight: 700;
+	color: var(--color-accent);
+	margin-bottom: var(--spacing-sm);
+}
+
+/* Spaces available */
+.calendar-page__content .em-item-spaces,
+.calendar-page__content .event-spaces {
+	font-size: var(--font-size-sm);
+	color: var(--color-text-light);
+}
+
+/* Booking button */
+.calendar-page__content .em-item-read-more,
+.calendar-page__content .em-booking-button,
+.calendar-page__content .em-item-link,
+.calendar-page__content .em-item a.button,
+.calendar-page__content .em-item input[type="submit"] {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: var(--spacing-md) var(--spacing-xl);
+	min-height: 44px;
+	min-width: 44px;
+	background-color: var(--color-primary);
+	color: var(--color-burgundy);
+	border: 2px solid transparent;
+	border-radius: 4px;
+	font-family: var(--font-body);
+	font-size: var(--font-size-base);
+	font-weight: 600;
+	text-decoration: none;
+	cursor: pointer;
+	transition: all var(--transition-base);
+}
+
+.calendar-page__content .em-booking-button:hover,
+.calendar-page__content .em-booking-button:focus,
+.calendar-page__content .em-item-read-more:hover,
+.calendar-page__content .em-item-read-more:focus,
+.calendar-page__content .em-item a.button:hover,
+.calendar-page__content .em-item a.button:focus {
+	background-color: var(--color-accent);
+	color: var(--color-text);
+	transform: translateY(-2px);
+}
+
+.calendar-page__content .em-booking-button:focus,
+.calendar-page__content .em-item-read-more:focus,
+.calendar-page__content .em-item a.button:focus {
+	outline: 2px solid var(--color-burgundy);
+	outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.calendar-page__content .em-booking-button,
+	.calendar-page__content .em-item-read-more,
+	.calendar-page__content .em-item a.button {
+		transition: background-color var(--transition-base), color var(--transition-base);
+	}
+
+	.calendar-page__content .em-booking-button:hover,
+	.calendar-page__content .em-booking-button:focus,
+	.calendar-page__content .em-item-read-more:hover,
+	.calendar-page__content .em-item-read-more:focus,
+	.calendar-page__content .em-item a.button:hover,
+	.calendar-page__content .em-item a.button:focus {
+		transform: none;
+	}
+}
+
+/* ============================================
+   EVENTS MANAGER — CALENDAR VIEW
+   ============================================ */
+
+.calendar-page__content .em-calendar-wrapper {
+	margin-bottom: var(--spacing-2xl);
+}
+
+.calendar-page__content .em-calendar {
+	width: 100%;
+	border-collapse: collapse;
+	background-color: white;
+	border-radius: 8px;
+	overflow: hidden;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.calendar-page__content .em-calendar th {
+	background-color: var(--color-burgundy);
+	color: white;
+	padding: var(--spacing-md);
+	font-family: var(--font-body);
+	font-size: var(--font-size-base);
+	font-weight: 600;
+	text-align: center;
+}
+
+.calendar-page__content .em-calendar td {
+	padding: var(--spacing-sm);
+	border: 1px solid var(--color-border);
+	text-align: center;
+	font-family: var(--font-body);
+	font-size: var(--font-size-base);
+	vertical-align: top;
+	height: 80px;
+}
+
+.calendar-page__content .em-calendar td a {
+	display: block;
+	width: 100%;
+	height: 100%;
+	color: var(--color-text);
+	text-decoration: none;
+	padding: var(--spacing-xs);
+	border-radius: 4px;
+	transition: background-color var(--transition-fast);
+}
+
+.calendar-page__content .em-calendar td.eventful a {
+	background-color: var(--color-accent);
+	color: white;
+	font-weight: 600;
+}
+
+.calendar-page__content .em-calendar td a:hover,
+.calendar-page__content .em-calendar td a:focus {
+	background-color: var(--color-primary);
+	outline: 2px solid var(--color-burgundy);
+	outline-offset: 2px;
+}
+
+/* Calendar navigation */
+.calendar-page__content .em-calnav {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: var(--spacing-lg);
+	padding: var(--spacing-md);
+	background-color: var(--color-background);
+	border-radius: 8px;
+}
+
+.calendar-page__content .em-calnav a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 44px;
+	min-height: 44px;
+	padding: var(--spacing-sm) var(--spacing-md);
+	background-color: var(--color-primary);
+	color: var(--color-burgundy);
+	text-decoration: none;
+	border-radius: 4px;
+	font-weight: 600;
+	transition: all var(--transition-base);
+}
+
+.calendar-page__content .em-calnav a:hover,
+.calendar-page__content .em-calnav a:focus {
+	background-color: var(--color-accent);
+	outline: 2px solid var(--color-burgundy);
+	outline-offset: 2px;
+}
+
+/* ============================================
+   RESPONSIVE LAYOUT
+   ============================================ */
+
+/* Tablet: 1 column with better spacing */
+@media (min-width: 768px) {
+	.calendar-page__title {
+		font-size: var(--font-size-4xl);
+	}
+
+	.calendar-page__content .em-events-list {
+		gap: var(--spacing-xl);
+	}
+}
+
+/* Desktop: 2 columns */
+@media (min-width: 1024px) {
+	.calendar-page__content .em-events-list {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	/* Month headers stay full width */
+	.calendar-page__content .em-events-list > h2,
+	.calendar-page__content .em-events-list > h3,
+	.calendar-page__content .em-events-list-date,
+	.calendar-page__content .em-date-header,
+	.calendar-page__content .em-events-list > li.em-event-date-header,
+	.calendar-page__content .em-events-list > .em-list-header {
+		grid-column: 1 / -1;
+	}
+
+	.calendar-page {
+		padding: var(--spacing-3xl) var(--spacing-xl);
+	}
+}
+
+/* Mobile: hide calendar table, show list only */
+@media (max-width: 767px) {
+	.calendar-page__content .em-calendar-wrapper {
+		display: none;
+	}
+
+	.calendar-page__title {
+		font-size: var(--font-size-3xl);
+	}
+
+	.calendar-page__intro {
+		font-size: var(--font-size-base);
+	}
+
+	.calendar-page__content .em-item-title,
+	.calendar-page__content .em-item h3 {
+		font-size: var(--font-size-xl);
+	}
+
+	.calendar-page__content .em-item-meta {
+		flex-direction: column;
+		gap: var(--spacing-xs);
+	}
+}
+
+/* ============================================
+   NO EVENTS MESSAGE
+   ============================================ */
+
+.calendar-page__content .em-events-list-item-message,
+.calendar-page__content .em-no-events {
+	padding: var(--spacing-2xl);
+	text-align: center;
+	background-color: var(--color-background);
+	border-radius: 8px;
+	font-family: var(--font-body);
+	font-size: var(--font-size-lg);
+	color: var(--color-text-light);
+}
+
+/* ============================================
+   GLOBAL LINK OVERRIDES
+   ============================================ */
+
+/* Override default blue links from Events Manager */
+.calendar-page a,
+.calendar-page__content a {
+	color: var(--color-burgundy);
+}
+
+.calendar-page a:hover,
+.calendar-page a:focus,
+.calendar-page__content a:hover,
+.calendar-page__content a:focus {
+	color: var(--color-primary);
+}
+
+/* Exception for buttons - keep button styling */
+.calendar-page__content .em-booking-button,
+.calendar-page__content .em-item-read-more,
+.calendar-page__content .em-item a.button,
+.calendar-page__content .em-item input[type="submit"],
+.calendar-page__content .em-calnav a {
+	/* Button colors are defined in their own sections above */
+}
+
+/* ============================================
+   ACCESSIBILITY IMPROVEMENTS
+   ============================================ */
+
+/* Ensure proper focus states for all interactive elements */
+.calendar-page__content .em-item a:focus,
+.calendar-page__content .em-calendar a:focus,
+.calendar-page__content .em-calnav a:focus {
+	outline: 2px solid var(--color-burgundy);
+	outline-offset: 2px;
+}
+
+/* Skip to main content for keyboard users */
+.calendar-page__content .em-calendar caption {
+	font-family: var(--font-heading);
+	font-size: var(--font-size-xl);
+	color: var(--color-burgundy);
+	padding: var(--spacing-md);
+	text-align: center;
+}

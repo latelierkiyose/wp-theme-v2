@@ -2,7 +2,7 @@
 
 ## Statut du projet
 
-**État actuel**: PRD 0011 terminé — Page À propos implémentée
+**État actuel**: PRD 0012 terminé — Page Calendrier & tarifs implémentée
 - Squelette du thème: ✅ Opérationnel (PRD 0001)
 - Design tokens: ✅ Implémentés (PRD 0002)
   - Variables CSS: couleurs, typographie, espacements, animations
@@ -104,8 +104,19 @@
   - Layout aéré et centré (max-width: 900px)
   - Responsive: Colonnes empilées sur mobile, images adaptatives
   - WCAG 2.2 AA: Hiérarchie sémantique, contrastes validés, navigation clavier
+- Page Calendrier & tarifs: ✅ Implémentée (PRD 0012)
+  - Template: templates/page-calendar.php (Template Name: "Calendrier et tarifs")
+  - Structure simple: Header avec titre + intro, contenu Gutenberg pour shortcodes Events Manager
+  - Styles CSS: events-manager.css pour override complet des styles du plugin Events Manager
+  - Override des éléments Events Manager: liste d'événements (.em-events-list), calendrier (.em-calendar), navigation
+  - Cartes d'événements avec design system: couleurs, typographie, bordures arrondies, ombres
+  - Informations affichées: titre, date/heure, lieu, catégories, tarif, places disponibles, bouton "Réserver"
+  - Boutons de réservation conformes: 44x44px minimum, focus visible, couleurs accessibles
+  - Enqueue conditionnel (charge uniquement sur page-calendar.php)
+  - Responsive: Grille 1 col mobile → 2 cols tablet → 3 cols desktop, calendrier masqué sur mobile
+  - WCAG 2.2 AA: Contrastes validés, navigation clavier, focus visible, touch targets appropriés
 - Configuration: ✅ PHPCS, Composer, CI/CD GitHub Actions
-- Prochaines étapes: Page Calendrier (PRD 0012)
+- Prochaines étapes: Intégrations plugins (PRD 0013)
 
 
 ## Contexte
