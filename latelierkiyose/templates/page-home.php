@@ -160,10 +160,25 @@ get_header();
 			<p class="home-newsletter__description">
 				Recevez les prochaines dates et actualités de l'atelier directement dans votre boîte mail.
 			</p>
-			<!-- Placeholder pour le formulaire Brevo (PRD 0013) -->
-			<div class="home-newsletter__form-placeholder">
-				<p>Le formulaire d'inscription à la newsletter sera intégré ici (Brevo - PRD 0013).</p>
-			</div>
+			<?php
+			/**
+			 * Formulaire newsletter Brevo.
+			 *
+			 * Le shortcode [brevo_form id="X"] sera fourni par le plugin Brevo après configuration.
+			 * Remplacer le placeholder ci-dessous par le shortcode réel en production.
+			 *
+			 * @since 0.1.13
+			 */
+			if ( shortcode_exists( 'sibwp_form' ) ) {
+				echo do_shortcode( '[sibwp_form id=1]' );
+			} else {
+				?>
+				<div class="home-newsletter__form-placeholder">
+					<p><?php esc_html_e( 'Le formulaire d\'inscription à la newsletter sera intégré ici une fois le plugin Brevo configuré.', 'kiyose' ); ?></p>
+				</div>
+				<?php
+			}
+			?>
 		</div>
 	</section>
 

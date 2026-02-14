@@ -34,11 +34,31 @@
 				</div>
 			<?php endif; ?>
 
-			<div class="site-footer__newsletter">
-				<?php
-				// Placeholder pour newsletter Brevo (PRD 0013).
+		<div class="site-footer__newsletter">
+			<h3 class="site-footer__newsletter-title"><?php esc_html_e( 'Newsletter', 'kiyose' ); ?></h3>
+			<?php
+			/**
+			 * Formulaire newsletter Brevo.
+			 *
+			 * Le shortcode [brevo_form id="X"] sera fourni par le plugin Brevo après configuration.
+			 * Remplacer le placeholder ci-dessous par le shortcode réel en production.
+			 *
+			 * @since 0.1.13
+			 */
+			if ( shortcode_exists( 'sibwp_form' ) ) {
+				echo do_shortcode( '[sibwp_form id=1]' );
+			} else {
 				?>
-			</div>
+				<div class="site-footer__newsletter-placeholder">
+					<p><?php esc_html_e( 'Restez informé·e de nos actualités et prochains ateliers.', 'kiyose' ); ?></p>
+					<p class="site-footer__newsletter-notice">
+						<em><?php esc_html_e( 'Le formulaire d\'inscription à la newsletter sera disponible une fois le plugin Brevo configuré.', 'kiyose' ); ?></em>
+					</p>
+				</div>
+				<?php
+			}
+			?>
+		</div>
 
 			<div class="site-footer__legal">
 				<a href="<?php echo esc_url( home_url( '/mentions-legales/' ) ); ?>"><?php esc_html_e( 'Mentions légales', 'kiyose' ); ?></a>

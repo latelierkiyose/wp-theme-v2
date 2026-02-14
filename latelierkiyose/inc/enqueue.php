@@ -26,6 +26,14 @@ function kiyose_enqueue_assets() {
 		KIYOSE_VERSION
 	);
 
+	// Plugins common styles (loaded early for all plugins).
+	wp_enqueue_style(
+		'kiyose-plugins-common',
+		get_template_directory_uri() . '/assets/css/components/plugins-common.css',
+		array( 'kiyose-variables' ),
+		KIYOSE_VERSION
+	);
+
 	// Component stylesheets.
 	wp_enqueue_style(
 		'kiyose-header',
@@ -201,6 +209,26 @@ function kiyose_override_events_manager_styles() {
 	);
 }
 add_action( 'wp_enqueue_scripts', 'kiyose_override_events_manager_styles', 100 );
+
+/**
+ * Enqueue Brevo newsletter form styles.
+ *
+ * Loaded on:
+ * - All pages (for footer newsletter form)
+ * - Homepage (for dedicated newsletter section)
+ *
+ * @since 0.1.13
+ */
+function kiyose_enqueue_brevo_styles() {
+	// Always load on all pages (footer newsletter).
+	wp_enqueue_style(
+		'kiyose-brevo-override',
+		get_template_directory_uri() . '/assets/css/components/brevo-override.css',
+		array( 'kiyose-variables', 'kiyose-plugins-common' ),
+		KIYOSE_VERSION
+	);
+}
+add_action( 'wp_enqueue_scripts', 'kiyose_enqueue_brevo_styles' );
 
 /**
  * Enqueue testimonials grid styles conditionally.

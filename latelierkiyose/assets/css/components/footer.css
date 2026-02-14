@@ -78,6 +78,34 @@
 	text-align: center;
 }
 
+.site-footer__newsletter-title {
+	font-family: var(--font-heading);
+	font-size: var(--font-size-lg);
+	font-weight: 600;
+	color: var(--color-burgundy);
+	margin: 0 0 var(--spacing-md);
+}
+
+.site-footer__newsletter-placeholder {
+	padding: var(--spacing-lg);
+	background-color: var(--color-background);
+	border-radius: 8px;
+}
+
+.site-footer__newsletter-placeholder p {
+	margin: 0 0 var(--spacing-sm);
+	color: var(--color-text);
+}
+
+.site-footer__newsletter-placeholder p:last-child {
+	margin-bottom: 0;
+}
+
+.site-footer__newsletter-notice {
+	font-size: var(--font-size-sm);
+	color: var(--color-text-light);
+}
+
 /* ============================================
    LEGAL LINKS
    ============================================ */

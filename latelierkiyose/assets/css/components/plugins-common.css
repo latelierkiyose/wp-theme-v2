@@ -1,0 +1,267 @@
+/**
+ * Plugins Common Styles
+ *
+ * Styles partagés entre tous les plugins tiers (Brevo, Contact Form 7, Events Manager).
+ * Objectif : Centraliser les styles communs pour éviter la duplication de code.
+ *
+ * @package Kiyose
+ * @since   0.1.13
+ */
+
+/* ==========================================================================
+   Reset des styles de formulaires par défaut des plugins
+   ========================================================================== */
+
+/**
+ * Normalisation des champs de saisie (input, textarea, select)
+ * pour tous les plugins de formulaires
+ */
+.sib-form input[type="text"],
+.sib-form input[type="email"],
+.sib-form input[type="tel"],
+.sib-form input[type="url"],
+.sib-form textarea,
+.sib-form select,
+.wpcf7 input[type="text"],
+.wpcf7 input[type="email"],
+.wpcf7 input[type="tel"],
+.wpcf7 input[type="url"],
+.wpcf7 textarea,
+.wpcf7 select {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0.75rem 1rem;
+	font-family: var(--font-body);
+	font-size: 1rem;
+	line-height: 1.5;
+	color: var(--color-text);
+	background-color: #fff;
+	border: 1px solid var(--color-primary);
+	border-radius: 4px;
+	transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/**
+ * État focus pour tous les champs de saisie
+ * WCAG 2.2 AA : Focus visible avec contraste ≥3:1
+ */
+.sib-form input[type="text"]:focus,
+.sib-form input[type="email"]:focus,
+.sib-form input[type="tel"]:focus,
+.sib-form input[type="url"]:focus,
+.sib-form textarea:focus,
+.sib-form select:focus,
+.wpcf7 input[type="text"]:focus,
+.wpcf7 input[type="email"]:focus,
+.wpcf7 input[type="tel"]:focus,
+.wpcf7 input[type="url"]:focus,
+.wpcf7 textarea:focus,
+.wpcf7 select:focus {
+	border-color: var(--color-gold);
+	outline: 2px solid var(--color-gold);
+	outline-offset: 2px;
+}
+
+/**
+ * État disabled pour tous les champs de saisie
+ */
+.sib-form input:disabled,
+.sib-form textarea:disabled,
+.sib-form select:disabled,
+.wpcf7 input:disabled,
+.wpcf7 textarea:disabled,
+.wpcf7 select:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+	background-color: #f5f5f5;
+}
+
+/* ==========================================================================
+   Normalisation des boutons
+   ========================================================================== */
+
+/**
+ * Base commune pour tous les boutons de plugins
+ * Reprend les styles du design system (.button)
+ */
+.sib-form button[type="submit"],
+.sib-form input[type="submit"],
+.wpcf7 input[type="submit"],
+.em-booking-form input[type="submit"] {
+	display: inline-block;
+	min-height: 44px;
+	padding: 0.75rem 1.5rem;
+	font-family: var(--font-body);
+	font-size: 1rem;
+	font-weight: 600;
+	line-height: 1.5;
+	text-align: center;
+	text-decoration: none;
+	color: var(--color-text);
+	background-color: var(--color-primary);
+	border: 2px solid var(--color-primary);
+	border-radius: 4px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+/**
+ * État hover pour les boutons
+ */
+.sib-form button[type="submit"]:hover,
+.sib-form input[type="submit"]:hover,
+.wpcf7 input[type="submit"]:hover,
+.em-booking-form input[type="submit"]:hover {
+	background-color: var(--color-primary-dark, #c08d8d);
+	border-color: var(--color-primary-dark, #c08d8d);
+	transform: translateY(-2px);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/**
+ * État focus pour les boutons
+ * WCAG 2.2 AA : Focus visible avec contraste ≥3:1
+ */
+.sib-form button[type="submit"]:focus,
+.sib-form input[type="submit"]:focus,
+.wpcf7 input[type="submit"]:focus,
+.em-booking-form input[type="submit"]:focus {
+	outline: 2px solid var(--color-gold);
+	outline-offset: 2px;
+}
+
+/**
+ * État active pour les boutons
+ */
+.sib-form button[type="submit"]:active,
+.sib-form input[type="submit"]:active,
+.wpcf7 input[type="submit"]:active,
+.em-booking-form input[type="submit"]:active {
+	transform: translateY(0);
+}
+
+/**
+ * État disabled pour les boutons
+ */
+.sib-form button[type="submit"]:disabled,
+.sib-form input[type="submit"]:disabled,
+.wpcf7 input[type="submit"]:disabled,
+.em-booking-form input[type="submit"]:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+	transform: none;
+}
+
+/* ==========================================================================
+   Normalisation des checkboxes et radios
+   ========================================================================== */
+
+/**
+ * Wrapper des checkboxes et radios
+ */
+.sib-form input[type="checkbox"],
+.sib-form input[type="radio"],
+.wpcf7 input[type="checkbox"],
+.wpcf7 input[type="radio"] {
+	margin-right: 0.5rem;
+	vertical-align: middle;
+}
+
+/**
+ * État focus pour checkboxes et radios
+ */
+.sib-form input[type="checkbox"]:focus,
+.sib-form input[type="radio"]:focus,
+.wpcf7 input[type="checkbox"]:focus,
+.wpcf7 input[type="radio"]:focus {
+	outline: 2px solid var(--color-gold);
+	outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Normalisation des labels
+   ========================================================================== */
+
+/**
+ * Labels des formulaires
+ * WCAG 2.2 AA : Labels visibles (pas uniquement placeholder)
+ */
+.sib-form label,
+.wpcf7 label {
+	display: block;
+	margin-bottom: 0.5rem;
+	font-family: var(--font-body);
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: var(--color-text);
+}
+
+/* ==========================================================================
+   Messages de succès et d'erreur
+   ========================================================================== */
+
+/**
+ * Messages de succès
+ * WCAG 2.2 AA : Contraste ≥4.5:1, icon + texte (pas uniquement couleur)
+ */
+.sib-form__message--success,
+.wpcf7-mail-sent-ok {
+	padding: 1rem;
+	margin-top: 1rem;
+	font-size: 0.875rem;
+	color: #155724;
+	background-color: #d4edda;
+	border: 1px solid #c3e6cb;
+	border-radius: 4px;
+}
+
+/**
+ * Messages d'erreur
+ * WCAG 2.2 AA : Contraste ≥4.5:1, icon + texte (pas uniquement couleur)
+ */
+.sib-form__message--error,
+.wpcf7-validation-errors,
+.wpcf7-mail-sent-ng {
+	padding: 1rem;
+	margin-top: 1rem;
+	font-size: 0.875rem;
+	color: #721c24;
+	background-color: #f8d7da;
+	border: 1px solid #f5c6cb;
+	border-radius: 4px;
+}
+
+/* ==========================================================================
+   Utilitaires d'accessibilité
+   ========================================================================== */
+
+/**
+ * Classe pour masquer visuellement mais garder pour lecteurs d'écran
+ * Utilisée pour les labels cachés mais accessibles
+ */
+.sib-form .sr-only,
+.wpcf7 .sr-only,
+.screen-reader-text {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+/* ==========================================================================
+   Masquage d'éléments non souhaités
+   ========================================================================== */
+
+/**
+ * Masquer les éléments de branding des plugins (powered by, etc.)
+ */
+.sib-form__powered-by,
+.wpcf7-form p.wpcf7-not-valid-tip,
+.em-booking-form .em-powered-by {
+	display: none !important;
+}

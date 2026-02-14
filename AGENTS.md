@@ -2,7 +2,7 @@
 
 ## Statut du projet
 
-**État actuel**: PRD 0012 terminé — Page Calendrier & tarifs implémentée
+**État actuel**: PRD 0013 terminé — Intégrations plugins (Brevo newsletter)
 - Squelette du thème: ✅ Opérationnel (PRD 0001)
 - Design tokens: ✅ Implémentés (PRD 0002)
   - Variables CSS: couleurs, typographie, espacements, animations
