@@ -41,7 +41,7 @@ Template Name: Page de service
 Ce template est assigné aux 4 pages de services dans l'admin WordPress. Le contenu (texte, images) est entièrement géré depuis l'éditeur WordPress (Gutenberg).
 
 **Structure** :
-```
+```php
 get_header()
 
 <article class="service-page">
