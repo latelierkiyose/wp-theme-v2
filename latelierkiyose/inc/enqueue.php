@@ -132,6 +132,23 @@ function kiyose_enqueue_assets() {
 		);
 	}
 
+	// Contact page components (conditional loading for page-contact.php template).
+	if ( is_page_template( 'templates/page-contact.php' ) ) {
+		wp_enqueue_style(
+			'kiyose-contact-page',
+			get_template_directory_uri() . '/assets/css/components/contact-page.css',
+			array( 'kiyose-variables' ),
+			KIYOSE_VERSION
+		);
+
+		wp_enqueue_style(
+			'kiyose-cf7-override',
+			get_template_directory_uri() . '/assets/css/components/cf7-override.css',
+			array( 'kiyose-variables' ),
+			KIYOSE_VERSION
+		);
+	}
+
 	// Main stylesheet (depends on fonts, variables, and components).
 	wp_enqueue_style(
 		'kiyose-main',

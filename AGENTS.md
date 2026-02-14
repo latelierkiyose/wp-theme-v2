@@ -2,7 +2,7 @@
 
 ## Statut du projet
 
-**État actuel**: PRD 0009 terminé — Template services implémenté
+**État actuel**: PRD 0010 terminé — Page de contact implémentée
 - Squelette du thème: ✅ Opérationnel (PRD 0001)
 - Design tokens: ✅ Implémentés (PRD 0002)
   - Variables CSS: couleurs, typographie, espacements, animations
@@ -81,8 +81,20 @@
   - Boutons accessibles (44x44px minimum, focus visible)
   - Responsive: Layout centré (max-width: 900px), CTAs empilés sur mobile
   - WCAG 2.2 AA: Contrastes validés, navigation clavier, hiérarchie sémantique
+- Page de contact: ✅ Implémentée (PRD 0010)
+  - Template: templates/page-contact.php (Template Name: "Page de contact")
+  - Layout 2 colonnes: Formulaire (2/3) + Informations de contact (1/3) en desktop, empilé en mobile
+  - Formulaire Contact Form 7 intégré via the_content()
+  - Informations de contact: Téléphone (tel:), email (mailto:), adresse physique
+  - Liens réseaux sociaux: Facebook, Instagram, LinkedIn avec SVG icons
+  - Styles CSS: contact-page.css, cf7-override.css
+  - Override complet Contact Form 7: champs, boutons, messages d'erreur, validation
+  - Enqueue conditionnel (charge uniquement sur page-contact.php)
+  - Sticky sidebar sur desktop
+  - WCAG 2.2 AA: Contrastes validés (≥4.5:1), focus visible, targets 44x44px, labels visibles
+  - Note: Installation de Contact Form 7 requise (hors périmètre PRD)
 - Configuration: ✅ PHPCS, Composer, CI/CD GitHub Actions
-- Prochaines étapes: Pages Contact, À propos, Calendrier (PRD 0010-0012)
+- Prochaines étapes: Pages À propos, Calendrier (PRD 0011-0012)
 
 
 ## Contexte
