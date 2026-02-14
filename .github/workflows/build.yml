@@ -75,7 +75,74 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v6
         with:
-          name: theme-build
+          name: theme-build-${{ github.sha }}
           path: build/latelierkiyose-${{ github.sha }}.zip
-          retention-days: 30
+          retention-days: 5
+
+      - name: Generate release tag
+        id: release_tag
+        run: |
+          SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
+          DATE=$(date +'%Y-%m-%d')
+          TAG="build-${DATE}-${SHORT_SHA}"
+          echo "tag=${TAG}" >> $GITHUB_OUTPUT
+          echo "date=${DATE}" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.release_tag.outputs.tag }}
+          name: "Build ${{ steps.release_tag.outputs.date }}"
+          body: |
+            Automated build from commit ${{ github.sha }}
+            
+            **Branch**: ${{ github.ref_name }}
+            **Commit**: ${{ github.sha }}
+            **Date**: ${{ steps.release_tag.outputs.date }}
+            
+            Download the theme ZIP file below and upload it to WordPress.
+          files: build/latelierkiyose-${{ github.sha }}.zip
+          prerelease: true
+          draft: false
+
+      - name: Cleanup old releases
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: releases } = await github.rest.repos.listReleases({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+            
+            // Filter only build releases (pre-releases starting with "build-")
+            const buildReleases = releases
+              .filter(r => r.prerelease && r.tag_name.startsWith('build-'))
+              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            
+            // Keep only the 5 most recent, delete the rest
+            const releasesToDelete = buildReleases.slice(5);
+            
+            for (const release of releasesToDelete) {
+              console.log(`Deleting release: ${release.tag_name}`);
+              
+              // Delete the release
+              await github.rest.repos.deleteRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                release_id: release.id
+              });
+              
+              // Delete the associated tag
+              try {
+                await github.rest.git.deleteRef({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ref: `tags/${release.tag_name}`
+                });
+              } catch (error) {
+                console.log(`Could not delete tag ${release.tag_name}: ${error.message}`);
+              }
+            }
+            
+            console.log(`Kept ${Math.min(buildReleases.length, 5)} releases, deleted ${releasesToDelete.length}`);
 
