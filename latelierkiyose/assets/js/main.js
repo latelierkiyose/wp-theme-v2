@@ -7,6 +7,7 @@
 
 import Dropdown from './modules/dropdown.js';
 import MobileMenu from './modules/mobile-menu.js';
+import ShareLinkCopier from './modules/share-link-copier.js';
 
 document.addEventListener('DOMContentLoaded', () => {
 	// Initialize accessible dropdown navigation
@@ -14,4 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	// Initialize mobile menu
 	new MobileMenu();
+
+	// Initialize share link copier (Instagram)
+	new ShareLinkCopier();
 });

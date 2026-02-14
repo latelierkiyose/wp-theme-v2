@@ -2,7 +2,7 @@
 
 ## Statut du projet
 
-**État actuel**: PRD 0005 terminé — Templates de base implémentés
+**État actuel**: PRD 0006 terminé — Blog implémenté
 - Squelette du thème: ✅ Opérationnel (PRD 0001)
 - Design tokens: ✅ Implémentés (PRD 0002)
   - Variables CSS: couleurs, typographie, espacements, animations
@@ -31,8 +31,14 @@
   - searchform.php: Formulaire de recherche accessible
   - index.php: Template fallback simplifié
   - Styles CSS pour tous les composants
+- Blog: ✅ Implémenté (PRD 0006)
+  - archive.php: Liste d'articles avec pagination (responsive: 1 col mobile, 2 cols tablet, 3 cols desktop)
+  - single.php: Article unique avec image à la une, partage social (Facebook, LinkedIn), navigation entre articles
+  - template-parts/content-blog.php: Carte d'article réutilisable
+  - Commentaires désactivés sur les posts
+  - Styles CSS: blog-card.css, blog-archive.css, blog-single.css
 - Configuration: ✅ PHPCS, Composer, CI/CD GitHub Actions
-- Prochaines étapes: Implémenter PRD 0006 (Blog)
+- Prochaines étapes: Implémenter PRD 0007 (CPT Témoignages)
 
 
 ## Contexte

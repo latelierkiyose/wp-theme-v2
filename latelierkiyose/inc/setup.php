@@ -46,5 +46,9 @@ function kiyose_setup() {
 	add_image_size( 'kiyose-hero', 1920, 800, true );
 	add_image_size( 'kiyose-service-card', 600, 400, true );
 	add_image_size( 'kiyose-testimony-thumb', 150, 150, true );
+
+	// Désactiver les commentaires sur les articles.
+	remove_post_type_support( 'post', 'comments' );
+	remove_post_type_support( 'post', 'trackbacks' );
 }
 add_action( 'after_setup_theme', 'kiyose_setup' );
