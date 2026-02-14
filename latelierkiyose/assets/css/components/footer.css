@@ -15,7 +15,7 @@
 }
 
 .site-footer__container {
-	max-width: 1200px;
+	max-width: var(--container-max-width);
 	margin: 0 auto;
 	padding: 0 var(--spacing-md);
 	display: grid;

@@ -38,6 +38,16 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 }
 
+/**
+ * Fix WordPress admin bar layout constraints
+ */
+html,
+body {
+	width: 100%;
+	max-width: 100%;
+	overflow-x: hidden;
+}
+
 /* ============================================
    TYPOGRAPHY
    ============================================ */
@@ -213,7 +223,7 @@ button {
  */
 .container {
 	width: 100%;
-	max-width: 1200px;
+	max-width: var(--container-max-width);
 	margin: 0 auto;
 	padding: 0 var(--spacing-md);
 }

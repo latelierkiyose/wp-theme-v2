@@ -114,6 +114,36 @@ L'identité visuelle s'inspire du Kintsugi japonais - l'art de réparer les cér
 
 **Principe**: Espacement généreux pour sensation de calme et bien-être
 
+## Layout
+
+**Largeur maximale du contenu:**
+
+Le thème utilise une variable CSS centralisée pour la largeur maximale des containers :
+
+```css
+--container-max-width: 1600px;
+```
+
+**Utilisation:**
+- Header (`.site-header__container`)
+- Footer (`.site-footer__container`)
+- Contenu principal (`.container`)
+- Articles de type page (`article.page`)
+
+**Pour modifier la largeur globale** :
+Éditez uniquement `assets/css/variables.css` ligne ~73 :
+```css
+--container-max-width: 1600px; /* Ajustez cette valeur */
+```
+
+Cette modification s'appliquera automatiquement à tous les éléments utilisant cette variable.
+
+**Breakpoints** (définis en commentaire dans `variables.css`, CSS ne supportant pas les variables dans les media queries) :
+- Mobile : 320px - 767px
+- Tablet : 768px+
+- Desktop : 1024px+
+- Desktop large : 1280px+
+
 ## Composants UI principaux
 
 **Voir `references/css-examples.css` pour les implémentations CSS complètes des composants suivants:**

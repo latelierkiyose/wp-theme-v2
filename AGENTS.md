@@ -2,7 +2,7 @@
 
 ## Statut du projet
 
-**État actuel**: PRD 0004 terminé — Menu mobile implémenté
+**État actuel**: PRD 0005 terminé — Templates de base implémentés
 - Squelette du thème: ✅ Opérationnel (PRD 0001)
 - Design tokens: ✅ Implémentés (PRD 0002)
   - Variables CSS: couleurs, typographie, espacements, animations
@@ -24,8 +24,15 @@
   - Verrouillage du scroll body
   - Respect de prefers-reduced-motion
   - Navigation ARIA complète
+- Templates de base: ✅ Implémentés (PRD 0005)
+  - page.php: Template page par défaut avec contenu centré
+  - 404.php: Page d'erreur avec recherche et suggestions de pages
+  - search.php: Résultats de recherche paginés
+  - searchform.php: Formulaire de recherche accessible
+  - index.php: Template fallback simplifié
+  - Styles CSS pour tous les composants
 - Configuration: ✅ PHPCS, Composer, CI/CD GitHub Actions
-- Prochaines étapes: Implémenter PRD 0005 (Templates de base)
+- Prochaines étapes: Implémenter PRD 0006 (Blog)
 
 
 ## Contexte

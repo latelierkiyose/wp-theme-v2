@@ -14,10 +14,13 @@
 	top: 0;
 	z-index: 100;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+	width: 100%;
+	left: 0;
+	right: 0;
 }
 
 .site-header__container {
-	max-width: 1200px;
+	max-width: var(--container-max-width);
 	margin: 0 auto;
 	padding: var(--spacing-md);
 	display: flex;

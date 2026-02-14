@@ -48,11 +48,33 @@ function kiyose_enqueue_assets() {
 		KIYOSE_VERSION
 	);
 
+	// Template-specific components.
+	wp_enqueue_style(
+		'kiyose-page',
+		get_template_directory_uri() . '/assets/css/components/page.css',
+		array( 'kiyose-variables' ),
+		KIYOSE_VERSION
+	);
+
+	wp_enqueue_style(
+		'kiyose-search',
+		get_template_directory_uri() . '/assets/css/components/search.css',
+		array( 'kiyose-variables' ),
+		KIYOSE_VERSION
+	);
+
+	wp_enqueue_style(
+		'kiyose-404',
+		get_template_directory_uri() . '/assets/css/components/404.css',
+		array( 'kiyose-variables' ),
+		KIYOSE_VERSION
+	);
+
 	// Main stylesheet (depends on fonts, variables, and components).
 	wp_enqueue_style(
 		'kiyose-main',
 		get_template_directory_uri() . '/assets/css/main.css',
-		array( 'kiyose-fonts', 'kiyose-variables', 'kiyose-header', 'kiyose-navigation', 'kiyose-footer' ),
+		array( 'kiyose-fonts', 'kiyose-variables', 'kiyose-header', 'kiyose-navigation', 'kiyose-footer', 'kiyose-page', 'kiyose-search', 'kiyose-404' ),
 		KIYOSE_VERSION
 	);
 

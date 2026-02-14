@@ -73,6 +73,11 @@
 	--spacing-3xl: 4rem;     /* 64px */
 
 	/* ============================================
+	   LAYOUT
+	   ============================================ */
+	--container-max-width: 1600px;
+
+	/* ============================================
 	   BREAKPOINTS (commentaires - CSS ne supporte pas les variables dans media queries)
 	   ============================================ */
 	/* Mobile : 320px - 767px */
