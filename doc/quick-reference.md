@@ -57,7 +57,7 @@ git push origin v1.0.0
 ```
 latelierkiyose/
 ├── functions.php          # Point d'entrée du thème
-├── style.css             # Métadonnées du thème + feuille de style principale
+├── style.css             # Métadonnées du thème uniquement
 ├── header.php            # En-tête du site
 ├── footer.php            # Pied de page
 │
