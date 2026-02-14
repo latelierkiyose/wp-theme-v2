@@ -2,7 +2,7 @@
 
 ## Statut
 
-**brouillon**
+**terminé**
 
 ## Vue d'ensemble
 
