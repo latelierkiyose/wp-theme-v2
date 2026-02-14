@@ -2,19 +2,23 @@
 
 ## Statut
 
-**brouillon**
+**terminé**
 
 ## Objectif
 
-Documenter la procédure d'activation du thème sur le site de production, avec la checklist complète de validation pré-lancement.
+Documenter et préparer la procédure d'activation du thème sur le site de production, avec la checklist complète de validation pré-lancement et les outils de vérification automatisés.
 
 ## Dépendances
 
-- **Toutes les étapes précédentes** : Le thème doit être complet et testé.
+- **PRD 0001 à 0015** : Toutes les fonctionnalités du thème doivent être implémentées et testées
+- **CI/CD** : Le workflow GitHub Actions doit créer des artefacts de build valides
+- **Validation Checklist** : `doc/validation-checklist.md` doit être complète
 
 ## Contexte
 
-Le site WordPress existe déjà avec du contenu (pages, articles, événements). L'activation du nouveau thème remplace uniquement la couche de présentation. Les contenus restent en base de données.
+Le site WordPress existe déjà à l'adresse https://www.latelierkiyose.fr/ avec du contenu (pages, articles, événements). L'activation du nouveau thème remplace uniquement la couche de présentation. Les contenus restent en base de données.
+
+**Important** : Il s'agit d'une **migration de thème**, pas d'un nouveau site. Toutes les données existantes doivent être préservées.
 
 ## Procédure d'activation
 
@@ -26,10 +30,20 @@ Le site WordPress existe déjà avec du contenu (pages, articles, événements).
 
 ### Étape 2 — Installation du thème
 
-- [ ] Télécharger l'artefact ZIP depuis GitHub Actions (dernière version validée par la CI)
-- [ ] Uploader l'artefact dans `wp-content/themes/` via SFTP
-- [ ] Extraire l'archive
-- [ ] Vérifier que le dossier `latelierkiyose/` est présent dans `wp-content/themes/`
+**Récupération de l'artefact** :
+- [ ] Aller sur la page [Releases du repository GitHub](https://github.com/latelierkiyose/wp-theme-v2/releases)
+- [ ] Télécharger le dernier build pré-release (format: `latelierkiyose-theme-YYYY-MM-DD-xxxxxxx.zip`)
+- [ ] **NE PAS télécharger** "Source code (zip)" ou "Source code (tar.gz)"
+- [ ] Vérifier que le fichier ZIP contient bien le dossier `latelierkiyose/`
+
+**Installation sur le serveur** :
+- [ ] Se connecter au serveur via SFTP/SSH
+- [ ] Naviguer vers `wp-content/themes/`
+- [ ] Uploader le fichier ZIP
+- [ ] Extraire l'archive : `unzip latelierkiyose-theme-*.zip`
+- [ ] Vérifier que le dossier `wp-content/themes/latelierkiyose/` existe
+- [ ] Vérifier les permissions : `chmod -R 755 latelierkiyose/`
+- [ ] Supprimer le fichier ZIP : `rm latelierkiyose-theme-*.zip`
 
 ### Étape 3 — Vérification pré-activation
 
@@ -80,40 +94,61 @@ Le site WordPress existe déjà avec du contenu (pages, articles, événements).
 
 ### Étape 6 — Validation complète
 
-Exécuter la checklist de `doc/validation-checklist.md` :
+Utiliser le script de validation automatique :
+
+```bash
+# Depuis le répertoire du thème sur le serveur
+php bin/validate-production.php
+```
+
+Ou exécuter manuellement la checklist de `doc/validation-checklist.md` :
 
 **Accessibilité** :
-- [ ] axe DevTools : 0 violation sur les pages principales
-- [ ] Navigation clavier complète testée
-- [ ] Contrastes validés
+- [ ] axe DevTools : 0 violation sur toutes les pages (homepage, services, contact, à propos, calendrier, blog, single article)
+- [ ] Navigation clavier complète testée sur toutes les pages
+- [ ] Contrastes validés (WebAIM Contrast Checker)
 - [ ] Skip link fonctionnel
-- [ ] Formulaires accessibles
+- [ ] Formulaires accessibles (CF7, Brevo)
+- [ ] Menu mobile accessible (focus trap, Esc, aria-labels)
+- [ ] Carousel témoignages accessible (pause/play, flèches clavier)
 
 **Performance** :
-- [ ] Lighthouse Performance ≥ 90
+- [ ] Lighthouse Performance ≥ 90 sur toutes les pages principales
 - [ ] LCP < 2.5s
 - [ ] CLS < 0.1
 - [ ] INP < 200ms
+- [ ] Images optimisées et lazy loading activé
+- [ ] Aucune erreur Console JavaScript
 
 **Fonctionnel** :
-- [ ] Toutes les pages s'affichent correctement
-- [ ] Tous les formulaires fonctionnent (contact, newsletter, réservation)
-- [ ] Menu desktop et mobile fonctionnels
+- [ ] Homepage : hero, 4 piliers, témoignages, actualités, newsletter
+- [ ] Pages de service : header hero, contenu, CTAs
+- [ ] Page contact : formulaire CF7 + sidebar informations
+- [ ] Page à propos : contenu + images
+- [ ] Page calendrier : événements Events Manager affichés
+- [ ] Blog : archive articles, single article, navigation
 - [ ] Recherche fonctionnelle
 - [ ] Page 404 fonctionnelle
-- [ ] Blog et articles fonctionnels
-- [ ] Événements Events Manager fonctionnels
+- [ ] Tous les formulaires fonctionnent et envoient correctement
+- [ ] Menu desktop et mobile fonctionnels
+- [ ] Footer : réseaux sociaux, newsletter Brevo, liens légaux
 
 **Responsive** :
-- [ ] Test sur mobile 320px, 375px, 414px
-- [ ] Test sur tablet 768px
-- [ ] Test sur desktop 1024px, 1440px, 1920px
+- [ ] Test mobile 320px (iPhone SE)
+- [ ] Test mobile 375px (iPhone 12/13)
+- [ ] Test mobile 414px (iPhone Pro Max)
+- [ ] Test tablet 768px (iPad portrait)
+- [ ] Test desktop 1024px
+- [ ] Test desktop 1440px
+- [ ] Test desktop 1920px
+- [ ] Aucun scroll horizontal
+- [ ] Touch targets ≥ 44x44px
 
 **Navigateurs** :
-- [ ] Chrome
-- [ ] Firefox
-- [ ] Safari
-- [ ] iOS Safari
+- [ ] Chrome (dernière version)
+- [ ] Firefox (dernière version)
+- [ ] Safari (dernière version)
+- [ ] iOS Safari (iPhone/iPad)
 - [ ] Chrome Android
 
 **Conformité légale** :
@@ -121,6 +156,7 @@ Exécuter la checklist de `doc/validation-checklist.md` :
 - [ ] Politique de confidentialité présente
 - [ ] SIRET affiché dans le footer
 - [ ] Bannière cookies fonctionnelle (Complianz)
+- [ ] CGV si applicable
 
 ### Étape 7 — Plan de rollback
 
@@ -136,6 +172,60 @@ Si l'admin n'est pas accessible :
 
 ## Hors périmètre
 
-- Monitoring post-lancement (Google Analytics, Search Console)
-- Formation utilisateur
-- Optimisations de performance avancées post-lancement
+- Monitoring post-lancement (Google Analytics, Search Console) — configuration à faire par le client
+- Formation utilisateur — à planifier séparément
+- Optimisations de performance avancées post-lancement (CDN, cache avancé)
+- Migration de contenu (le contenu existe déjà)
+- Configuration des plugins tiers (Events Manager, Brevo, CF7, Complianz)
+
+## Livrables
+
+- ✅ PRD 0016 finalisé et documenté
+- ✅ Script de validation pré-activation : `bin/validate-production.php`
+- ✅ Guide de déploiement détaillé : `doc/deployment-guide.md`
+- ✅ Checklist d'activation imprimable : incluse dans ce PRD
+
+## Critères de succès
+
+- [ ] Thème activé sur production sans erreur
+- [ ] Toutes les pages affichées correctement
+- [ ] 0 violation accessibilité sur axe DevTools
+- [ ] Performance Lighthouse ≥ 90
+- [ ] Tous les formulaires fonctionnels
+- [ ] Navigation complète fonctionnelle
+- [ ] Responsive validé sur tous les breakpoints
+- [ ] Tests navigateurs validés
+- [ ] Aucune régression de contenu
+
+## Notes techniques
+
+### Compatibilité plugins requis
+
+Le thème nécessite les plugins suivants pour être pleinement fonctionnel :
+
+- **Contact Form 7** : Formulaire de contact
+- **Brevo (Sendinblue)** : Newsletter footer + homepage
+- **Events Manager** : Calendrier et réservations
+- **Complianz** : Bannière cookies RGPD (optionnel mais recommandé)
+- **Yoast SEO** ou **Rank Math** : SEO (optionnel mais recommandé)
+
+### Structure des menus
+
+Le thème utilise un emplacement de menu :
+- `primary` : Menu principal (header desktop + mobile)
+
+### Templates personnalisés
+
+Les templates suivants doivent être assignés manuellement :
+- `templates/page-home.php` → Page d'accueil
+- `templates/page-services.php` → Art-thérapie, Rigologie, Bols tibétains, Ateliers philosophie
+- `templates/page-contact.php` → Page Contact
+- `templates/page-about.php` → Page À propos
+- `templates/page-calendar.php` → Page Calendrier & Tarifs
+
+### Shortcodes utilisés
+
+- `[kiyose_testimonials display="carousel"]` : Sur la homepage
+- `[events_list]` ou autre shortcode Events Manager : Sur page calendrier
+- `[contact-form-7 id="XXX"]` : Sur page contact
+- `[brevo_form id="X"]` : Dans footer et homepage (section newsletter)

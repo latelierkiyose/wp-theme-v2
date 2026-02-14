@@ -2,7 +2,8 @@
 
 ## Statut du projet
 
-**État actuel**: PRD 0015 terminé — CI/CD et déploiement
+**État actuel**: PRD 0016 terminé — Activation et pré-production  
+**Statut global**: ✅ PRÊT POUR PRODUCTION
 - Squelette du thème: ✅ Opérationnel (PRD 0001)
 - Design tokens: ✅ Implémentés (PRD 0002)
   - Variables CSS: couleurs, typographie, espacements, animations
@@ -138,11 +139,25 @@
   - Job de build: Création d'artefact ZIP déployable
   - Build déclenché uniquement sur push vers main
   - Artefact ZIP excluant tests et fichiers de dev
-  - Rétention des artefacts: 30 jours
+  - Rétention des releases: 5 dernières (cleanup automatique)
   - Support des branches main et develop
   - Validation Composer en amont des tests
+  - Releases GitHub avec artefacts téléchargeables
+- Activation et pré-production: ✅ Terminé (PRD 0016)
+  - Documentation complète de la procédure d'activation
+  - Guide de déploiement détaillé (doc/deployment-guide.md)
+  - Script de validation pré-production (bin/validate-production.php)
+  - Rapport de validation complet (doc/validation-report.md)
+  - Checklist d'activation en 7 étapes
+  - Plan de rollback documenté
+  - Tests PHPCS: ✅ PASS (0 erreurs, 0 warnings)
+  - Validation de tous les fichiers requis
+  - Validation accessibilité WCAG 2.2 AA (structure, navigation, ARIA)
+  - Validation sécurité (sanitization, escaping, nonces)
+  - Documentation intégrations plugins (CF7, Brevo, Events Manager)
+  - Recommandations post-déploiement (monitoring, SEO, performance)
 - Configuration: ✅ PHPCS, Composer, CI/CD GitHub Actions
-- Prochaines étapes: Tests finaux et optimisations pré-production
+- **Statut final**: ✅ PRÊT POUR PRODUCTION — Tous les PRDs (0001-0016) terminés
 
 
 ## Contexte
