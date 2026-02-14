@@ -2,7 +2,7 @@
 
 ## Statut du projet
 
-**État actuel**: PRD 0003 terminé — Layout et navigation desktop implémentés
+**État actuel**: PRD 0004 terminé — Menu mobile implémenté
 - Squelette du thème: ✅ Opérationnel (PRD 0001)
 - Design tokens: ✅ Implémentés (PRD 0002)
   - Variables CSS: couleurs, typographie, espacements, animations
@@ -16,8 +16,16 @@
   - Landmarks ARIA (banner, navigation, main, contentinfo)
   - Dropdowns accessibles au clavier avec ARIA
   - Responsive desktop (≥1024px)
+- Menu mobile: ✅ Implémenté (PRD 0004)
+  - Bouton hamburger avec animation en croix
+  - Menu slide-in depuis la droite avec overlay
+  - Focus trap complet (Tab/Shift+Tab)
+  - Fermeture par Esc, clic overlay, ou bouton fermer
+  - Verrouillage du scroll body
+  - Respect de prefers-reduced-motion
+  - Navigation ARIA complète
 - Configuration: ✅ PHPCS, Composer, CI/CD GitHub Actions
-- Prochaines étapes: Implémenter PRD 0004 (Menu mobile)
+- Prochaines étapes: Implémenter PRD 0005 (Templates de base)
 
 
 ## Contexte

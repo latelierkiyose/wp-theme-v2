@@ -45,12 +45,36 @@
 			?>
 		</nav>
 
-		<button class="hamburger-button" aria-label="<?php esc_attr_e( 'Menu', 'kiyose' ); ?>" aria-expanded="false" aria-controls="mobile-menu">
+		<button class="hamburger-button" aria-label="<?php esc_attr_e( 'Ouvrir le menu de navigation', 'kiyose' ); ?>" aria-expanded="false" aria-controls="mobile-menu">
 			<span class="hamburger-button__line"></span>
 			<span class="hamburger-button__line"></span>
 			<span class="hamburger-button__line"></span>
 		</button>
 	</div>
 </header>
+
+<!-- Mobile Menu Overlay -->
+<div class="mobile-menu-overlay" aria-hidden="true"></div>
+
+<!-- Mobile Menu -->
+<div id="mobile-menu" class="mobile-menu" aria-hidden="true" role="dialog" aria-label="<?php esc_attr_e( 'Menu de navigation', 'kiyose' ); ?>">
+	<button class="mobile-menu__close" aria-label="<?php esc_attr_e( 'Fermer le menu de navigation', 'kiyose' ); ?>">
+		<span class="mobile-menu__close-icon" aria-hidden="true">×</span>
+	</button>
+
+	<nav aria-label="<?php esc_attr_e( 'Menu principal', 'kiyose' ); ?>">
+		<?php
+		wp_nav_menu(
+			array(
+				'theme_location' => 'primary',
+				'menu_class'     => 'mobile-menu__list',
+				'container'      => false,
+				'depth'          => 2,
+				'fallback_cb'    => false,
+			)
+		);
+		?>
+	</nav>
+</div>
 
 <main id="main-content" role="main">
