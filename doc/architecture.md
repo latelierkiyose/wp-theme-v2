@@ -318,3 +318,141 @@ function my_custom_function( $post_id ) {
 	// Code personnalisé
 }
 ```
+
+## CI/CD et déploiement
+
+### Intégration Continue (GitHub Actions)
+
+**Principe**: Tous les commits/pull requests doivent passer par la CI avant déploiement.
+
+**Pipeline CI** (`.github/workflows/ci.yml`):
+
+```yaml
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          
+      - name: Install dependencies
+        run: composer install
+        
+      - name: Run WPCS
+        run: ./vendor/bin/phpcs --standard=WordPress latelierkiyose/
+        
+      - name: Run PHPUnit tests
+        run: ./vendor/bin/phpunit
+        
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Build theme artifact
+        run: |
+          cd latelierkiyose
+          # Nettoyer les fichiers de développement
+          rm -rf tests/ .gitignore
+          cd ..
+          # Créer l'archive ZIP
+          zip -r latelierkiyose-${{ github.sha }}.zip latelierkiyose/
+          
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: theme-build
+          path: latelierkiyose-*.zip
+          retention-days: 30
+```
+
+### Artefact de build
+
+**Format**: Archive ZIP du thème (`latelierkiyose-{version}.zip`)
+
+**Contenu de l'artefact**:
+- Tous les fichiers du thème (`latelierkiyose/`)
+- **Exclusions**:
+  - Fichiers de tests (`tests/`)
+  - Fichiers de configuration de développement (`.gitignore`, `.phpcs.xml`, etc.)
+  - Dépendances de développement Composer (`vendor/` de dev)
+
+**Nommage**:
+- Format: `latelierkiyose-{git-sha}.zip` (CI)
+- Format release: `latelierkiyose-{version}.zip` (ex: `latelierkiyose-1.0.0.zip`)
+
+**Stockage**:
+- Artefacts CI: GitHub Actions artifacts (rétention 30 jours)
+- Releases: GitHub Releases (permanent)
+
+### Déploiement en production
+
+**Principe**: Seul l'artefact ZIP validé par la CI est déployé en production.
+
+**Workflow**:
+1. Code poussé sur `main` → CI s'exécute
+2. Tests passent → Artefact ZIP créé
+3. Téléchargement de l'artefact depuis GitHub Actions
+4. Upload sur le serveur WordPress via SFTP/FTP
+5. Extraction et activation du thème
+
+**Commandes de déploiement** (exemple):
+```bash
+# Télécharger l'artefact depuis GitHub Actions
+gh run download {run-id} -n theme-build
+
+# Upload SFTP vers production
+sftp user@server:/path/to/wordpress/wp-content/themes/
+put latelierkiyose-{version}.zip
+
+# Sur le serveur (SSH)
+cd /path/to/wordpress/wp-content/themes/
+unzip -o latelierkiyose-{version}.zip
+rm latelierkiyose-{version}.zip
+```
+
+**Sécurité**:
+- Ne jamais déployer directement depuis le repo Git
+- Toujours passer par l'artefact validé
+- Vérifier les checksums si possible
+
+### Versioning
+
+**Stratégie**: Semantic Versioning (SemVer)
+
+**Format**: `MAJOR.MINOR.PATCH` (ex: `1.2.3`)
+
+- **MAJOR**: Changements incompatibles (breaking changes)
+- **MINOR**: Nouvelles fonctionnalités (backward-compatible)
+- **PATCH**: Corrections de bugs
+
+**Mise à jour version**:
+```css
+/* style.css */
+/*
+Theme Name: L'Atelier Kiyose
+Version: 1.2.3
+*/
+```
+
+**Tags Git**:
+```bash
+git tag -a v1.2.3 -m "Release 1.2.3"
+git push origin v1.2.3
+```

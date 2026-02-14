@@ -25,6 +25,33 @@ docker compose up --build
 - **Admin**: http://127.0.0.1:8000/wp-admin
 - **Identifiants**: Configurés lors de la première installation
 
+### Validation et tests
+```bash
+# Vérifier les standards WordPress
+./vendor/bin/phpcs --standard=WordPress latelierkiyose/
+
+# Corriger automatiquement (quand possible)
+./vendor/bin/phpcbf --standard=WordPress latelierkiyose/
+
+# Exécuter les tests unitaires
+./vendor/bin/phpunit
+```
+
+### CI/CD
+```bash
+# Les commits/PR déclenchent automatiquement la CI (GitHub Actions)
+# La CI exécute : WPCS, PHPUnit, build de l'artefact ZIP
+
+# Télécharger un artefact de build (nécessite gh CLI)
+gh run download {run-id} -n theme-build
+
+# Créer un tag de release
+git tag -a v1.0.0 -m "Release 1.0.0"
+git push origin v1.0.0
+```
+
+**Important**: Seul l'artefact ZIP créé par la CI doit être déployé en production.
+
 ## Structure de fichiers (fichiers clés uniquement)
 
 ```
@@ -122,6 +149,12 @@ latelierkiyose/
    - Exécuter tous les tests
    - Valider l'accessibilité (axe)
    - Vérifier la performance (Lighthouse)
+
+4. **Déploiement en production**:
+   - Pousser sur `main` → CI s'exécute automatiquement
+   - Tests passent → Artefact ZIP créé
+   - Télécharger l'artefact validé depuis GitHub Actions
+   - Déployer UNIQUEMENT l'artefact ZIP (jamais directement depuis Git)
 
 ## Fonctions WordPress courantes
 
