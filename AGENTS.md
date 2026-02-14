@@ -73,49 +73,50 @@ Ancien thème: https://github.com/latelierkiyose/wp-theme
 ### Structure des fichiers
 ```
 wp-theme-v2/
-├── style.css              # Stylesheet principal + métadonnées du thème
-├── screenshot.png         # Capture d'écran du thème (1200x900px recommandé)
-├── functions.php          # Fonctions et hooks du thème (charge les fichiers inc/)
-├── index.php              # Template par défaut (fallback)
-├── header.php             # En-tête du site
-├── footer.php             # Pied de page
-├── 404.php                # Page d'erreur 404
-├── search.php             # Résultats de recherche
-│
-├── templates/             # Templates de pages (avec header "Template Name:")
-│   ├── page-home.php         # Page d'accueil
-│   ├── page-services.php     # Template services génériques
-│   ├── page-contact.php      # Page contact
-│   ├── page-about.php        # Page à propos
-│   └── page-calendar.php     # Calendrier/Tarifs
-│
-├── single.php             # Template article unique
-├── archive.php            # Template archives blog
-├── page.php               # Template page par défaut
-│
-├── assets/
-│   ├── css/
-│   │   ├── main.css          # Styles principaux (mobile-first, media queries colocalisées)
-│   │   └── components/       # Composants réutilisables
-│   ├── js/
-│   │   ├── main.js           # JavaScript principal
-│   │   └── modules/          # Modules JS
-│   ├── fonts/                # Polices auto-hébergées (RGPD)
-│   └── images/               # Images du thème
-│
-├── inc/                   # Fonctionnalités PHP modulaires
-│   ├── setup.php             # Configuration du thème
-│   ├── enqueue.php           # Chargement des assets
-│   ├── custom-post-types.php # CPT Témoignages
-│   ├── customizer.php        # Options du customizer
-│   └── accessibility.php     # Fonctions accessibilité
-│
-├── template-parts/        # Parties de templates réutilisables
-│   ├── content-service.php   # Affichage d'un service
-│   ├── content-testimony.php # Affichage témoignage
-│   └── content-blog.php      # Affichage article blog
-│
-└── tests/                 # Tests unitaires PHP
+└── latelierkiyose/        # Thème WordPress
+    ├── style.css              # Stylesheet principal + métadonnées du thème
+    ├── screenshot.png         # Capture d'écran du thème (1200x900px recommandé)
+    ├── functions.php          # Fonctions et hooks du thème (charge les fichiers inc/)
+    ├── index.php              # Template par défaut (fallback)
+    ├── header.php             # En-tête du site
+    ├── footer.php             # Pied de page
+    ├── 404.php                # Page d'erreur 404
+    ├── search.php             # Résultats de recherche
+    │
+    ├── templates/             # Templates de pages (avec header "Template Name:")
+    │   ├── page-home.php         # Page d'accueil
+    │   ├── page-services.php     # Template services génériques
+    │   ├── page-contact.php      # Page contact
+    │   ├── page-about.php        # Page à propos
+    │   └── page-calendar.php     # Calendrier/Tarifs
+    │
+    ├── single.php             # Template article unique
+    ├── archive.php            # Template archives blog
+    ├── page.php               # Template page par défaut
+    │
+    ├── assets/
+    │   ├── css/
+    │   │   ├── main.css          # Styles principaux (mobile-first, media queries colocalisées)
+    │   │   └── components/       # Composants réutilisables
+    │   ├── js/
+    │   │   ├── main.js           # JavaScript principal
+    │   │   └── modules/          # Modules JS
+    │   ├── fonts/                # Polices auto-hébergées (RGPD)
+    │   └── images/               # Images du thème
+    │
+    ├── inc/                   # Fonctionnalités PHP modulaires
+    │   ├── setup.php             # Configuration du thème
+    │   ├── enqueue.php           # Chargement des assets
+    │   ├── custom-post-types.php # CPT Témoignages
+    │   ├── customizer.php        # Options du customizer
+    │   └── accessibility.php     # Fonctions accessibilité
+    │
+    ├── template-parts/        # Parties de templates réutilisables
+    │   ├── content-service.php   # Affichage d'un service
+    │   ├── content-testimony.php # Affichage témoignage
+    │   └── content-blog.php      # Affichage article blog
+    │
+    └── tests/                 # Tests unitaires PHP
 ```
 
 ### Stack technique
