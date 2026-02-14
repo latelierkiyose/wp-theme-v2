@@ -2,7 +2,7 @@
 
 ## Statut du projet
 
-**État actuel**: PRD 0013 terminé — Intégrations plugins (Brevo newsletter)
+**État actuel**: PRD 0014 terminé — Kintsugi et finitions visuelles
 - Squelette du thème: ✅ Opérationnel (PRD 0001)
 - Design tokens: ✅ Implémentés (PRD 0002)
   - Variables CSS: couleurs, typographie, espacements, animations
@@ -115,8 +115,25 @@
   - Enqueue conditionnel (charge uniquement sur page-calendar.php)
   - Responsive: Grille 1 col mobile → 2 cols tablet → 3 cols desktop, calendrier masqué sur mobile
   - WCAG 2.2 AA: Contrastes validés, navigation clavier, focus visible, touch targets appropriés
+- Intégrations plugins: ✅ Implémentées (PRD 0013)
+  - Intégration Brevo newsletter dans footer et homepage
+  - Styles CSS: brevo-override.css, plugins-common.css
+  - Override complet des styles Brevo pour cohérence avec design system
+  - Formulaire responsive et accessible (WCAG 2.2 AA)
+  - Enqueue global (footer présent partout)
+- Kintsugi et finitions visuelles: ✅ Implémentés (PRD 0014)
+  - Éléments décoratifs Kintsugi: séparateurs dorés, overlays vitrail, bulles décoratives
+  - Styles CSS: kintsugi.css, animations.css
+  - Séparateurs dorés entre sections de la homepage (inspiration fissures réparées à l'or)
+  - Overlay vitrail sur hero section (métaphore "être humain comme vitrail")
+  - Bulles SVG décoratives sur cartes de services (apparition au hover/focus)
+  - Animations et transitions globales: boutons, cartes, liens (hover effects)
+  - Respect complet de prefers-reduced-motion (WCAG 2.2 AA)
+  - Alternance de fonds entre sections (blanc / beige clair / taupe rosé léger)
+  - Tous les éléments décoratifs marqués aria-hidden="true"
+  - WCAG 2.2 AA: Aucune information transmise uniquement par couleur/décoration
 - Configuration: ✅ PHPCS, Composer, CI/CD GitHub Actions
-- Prochaines étapes: Intégrations plugins (PRD 0013)
+- Prochaines étapes: Tests finaux et optimisations pré-production
 
 
 ## Contexte

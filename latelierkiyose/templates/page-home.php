@@ -35,7 +35,7 @@ get_header();
 
 	$kiyose_has_image = ! empty( $kiyose_hero_image_id );
 	?>
-	<section class="hero-section<?php echo $kiyose_has_image ? ' hero-section--with-image' : ''; ?>" aria-label="Présentation de l'atelier">
+	<section class="hero-section hero-section--with-overlay<?php echo $kiyose_has_image ? ' hero-section--with-image' : ''; ?>" aria-label="Présentation de l'atelier">
 		<div class="hero-section__inner">
 			<?php if ( $kiyose_has_image ) : ?>
 				<div class="hero-section__image">
@@ -53,6 +53,8 @@ get_header();
 			</div>
 		</div>
 	</section>
+
+	<div class="section-divider section-divider--beige-to-white" role="presentation" aria-hidden="true"></div>
 
 	<!-- Section 4 Piliers -->
 	<section class="home-services" aria-labelledby="services-title">
@@ -80,8 +82,10 @@ get_header();
 		</div>
 	</section>
 
+	<div class="section-divider section-divider--white-to-tinted" role="presentation" aria-hidden="true"></div>
+
 	<!-- Section Prochaines Dates -->
-	<section class="home-events" aria-labelledby="events-title">
+	<section class="home-events section--tinted" aria-labelledby="events-title">
 		<h2 id="events-title" class="home-events__title">Prochaines dates</h2>
 		<div class="home-events__list">
 			<?php
@@ -103,6 +107,8 @@ get_header();
 			Voir tout le calendrier
 		</a>
 	</section>
+
+	<div class="section-divider section-divider--tinted-to-white" role="presentation" aria-hidden="true"></div>
 
 	<!-- Section Témoignages (Carousel) -->
 	<section class="home-testimonials" aria-labelledby="testimonials-title">
@@ -153,8 +159,10 @@ get_header();
 		?>
 	</section>
 
+	<div class="section-divider section-divider--white-to-tinted" role="presentation" aria-hidden="true"></div>
+
 	<!-- Section Newsletter -->
-	<section class="home-newsletter" aria-labelledby="newsletter-title">
+	<section class="home-newsletter section--tinted" aria-labelledby="newsletter-title">
 		<div class="home-newsletter__content">
 			<h2 id="newsletter-title" class="home-newsletter__title">Restez informé·e</h2>
 			<p class="home-newsletter__description">
@@ -181,6 +189,8 @@ get_header();
 			?>
 		</div>
 	</section>
+
+	<div class="section-divider section-divider--tinted-to-beige" role="presentation" aria-hidden="true"></div>
 
 	<!-- Section Actualités (Blog) -->
 	<section class="home-blog" aria-labelledby="blog-title">

@@ -1,0 +1,111 @@
+/**
+ * Global Animations & Transitions
+ *
+ * Defines smooth transitions for interactive elements throughout the site.
+ * All animations respect prefers-reduced-motion for accessibility.
+ *
+ * @package Kiyose
+ * @since   0.1.14
+ */
+
+/* ============================================
+   BUTTON TRANSITIONS
+   ============================================ */
+
+/**
+ * Button hover effects.
+ * Subtle lift animation on hover.
+ */
+@media (prefers-reduced-motion: no-preference) {
+	.button,
+	.button--primary,
+	.button--secondary {
+		transition: background-color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+	}
+
+	.button:hover,
+	.button--primary:hover,
+	.button--secondary:hover {
+		transform: translateY(-2px);
+	}
+}
+
+/* ============================================
+   CARD TRANSITIONS
+   ============================================ */
+
+/**
+ * Card hover effects.
+ * Lift with enhanced shadow for depth.
+ */
+@media (prefers-reduced-motion: no-preference) {
+	.blog-card,
+	.service-card,
+	.testimony-card,
+	.card {
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
+	}
+
+	.blog-card:hover,
+	.service-card:hover,
+	.testimony-card:hover,
+	.card:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+	}
+}
+
+/* ============================================
+   LINK TRANSITIONS
+   ============================================ */
+
+/**
+ * Link color transitions.
+ * Smooth color change for all interactive links.
+ */
+@media (prefers-reduced-motion: no-preference) {
+	a,
+	.site-header a,
+	.site-footer a {
+		transition: color 0.2s ease;
+	}
+}
+
+/* ============================================
+   FORM INPUT TRANSITIONS
+   ============================================ */
+
+/**
+ * Form field focus transitions.
+ * Smooth border and shadow changes.
+ */
+@media (prefers-reduced-motion: no-preference) {
+	input[type="text"],
+	input[type="email"],
+	input[type="tel"],
+	input[type="url"],
+	input[type="search"],
+	textarea,
+	select {
+		transition: border-color 0.2s ease, box-shadow 0.2s ease;
+	}
+}
+
+/* ============================================
+   GLOBAL REDUCED MOTION OVERRIDE
+   ============================================ */
+
+/**
+ * Disable all animations and transitions for users who prefer reduced motion.
+ * CRITICAL for WCAG 2.2 AA compliance (2.3.3 Animation from Interactions).
+ */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}

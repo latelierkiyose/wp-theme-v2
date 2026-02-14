@@ -45,7 +45,7 @@
    ============================================ */
 
 .home-events {
-	background-color: var(--color-background);
+	/* Background handled by .section--tinted class in page-home.php */
 	text-align: center;
 }
 
@@ -97,7 +97,7 @@
    ============================================ */
 
 .home-newsletter {
-	background-color: var(--color-secondary);
+	/* Background handled by .section--tinted class in page-home.php */
 	text-align: center;
 }
 
