@@ -51,6 +51,21 @@ Si vous n'avez pas PHP installé localement, utilisez les wrappers Docker :
 ./bin/phpcbf.sh                     # PHPCBF via Docker
 ```
 
+## Chargement des données de production
+
+1. Télécharger le répertoire `uploads` depuis l'environnement à recopier
+2. Charger un dump de la base de données
+3. Changer l'URL de base
+```sql
+UPDATE `wp_akiy_options` SET `option_value` = 'http://localhost:8000' WHERE `option_name` = 'siteurl'; 
+UPDATE `wp_akiy_options` SET `option_value` = 'http://localhost:8000' WHERE `option_name` = 'home'; 
+```
+4. Réinitialiser le mot de passe
+```sql
+UPDATE `wp_akiy_users` SET `user_pass` = MD5('<new password>') WHERE `user_login` = '<user>'; 
+```
+
+
 ## 📦 Structure du projet
 
 ```
