@@ -1,20 +1,20 @@
 # Fonctionnalités
 
-## 1. Page d'accueil (Homepage)
+## 1. Page d'accueil
 
 **Template**: `templates/page-home.php`
 
 **Sections:**
-- **Hero** - Présentation de Virginie et de l'atelier avec CTA principal
+- **Hero** - Présentation de Virginie et de l'atelier avec appel à l'action principal
 - **Les 4 Piliers** - Cartes cliquables vers chaque service (Art-thérapie, Rigologie, Bols tibétains, Philo)
 - **Prochaines dates** - Widget Events Manager avec 3-4 prochains événements
-- **Témoignages** - Carousel ou grille de 3 témoignages récents
+- **Témoignages** - Carrousel ou grille de 3 témoignages récents
 - **Newsletter** - Formulaire d'inscription Brevo (email, prénom, nom optionnel)
 - **Actualités** - 3 derniers articles du blog
 
 ## 2. Pages Services (4 piliers)
 
-**Templates**: Pages individuelles avec `page.php` ou template custom par service
+**Templates**: Pages individuelles avec `page.php` ou template personnalisé par service
 
 **Structure commune:**
 - Titre du service avec sous-titre descriptif
@@ -22,12 +22,12 @@
 - Bénéfices / Approche / Méthodologie
 - Formats et durées proposés
 - Tarifs indicatifs
-- CTA vers contact/calendrier
+- Appel à l'action vers contact/calendrier
 - Galerie photos (optionnel)
 
 **Services à créer:**
 1. **Art-thérapie** - Programmes spécialisés (Burn-out, Deuil, "Oser être soi", Enfant intérieur)
-2. **Rigologie/Yoga du rire** - Include "Silence Kiyose" (expérience casques audio)
+2. **Rigologie/Yoga du rire** - Inclut "Silence Kiyose" (expérience casques audio)
 3. **Bols tibétains** - Journées sonores + massage individuel
 4. **Ateliers Philosophie** - Format débat + variante "Philo-Art"
 
@@ -65,10 +65,10 @@
 - Cartes de citations
 - Attribution (prénom, contexte: individu/entreprise/structure)
 
-**Implémentation**: Custom Post Type `kiyose_testimony` (déclaré dans `inc/custom-post-types.php`)
+**Implémentation**: Type de contenu personnalisé (Custom Post Type) `kiyose_testimony` (déclaré dans `inc/custom-post-types.php`)
 - Champs: citation (contenu), prénom, contexte (individu/entreprise/structure)
 - Pas d'archive publique dédiée (affichés via template parts sur homepage et page témoignages)
-- Query custom dans les templates pour afficher les témoignages
+- Requête personnalisée dans les templates pour afficher les témoignages
 
 ## 6. À Propos
 
@@ -86,17 +86,8 @@
 **Template**: `templates/page-contact.php`
 
 **Éléments:**
-- Formulaire de contact avec validation
-  - Nom (requis)
-  - Email (requis)
-  - Message (requis)
-  - Protection reCAPTCHA ou honeypot
-- Informations de contact:
-  - Cabinet principal: Le Grand Vron, 86510 Brux
-  - Ateliers également proposés à Poitiers
-  - Séances en ligne disponibles
-  - Téléphone: 06 58 37 32 05
-  - SIRET: 49219620900026
+- Formulaire de contact avec validation (Contact Form 7)
+- **Informations de contact**: Voir `references/business-info.json` pour coordonnées complètes
 - Liens réseaux sociaux
 - Carte Google Maps (optionnel)
 
@@ -125,10 +116,10 @@
 
 **Menu mobile (hamburger):**
 - Bouton hamburger avec `aria-expanded="false/true"` et `aria-controls="mobile-menu"`
-- Ouverture: overlay plein écran ou slide-in depuis la droite
-- Focus trap activé quand le menu est ouvert (Tab circule uniquement dans le menu)
-- `body` scroll verrouillé quand le menu est ouvert (`overflow: hidden`)
-- Fermeture: bouton close, touche Esc, ou clic sur overlay
+- Ouverture: surcouche plein écran ou glissement depuis la droite (slide-in)
+- Piège de focus activé quand le menu est ouvert (Tab circule uniquement dans le menu)
+- Défilement du `body` verrouillé quand le menu est ouvert (`overflow: hidden`)
+- Fermeture: bouton close, touche Échap, ou clic sur surcouche
 - Retour du focus sur le bouton hamburger à la fermeture
 - Transition: 200-300ms, respecte `prefers-reduced-motion`
 
@@ -166,9 +157,7 @@
 **Template**: `page.php` (pages WordPress standard)
 
 **Contenu obligatoire (loi LCEN, France):**
-- Identité: Virginie Le Mignon, L'atelier Kiyose
-- SIRET: 49219620900026
-- Adresse: Le Grand Vron, 86510 Brux
+- Voir `references/business-info.json` pour informations légales complètes
 - Hébergeur: nom, adresse, contact
 - Responsable de publication
 - Politique de confidentialité (RGPD): données collectées, finalités, durée de conservation, droits des utilisateurs

@@ -1,5 +1,12 @@
 # L'Atelier Kiyose - Thème WordPress v2
 
+## Statut du projet
+
+**État actuel**: Phase de configuration initiale
+- Structure du thème: À créer
+- Fichiers implémentés: Aucun
+- Prochaines étapes: Implémenter la structure de base du thème selon l'architecture définie
+
 ## Contexte
 
 L'Atelier Kiyose est un centre de bien-être et développement personnel situé à Brux (86510, Nouvelle-Aquitaine), animé par Virginie Le Mignon ("Happycultrice"). Le site propose 4 piliers de services:
@@ -18,12 +25,30 @@ Ancien thème: https://github.com/latelierkiyose/wp-theme
 
 ## Documentation détaillée
 
+**Langue de la documentation**: Toute la documentation est rédigée en français. Les termes techniques peuvent rester en anglais lorsqu'ils sont communément utilisés dans l'écosystème WordPress/web (exemples : overlay, CTA, design system, prepared statement, focus trap, lazy loading, callback, hook, template, etc.).
+
 Pour plus d'informations, consulter les documents suivants dans `doc/`:
+
+### Démarrage rapide
+- **[Référence rapide](doc/quick-reference.md)** - Commandes essentielles, structure de fichiers, standards critiques
+
+### Objectifs et spécifications
 - **[Objectif de la refonte](doc/goal.md)** - Problèmes à résoudre et critères de succès
 - **[Fonctionnalités](doc/features.md)** - Détail complet des pages et fonctionnalités
-- **[Design System](doc/design-system.md)** - Palette de couleurs, typographie, composants UI, identité Kintsugi
 - **[Ton et voix](doc/tone.md)** - Positionnement, valeurs, style éditorial
+
+### Architecture et standards
+- **[Architecture](doc/architecture.md)** - Structure des fichiers, stack technique, templates, conventions
+- **[Standards](doc/standards.md)** - WPCS, accessibilité WCAG 2.2 AA, sécurité, performance, tests
+- **[Design System](doc/design-system.md)** - Palette de couleurs, typographie, composants UI, identité Kintsugi
+
+### Intégrations et validation
 - **[Plugins & Intégrations](doc/integrations.md)** - Events Manager, Brevo, CF7, SEO, sécurité
+- **[Validation Checklist](doc/validation-checklist.md)** - Checklist complète pour validation des features et pré-production
+
+### Références
+- **[Exemples CSS](references/css-examples.css)** - Code CSS réutilisable (variables, composants, Kintsugi)
+- **[Informations entreprise](references/business-info.json)** - Données de contact et informations légales
 
 
 ## Environnement de développement local
@@ -40,6 +65,7 @@ docker compose up
 **Accès:**
 - Site WordPress: `http://127.0.0.1:8000`
 - Interface d'administration: `http://127.0.0.1:8000/wp-admin`
+- Credentials: Configurés lors de la première installation (voir variables d'environnement dans `docker-compose.yaml` si applicable)
 
 **Notes:**
 - Le thème est monté dans le container et accessible immédiatement
@@ -49,173 +75,114 @@ docker compose up
 
 ## Architecture Technique
 
-### Type de thème
-**Thème WordPress classique** avec templates PHP (pas de Block Theme/FSE).
+Pour la documentation complète de l'architecture, voir **[doc/architecture.md](doc/architecture.md)**.
 
-### Structure des fichiers
+### Résumé
+
+**Type de thème**: Thème WordPress classique avec templates PHP (pas de Block Theme/FSE)
+
+**Stack technique:**
+- PHP 8.1+, WordPress 6.7+
+- CSS natif moderne (variables, Grid, Flexbox)
+- Vanilla JS ES6+
+
+**Structure clé:**
 ```
-wp-theme-v2/
-└── latelierkiyose/        # Thème WordPress
-    ├── style.css              # Stylesheet principal + métadonnées du thème
-    ├── screenshot.png         # Capture d'écran du thème (1200x900px recommandé)
-    ├── functions.php          # Fonctions et hooks du thème (charge les fichiers inc/)
-    ├── index.php              # Template par défaut (fallback)
-    ├── header.php             # En-tête du site
-    ├── footer.php             # Pied de page
-    ├── 404.php                # Page d'erreur 404
-    ├── search.php             # Résultats de recherche
-    │
-    ├── templates/             # Templates de pages (avec header "Template Name:")
-    │   ├── page-home.php         # Page d'accueil
-    │   ├── page-services.php     # Template services génériques
-    │   ├── page-contact.php      # Page contact
-    │   ├── page-about.php        # Page à propos
-    │   └── page-calendar.php     # Calendrier/Tarifs
-    │
-    ├── single.php             # Template article unique
-    ├── archive.php            # Template archives blog
-    ├── page.php               # Template page par défaut
-    │
-    ├── assets/
-    │   ├── css/
-    │   │   ├── main.css          # Styles principaux (mobile-first, media queries colocalisées)
-    │   │   └── components/       # Composants réutilisables
-    │   ├── js/
-    │   │   ├── main.js           # JavaScript principal
-    │   │   └── modules/          # Modules JS
-    │   ├── fonts/                # Polices auto-hébergées (RGPD)
-    │   └── images/               # Images du thème
-    │
-    ├── inc/                   # Fonctionnalités PHP modulaires
-    │   ├── setup.php             # Configuration du thème
-    │   ├── enqueue.php           # Chargement des assets
-    │   ├── custom-post-types.php # CPT Témoignages
-    │   ├── customizer.php        # Options du customizer
-    │   └── accessibility.php     # Fonctions accessibilité
-    │
-    ├── template-parts/        # Parties de templates réutilisables
-    │   ├── content-service.php   # Affichage d'un service
-    │   ├── content-testimony.php # Affichage témoignage
-    │   └── content-blog.php      # Affichage article blog
-    │
-    └── tests/                 # Tests unitaires PHP
+latelierkiyose/
+├── functions.php
+├── style.css
+├── templates/          # Page templates
+├── inc/                # PHP modules
+├── assets/             # CSS, JS, fonts, images
+└── template-parts/     # Reusable parts
 ```
 
-### Stack technique
-- **PHP**: 8.1+ (dernière version stable)
-- **WordPress**: 6.7+ (dernière version)
-- **CSS**: CSS natif moderne (variables CSS, Grid, Flexbox) - Pas de framework lourd
-- **JavaScript**: Vanilla JS ES6+ - Bibliothèques minimales uniquement si nécessaire
-- **Build tools**: Optionnel (évaluer si npm/webpack nécessaire ou CSS/JS natif suffisant)
-
-### Templates WordPress utilisés
-| Template | Usage |
-|----------|-------|
-| `index.php` | Fallback général |
-| `header.php` | En-tête avec navigation |
-| `footer.php` | Pied de page avec réseaux sociaux |
-| `page.php` | Pages standards |
-| `single.php` | Articles de blog |
-| `archive.php` | Archives blog |
-| `search.php` | Résultats de recherche |
-| `404.php` | Page d'erreur 404 |
-| `templates/page-*.php` | Pages spécifiques (assignées via `Template Name:` dans l'admin WP) |
-
-> **Note** : Les fichiers dans `templates/` ne bénéficient pas de la résolution automatique par slug WordPress. Chaque fichier doit contenir un header `/* Template Name: Nom du template */` et être assigné manuellement dans l'éditeur de page WordPress.
-
-### Conventions
-- **Prefixe**: `kiyose_` pour toutes les fonctions PHP
-- **Text domain**: `kiyose` (pas d'i18n nécessaire pour ce projet)
-- **Hooks**: Utiliser les hooks WordPress standard, créer des hooks custom si nécessaire
-- **CSS BEM**: Utiliser la méthodologie BEM pour les classes CSS
-- **Chargement modulaire**: `functions.php` charge les fichiers `inc/*.php` via `require_once get_template_directory() . '/inc/fichier.php';`
+**Conventions:**
+- Préfixe: `kiyose_` (fonctions, hooks)
+- Text domain: `kiyose`
+- CSS: Méthodologie BEM
 
 
 ## Standards & Contraintes
 
-### WordPress Coding Standards (WPCS)
+Pour la documentation complète des standards, voir **[doc/standards.md](doc/standards.md)** et **[doc/validation-checklist.md](doc/validation-checklist.md)**.
 
-**Obligatoire pour tout le code PHP:**
-- Suivre les [WordPress PHP Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/php/)
+### Résumé des exigences critiques
+
+**WordPress Coding Standards (WPCS):**
 - Indentation: tabs (pas d'espaces)
-- Nommage des fonctions: `kiyose_function_name()`
-- Nommage des hooks: `kiyose_hook_name`
-- Validation avec PHP_CodeSniffer + WordPress rulesets
-- Sécurité:
-  - Sanitize toutes les entrées utilisateur (`sanitize_text_field()`, `esc_url()`, etc.)
-  - Escape toutes les sorties (`esc_html()`, `esc_attr()`, `esc_url()`)
-  - Utiliser nonces pour les formulaires (`wp_nonce_field()`, `wp_verify_nonce()`)
-  - Prepared statements pour les requêtes DB (`$wpdb->prepare()`)
+- Nommage: `kiyose_` prefix pour tout
+- Sécurité: Sanitize inputs, escape outputs, use nonces
+- Validation: PHP_CodeSniffer + WordPress rulesets
 
-### Accessibilité WCAG 2.2 AA (Priorité absolue)
+**Accessibilité WCAG 2.2 AA (PRIORITÉ ABSOLUE):**
+- Contraste: ≥4.5:1 (texte), ≥3:1 (UI)
+- Navigation clavier complète
+- Focus visible, landmarks ARIA
+- Skip links, headings hiérarchiques
+- Responsive 320px+, touch targets 44x44px
 
-**Exigences strictes:**
-- ✅ Contraste de couleurs minimum 4.5:1 (texte normal), 3:1 (texte large)
-- ✅ Navigation clavier complète (Tab, Enter, Esc, flèches)
-- ✅ Focus visible sur tous les éléments interactifs
-- ✅ Landmarks ARIA (`<nav>`, `<main>`, `<aside>`, `<footer>`)
-- ✅ Textes alternatifs pour toutes les images (`alt=""`)
-- ✅ Labels explicites pour tous les champs de formulaire
-- ✅ Messages d'erreur clairs et associés aux champs
-- ✅ Skip links pour navigation rapide
-- ✅ Headings hiérarchiques (`<h1>` unique, puis `<h2>`, `<h3>`, etc.)
-- ✅ Links descriptifs (pas de "cliquez ici")
-- ✅ Responsive jusqu'à 320px de largeur
-- ✅ Zoom jusqu'à 200% sans perte de fonctionnalité
-- ✅ Pas de dépendance uniquement couleur pour l'information
-- ✅ Animations respectant `prefers-reduced-motion`
-
-**Outils de validation:**
-- axe DevTools
-- WAVE browser extension
-- Lighthouse accessibility audit
-- Tests manuels au clavier
-- Tests avec lecteur d'écran (NVDA/VoiceOver)
-
-### Mobile-First & Responsive
-
-**Approche obligatoire:**
-- Concevoir d'abord pour mobile (320px+)
-- Progressive enhancement vers desktop
-- Breakpoints suggérés:
-  - Mobile: 320px - 767px
-  - Tablet: 768px - 1023px
-  - Desktop: 1024px+
-- Images responsives (`srcset`, `sizes`)
-- Touch targets minimum 44x44px (WCAG 2.2)
-- Pas de scroll horizontal
-- Container principal avec `max-width: 1200px` pour limiter la longueur des lignes sur grands écrans
-- Menus hamburger accessibles sur mobile (voir section Navigation)
-
-### Performance
-
-**Objectifs Core Web Vitals:**
-- LCP (Largest Contentful Paint): < 2.5s
-- INP (Interaction to Next Paint): < 200ms
-- CLS (Cumulative Layout Shift): < 0.1
-
-**Optimisations requises:**
-- Minification CSS/JS (en production)
-- Images optimisées (WebP avec fallback)
-- Lazy loading pour images below-the-fold
-- Chargement différé JS non-critique (`defer`, `async`)
-- CSS critique inline pour above-the-fold
-- Pas de jQuery (sauf si absolument nécessaire)
-- Limiter les requêtes HTTP
-- Utiliser le cache navigateur
-
-### Tests
+**Performance (Core Web Vitals):**
+- LCP < 2.5s
+- INP < 200ms
+- CLS < 0.1
 
 **Tests obligatoires:**
-- ✅ Tests unitaires PHP (PHPUnit) pour fonctions critiques
-- ✅ Tests d'accessibilité automatisés (axe, pa11y)
-- ✅ Tests manuels sur:
-  - Chrome, Firefox, Safari (dernières versions)
-  - iOS Safari, Chrome Android
-  - Navigation clavier complète
-  - Zoom 200%
-- ✅ Tests de performance (Lighthouse, PageSpeed Insights)
-- ✅ Validation W3C HTML
+- PHPUnit pour fonctions critiques
+- axe DevTools (0 violations)
+- Navigation clavier manuelle
+- Tests navigateurs (Chrome, Firefox, Safari, iOS, Android)
 
+
+## Guide pour Agents AI
+
+### Ordre de lecture recommandé
+
+1. **Démarrage rapide**: [Référence rapide](doc/quick-reference.md) (commandes, structure, standards critiques)
+2. **Objectifs**: [Objectif](doc/goal.md) (problèmes à résoudre, critères de succès)
+3. **Architecture**: [Architecture](doc/architecture.md) (structure technique détaillée)
+4. **Standards**: [Standards](doc/standards.md) (WPCS, accessibilité, sécurité)
+5. **Design**: [Système de design](doc/design-system.md) (palette, typographie, composants)
+6. **Fonctionnalités**: [Fonctionnalités](doc/features.md) (pages et fonctionnalités détaillées)
+
+### Avant de coder
+
+- ✅ Vérifier les conventions (préfixe `kiyose_`, BEM pour CSS)
+- ✅ Consulter la palette de couleurs et tester les contrastes
+- ✅ Écrire les tests en premier (approche TDD)
+- ✅ Respecter l'architecture modulaire (fichiers dans `inc/`)
+
+### Checklist après chaque fonctionnalité
+
+- [ ] Contraste WCAG 2.2 AA validé (≥4.5:1 texte, ≥3:1 UI)
+- [ ] Navigation clavier testée (Tab, Entrée, Échap, flèches)
+- [ ] Responsive 320px+ vérifié
+- [ ] Tests PHPUnit passent (si applicable)
+- [ ] Code respecte WPCS (tabulations, préfixes, sanitization/escaping)
+- [ ] Focus visible sur tous les éléments interactifs
+- [ ] Images avec `alt` approprié
+
+### Commandes fréquentes
+
+```bash
+# Démarrage environnement
+docker compose up
+
+# Validation WPCS
+./vendor/bin/phpcs --standard=WordPress latelierkiyose/
+
+# Tests PHPUnit
+./vendor/bin/phpunit
+
+# Arrêt environnement
+docker compose down
+```
+
+### Ressources rapides
+
+- **Contraste**: [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
+- **Accessibilité**: axe DevTools extension
+- **Performance**: Lighthouse (Chrome DevTools)
+- **HTML**: [W3C Validator](https://validator.w3.org/)
 
 

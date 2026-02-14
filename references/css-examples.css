@@ -1,0 +1,550 @@
+/**
+ * CSS Examples for L'Atelier Kiyose Theme
+ * 
+ * This file contains boilerplate CSS code referenced in the design system.
+ * Do not use this file directly in production - extract and adapt code as needed.
+ * 
+ * @see doc/design-system.md
+ */
+
+/* ============================================
+   CSS VARIABLES
+   ============================================ */
+
+:root {
+	/* Couleurs principales */
+	--color-primary: #D7A4A4;          /* Rose poudré */
+	--color-secondary: #C9ABA7;        /* Taupe rosé */
+	--color-accent: #E6A528;           /* Or miel */
+	--color-background: #EFE5E4;       /* Beige clair */
+	--color-burgundy: #5D0505;         /* Bordeaux foncé (logo, titres) */
+
+	/* Couleurs fonctionnelles */
+	--color-text: #333333;             /* Texte principal */
+	--color-text-light: #666666;       /* Texte secondaire */
+	--color-border: #C9ABA7;           /* Bordures */
+
+	/* Or Kintsugi */
+	--color-gold: #E6A528;             /* Or principal */
+	--color-gold-light: #F4C975;       /* Jaune doré clair */
+	--color-gold-transparent: rgba(230, 165, 40, 0.3); /* Or transparent (overlays) */
+
+	/* Typographie */
+	--font-size-xs: 0.75rem;    /* 12px */
+	--font-size-sm: 0.875rem;   /* 14px */
+	--font-size-base: 1rem;     /* 16px - taille minimum pour body */
+	--font-size-lg: 1.125rem;   /* 18px */
+	--font-size-xl: 1.25rem;    /* 20px */
+	--font-size-2xl: 1.5rem;    /* 24px */
+	--font-size-3xl: 2rem;      /* 32px */
+	--font-size-4xl: 2.5rem;    /* 40px */
+
+	/* Espacement */
+	--spacing-xs: 0.25rem;   /* 4px */
+	--spacing-sm: 0.5rem;    /* 8px */
+	--spacing-md: 1rem;      /* 16px */
+	--spacing-lg: 1.5rem;    /* 24px */
+	--spacing-xl: 2rem;      /* 32px */
+	--spacing-2xl: 3rem;     /* 48px */
+	--spacing-3xl: 4rem;     /* 64px */
+}
+
+
+/* ============================================
+   KINTSUGI ELEMENTS
+   ============================================ */
+
+/**
+ * Section Divider - Lignes dorées subtiles
+ * Séparateurs de sections inspirés des fissures réparées à l'or
+ */
+.section-divider {
+	height: 2px;
+	background: linear-gradient(
+		90deg,
+		transparent 0%,
+		var(--color-gold-transparent) 20%,
+		var(--color-gold) 50%,
+		var(--color-gold-transparent) 80%,
+		transparent 100%
+	);
+	position: relative;
+	margin: var(--spacing-3xl) 0;
+}
+
+/**
+ * Alternative avec effet organique
+ */
+.section-divider--organic {
+	height: 3px;
+	background: 
+		linear-gradient(90deg, transparent, var(--color-gold), transparent),
+		linear-gradient(0deg, transparent 40%, var(--color-gold-light) 50%, transparent 60%);
+	background-size: 100% 100%, 100% 3px;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+
+/* ============================================
+   OVERLAYS VITRAIL (STAINED GLASS)
+   ============================================ */
+
+/**
+ * Hero Section avec overlay vitrail
+ * Overlays semi-transparents évoquant "l'être humain comme un vitrail"
+ */
+.hero-section {
+	position: relative;
+	overflow: hidden;
+}
+
+.hero-section::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background:
+		radial-gradient(ellipse at 20% 30%, rgba(201, 171, 167, 0.15) 0%, transparent 50%),
+		radial-gradient(ellipse at 80% 70%, rgba(215, 164, 164, 0.15) 0%, transparent 50%);
+	pointer-events: none;
+	z-index: 0;
+}
+
+/**
+ * Variante pour section alternée
+ */
+.section--with-overlay {
+	position: relative;
+	overflow: hidden;
+}
+
+.section--with-overlay::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 60%;
+	height: 100%;
+	background:
+		radial-gradient(circle at 70% 40%, rgba(230, 165, 40, 0.1) 0%, transparent 60%),
+		radial-gradient(circle at 30% 80%, rgba(244, 201, 117, 0.08) 0%, transparent 50%);
+	pointer-events: none;
+	z-index: 0;
+}
+
+
+/* ============================================
+   BULLES DÉCORATIVES INTERACTIVES
+   ============================================ */
+
+/**
+ * Bulles SVG apparaissant au survol/focus
+ * Pas d'animation automatique (conformité WCAG 2.2 AA)
+ */
+.bubble {
+	opacity: 0;
+	transition: opacity 0.3s ease, transform 0.3s ease;
+	transform: translateY(0);
+}
+
+/* Apparition au survol de cartes de services */
+.service-card:hover .bubble,
+.service-card:focus-within .bubble {
+	opacity: 0.7;
+	transform: translateY(-5px);
+}
+
+/* Apparition au survol de boutons */
+.button:hover .bubble,
+.button:focus .bubble {
+	opacity: 0.6;
+	transform: scale(1.1);
+}
+
+/* Respecter prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+	.bubble {
+		transition: none;
+		transform: none;
+	}
+}
+
+
+/* ============================================
+   ANIMATIONS & TRANSITIONS
+   ============================================ */
+
+/**
+ * Transitions générales
+ * Toujours respecter prefers-reduced-motion
+ */
+
+/* Boutons */
+@media (prefers-reduced-motion: no-preference) {
+	.button {
+		transition: background-color 0.2s ease, transform 0.2s ease;
+	}
+
+	.button:hover {
+		transform: translateY(-2px);
+	}
+}
+
+/* Cartes */
+@media (prefers-reduced-motion: no-preference) {
+	.card {
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
+	}
+
+	.card:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+	}
+}
+
+/* Links */
+@media (prefers-reduced-motion: no-preference) {
+	a {
+		transition: color 0.2s ease;
+	}
+}
+
+
+/* ============================================
+   COMPOSANTS UI
+   ============================================ */
+
+/**
+ * Boutons
+ */
+.button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 44px;
+	min-height: 44px;
+	padding: var(--spacing-md) var(--spacing-xl);
+	font-size: var(--font-size-base);
+	font-weight: 600;
+	text-decoration: none;
+	border: 2px solid transparent;
+	border-radius: 8px;
+	cursor: pointer;
+}
+
+.button--primary {
+	background-color: var(--color-primary);
+	color: var(--color-burgundy);
+	border-color: var(--color-primary);
+}
+
+.button--primary:hover {
+	background-color: #c89494; /* 10% plus foncé */
+}
+
+.button--primary:focus {
+	outline: 2px solid var(--color-burgundy);
+	outline-offset: 2px;
+}
+
+.button--secondary {
+	background-color: transparent;
+	color: var(--color-primary);
+	border-color: var(--color-primary);
+}
+
+.button--secondary:hover {
+	background-color: rgba(215, 164, 164, 0.1);
+}
+
+.button:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+/**
+ * Cartes (Services, Témoignages)
+ */
+.card {
+	background-color: white;
+	border-radius: 12px;
+	padding: var(--spacing-xl);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.card--background-tint {
+	background-color: var(--color-background);
+}
+
+.card__title {
+	font-size: var(--font-size-xl);
+	color: var(--color-burgundy);
+	margin-bottom: var(--spacing-md);
+}
+
+.card__content {
+	color: var(--color-text);
+	line-height: 1.7;
+}
+
+/**
+ * Formulaires
+ */
+.form-field {
+	margin-bottom: var(--spacing-lg);
+}
+
+.form-label {
+	display: block;
+	margin-bottom: var(--spacing-sm);
+	font-weight: 600;
+	color: var(--color-text);
+}
+
+.form-label--required::after {
+	content: ' *';
+	color: #d32f2f;
+}
+
+.form-input,
+.form-textarea {
+	width: 100%;
+	min-height: 44px;
+	padding: var(--spacing-md);
+	font-size: var(--font-size-base);
+	border: 2px solid var(--color-border);
+	border-radius: 6px;
+	background-color: white;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+	outline: none;
+	border-color: var(--color-primary);
+	box-shadow: 0 0 0 3px rgba(215, 164, 164, 0.2);
+}
+
+.form-input[aria-invalid="true"],
+.form-textarea[aria-invalid="true"] {
+	border-color: #d32f2f;
+}
+
+.form-error {
+	display: block;
+	margin-top: var(--spacing-sm);
+	color: #d32f2f;
+	font-size: var(--font-size-sm);
+}
+
+.form-help {
+	display: block;
+	margin-top: var(--spacing-sm);
+	color: var(--color-text-light);
+	font-size: var(--font-size-sm);
+}
+
+
+/* ============================================
+   ACCESSIBILITÉ
+   ============================================ */
+
+/**
+ * Skip link
+ */
+.skip-link {
+	position: absolute;
+	top: -40px;
+	left: 0;
+	background: var(--color-primary);
+	color: var(--color-burgundy);
+	padding: var(--spacing-md);
+	z-index: 100;
+	text-decoration: none;
+	font-weight: 600;
+}
+
+.skip-link:focus {
+	top: 0;
+	outline: 2px solid var(--color-burgundy);
+	outline-offset: 2px;
+}
+
+/**
+ * Focus visible
+ */
+:focus {
+	outline: 2px solid var(--color-primary);
+	outline-offset: 2px;
+}
+
+/* Supprimer outline seulement pour souris */
+:focus:not(:focus-visible) {
+	outline: none;
+}
+
+/* Focus clavier toujours visible */
+:focus-visible {
+	outline: 2px solid var(--color-primary);
+	outline-offset: 2px;
+}
+
+/**
+ * Visually hidden (screen reader only)
+ */
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border-width: 0;
+}
+
+
+/* ============================================
+   NAVIGATION
+   ============================================ */
+
+/**
+ * Menu mobile hamburger
+ */
+.mobile-menu {
+	position: fixed;
+	top: 0;
+	right: 0;
+	width: 100%;
+	max-width: 320px;
+	height: 100vh;
+	background-color: white;
+	box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
+	transform: translateX(100%);
+	transition: transform 0.3s ease;
+	z-index: 1000;
+}
+
+.mobile-menu[aria-hidden="false"] {
+	transform: translateX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.mobile-menu {
+		transition: none;
+	}
+}
+
+/**
+ * Menu overlay
+ */
+.mobile-menu-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.5);
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.3s ease;
+	z-index: 999;
+}
+
+.mobile-menu-overlay[aria-hidden="false"] {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+/**
+ * Hamburger button
+ */
+.hamburger-button {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	width: 44px;
+	height: 44px;
+	padding: var(--spacing-sm);
+	background: transparent;
+	border: none;
+	cursor: pointer;
+}
+
+.hamburger-button__line {
+	width: 100%;
+	height: 3px;
+	background-color: var(--color-burgundy);
+	transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.hamburger-button[aria-expanded="true"] .hamburger-button__line:nth-child(1) {
+	transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger-button[aria-expanded="true"] .hamburger-button__line:nth-child(2) {
+	opacity: 0;
+}
+
+.hamburger-button[aria-expanded="true"] .hamburger-button__line:nth-child(3) {
+	transform: translateY(-8px) rotate(-45deg);
+}
+
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+/**
+ * Mobile-first approach
+ * Base styles are mobile, then enhanced for larger screens
+ */
+
+/* Mobile par défaut (320px+) */
+.container {
+	padding: var(--spacing-md);
+}
+
+/* Tablet (768px+) */
+@media (min-width: 768px) {
+	.container {
+		padding: var(--spacing-xl);
+	}
+}
+
+/* Desktop (1024px+) */
+@media (min-width: 1024px) {
+	.container {
+		padding: var(--spacing-2xl);
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+}
+
+/**
+ * Grid responsive
+ */
+.grid {
+	display: grid;
+	gap: var(--spacing-lg);
+	grid-template-columns: 1fr; /* Mobile: 1 colonne */
+}
+
+@media (min-width: 768px) {
+	.grid--2-cols {
+		grid-template-columns: repeat(2, 1fr); /* Tablet: 2 colonnes */
+	}
+}
+
+@media (min-width: 1024px) {
+	.grid--3-cols {
+		grid-template-columns: repeat(3, 1fr); /* Desktop: 3 colonnes */
+	}
+
+	.grid--4-cols {
+		grid-template-columns: repeat(4, 1fr); /* Desktop: 4 colonnes */
+	}
+}

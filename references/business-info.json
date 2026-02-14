@@ -1,0 +1,111 @@
+{
+  "business": {
+    "name": "L'Atelier Kiyose",
+    "owner": "Virginie Le Mignon",
+    "nickname": "Happycultrice",
+    "siret": "49219620900026"
+  },
+  "contact": {
+    "phone": "06 58 37 32 05",
+    "email": "contact@latelierkiyose.fr",
+    "website": "https://www.latelierkiyose.fr"
+  },
+  "locations": {
+    "primary": {
+      "name": "Cabinet principal",
+      "address": "Le Grand Vron",
+      "postalCode": "86510",
+      "city": "Brux",
+      "region": "Nouvelle-Aquitaine",
+      "country": "France"
+    },
+    "secondary": [
+      {
+        "name": "Ateliers Poitiers",
+        "city": "Poitiers",
+        "note": "Ateliers également proposés"
+      },
+      {
+        "name": "En ligne",
+        "note": "Séances en ligne disponibles"
+      }
+    ]
+  },
+  "social": {
+    "facebook": "https://www.facebook.com/latelierkiyose",
+    "instagram": "https://www.instagram.com/latelierkiyose",
+    "linkedin": "https://www.linkedin.com/company/latelierkiyose"
+  },
+  "services": [
+    {
+      "id": "art-therapie",
+      "name": "Art-thérapie",
+      "shortDescription": "Ateliers créatifs (théâtre, danse, arts plastiques, kintsugi)",
+      "programs": [
+        "Burn-out",
+        "Deuil",
+        "Oser être soi",
+        "Enfant intérieur"
+      ]
+    },
+    {
+      "id": "rigologie",
+      "name": "Rigologie / Yoga du rire",
+      "shortDescription": "Techniques psychocorporelles de libération émotionnelle",
+      "includes": [
+        "Silence Kiyose (expérience casques audio)"
+      ]
+    },
+    {
+      "id": "bols-tibetains",
+      "name": "Bols tibétains",
+      "shortDescription": "Sonothérapie et rééquilibrage énergétique",
+      "formats": [
+        "Journées sonores",
+        "Massage individuel"
+      ]
+    },
+    {
+      "id": "ateliers-philosophie",
+      "name": "Ateliers philosophie",
+      "shortDescription": "Débats démocratiques pour enfants et adolescents",
+      "formats": [
+        "Format débat",
+        "Philo-Art"
+      ]
+    }
+  ],
+  "targetAudience": {
+    "primary": "Femmes adultes (art-thérapie, rigologie, bols tibétains, ateliers créatifs)",
+    "secondary": "Enfants et adolescents (ateliers philosophie)"
+  },
+  "legal": {
+    "mentions": {
+      "responsable": "Virginie Le Mignon",
+      "hebergeur": {
+        "note": "À compléter avec les informations de l'hébergeur du site"
+      }
+    },
+    "rgpd": {
+      "dataCollected": [
+        "Email (newsletter, formulaire contact)",
+        "Prénom (newsletter)",
+        "Nom optionnel (newsletter)",
+        "Message (formulaire contact)"
+      ],
+      "purposes": [
+        "Envoi de la newsletter",
+        "Réponse aux demandes de contact",
+        "Communication sur les événements et actualités"
+      ],
+      "retention": "Les données sont conservées jusqu'à désinscription de la newsletter ou sur demande de suppression",
+      "rights": [
+        "Droit d'accès",
+        "Droit de rectification",
+        "Droit à l'effacement",
+        "Droit d'opposition",
+        "Droit à la portabilité"
+      ]
+    }
+  }
+}
