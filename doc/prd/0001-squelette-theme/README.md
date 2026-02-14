@@ -1,5 +1,9 @@
 # PRD 0001 — Squelette du thème
 
+## Statut
+
+**prêt à l'implémentation**
+
 ## Objectif
 
 Mettre en place la structure de fichiers minimale du thème WordPress pour qu'il soit activable dans l'admin, avec les outils de qualité de code configurés.

@@ -1,5 +1,9 @@
 # PRD 0009 — Template services
 
+## Statut
+
+**brouillon**
+
 ## Objectif
 
 Créer le template générique partagé par les 4 pages de services (art-thérapie, rigologie, bols tibétains, ateliers philosophie). Le contenu spécifique est géré dans l'éditeur WordPress, le template fournit la structure.

@@ -1,5 +1,9 @@
 # PRD 0005 — Templates de base
 
+## Statut
+
+**brouillon**
+
 ## Objectif
 
 Créer les templates WordPress essentiels pour que toutes les pages du site aient un rendu fonctionnel : page par défaut, page 404, résultats de recherche.

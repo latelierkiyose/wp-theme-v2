@@ -1,5 +1,9 @@
 # PRD 0010 — Page contact
 
+## Statut
+
+**brouillon**
+
 ## Objectif
 
 Créer le template de la page contact avec le formulaire Contact Form 7, les informations de contact, et les liens réseaux sociaux.

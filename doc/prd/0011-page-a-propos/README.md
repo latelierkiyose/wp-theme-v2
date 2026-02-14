@@ -1,5 +1,9 @@
 # PRD 0011 — Page à propos
 
+## Statut
+
+**brouillon**
+
 ## Objectif
 
 Créer le template de la page "À propos" présentant Virginie Le Mignon, sa philosophie Kintsugi, son parcours et ses qualifications.

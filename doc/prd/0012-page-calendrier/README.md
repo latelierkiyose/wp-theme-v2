@@ -1,5 +1,9 @@
 # PRD 0012 — Calendrier & tarifs
 
+## Statut
+
+**brouillon**
+
 ## Objectif
 
 Créer le template de la page "Calendrier & Tarifs" avec l'intégration d'Events Manager pour l'affichage des événements et réservations.

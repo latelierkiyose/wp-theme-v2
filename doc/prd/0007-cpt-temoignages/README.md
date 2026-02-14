@@ -1,5 +1,9 @@
 # PRD 0007 — CPT Témoignages
 
+## Statut
+
+**brouillon**
+
 ## Objectif
 
 Créer le Custom Post Type (type de contenu personnalisé) `kiyose_testimony` pour gérer les témoignages de manière structurée dans l'admin WordPress, avec un template part pour l'affichage.

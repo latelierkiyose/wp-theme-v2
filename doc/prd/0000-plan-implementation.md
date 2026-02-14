@@ -1,5 +1,9 @@
 # Plan d'implémentation - Thème L'Atelier Kiyose v2
 
+## Statut
+
+**brouillon**
+
 ## Vue d'ensemble
 
 Remplacement du thème WordPress existant par un thème v2 entièrement recodé. Le contenu (pages, articles) reste en base de données ; seul le thème change. La migration se fait manuellement (réassignation des templates aux pages existantes après activation).

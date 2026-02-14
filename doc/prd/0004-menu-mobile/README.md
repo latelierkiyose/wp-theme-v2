@@ -1,5 +1,9 @@
 # PRD 0004 — Menu mobile
 
+## Statut
+
+**brouillon**
+
 ## Objectif
 
 Implémenter le menu mobile (hamburger) avec une expérience accessible complète : focus trap, fermeture par Esc, overlay, verrouillage du scroll.

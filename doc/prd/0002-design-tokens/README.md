@@ -1,5 +1,9 @@
 # PRD 0002 — Design tokens et polices
 
+## Statut
+
+**brouillon**
+
 ## Objectif
 
 Mettre en place le design system CSS (variables, typographie, espacements) et les polices auto-hébergées. Après cette étape, tous les tokens de design sont disponibles pour les templates suivants.

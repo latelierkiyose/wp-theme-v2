@@ -51,6 +51,10 @@ Pour plus d'informations, consulter les documents suivants dans `doc/`:
   - Format standardisé pour documenter les nouvelles fonctionnalités
   - Chaque PRD dans son propre répertoire: `prd/NNNN-nom-de-la-spec/`
   - Numérotation séquentielle à 4 chiffres (ex: 0001, 0002)
+  - **Statut des PRDs**: Chaque PRD doit inclure une section "Statut" en en-tête avec l'un des états suivants:
+    - `brouillon` - Document en cours de rédaction, non finalisé
+    - `prêt à l'implémentation` - Spécification validée et raffinée, prête à être développée
+    - `terminé` - Fonctionnalité implémentée et validée
 
 ### Références
 - **[Exemples CSS](references/css-examples.css)** - Code CSS réutilisable (variables, composants, Kintsugi)

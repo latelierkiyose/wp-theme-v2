@@ -1,5 +1,9 @@
 # PRD 0013 — Intégrations plugins
 
+## Statut
+
+**brouillon**
+
 ## Objectif
 
 Intégrer visuellement les plugins tiers (Brevo newsletter, Contact Form 7, Events Manager) dans le design system du thème. Mettre en place le formulaire newsletter dans le footer et sur la homepage.

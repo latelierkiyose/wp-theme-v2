@@ -1,5 +1,9 @@
 # PRD 0015 — CI/CD et déploiement
 
+## Statut
+
+**brouillon**
+
 ## Objectif
 
 Mettre en place le pipeline d'intégration continue (GitHub Actions) pour valider automatiquement le code (WPCS, PHPUnit) et produire un artefact de build déployable.

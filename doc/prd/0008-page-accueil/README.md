@@ -1,5 +1,9 @@
 # PRD 0008 — Page d'accueil
 
+## Statut
+
+**brouillon**
+
 ## Objectif
 
 Créer le template de la page d'accueil avec toutes ses sections : hero, 4 piliers, prochaines dates, témoignages (carousel), newsletter, et actualités.

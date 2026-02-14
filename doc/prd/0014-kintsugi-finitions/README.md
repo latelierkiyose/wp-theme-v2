@@ -1,5 +1,9 @@
 # PRD 0014 — Kintsugi et finitions visuelles
 
+## Statut
+
+**brouillon**
+
 ## Objectif
 
 Ajouter les éléments décoratifs de l'identité visuelle Kintsugi (séparateurs dorés, overlays vitrail, bulles décoratives) et finaliser les animations/transitions du site.

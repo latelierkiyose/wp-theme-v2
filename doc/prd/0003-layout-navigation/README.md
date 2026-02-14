@@ -1,5 +1,9 @@
 # PRD 0003 — Layout et navigation desktop
 
+## Statut
+
+**brouillon**
+
 ## Objectif
 
 Créer le layout global du site (header avec navigation, footer) et les composants d'accessibilité de base (skip link, landmarks ARIA). Après cette étape, toutes les pages ont un header/footer cohérent et une navigation desktop fonctionnelle.

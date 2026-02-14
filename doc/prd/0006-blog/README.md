@@ -1,5 +1,9 @@
 # PRD 0006 — Blog
 
+## Statut
+
+**brouillon**
+
 ## Objectif
 
 Implémenter les templates de blog : archive (liste d'articles), article unique, et le template part réutilisable pour afficher un article dans une liste.

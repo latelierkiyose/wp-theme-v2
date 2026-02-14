@@ -1,5 +1,9 @@
 # PRD 0016 — Activation et pré-production
 
+## Statut
+
+**brouillon**
+
 ## Objectif
 
 Documenter la procédure d'activation du thème sur le site de production, avec la checklist complète de validation pré-lancement.
