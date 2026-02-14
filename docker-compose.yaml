@@ -30,7 +30,7 @@ services:
       - db
     image: wordpress:php8.3
     volumes:
-      - ./kiyose:/var/www/html/wp-content/themes/kiyose
+      - ./latelierkiyose:/var/www/html/wp-content/themes/latelierkiyose
       - ./uploads:/var/www/html/wp-content/uploads
     ports:
       - '8000:80'
