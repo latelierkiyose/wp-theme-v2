@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<ruleset name="L'Atelier Kiyose">
+	<description>WordPress Coding Standards for L'Atelier Kiyose theme</description>
+
+	<!-- Chemins à scanner -->
+	<file>./latelierkiyose</file>
+
+	<!-- Exclusions -->
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+
+	<!-- Ruleset WordPress -->
+	<rule ref="WordPress"/>
+
+	<!-- Vérifications spécifiques -->
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="kiyose"/>
+			</property>
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="kiyose"/>
+				<element value="Kiyose"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- PHP et WordPress minimums -->
+	<config name="minimum_supported_wp_version" value="6.7"/>
+	<config name="testVersion" value="8.1-"/>
+
+	<!-- Afficher les erreurs et warnings -->
+	<arg name="colors"/>
+	<arg value="sp"/>
+	<arg name="extensions" value="php"/>
+</ruleset>

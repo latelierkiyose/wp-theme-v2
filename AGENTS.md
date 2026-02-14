@@ -2,10 +2,11 @@
 
 ## Statut du projet
 
-**État actuel**: Phase de configuration initiale
-- Structure du thème: À créer
-- Fichiers implémentés: Aucun
-- Prochaines étapes: Implémenter la structure de base du thème selon l'architecture définie
+**État actuel**: PRD 0001 terminé — Squelette du thème opérationnel
+- Structure du thème: ✅ Créée
+- Fichiers implémentés: style.css, functions.php, inc/setup.php, inc/enqueue.php, index.php, assets/
+- Configuration: ✅ PHPCS, Composer, CI/CD GitHub Actions
+- Prochaines étapes: Implémenter PRD 0002 (Design tokens)
 
 ## Contexte
 
@@ -59,28 +60,73 @@ Pour plus d'informations, consulter les documents suivants dans `doc/`:
 ### Références
 - **[Exemples CSS](references/css-examples.css)** - Code CSS réutilisable (variables, composants, Kintsugi)
 - **[Informations entreprise](references/business-info.json)** - Données de contact et informations légales
+- **[Tests manuels](doc/tests-manuels.md)** - Guide complet pour tester le thème localement
 
 
 ## Environnement de développement local
 
-### Lancer WordPress en local
+### Démarrage rapide
 
-Le projet utilise Docker Compose pour démarrer un environnement WordPress complet en local.
+**Prérequis** : Docker et Docker Compose installés. Aucune installation de PHP ou Composer n'est requise localement.
 
-**Commande:**
-```sh
-docker compose up
+```bash
+# Installer les dépendances
+make install
+
+# Démarrer WordPress
+make start
 ```
 
-**Accès:**
+Accès après démarrage :
 - Site WordPress: `http://127.0.0.1:8000`
-- Interface d'administration: `http://127.0.0.1:8000/wp-admin`
-- Credentials: Configurés lors de la première installation (voir variables d'environnement dans `docker-compose.yaml` si applicable)
+- Admin WordPress: `http://127.0.0.1:8000/wp-admin`
+- PHPMyAdmin: `http://127.0.0.1:40001`
+
+### Commandes disponibles
+
+Pour voir toutes les commandes disponibles :
+```bash
+make help
+```
+
+**Commandes principales** :
+- `make install` — Installer les dépendances Composer via Docker
+- `make start` — Démarrer l'environnement WordPress
+- `make stop` — Arrêter l'environnement
+- `make phpcs` — Valider le code avec PHPCS
+- `make phpcs-fix` — Corriger automatiquement les violations PHPCS
+- `make logs` — Afficher les logs de WordPress
+- `make clean` — Nettoyer les fichiers générés
+- `make test` — Exécuter tous les tests (PHPCS)
+
+### Scripts Docker (sans PHP local)
+
+Le projet inclut des wrappers Docker pour exécuter les outils PHP sans installation locale :
+
+- `./bin/composer.sh <commande>` — Exécuter Composer via Docker
+- `./bin/phpcs.sh` — Exécuter PHPCS via Docker
+- `./bin/phpcbf.sh` — Exécuter PHPCBF via Docker
+
+**Exemples** :
+```bash
+# Installer une nouvelle dépendance
+./bin/composer.sh require vendor/package
+
+# Mettre à jour les dépendances
+./bin/composer.sh update
+
+# Valider le code
+./bin/phpcs.sh --report=summary
+```
+
+### Tests manuels
+
+Pour un guide complet des tests manuels, consulter **[doc/tests-manuels.md](doc/tests-manuels.md)**.
 
 **Notes:**
 - Le thème est monté dans le container et accessible immédiatement
 - Les modifications de fichiers sont reflétées en temps réel (pas de rebuild nécessaire)
-- Pour arrêter l'environnement: `docker compose down`
+- Pour arrêter l'environnement: `make stop` ou `docker compose down`
 
 
 ## Architecture Technique
@@ -176,16 +222,19 @@ Pour la documentation complète des standards, voir **[doc/standards.md](doc/sta
 
 ```bash
 # Démarrage environnement
-docker compose up
+make start
 
 # Validation WPCS
-./vendor/bin/phpcs --standard=WordPress latelierkiyose/
+make phpcs
 
-# Tests PHPUnit
-./vendor/bin/phpunit
+# Correction automatique PHPCS
+make phpcs-fix
+
+# Tests complets
+make test
 
 # Arrêt environnement
-docker compose down
+make stop
 ```
 
 ### Ressources rapides
