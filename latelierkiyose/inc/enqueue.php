@@ -182,6 +182,14 @@ function kiyose_enqueue_assets() {
 		kiyose_get_asset_version( "/assets/css/components/animations{$suffix}.css" )
 	);
 
+	// Gutenberg blocks override (buttons, columns, etc.).
+	wp_enqueue_style(
+		'kiyose-gutenberg-blocks',
+		get_template_directory_uri() . "/assets/css/components/gutenberg-blocks{$suffix}.css",
+		array( 'kiyose-variables' ),
+		kiyose_get_asset_version( "/assets/css/components/gutenberg-blocks{$suffix}.css" )
+	);
+
 	// Service page component (conditional loading for page-services.php template).
 	if ( is_page_template( 'templates/page-services.php' ) ) {
 		wp_enqueue_style(
@@ -223,7 +231,7 @@ function kiyose_enqueue_assets() {
 	wp_enqueue_style(
 		'kiyose-main',
 		get_template_directory_uri() . "/assets/css/main{$suffix}.css",
-		array( 'kiyose-fonts', 'kiyose-variables', 'kiyose-header', 'kiyose-navigation', 'kiyose-footer', 'kiyose-page', 'kiyose-search', 'kiyose-404', 'kiyose-blog-card', 'kiyose-blog-archive', 'kiyose-blog-single', 'kiyose-testimony', 'kiyose-hero', 'kiyose-service-card', 'kiyose-home-sections', 'kiyose-kintsugi', 'kiyose-animations' ),
+		array( 'kiyose-fonts', 'kiyose-variables', 'kiyose-header', 'kiyose-navigation', 'kiyose-footer', 'kiyose-page', 'kiyose-search', 'kiyose-404', 'kiyose-blog-card', 'kiyose-blog-archive', 'kiyose-blog-single', 'kiyose-testimony', 'kiyose-hero', 'kiyose-service-card', 'kiyose-home-sections', 'kiyose-kintsugi', 'kiyose-animations', 'kiyose-gutenberg-blocks' ),
 		kiyose_get_asset_version( "/assets/css/main{$suffix}.css" )
 	);
 

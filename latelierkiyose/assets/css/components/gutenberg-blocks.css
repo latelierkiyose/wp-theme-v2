@@ -1,0 +1,180 @@
+/**
+ * Gutenberg Blocks Override Styles
+ * 
+ * Styles pour les blocs WordPress core (boutons, colonnes, etc.)
+ * afin de les intégrer dans le design system L'Atelier Kiyose.
+ * 
+ * @package Kiyose
+ */
+
+/* ============================================
+   BUTTONS (wp-block-button)
+   
+   Note: Utilise !important de manière stratégique pour surcharger
+   les styles WordPress inline et :where() avec basse spécificité
+   
+   Accessibilité: Texte burgundy (#5D0505) sur fond rose poudré (#D7A4A4)
+   donne un ratio de contraste de 6.54:1 (WCAG 2.2 AA ✅)
+   ============================================ */
+
+.wp-block-button {
+	margin-bottom: var(--kiyose-spacing-lg);
+}
+
+.wp-block-button .wp-block-button__link,
+.wp-block-button .wp-element-button {
+	/* Reset WordPress default styles */
+	background-color: var(--kiyose-color-primary) !important;
+	border: 2px solid var(--kiyose-color-primary) !important;
+	border-radius: 8px !important; /* Override WP's 9999px rounded */
+	box-shadow: none !important;
+	color: var(--kiyose-color-burgundy) !important; /* 6.54:1 contrast ratio - WCAG AA compliant */
+	cursor: pointer;
+	display: inline-flex !important;
+	align-items: center;
+	justify-content: center;
+	font-family: var(--kiyose-font-body) !important;
+	font-size: var(--kiyose-font-size-base) !important;
+	font-weight: 700;
+	min-height: 44px !important; /* WCAG 2.2 AA touch target */
+	min-width: 44px !important; /* WCAG 2.2 AA touch target */
+	padding: var(--kiyose-spacing-md) var(--kiyose-spacing-xl) !important;
+	text-decoration: none !important;
+	text-align: center;
+	transition: all var(--kiyose-transition-base);
+}
+
+.wp-block-button .wp-block-button__link:hover,
+.wp-block-button .wp-element-button:hover {
+	background-color: var(--kiyose-color-burgundy) !important;
+	border-color: var(--kiyose-color-burgundy) !important;
+	color: #ffffff !important;
+}
+
+.wp-block-button .wp-block-button__link:focus,
+.wp-block-button .wp-block-button__link:focus-visible,
+.wp-block-button .wp-element-button:focus,
+.wp-block-button .wp-element-button:focus-visible {
+	background-color: var(--kiyose-color-burgundy) !important;
+	border-color: var(--kiyose-color-burgundy) !important;
+	color: #ffffff !important;
+	outline: 3px solid var(--kiyose-color-gold) !important;
+	outline-offset: 3px !important;
+}
+
+/* Button - Outline style */
+.wp-block-button.is-style-outline .wp-block-button__link,
+.wp-block-button .wp-block-button__link.is-style-outline,
+.wp-block-button.is-style-outline .wp-element-button {
+	background-color: transparent !important;
+	border: 2px solid var(--kiyose-color-burgundy) !important;
+	color: var(--kiyose-color-burgundy) !important;
+}
+
+.wp-block-button.is-style-outline .wp-block-button__link:hover,
+.wp-block-button .wp-block-button__link.is-style-outline:hover,
+.wp-block-button.is-style-outline .wp-element-button:hover {
+	background-color: var(--kiyose-color-burgundy) !important;
+	border-color: var(--kiyose-color-burgundy) !important;
+	color: #ffffff !important;
+}
+
+.wp-block-button.is-style-outline .wp-block-button__link:focus,
+.wp-block-button.is-style-outline .wp-block-button__link:focus-visible,
+.wp-block-button .wp-block-button__link.is-style-outline:focus,
+.wp-block-button .wp-block-button__link.is-style-outline:focus-visible,
+.wp-block-button.is-style-outline .wp-element-button:focus,
+.wp-block-button.is-style-outline .wp-element-button:focus-visible {
+	background-color: var(--kiyose-color-burgundy) !important;
+	color: #ffffff !important;
+	outline: 3px solid var(--kiyose-color-gold) !important;
+	outline-offset: 3px !important;
+}
+
+/* Button - Squared style (maintient les coins arrondis du thème) */
+.wp-block-button.is-style-squared .wp-block-button__link,
+.wp-block-button .wp-block-button__link.is-style-squared,
+.wp-block-button.is-style-squared .wp-element-button {
+	border-radius: 8px !important; /* Garde notre border-radius au lieu de 0 */
+}
+
+/* ============================================
+   BUTTONS GROUP (wp-block-buttons)
+   ============================================ */
+
+.wp-block-buttons {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--kiyose-spacing-lg);
+	margin-bottom: var(--kiyose-spacing-xl);
+}
+
+.wp-block-buttons .wp-block-button {
+	margin-bottom: 0;
+}
+
+/* Alignement centré */
+.wp-block-buttons.is-content-justification-center {
+	justify-content: center;
+}
+
+/* Alignement à gauche */
+.wp-block-buttons.is-content-justification-left {
+	justify-content: flex-start;
+}
+
+/* Alignement à droite */
+.wp-block-buttons.is-content-justification-right {
+	justify-content: flex-end;
+}
+
+/* Espacement entre boutons */
+.wp-block-buttons.is-content-justification-space-between {
+	justify-content: space-between;
+}
+
+/* Vertical layout */
+.wp-block-buttons.is-vertical {
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.wp-block-buttons.is-vertical.is-content-justification-center {
+	align-items: center;
+}
+
+.wp-block-buttons.is-vertical.is-content-justification-right {
+	align-items: flex-end;
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+/* Support prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+	.wp-block-button .wp-block-button__link,
+	.wp-block-button .wp-element-button {
+		transition: none !important;
+	}
+}
+
+/* ============================================
+   RESPONSIVE - MOBILE
+   ============================================ */
+
+@media (width < 768px) {
+	/* Boutons empilés sur mobile pour meilleure lisibilité */
+	.wp-block-buttons {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.wp-block-buttons .wp-block-button {
+		width: 100%;
+	}
+
+	.wp-block-buttons .wp-block-button .wp-block-button__link {
+		width: 100%;
+	}
+}
