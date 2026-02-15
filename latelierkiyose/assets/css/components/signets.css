@@ -59,7 +59,7 @@
 	border: 2px solid transparent; /* Bordure transparente pour éviter le décalage au survol */
 	border-bottom-color: var(--kiyose-color-border); /* Bordure basse un peu plus marquée */
 	border-radius: 4px; /* Coins arrondis subtils */
-	color: var(--kiyose-color-secondary); /* Taupe rosé pour se distinguer du texte */
+	color: var(--kiyose-color-burgundy); /* Bordeaux comme les titres - contraste WCAG 2.2 AA ✅ */
 	display: flex;
 	font-family: var(--kiyose-font-body);
 	font-size: var(--kiyose-font-size-lg); /* 18px - un peu plus grand que le corps */
