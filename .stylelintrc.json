@@ -6,7 +6,6 @@
 		"stylelint-order"
 	],
 	"rules": {
-		"indentation": null,
 		"rule-empty-line-before": null,
 		"comment-empty-line-before": null,
 		"color-hex-length": "long",
