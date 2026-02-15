@@ -27,12 +27,14 @@ make start
 - **[Design System](doc/design-system.md)** — Palette, typographie, composants
 - **[Standards](doc/standards.md)** — WPCS, accessibilité, sécurité
 - **[Linting](doc/linting.md)** — Guide des linters JavaScript et CSS
+- **[Git Hooks](doc/git-hooks.md)** — Configuration et utilisation des hooks pre-commit
 
 ## 🛠 Commandes disponibles
 
 ```bash
 make help          # Afficher l'aide
 make install       # Installer les dépendances Composer
+make install-hooks # Installer les git hooks (pre-commit)
 make start         # Démarrer WordPress
 make stop          # Arrêter WordPress
 make phpcs         # Valider le code PHP avec PHPCS
@@ -63,6 +65,40 @@ Si vous n'avez pas PHP ou Node.js installé localement, utilisez les wrappers Do
 ./bin/stylelint.sh 'latelierkiyose/**/*.css'          # Stylelint via Docker
 ./bin/prettier.sh --write 'latelierkiyose/assets/js/**/*.js'  # Prettier via Docker
 ```
+
+## 🪝 Git Hooks
+
+Le projet inclut un hook `pre-commit` qui valide automatiquement le code avant chaque commit.
+
+### Installation
+
+```bash
+make install-hooks
+```
+
+### Fonctionnement
+
+Le hook `pre-commit` exécute automatiquement :
+- **PHPCS** sur les fichiers PHP modifiés (dans `latelierkiyose/`)
+- **ESLint** sur les fichiers JavaScript modifiés
+- **Stylelint** sur les fichiers CSS modifiés
+
+Si des erreurs sont détectées, le commit est annulé et vous devez corriger les erreurs.
+
+### Corrections automatiques
+
+```bash
+make phpcs-fix    # Corriger les erreurs PHPCS
+make lint-fix     # Corriger les erreurs ESLint et Stylelint
+```
+
+### Bypass du hook (non recommandé)
+
+```bash
+git commit --no-verify
+```
+
+**Note** : Le bypass est déconseillé car il peut introduire du code non conforme aux standards du projet.
 
 ## Chargement des données de production
 

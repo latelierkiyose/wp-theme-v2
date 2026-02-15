@@ -246,6 +246,9 @@ Pour plus d'informations, consulter les documents suivants dans `doc/`:
 # Installer les dépendances
 make install
 
+# Installer les git hooks (pre-commit)
+make install-hooks
+
 # Démarrer WordPress
 make start
 ```
@@ -264,6 +267,7 @@ make help
 
 **Commandes principales** :
 - `make install` — Installer les dépendances Composer via Docker
+- `make install-hooks` — Installer les git hooks (pre-commit avec PHPCS, ESLint, Stylelint)
 - `make start` — Démarrer l'environnement WordPress
 - `make stop` — Arrêter l'environnement
 - `make phpcs` — Valider le code avec PHPCS

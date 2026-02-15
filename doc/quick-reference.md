@@ -25,6 +25,16 @@ docker compose up --build
 - **Admin**: http://127.0.0.1:8000/wp-admin
 - **Identifiants**: Configurés lors de la première installation
 
+### Git hooks
+```bash
+# Installer les hooks pre-commit (PHPCS + ESLint + Stylelint)
+make install-hooks
+
+# Les hooks vérifient automatiquement le code à chaque commit
+# Pour bypass (non recommandé):
+git commit --no-verify
+```
+
 ### Validation et tests
 ```bash
 # Vérifier les standards WordPress (PHP)

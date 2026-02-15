@@ -1,7 +1,7 @@
 # L'Atelier Kiyose - WordPress Theme v2
 # Makefile pour simplifier les commandes de développement
 
-.PHONY: help install phpcs phpcs-fix phpunit lint-js lint-css lint lint-fix format-js format-check start stop clean test
+.PHONY: help install install-hooks phpcs phpcs-fix phpunit lint-js lint-css lint lint-fix format-js format-check start stop clean test
 
 # Couleurs pour l'aide
 BLUE := \033[0;34m
@@ -19,6 +19,11 @@ install: ## Installer les dépendances Composer via Docker
 	@echo "$(BLUE)📦 Installation des dépendances Composer...$(NC)"
 	@./bin/composer.sh install
 	@echo "$(GREEN)✓ Dépendances installées$(NC)"
+
+install-hooks: ## Installer les git hooks (pre-commit)
+	@echo "$(BLUE)🪝 Installation des git hooks...$(NC)"
+	@./bin/install-hooks.sh
+	@echo "$(GREEN)✓ Git hooks installés$(NC)"
 
 update: ## Mettre à jour les dépendances Composer
 	@echo "$(BLUE)📦 Mise à jour des dépendances...$(NC)"
