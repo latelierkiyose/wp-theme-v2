@@ -27,20 +27,36 @@ docker compose up --build
 
 ### Validation et tests
 ```bash
-# Vérifier les standards WordPress
+# Vérifier les standards WordPress (PHP)
 ./vendor/bin/phpcs --standard=WordPress latelierkiyose/
 
 # Corriger automatiquement (quand possible)
 ./vendor/bin/phpcbf --standard=WordPress latelierkiyose/
 
-# Exécuter les tests unitaires
+# Valider JavaScript avec ESLint
+npm run lint:js
+# ou via Docker (si Node.js non installé)
+./bin/eslint.sh 'latelierkiyose/assets/js/**/*.js'
+
+# Valider CSS avec Stylelint
+npm run lint:css
+# ou via Docker
+./bin/stylelint.sh 'latelierkiyose/**/*.css'
+
+# Valider tout (PHP + JS + CSS)
+make test
+
+# Corriger automatiquement JS et CSS
+make lint-fix
+
+# Exécuter les tests unitaires PHPUnit
 ./vendor/bin/phpunit
 ```
 
 ### CI/CD
 ```bash
 # Les commits/PR déclenchent automatiquement la CI (GitHub Actions)
-# La CI exécute : WPCS, PHPUnit, build de l'artefact ZIP
+# La CI exécute : PHPCS, ESLint, Stylelint, PHPUnit, build de l'artefact ZIP
 
 # Télécharger un artefact de build (nécessite gh CLI)
 gh run download {run-id} -n theme-build

@@ -1,0 +1,48 @@
+{
+	"extends": [
+		"stylelint-config-standard"
+	],
+	"plugins": [
+		"stylelint-order"
+	],
+	"rules": {
+		"indentation": null,
+		"rule-empty-line-before": null,
+		"comment-empty-line-before": null,
+		"color-hex-length": "long",
+		"color-named": "never",
+		"declaration-block-no-redundant-longhand-properties": true,
+		"declaration-no-important": [
+			true,
+			{
+				"severity": "warning"
+			}
+		],
+		"font-family-name-quotes": "always-where-recommended",
+		"function-url-quotes": "always",
+		"number-max-precision": 4,
+		"selector-max-id": 0,
+		"selector-max-universal": 1,
+		"selector-class-pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*(__[a-z0-9]+(-[a-z0-9]+)*)?(--[a-z0-9]+(-[a-z0-9]+)*)?$",
+		"value-keyword-case": "lower",
+		"at-rule-no-vendor-prefix": true,
+		"media-feature-name-no-vendor-prefix": true,
+		"property-no-vendor-prefix": true,
+		"selector-no-vendor-prefix": true,
+		"value-no-vendor-prefix": true,
+		"order/properties-alphabetical-order": true,
+		"custom-property-pattern": "^kiyose-.+",
+		"selector-pseudo-class-no-unknown": [
+			true,
+			{
+				"ignorePseudoClasses": ["global"]
+			}
+		]
+	},
+	"ignoreFiles": [
+		"node_modules/**",
+		"vendor/**",
+		"uploads/**",
+		"**/*.min.css"
+	]
+}

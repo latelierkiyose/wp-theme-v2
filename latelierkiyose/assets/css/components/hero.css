@@ -14,10 +14,10 @@
    ============================================ */
 
 .hero-section {
-	position: relative;
-	padding: var(--spacing-2xl) var(--spacing-md);
-	background-color: var(--color-background);
+	background-color: var(--kiyose-color-background);
 	overflow: hidden;
+	padding: var(--kiyose-spacing-2xl) var(--kiyose-spacing-md);
+	position: relative;
 }
 
 /* Remove old overlay - now handled by kintsugi.css */
@@ -27,22 +27,22 @@
    ============================================ */
 
 .hero-section__inner {
-	position: relative;
-	z-index: 1;
+	align-items: center;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	gap: var(--spacing-xl);
-	max-width: 1200px;
+	gap: var(--kiyose-spacing-xl);
 	margin: 0 auto;
+	max-width: 1200px;
+	position: relative;
+	z-index: 1;
 }
 
 /* Desktop: Image on the left, content on the right */
-@media (min-width: 768px) {
+@media (width >= 768px) {
 	.hero-section__inner {
-		flex-direction: row;
 		align-items: center;
-		gap: var(--spacing-2xl);
+		flex-direction: row;
+		gap: var(--kiyose-spacing-2xl);
 	}
 }
 
@@ -52,17 +52,17 @@
 
 .hero-section__image {
 	flex-shrink: 0;
-	width: 100%;
 	max-width: 280px;
+	width: 100%;
 }
 
 .hero-section__image img {
-	width: 100%;
-	height: auto;
 	border-radius: 8px;
-	box-shadow: 0 8px 24px rgba(93, 5, 5, 0.15);
+	box-shadow: 0 8px 24px rgb(93 5 5 / 15%);
+	height: auto;
 	transform: rotate(-3deg);
-	transition: transform var(--transition-base);
+	transition: transform var(--kiyose-transition-base);
+	width: 100%;
 }
 
 /* Subtle hover effect */
@@ -73,13 +73,13 @@
 }
 
 /* Larger image on tablet/desktop */
-@media (min-width: 768px) {
+@media (width >= 768px) {
 	.hero-section__image {
 		max-width: 320px;
 	}
 }
 
-@media (min-width: 1024px) {
+@media (width >= 1024px) {
 	.hero-section__image {
 		max-width: 380px;
 	}
@@ -95,66 +95,66 @@
 }
 
 /* Desktop: Left-align text when image is present */
-@media (min-width: 768px) {
+@media (width >= 768px) {
 	.hero-section--with-image .hero-section__content {
 		text-align: left;
 	}
 }
 
 .hero-section__title {
-	font-family: var(--font-heading);
-	font-size: var(--font-size-3xl);
-	color: var(--color-burgundy);
-	margin-bottom: var(--spacing-lg);
+	color: var(--kiyose-color-burgundy);
+	font-family: var(--kiyose-font-heading);
+	font-size: var(--kiyose-font-size-3xl);
 	line-height: 1.2;
+	margin-bottom: var(--kiyose-spacing-lg);
 }
 
 .hero-section__subtitle {
-	font-family: var(--font-body);
-	font-size: var(--font-size-lg);
-	color: var(--color-text);
-	margin-bottom: var(--spacing-xl);
+	color: var(--kiyose-color-text);
+	font-family: var(--kiyose-font-body);
+	font-size: var(--kiyose-font-size-lg);
 	line-height: 1.6;
+	margin-bottom: var(--kiyose-spacing-xl);
 }
 
 .hero-section__cta {
-	display: inline-flex;
 	align-items: center;
-	justify-content: center;
-	min-width: 44px;
-	min-height: 44px;
-	padding: var(--spacing-md) var(--spacing-xl);
-	font-family: var(--font-body);
-	font-size: var(--font-size-base);
-	font-weight: 600;
-	text-decoration: none;
 	border: 2px solid transparent;
 	border-radius: 8px;
 	cursor: pointer;
-	transition: all var(--transition-base);
+	display: inline-flex;
+	font-family: var(--kiyose-font-body);
+	font-size: var(--kiyose-font-size-base);
+	font-weight: 600;
+	justify-content: center;
+	min-height: 44px;
+	min-width: 44px;
+	padding: var(--kiyose-spacing-md) var(--kiyose-spacing-xl);
+	text-decoration: none;
+	transition: all var(--kiyose-transition-base);
 }
 
 /* ============================================
    RESPONSIVE
    ============================================ */
 
-@media (min-width: 768px) {
+@media (width >= 768px) {
 	.hero-section {
-		padding: var(--spacing-3xl) var(--spacing-xl);
+		padding: var(--kiyose-spacing-3xl) var(--kiyose-spacing-xl);
 	}
 
 	.hero-section__title {
-		font-size: var(--font-size-4xl);
+		font-size: var(--kiyose-font-size-4xl);
 	}
 
 	.hero-section__subtitle {
-		font-size: var(--font-size-xl);
+		font-size: var(--kiyose-font-size-xl);
 	}
 }
 
-@media (min-width: 1024px) {
+@media (width >= 1024px) {
 	.hero-section {
-		padding: var(--spacing-3xl) var(--spacing-2xl);
+		padding: var(--kiyose-spacing-3xl) var(--kiyose-spacing-2xl);
 	}
 }
 

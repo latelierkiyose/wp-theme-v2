@@ -11,8 +11,8 @@
 
 .testimonials-grid {
 	display: grid;
-	gap: var(--spacing-lg);
-	margin-block: var(--spacing-xl);
+	gap: var(--kiyose-spacing-lg);
+	margin-block: var(--kiyose-spacing-xl);
 }
 
 /* ============================================
@@ -29,7 +29,7 @@
 	grid-template-columns: 1fr;
 }
 
-@media (min-width: 768px) {
+@media (width >= 768px) {
 	.testimonials-grid--columns-2 {
 		grid-template-columns: repeat(2, 1fr);
 	}
@@ -40,13 +40,13 @@
 	grid-template-columns: 1fr;
 }
 
-@media (min-width: 768px) {
+@media (width >= 768px) {
 	.testimonials-grid--columns-3 {
 		grid-template-columns: repeat(2, 1fr);
 	}
 }
 
-@media (min-width: 1024px) {
+@media (width >= 1024px) {
 	.testimonials-grid--columns-3 {
 		grid-template-columns: repeat(3, 1fr);
 	}
@@ -57,13 +57,13 @@
 	grid-template-columns: 1fr;
 }
 
-@media (min-width: 768px) {
+@media (width >= 768px) {
 	.testimonials-grid--columns-4 {
 		grid-template-columns: repeat(2, 1fr);
 	}
 }
 
-@media (min-width: 1024px) {
+@media (width >= 1024px) {
 	.testimonials-grid--columns-4 {
 		grid-template-columns: repeat(4, 1fr);
 	}
@@ -74,8 +74,8 @@
    ============================================ */
 
 .testimonials-empty {
-	text-align: center;
-	color: var(--color-text-light);
+	color: var(--kiyose-color-text-light);
 	font-style: italic;
-	padding: var(--spacing-xl);
+	padding: var(--kiyose-spacing-xl);
+	text-align: center;
 }

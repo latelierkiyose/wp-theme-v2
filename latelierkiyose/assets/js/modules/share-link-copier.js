@@ -1,8 +1,8 @@
 /**
  * Share Link Copier
- * 
+ *
  * Handles copying article URLs to clipboard for social sharing (Instagram).
- * 
+ *
  * @since 0.1.0
  */
 
@@ -17,7 +17,7 @@ class ShareLinkCopier {
 			return;
 		}
 
-		this.buttons.forEach(button => {
+		this.buttons.forEach((button) => {
 			button.addEventListener('click', (e) => this.handleCopy(e));
 		});
 	}
@@ -53,6 +53,7 @@ class ShareLinkCopier {
 			document.execCommand('copy');
 			this.showSuccess(button);
 		} catch (error) {
+			// eslint-disable-next-line no-console
 			console.error('Failed to copy link:', error);
 			this.showError(button);
 		}
@@ -63,13 +64,15 @@ class ShareLinkCopier {
 	showSuccess(button) {
 		// Add visual feedback
 		button.classList.add('copied');
-		
+
 		// Update aria-label temporarily
 		const originalLabel = button.getAttribute('aria-label');
 		button.setAttribute('aria-label', 'Lien copié !');
 
 		// Create and show tooltip/notification
-		const notification = this.createNotification('Lien copié ! Vous pouvez maintenant le coller sur Instagram.');
+		const notification = this.createNotification(
+			'Lien copié ! Vous pouvez maintenant le coller sur Instagram.'
+		);
 		button.parentElement.appendChild(notification);
 
 		// Reset after 3 seconds

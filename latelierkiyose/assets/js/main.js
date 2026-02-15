@@ -21,9 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
 	new ShareLinkCopier();
 
 	// Initialize carousels
-	const carousels = document.querySelectorAll( '.carousel' );
-	carousels.forEach( ( carouselElement ) => {
-		const carousel = new KiyoseCarousel( carouselElement );
+	const carousels = document.querySelectorAll('.carousel');
+	carousels.forEach((carouselElement) => {
+		const carousel = new KiyoseCarousel(carouselElement);
 		carousel.init();
-	} );
+	});
 });

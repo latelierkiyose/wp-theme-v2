@@ -1,0 +1,5 @@
+node_modules/
+vendor/
+uploads/
+*.min.js
+latelierkiyose/assets/js/vendor/

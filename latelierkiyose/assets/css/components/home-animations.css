@@ -47,6 +47,7 @@
 .service-card {
 	opacity: 0;
 	transform: translateX(100px);
+
 	/* Smooth transition for JS-controlled values */
 	transition: transform 0.1s linear, opacity 0.1s linear;
 }

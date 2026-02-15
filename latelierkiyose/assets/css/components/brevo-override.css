@@ -8,13 +8,15 @@
  * @since   0.1.13
  */
 
+/* stylelint-disable no-descending-specificity */
+
 /* ==========================================================================
    Container principal du formulaire Brevo
    ========================================================================== */
 
 .sib-form {
-	width: 100%;
 	max-width: 100%;
+	width: 100%;
 }
 
 /* ==========================================================================
@@ -36,10 +38,10 @@
 }
 
 /* Desktop : champs inline */
-@media (min-width: 768px) {
+@media (width >= 768px) {
 	.site-footer__newsletter .sib-form__container {
-		flex-direction: row;
 		align-items: flex-end;
+		flex-direction: row;
 	}
 
 	.site-footer__newsletter .sib-form__field {
@@ -73,15 +75,15 @@
 }
 
 /* Desktop : grille 2 colonnes pour prénom/nom */
-@media (min-width: 768px) {
+@media (width >= 768px) {
 	.home-newsletter__content .sib-form__container {
 		gap: 1.5rem;
 	}
 
 	.home-newsletter__content .sib-form__fields-row {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
 		gap: 1rem;
+		grid-template-columns: 1fr 1fr;
 	}
 }
 
@@ -99,17 +101,17 @@
 }
 
 .sib-form__label {
+	color: var(--kiyose-color-text);
 	display: block;
-	margin-bottom: 0.5rem;
-	font-family: var(--font-body);
+	font-family: var(--kiyose-font-body);
 	font-size: 0.875rem;
 	font-weight: 600;
-	color: var(--color-text);
+	margin-bottom: 0.5rem;
 }
 
 .sib-form__input {
-	width: 100%;
 	min-height: 44px;
+	width: 100%;
 }
 
 /* ==========================================================================
@@ -117,35 +119,35 @@
    ========================================================================== */
 
 .sib-form__checkbox {
-	display: flex;
 	align-items: flex-start;
+	display: flex;
 	gap: 0.5rem;
 	margin-bottom: 1rem;
 }
 
 .sib-form__checkbox input[type="checkbox"] {
-	margin-top: 0.25rem;
-	flex-shrink: 0;
-	width: 18px;
-	height: 18px;
 	cursor: pointer;
+	flex-shrink: 0;
+	height: 18px;
+	margin-top: 0.25rem;
+	width: 18px;
 }
 
 .sib-form__checkbox label {
-	margin-bottom: 0;
+	cursor: pointer;
 	font-size: 0.875rem;
 	font-weight: 400;
-	cursor: pointer;
+	margin-bottom: 0;
 }
 
 .sib-form__checkbox label a {
-	color: var(--color-link);
+	color: var(--kiyose-color-link);
 	text-decoration: underline;
 }
 
 .sib-form__checkbox label a:hover,
 .sib-form__checkbox label a:focus {
-	color: var(--color-link-hover);
+	color: var(--kiyose-color-link-hover);
 }
 
 /* ==========================================================================
@@ -167,7 +169,7 @@
 }
 
 /* Desktop footer : bouton auto-width */
-@media (min-width: 768px) {
+@media (width >= 768px) {
 	.site-footer__newsletter .sib-form button[type="submit"],
 	.site-footer__newsletter .sib-form input[type="submit"] {
 		width: auto;
@@ -184,13 +186,13 @@
  * Vert foncé (#155724) sur fond vert clair (#d4edda) = 7.2:1
  */
 .sib-form__message--success {
-	padding: 1rem;
-	margin-top: 1rem;
-	font-size: 0.875rem;
-	color: #155724;
 	background-color: #d4edda;
 	border: 1px solid #c3e6cb;
 	border-radius: 4px;
+	color: #155724;
+	font-size: 0.875rem;
+	margin-top: 1rem;
+	padding: 1rem;
 }
 
 .sib-form__message--success::before {
@@ -204,13 +206,13 @@
  * Rouge foncé (#721c24) sur fond rouge clair (#f8d7da) = 8.1:1
  */
 .sib-form__message--error {
-	padding: 1rem;
-	margin-top: 1rem;
-	font-size: 0.875rem;
-	color: #721c24;
 	background-color: #f8d7da;
 	border: 1px solid #f5c6cb;
 	border-radius: 4px;
+	color: #721c24;
+	font-size: 0.875rem;
+	margin-top: 1rem;
+	padding: 1rem;
 }
 
 .sib-form__message--error::before {
@@ -223,10 +225,10 @@
    ========================================================================== */
 
 .sib-form__field-error {
-	display: block;
-	margin-top: 0.25rem;
-	font-size: 0.75rem;
 	color: #721c24;
+	display: block;
+	font-size: 0.75rem;
+	margin-top: 0.25rem;
 }
 
 .sib-form__field--error .sib-form__input {
@@ -244,8 +246,8 @@
 
 .sib-form--loading button[type="submit"],
 .sib-form--loading input[type="submit"] {
-	opacity: 0.6;
 	cursor: wait;
+	opacity: 0.6;
 }
 
 /* ==========================================================================
@@ -255,7 +257,7 @@
 /**
  * Mobile (<768px) : Champs empilés, bouton pleine largeur
  */
-@media (max-width: 767px) {
+@media (width <= 767px) {
 	.sib-form button[type="submit"],
 	.sib-form input[type="submit"] {
 		width: 100%;

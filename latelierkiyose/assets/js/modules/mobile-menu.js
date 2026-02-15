@@ -65,12 +65,10 @@ export default class MobileMenu {
 			'input:not([disabled])',
 			'textarea:not([disabled])',
 			'select:not([disabled])',
-			'[tabindex]:not([tabindex="-1"])'
+			'[tabindex]:not([tabindex="-1"])',
 		].join(', ');
 
-		this.focusableElements = Array.from(
-			this.mobileMenu.querySelectorAll(focusableSelectors)
-		);
+		this.focusableElements = Array.from(this.mobileMenu.querySelectorAll(focusableSelectors));
 
 		if (this.focusableElements.length > 0) {
 			this.firstFocusableElement = this.focusableElements[0];

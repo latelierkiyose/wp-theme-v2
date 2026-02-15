@@ -1,6 +1,7 @@
 # Dépendances
 vendor/
 node_modules/
+package-lock.json
 
 # Fichiers système
 .DS_Store

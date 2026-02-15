@@ -1,0 +1,27 @@
+{
+	"name": "latelierkiyose-wp-theme",
+	"version": "2.0.0",
+	"description": "Thème WordPress sur mesure pour L'Atelier Kiyose",
+	"private": true,
+	"scripts": {
+		"lint:js": "eslint 'latelierkiyose/assets/js/**/*.js'",
+		"lint:css": "stylelint 'latelierkiyose/**/*.css'",
+		"lint": "npm run lint:js && npm run lint:css",
+		"lint:fix": "npm run lint:js -- --fix && npm run lint:css -- --fix",
+		"format:js": "prettier --write 'latelierkiyose/assets/js/**/*.js'",
+		"format:check": "prettier --check 'latelierkiyose/assets/js/**/*.js'"
+	},
+	"devDependencies": {
+		"eslint": "^8.57.0",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-plugin-jsx-a11y": "^6.9.0",
+		"prettier": "^3.2.5",
+		"stylelint": "^16.2.1",
+		"stylelint-config-standard": "^36.0.0",
+		"stylelint-order": "^6.0.4"
+	},
+	"engines": {
+		"node": ">=18.0.0",
+		"npm": ">=9.0.0"
+	}
+}

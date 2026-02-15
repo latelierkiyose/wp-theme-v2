@@ -18,7 +18,7 @@
 .wpcf7-form {
 	display: flex;
 	flex-direction: column;
-	gap: var(--spacing-lg);
+	gap: var(--kiyose-spacing-lg);
 }
 
 /* ========================================
@@ -27,18 +27,18 @@
 
 /* Labels */
 .wpcf7-form label {
+	color: var(--kiyose-color-text);
 	display: block;
-	margin-bottom: var(--spacing-sm);
+	font-size: var(--kiyose-font-size-base);
 	font-weight: 600;
-	color: var(--color-text);
-	font-size: var(--font-size-base);
+	margin-bottom: var(--kiyose-spacing-sm);
 }
 
 /* Required indicator */
 .wpcf7-form .wpcf7-form-control-wrap abbr[title] {
 	color: #d32f2f; /* Rouge pour champs requis - contraste 7.13:1 sur fond blanc */
-	text-decoration: none;
 	font-weight: bold;
+	text-decoration: none;
 }
 
 /* Input fields */
@@ -48,16 +48,16 @@
 .wpcf7-form input[type="url"],
 .wpcf7-form select,
 .wpcf7-form textarea {
-	width: 100%;
-	min-height: 44px;
-	padding: var(--spacing-md);
-	font-size: var(--font-size-base);
-	font-family: var(--font-body);
-	color: var(--color-text);
-	border: 2px solid var(--color-border);
+	background-color: #ffffff;
+	border: 2px solid var(--kiyose-color-border);
 	border-radius: 6px;
-	background-color: white;
+	color: var(--kiyose-color-text);
+	font-family: var(--kiyose-font-body);
+	font-size: var(--kiyose-font-size-base);
+	min-height: 44px;
+	padding: var(--kiyose-spacing-md);
 	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+	width: 100%;
 }
 
 /* Textarea specific */
@@ -68,13 +68,13 @@
 
 /* Select dropdown */
 .wpcf7-form select {
-	cursor: pointer;
 	appearance: none;
 	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%235D0505' d='M4 6l4 4 4-4z'/%3E%3C/svg%3E");
+	background-position: right var(--kiyose-spacing-md) center;
 	background-repeat: no-repeat;
-	background-position: right var(--spacing-md) center;
 	background-size: 16px;
-	padding-right: var(--spacing-3xl);
+	cursor: pointer;
+	padding-right: var(--kiyose-spacing-3xl);
 }
 
 /* Focus state */
@@ -84,9 +84,9 @@
 .wpcf7-form input[type="url"]:focus,
 .wpcf7-form select:focus,
 .wpcf7-form textarea:focus {
+	border-color: var(--kiyose-color-primary);
+	box-shadow: 0 0 0 3px rgb(215 164 164 / 20%);
 	outline: none;
-	border-color: var(--color-primary);
-	box-shadow: 0 0 0 3px rgba(215, 164, 164, 0.2);
 }
 
 /* Invalid state */
@@ -101,7 +101,7 @@
 .wpcf7-form select[aria-invalid="true"]:focus,
 .wpcf7-form textarea[aria-invalid="true"]:focus,
 .wpcf7-form .wpcf7-not-valid:focus {
-	box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.2);
+	box-shadow: 0 0 0 3px rgb(211 47 47 / 20%);
 }
 
 /* ========================================
@@ -110,21 +110,21 @@
 
 .wpcf7-form input[type="submit"],
 .wpcf7-form button[type="submit"] {
-	display: inline-flex;
 	align-items: center;
-	justify-content: center;
-	min-width: 44px;
-	min-height: 44px;
-	padding: var(--spacing-md) var(--spacing-xl);
-	font-family: var(--font-body);
-	font-size: var(--font-size-base);
-	font-weight: 600;
-	text-decoration: none;
-	color: var(--color-burgundy);
-	background-color: var(--color-primary);
-	border: 2px solid var(--color-primary);
+	background-color: var(--kiyose-color-primary);
+	border: 2px solid var(--kiyose-color-primary);
 	border-radius: 8px;
+	color: var(--kiyose-color-burgundy);
 	cursor: pointer;
+	display: inline-flex;
+	font-family: var(--kiyose-font-body);
+	font-size: var(--kiyose-font-size-base);
+	font-weight: 600;
+	justify-content: center;
+	min-height: 44px;
+	min-width: 44px;
+	padding: var(--kiyose-spacing-md) var(--kiyose-spacing-xl);
+	text-decoration: none;
 	transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
@@ -142,21 +142,21 @@
 
 .wpcf7-form input[type="submit"]:focus,
 .wpcf7-form button[type="submit"]:focus {
-	outline: 2px solid var(--color-burgundy);
+	outline: 2px solid var(--kiyose-color-burgundy);
 	outline-offset: 2px;
 }
 
 .wpcf7-form input[type="submit"]:disabled,
 .wpcf7-form button[type="submit"]:disabled {
-	opacity: 0.5;
 	cursor: not-allowed;
+	opacity: 0.5;
 }
 
 /* Submitting state */
 .wpcf7-form.submitting input[type="submit"],
 .wpcf7-form.submitting button[type="submit"] {
-	opacity: 0.6;
 	cursor: wait;
+	opacity: 0.6;
 }
 
 /* ========================================
@@ -164,11 +164,11 @@
    ======================================== */
 
 .wpcf7-not-valid-tip {
-	display: block;
-	margin-top: var(--spacing-sm);
 	color: #d32f2f; /* Rouge - contraste 7.13:1 sur fond blanc */
-	font-size: var(--font-size-sm);
+	display: block;
+	font-size: var(--kiyose-font-size-sm);
 	font-weight: 600;
+	margin-top: var(--kiyose-spacing-sm);
 }
 
 /* ========================================
@@ -176,42 +176,42 @@
    ======================================== */
 
 .wpcf7-response-output {
-	margin: var(--spacing-lg) 0 0;
-	padding: var(--spacing-md) var(--spacing-lg);
 	border: 2px solid;
 	border-radius: 8px;
-	font-size: var(--font-size-base);
+	font-size: var(--kiyose-font-size-base);
 	font-weight: 600;
 	line-height: 1.5;
+	margin: var(--kiyose-spacing-lg) 0 0;
+	padding: var(--kiyose-spacing-md) var(--kiyose-spacing-lg);
 }
 
 /* Success message */
 .wpcf7-mail-sent-ok {
-	color: #1b5e20; /* Vert foncé - contraste 8.59:1 sur fond #e8f5e9 */
 	background-color: #e8f5e9; /* Vert clair */
 	border-color: #4caf50;
+	color: #1b5e20; /* Vert foncé - contraste 8.59:1 sur fond #e8f5e9 */
 }
 
 /* Error message */
 .wpcf7-validation-errors,
 .wpcf7-mail-sent-ng {
-	color: #b71c1c; /* Rouge foncé - contraste 9.67:1 sur fond #ffebee */
 	background-color: #ffebee; /* Rouge clair */
 	border-color: #d32f2f;
+	color: #b71c1c; /* Rouge foncé - contraste 9.67:1 sur fond #ffebee */
 }
 
 /* Spam detected */
 .wpcf7-spam-blocked {
-	color: #e65100; /* Orange foncé - contraste 6.27:1 sur fond #fff3e0 */
 	background-color: #fff3e0; /* Orange clair */
 	border-color: #ff9800;
+	color: #e65100; /* Orange foncé - contraste 6.27:1 sur fond #fff3e0 */
 }
 
 /* Invalid message */
 .wpcf7-aborted {
-	color: #1565c0; /* Bleu foncé - contraste 6.27:1 sur fond #e3f2fd */
 	background-color: #e3f2fd; /* Bleu clair */
 	border-color: #2196f3;
+	color: #1565c0; /* Bleu foncé - contraste 6.27:1 sur fond #e3f2fd */
 }
 
 /* ========================================
@@ -219,15 +219,15 @@
    ======================================== */
 
 .wpcf7-spinner {
-	display: inline-block;
-	width: 24px;
-	height: 24px;
-	margin-left: var(--spacing-md);
-	vertical-align: middle;
-	border: 3px solid rgba(215, 164, 164, 0.3);
-	border-top-color: var(--color-primary);
-	border-radius: 50%;
 	animation: wpcf7-spin 0.6s linear infinite;
+	border: 3px solid rgb(215 164 164 / 30%);
+	border-radius: 50%;
+	border-top-color: var(--kiyose-color-primary);
+	display: inline-block;
+	height: 24px;
+	margin-left: var(--kiyose-spacing-md);
+	vertical-align: middle;
+	width: 24px;
 }
 
 @keyframes wpcf7-spin {
@@ -240,8 +240,8 @@
 @media (prefers-reduced-motion: reduce) {
 	.wpcf7-spinner {
 		animation: none;
-		border-top-color: var(--color-primary);
-		border-right-color: var(--color-primary);
+		border-right-color: var(--kiyose-color-primary);
+		border-top-color: var(--kiyose-color-primary);
 	}
 
 	.wpcf7-form input[type="submit"],
@@ -255,30 +255,30 @@
    ======================================== */
 
 .wpcf7-list-item {
-	display: flex;
 	align-items: center;
-	margin: var(--spacing-sm) 0;
+	display: flex;
+	margin: var(--kiyose-spacing-sm) 0;
 }
 
 .wpcf7-list-item-label {
-	display: flex;
 	align-items: center;
-	gap: var(--spacing-sm);
 	cursor: pointer;
+	display: flex;
+	gap: var(--kiyose-spacing-sm);
 	min-height: 44px;
 }
 
 .wpcf7-form input[type="checkbox"],
 .wpcf7-form input[type="radio"] {
-	width: 20px;
+	cursor: pointer;
 	height: 20px;
 	margin: 0;
-	cursor: pointer;
+	width: 20px;
 }
 
 .wpcf7-form input[type="checkbox"]:focus,
 .wpcf7-form input[type="radio"]:focus {
-	outline: 2px solid var(--color-primary);
+	outline: 2px solid var(--kiyose-color-primary);
 	outline-offset: 2px;
 }
 
@@ -287,12 +287,12 @@
    ======================================== */
 
 .wpcf7-acceptance {
-	margin: var(--spacing-lg) 0;
+	margin: var(--kiyose-spacing-lg) 0;
 }
 
 .wpcf7-acceptance .wpcf7-list-item-label {
-	font-size: var(--font-size-sm);
-	color: var(--color-text);
+	color: var(--kiyose-color-text);
+	font-size: var(--kiyose-font-size-sm);
 }
 
 /* ========================================
@@ -300,13 +300,13 @@
    ======================================== */
 
 .wpcf7-form input[type="file"] {
-	padding: var(--spacing-sm);
-	font-size: var(--font-size-base);
 	cursor: pointer;
+	font-size: var(--kiyose-font-size-base);
+	padding: var(--kiyose-spacing-sm);
 }
 
 .wpcf7-form input[type="file"]:focus {
-	outline: 2px solid var(--color-primary);
+	outline: 2px solid var(--kiyose-color-primary);
 	outline-offset: 2px;
 }
 
@@ -315,9 +315,9 @@
    ======================================== */
 
 /* Mobile adjustments */
-@media (max-width: 767px) {
+@media (width <= 767px) {
 	.wpcf7-form {
-		gap: var(--spacing-md);
+		gap: var(--kiyose-spacing-md);
 	}
 
 	.wpcf7-form input[type="submit"],

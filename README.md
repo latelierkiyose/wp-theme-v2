@@ -26,6 +26,7 @@ make start
 - **[Architecture](doc/architecture.md)** — Structure technique du projet
 - **[Design System](doc/design-system.md)** — Palette, typographie, composants
 - **[Standards](doc/standards.md)** — WPCS, accessibilité, sécurité
+- **[Linting](doc/linting.md)** — Guide des linters JavaScript et CSS
 
 ## 🛠 Commandes disponibles
 
@@ -34,21 +35,33 @@ make help          # Afficher l'aide
 make install       # Installer les dépendances Composer
 make start         # Démarrer WordPress
 make stop          # Arrêter WordPress
-make phpcs         # Valider le code avec PHPCS
-make phpcs-fix     # Corriger automatiquement les violations
-make test          # Exécuter tous les tests
+make phpcs         # Valider le code PHP avec PHPCS
+make phpcs-fix     # Corriger automatiquement les violations PHPCS
+make lint-js       # Valider le code JavaScript avec ESLint
+make lint-css      # Valider le code CSS avec Stylelint
+make lint          # Valider JS et CSS
+make lint-fix      # Corriger automatiquement JS et CSS
+make format-js     # Formater JavaScript avec Prettier
+make format-check  # Vérifier le formatage JavaScript
+make test          # Exécuter tous les tests (PHPCS + linters)
 make logs          # Afficher les logs WordPress
 make clean         # Nettoyer les fichiers générés
 ```
 
 ## 🐳 Scripts Docker
 
-Si vous n'avez pas PHP installé localement, utilisez les wrappers Docker :
+Si vous n'avez pas PHP ou Node.js installé localement, utilisez les wrappers Docker :
 
 ```bash
+# PHP & Composer
 ./bin/composer.sh install           # Composer via Docker
 ./bin/phpcs.sh                      # PHPCS via Docker
 ./bin/phpcbf.sh                     # PHPCBF via Docker
+
+# JavaScript & CSS
+./bin/eslint.sh 'latelierkiyose/assets/js/**/*.js'    # ESLint via Docker
+./bin/stylelint.sh 'latelierkiyose/**/*.css'          # Stylelint via Docker
+./bin/prettier.sh --write 'latelierkiyose/assets/js/**/*.js'  # Prettier via Docker
 ```
 
 ## Chargement des données de production
@@ -83,13 +96,20 @@ wp-theme-v2/
 ├── doc/                     # Documentation complète
 ├── bin/                     # Scripts Docker
 ├── Makefile                 # Commandes simplifiées
-├── composer.json            # Dépendances dev
-└── phpcs.xml                # Configuration PHPCS
+├── composer.json            # Dépendances PHP (dev)
+├── package.json             # Dépendances Node.js (linters)
+├── phpcs.xml                # Configuration PHPCS
+├── .eslintrc.json           # Configuration ESLint
+├── .prettierrc.json         # Configuration Prettier
+└── .stylelintrc.json        # Configuration Stylelint
 ```
 
 ## ✅ Standards
 
 - **WordPress Coding Standards (WPCS)** — Validation automatique via PHPCS
+- **ESLint** — Linting JavaScript (ES6+) avec règles d'accessibilité
+- **Prettier** — Formatage automatique JavaScript
+- **Stylelint** — Linting CSS avec ordre des propriétés
 - **WCAG 2.2 AA** — Accessibilité prioritaire
 - **PHP 8.1+** — WordPress 6.7+
 - **CI/CD** — GitHub Actions pour validation automatique

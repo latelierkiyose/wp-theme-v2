@@ -13,15 +13,15 @@
    ============================================ */
 
 .home-page section {
-	padding: var(--spacing-3xl) var(--spacing-md);
+	padding: var(--kiyose-spacing-3xl) var(--kiyose-spacing-md);
 }
 
 .home-page section h2 {
-	font-family: var(--font-heading);
-	font-size: var(--font-size-3xl);
-	color: var(--color-burgundy);
+	color: var(--kiyose-color-burgundy);
+	font-family: var(--kiyose-font-heading);
+	font-size: var(--kiyose-font-size-3xl);
+	margin-bottom: var(--kiyose-spacing-2xl);
 	text-align: center;
-	margin-bottom: var(--spacing-2xl);
 }
 
 /* ============================================
@@ -29,15 +29,15 @@
    ============================================ */
 
 .home-services {
-	background-color: white;
+	background-color: #ffffff;
 }
 
 .home-services__grid {
 	display: grid;
-	gap: var(--spacing-xl);
+	gap: var(--kiyose-spacing-xl);
 	grid-template-columns: 1fr;
-	max-width: 1400px;
 	margin: 0 auto;
+	max-width: 1400px;
 }
 
 /* ============================================
@@ -50,31 +50,31 @@
 }
 
 .home-events__list {
+	margin: 0 auto var(--kiyose-spacing-2xl);
 	max-width: 1000px;
-	margin: 0 auto var(--spacing-2xl);
 }
 
 .home-events__placeholder {
+	color: var(--kiyose-color-text-light);
 	font-style: italic;
-	color: var(--color-text-light);
-	margin: var(--spacing-xl) 0;
+	margin: var(--kiyose-spacing-xl) 0;
 }
 
 .home-events__cta {
-	display: inline-flex;
 	align-items: center;
-	justify-content: center;
-	min-width: 44px;
-	min-height: 44px;
-	padding: var(--spacing-md) var(--spacing-xl);
-	font-family: var(--font-body);
-	font-size: var(--font-size-base);
-	font-weight: 600;
-	text-decoration: none;
 	border: 2px solid transparent;
 	border-radius: 8px;
 	cursor: pointer;
-	transition: all var(--transition-base);
+	display: inline-flex;
+	font-family: var(--kiyose-font-body);
+	font-size: var(--kiyose-font-size-base);
+	font-weight: 600;
+	justify-content: center;
+	min-height: 44px;
+	min-width: 44px;
+	padding: var(--kiyose-spacing-md) var(--kiyose-spacing-xl);
+	text-decoration: none;
+	transition: all var(--kiyose-transition-base);
 }
 
 /* ============================================
@@ -82,14 +82,14 @@
    ============================================ */
 
 .home-testimonials {
-	background-color: white;
+	background-color: #ffffff;
 }
 
 .home-testimonials__empty {
-	text-align: center;
+	color: var(--kiyose-color-text-light);
 	font-style: italic;
-	color: var(--color-text-light);
-	margin: var(--spacing-xl) 0;
+	margin: var(--kiyose-spacing-xl) 0;
+	text-align: center;
 }
 
 /* ============================================
@@ -102,32 +102,32 @@
 }
 
 .home-newsletter__content {
-	max-width: 700px;
 	margin: 0 auto;
+	max-width: 700px;
 }
 
 .home-newsletter__title {
-	color: var(--color-burgundy);
+	color: var(--kiyose-color-burgundy);
 }
 
 .home-newsletter__description {
-	font-size: var(--font-size-lg);
-	color: var(--color-text);
-	margin-bottom: var(--spacing-xl);
+	color: var(--kiyose-color-text);
+	font-size: var(--kiyose-font-size-lg);
 	line-height: 1.6;
+	margin-bottom: var(--kiyose-spacing-xl);
 }
 
 .home-newsletter__form-placeholder {
-	background-color: rgba(255, 255, 255, 0.6);
-	padding: var(--spacing-xl);
+	background-color: rgb(255 255 255 / 60%);
+	border: 2px dashed var(--kiyose-color-border);
 	border-radius: 8px;
-	border: 2px dashed var(--color-border);
+	padding: var(--kiyose-spacing-xl);
 }
 
 .home-newsletter__form-placeholder p {
-	margin: 0;
-	color: var(--color-text-light);
+	color: var(--kiyose-color-text-light);
 	font-style: italic;
+	margin: 0;
 }
 
 /* ============================================
@@ -135,48 +135,48 @@
    ============================================ */
 
 .home-blog {
-	background-color: var(--color-background);
+	background-color: var(--kiyose-color-background);
 	text-align: center;
 }
 
 .home-blog__grid {
 	display: grid;
-	gap: var(--spacing-xl);
+	gap: var(--kiyose-spacing-xl);
 	grid-template-columns: 1fr;
+	margin: 0 auto var(--kiyose-spacing-2xl);
 	max-width: 1400px;
-	margin: 0 auto var(--spacing-2xl);
 }
 
 .home-blog__cta {
-	display: inline-flex;
 	align-items: center;
-	justify-content: center;
-	min-width: 44px;
-	min-height: 44px;
-	padding: var(--spacing-md) var(--spacing-xl);
-	font-family: var(--font-body);
-	font-size: var(--font-size-base);
-	font-weight: 600;
-	text-decoration: none;
 	border: 2px solid transparent;
 	border-radius: 8px;
 	cursor: pointer;
-	transition: all var(--transition-base);
+	display: inline-flex;
+	font-family: var(--kiyose-font-body);
+	font-size: var(--kiyose-font-size-base);
+	font-weight: 600;
+	justify-content: center;
+	min-height: 44px;
+	min-width: 44px;
+	padding: var(--kiyose-spacing-md) var(--kiyose-spacing-xl);
+	text-decoration: none;
+	transition: all var(--kiyose-transition-base);
 }
 
 .home-blog__empty {
+	color: var(--kiyose-color-text-light);
 	font-style: italic;
-	color: var(--color-text-light);
-	margin: var(--spacing-xl) 0;
+	margin: var(--kiyose-spacing-xl) 0;
 }
 
 /* ============================================
    RESPONSIVE - TABLET
    ============================================ */
 
-@media (min-width: 768px) {
+@media (width >= 768px) {
 	.home-page section {
-		padding: var(--spacing-3xl) var(--spacing-xl);
+		padding: var(--kiyose-spacing-3xl) var(--kiyose-spacing-xl);
 	}
 
 	/* Services grid: 2 columns on tablet */
@@ -194,14 +194,14 @@
    RESPONSIVE - DESKTOP
    ============================================ */
 
-@media (min-width: 1024px) {
+@media (width >= 1024px) {
 	.home-page section {
-		padding: var(--spacing-3xl) var(--spacing-2xl);
+		padding: var(--kiyose-spacing-3xl) var(--kiyose-spacing-2xl);
 	}
 
 	.home-page section h2 {
-		font-size: var(--font-size-4xl);
-		margin-bottom: var(--spacing-3xl);
+		font-size: var(--kiyose-font-size-4xl);
+		margin-bottom: var(--kiyose-spacing-3xl);
 	}
 
 	/* Services grid: 4 columns on desktop */

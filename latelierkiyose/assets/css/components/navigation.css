@@ -3,21 +3,23 @@
  * L'Atelier Kiyose
  */
 
+/* stylelint-disable no-descending-specificity */
+
 /* ============================================
    MAIN NAVIGATION (Desktop)
    ============================================ */
 
 .main-nav {
-	display: flex;
 	align-items: center;
+	display: flex;
 }
 
 .main-nav__list {
 	display: flex;
+	gap: var(--kiyose-spacing-lg);
 	list-style: none;
 	margin: 0;
 	padding: 0;
-	gap: var(--spacing-lg);
 }
 
 .main-nav__list li {
@@ -25,18 +27,18 @@
 }
 
 .main-nav__list a {
-	display: block;
-	padding: var(--spacing-sm) var(--spacing-md);
-	font-family: var(--font-body);
-	font-size: var(--font-size-base);
-	font-weight: 600;
-	color: var(--color-burgundy);
-	text-decoration: none;
-	min-height: 44px;
-	min-width: 44px;
-	display: flex;
 	align-items: center;
 	border-radius: 4px;
+	color: var(--kiyose-color-burgundy);
+	display: block;
+	display: flex;
+	font-family: var(--kiyose-font-body);
+	font-size: var(--kiyose-font-size-base);
+	font-weight: 600;
+	min-height: 44px;
+	min-width: 44px;
+	padding: var(--kiyose-spacing-sm) var(--kiyose-spacing-md);
+	text-decoration: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -46,20 +48,20 @@
 }
 
 .main-nav__list a:hover {
-	background-color: rgba(215, 164, 164, 0.1);
-	color: var(--color-primary);
+	background-color: rgb(215 164 164 / 10%);
+	color: var(--kiyose-color-primary);
 }
 
 .main-nav__list a:focus-visible {
-	outline: 2px solid var(--color-burgundy);
+	outline: 2px solid var(--kiyose-color-burgundy);
 	outline-offset: 2px;
 }
 
 /* Current menu item */
 .main-nav__list .current-menu-item > a,
 .main-nav__list .current-menu-ancestor > a {
-	color: var(--color-primary);
-	background-color: rgba(215, 164, 164, 0.15);
+	background-color: rgb(215 164 164 / 15%);
+	color: var(--kiyose-color-primary);
 }
 
 /* ============================================
@@ -67,18 +69,18 @@
    ============================================ */
 
 .main-nav__list .sub-menu {
+	background-color: #ffffff;
+	border: 1px solid var(--kiyose-color-border);
+	border-radius: 4px;
+	box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
+	left: 0;
+	list-style: none;
+	margin: var(--kiyose-spacing-xs) 0 0 0;
+	min-width: 220px;
+	opacity: 0;
+	padding: var(--kiyose-spacing-sm) 0;
 	position: absolute;
 	top: 100%;
-	left: 0;
-	min-width: 220px;
-	background-color: white;
-	border: 1px solid var(--color-border);
-	border-radius: 4px;
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-	list-style: none;
-	margin: var(--spacing-xs) 0 0 0;
-	padding: var(--spacing-sm) 0;
-	opacity: 0;
 	visibility: hidden;
 	z-index: 1000;
 }
@@ -102,27 +104,27 @@
 }
 
 .main-nav__list .sub-menu a {
-	padding: var(--spacing-sm) var(--spacing-lg);
-	min-width: auto;
-	width: 100%;
 	border-radius: 0;
+	min-width: auto;
+	padding: var(--kiyose-spacing-sm) var(--kiyose-spacing-lg);
+	width: 100%;
 }
 
 .main-nav__list .sub-menu a:hover {
-	background-color: rgba(215, 164, 164, 0.1);
+	background-color: rgb(215 164 164 / 10%);
 }
 
 /* Dropdown indicator */
 .main-nav__list .menu-item-has-children > a::after {
-	content: '';
-	display: inline-block;
-	width: 0;
-	height: 0;
-	margin-left: var(--spacing-xs);
 	border-left: 4px solid transparent;
 	border-right: 4px solid transparent;
-	border-top: 4px solid currentColor;
+	border-top: 4px solid currentcolor;
+	content: '';
+	display: inline-block;
+	height: 0;
+	margin-left: var(--kiyose-spacing-xs);
 	vertical-align: middle;
+	width: 0;
 }
 
 /* ARIA attributes for dropdowns */
@@ -141,21 +143,21 @@
    ============================================ */
 
 .hamburger-button {
-	display: none;
-	flex-direction: column;
-	justify-content: space-around;
-	width: 44px;
-	height: 44px;
-	padding: var(--spacing-sm);
 	background: transparent;
 	border: none;
 	cursor: pointer;
+	display: none;
+	flex-direction: column;
+	height: 44px;
+	justify-content: space-around;
+	padding: var(--kiyose-spacing-sm);
+	width: 44px;
 }
 
 .hamburger-button__line {
-	width: 100%;
+	background-color: var(--kiyose-color-burgundy);
 	height: 3px;
-	background-color: var(--color-burgundy);
+	width: 100%;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -165,7 +167,7 @@
 }
 
 .hamburger-button:focus-visible {
-	outline: 2px solid var(--color-burgundy);
+	outline: 2px solid var(--kiyose-color-burgundy);
 	outline-offset: 2px;
 }
 
@@ -187,14 +189,14 @@
    ============================================ */
 
 .mobile-menu-overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
+	background-color: rgb(0 0 0 / 50%);
 	height: 100vh;
-	background-color: rgba(0, 0, 0, 0.5);
+	left: 0;
 	opacity: 0;
 	pointer-events: none;
+	position: fixed;
+	top: 0;
+	width: 100%;
 	z-index: 999;
 }
 
@@ -214,18 +216,18 @@
    ============================================ */
 
 .mobile-menu {
-	position: fixed;
-	top: 0;
-	right: 0;
-	width: 100%;
-	max-width: 320px;
+	background-color: #ffffff;
+	box-shadow: -4px 0 12px rgb(0 0 0 / 15%);
 	height: 100vh;
-	background-color: white;
-	box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
-	transform: translateX(100%);
-	z-index: 1000;
+	max-width: 320px;
 	overflow-y: auto;
-	padding: var(--spacing-xl);
+	padding: var(--kiyose-spacing-xl);
+	position: fixed;
+	right: 0;
+	top: 0;
+	transform: translateX(100%);
+	width: 100%;
+	z-index: 1000;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -240,29 +242,29 @@
 
 /* Mobile menu close button */
 .mobile-menu__close {
-	display: flex;
 	align-items: center;
-	justify-content: center;
-	width: 44px;
-	height: 44px;
-	padding: 0;
 	background: transparent;
 	border: none;
 	cursor: pointer;
+	display: flex;
+	height: 44px;
+	justify-content: center;
+	margin-bottom: var(--kiyose-spacing-lg);
 	margin-left: auto;
-	margin-bottom: var(--spacing-lg);
+	padding: 0;
+	width: 44px;
 }
 
 .mobile-menu__close:focus-visible {
-	outline: 2px solid var(--color-burgundy);
+	outline: 2px solid var(--kiyose-color-burgundy);
 	outline-offset: 2px;
 }
 
 .mobile-menu__close-icon {
-	font-size: var(--font-size-3xl);
+	color: var(--kiyose-color-burgundy);
+	font-size: var(--kiyose-font-size-3xl);
 	font-weight: 300;
 	line-height: 1;
-	color: var(--color-burgundy);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -273,7 +275,7 @@
 
 .mobile-menu__close:hover,
 .mobile-menu__close:focus {
-	background-color: rgba(215, 164, 164, 0.1);
+	background-color: rgb(215 164 164 / 10%);
 }
 
 /* Mobile menu navigation list */
@@ -284,7 +286,7 @@
 }
 
 .mobile-menu__list li {
-	border-bottom: 1px solid var(--color-border);
+	border-bottom: 1px solid var(--kiyose-color-border);
 }
 
 .mobile-menu__list li:last-child {
@@ -292,16 +294,16 @@
 }
 
 .mobile-menu__list a {
-	display: block;
-	padding: var(--spacing-md);
-	min-height: 44px;
-	font-family: var(--font-body);
-	font-size: var(--font-size-base);
-	font-weight: 600;
-	color: var(--color-burgundy);
-	text-decoration: none;
-	display: flex;
 	align-items: center;
+	color: var(--kiyose-color-burgundy);
+	display: block;
+	display: flex;
+	font-family: var(--kiyose-font-body);
+	font-size: var(--kiyose-font-size-base);
+	font-weight: 600;
+	min-height: 44px;
+	padding: var(--kiyose-spacing-md);
+	text-decoration: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -312,33 +314,33 @@
 
 .mobile-menu__list a:hover,
 .mobile-menu__list a:focus {
-	background-color: rgba(215, 164, 164, 0.1);
-	color: var(--color-primary);
+	background-color: rgb(215 164 164 / 10%);
+	color: var(--kiyose-color-primary);
 }
 
 .mobile-menu__list a:focus-visible {
-	outline: 2px solid var(--color-burgundy);
+	outline: 2px solid var(--kiyose-color-burgundy);
 	outline-offset: -2px;
 }
 
 /* Current menu item */
 .mobile-menu__list .current-menu-item > a,
 .mobile-menu__list .current-menu-ancestor > a {
-	color: var(--color-primary);
-	background-color: rgba(215, 164, 164, 0.15);
+	background-color: rgb(215 164 164 / 15%);
+	color: var(--kiyose-color-primary);
 }
 
 /* Sub-menus in mobile (displayed as accordion) */
 .mobile-menu__list .sub-menu {
+	background-color: rgb(239 229 228 / 50%);
 	list-style: none;
 	margin: 0;
 	padding: 0;
-	padding-left: var(--spacing-lg);
-	background-color: rgba(239, 229, 228, 0.5);
+	padding-left: var(--kiyose-spacing-lg);
 }
 
 .mobile-menu__list .sub-menu a {
-	font-size: var(--font-size-sm);
+	font-size: var(--kiyose-font-size-sm);
 	font-weight: 500;
 }
 
@@ -347,7 +349,7 @@
    ============================================ */
 
 /* Mobile (<1024px) */
-@media (max-width: 1023px) {
+@media (width <= 1023px) {
 	.main-nav {
 		display: none;
 	}
@@ -358,7 +360,7 @@
 }
 
 /* Desktop (≥1024px) */
-@media (min-width: 1024px) {
+@media (width >= 1024px) {
 	.mobile-menu,
 	.mobile-menu-overlay,
 	.hamburger-button {

@@ -38,7 +38,7 @@ export default class Dropdown {
 
 			// Handle keyboard navigation
 			link.addEventListener('keydown', (e) => {
-				this.handleKeyDown(e, link, submenu, menuItem);
+				this.handleKeyDown(e, link, submenu);
 			});
 
 			// Close dropdown when focus leaves the menu item
@@ -79,7 +79,7 @@ export default class Dropdown {
 		submenu.classList.remove('is-open');
 	}
 
-	handleKeyDown(e, link, submenu, menuItem) {
+	handleKeyDown(e, link, submenu) {
 		const isExpanded = link.getAttribute('aria-expanded') === 'true';
 
 		switch (e.key) {

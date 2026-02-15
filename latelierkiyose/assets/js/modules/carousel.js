@@ -10,13 +10,13 @@ export class KiyoseCarousel {
 	/**
 	 * @param {HTMLElement} element - The carousel container element
 	 */
-	constructor( element ) {
+	constructor(element) {
 		this.carousel = element;
-		this.track = element.querySelector( '.carousel__track' );
-		this.slides = Array.from( element.querySelectorAll( '.carousel__slide' ) );
-		this.prevButton = element.querySelector( '.carousel__prev' );
-		this.nextButton = element.querySelector( '.carousel__next' );
-		this.pauseButton = element.querySelector( '.carousel__pause' );
+		this.track = element.querySelector('.carousel__track');
+		this.slides = Array.from(element.querySelectorAll('.carousel__slide'));
+		this.prevButton = element.querySelector('.carousel__prev');
+		this.nextButton = element.querySelector('.carousel__next');
+		this.pauseButton = element.querySelector('.carousel__pause');
 
 		this.currentIndex = 0;
 		this.isPlaying = false;
@@ -24,44 +24,44 @@ export class KiyoseCarousel {
 		this.autoplayDelay = 5000; // 5 seconds
 
 		// Check for prefers-reduced-motion
-		this.prefersReducedMotion = window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
+		this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 		// Bind methods
-		this.handlePrevClick = this.handlePrevClick.bind( this );
-		this.handleNextClick = this.handleNextClick.bind( this );
-		this.handlePauseClick = this.handlePauseClick.bind( this );
-		this.handleKeydown = this.handleKeydown.bind( this );
+		this.handlePrevClick = this.handlePrevClick.bind(this);
+		this.handleNextClick = this.handleNextClick.bind(this);
+		this.handlePauseClick = this.handlePauseClick.bind(this);
+		this.handleKeydown = this.handleKeydown.bind(this);
 	}
 
 	/**
 	 * Initialize the carousel
 	 */
 	init() {
-		if ( !this.track || this.slides.length === 0 ) {
+		if (!this.track || this.slides.length === 0) {
 			return;
 		}
 
 		// Mark carousel as initialized
-		this.carousel.setAttribute( 'data-carousel-initialized', 'true' );
+		this.carousel.setAttribute('data-carousel-initialized', 'true');
 
 		// Setup initial state
 		this.updateSlides();
 		this.updateControls();
 
 		// Add event listeners
-		if ( this.prevButton ) {
-			this.prevButton.addEventListener( 'click', this.handlePrevClick );
+		if (this.prevButton) {
+			this.prevButton.addEventListener('click', this.handlePrevClick);
 		}
-		if ( this.nextButton ) {
-			this.nextButton.addEventListener( 'click', this.handleNextClick );
+		if (this.nextButton) {
+			this.nextButton.addEventListener('click', this.handleNextClick);
 		}
-		if ( this.pauseButton ) {
-			this.pauseButton.addEventListener( 'click', this.handlePauseClick );
+		if (this.pauseButton) {
+			this.pauseButton.addEventListener('click', this.handlePauseClick);
 		}
-		this.carousel.addEventListener( 'keydown', this.handleKeydown );
+		this.carousel.addEventListener('keydown', this.handleKeydown);
 
 		// Start autoplay if motion is not reduced
-		if ( !this.prefersReducedMotion ) {
+		if (!this.prefersReducedMotion) {
 			this.startAutoplay();
 		}
 	}
@@ -70,11 +70,11 @@ export class KiyoseCarousel {
 	 * Navigate to a specific slide
 	 * @param {number} index - The slide index
 	 */
-	goToSlide( index ) {
+	goToSlide(index) {
 		// Wrap around
-		if ( index < 0 ) {
+		if (index < 0) {
 			index = this.slides.length - 1;
-		} else if ( index >= this.slides.length ) {
+		} else if (index >= this.slides.length) {
 			index = 0;
 		}
 
@@ -87,32 +87,32 @@ export class KiyoseCarousel {
 	 * Go to the next slide
 	 */
 	nextSlide() {
-		this.goToSlide( this.currentIndex + 1 );
+		this.goToSlide(this.currentIndex + 1);
 	}
 
 	/**
 	 * Go to the previous slide
 	 */
 	prevSlide() {
-		this.goToSlide( this.currentIndex - 1 );
+		this.goToSlide(this.currentIndex - 1);
 	}
 
 	/**
 	 * Update slides visibility and ARIA attributes
 	 */
 	updateSlides() {
-		this.slides.forEach( ( slide, index ) => {
+		this.slides.forEach((slide, index) => {
 			const isActive = index === this.currentIndex;
-			slide.classList.toggle( 'carousel__slide--active', isActive );
-			slide.setAttribute( 'aria-hidden', !isActive );
-			slide.setAttribute( 'aria-label', `${index + 1} sur ${this.slides.length}` );
+			slide.classList.toggle('carousel__slide--active', isActive);
+			slide.setAttribute('aria-hidden', !isActive);
+			slide.setAttribute('aria-label', `${index + 1} sur ${this.slides.length}`);
 
 			// Update tabindex for focusable elements within slides
-			const focusableElements = slide.querySelectorAll( 'a, button, input, textarea, select' );
-			focusableElements.forEach( el => {
-				el.setAttribute( 'tabindex', isActive ? '0' : '-1' );
-			} );
-		} );
+			const focusableElements = slide.querySelectorAll('a, button, input, textarea, select');
+			focusableElements.forEach((el) => {
+				el.setAttribute('tabindex', isActive ? '0' : '-1');
+			});
+		});
 
 		// Update track position
 		const offset = -this.currentIndex * 100;
@@ -131,43 +131,43 @@ export class KiyoseCarousel {
 	 * Start autoplay
 	 */
 	startAutoplay() {
-		if ( this.isPlaying ) {
+		if (this.isPlaying) {
 			return;
 		}
 
 		this.isPlaying = true;
-		if ( this.track ) {
-			this.track.setAttribute( 'aria-live', 'off' );
+		if (this.track) {
+			this.track.setAttribute('aria-live', 'off');
 		}
-		if ( this.pauseButton ) {
-			this.pauseButton.setAttribute( 'aria-label', 'Mettre en pause le défilement automatique' );
+		if (this.pauseButton) {
+			this.pauseButton.setAttribute('aria-label', 'Mettre en pause le défilement automatique');
 			this.pauseButton.textContent = '⏸';
 		}
 
-		this.autoplayInterval = setInterval( () => {
+		this.autoplayInterval = setInterval(() => {
 			this.nextSlide();
-		}, this.autoplayDelay );
+		}, this.autoplayDelay);
 	}
 
 	/**
 	 * Stop autoplay
 	 */
 	stopAutoplay() {
-		if ( !this.isPlaying ) {
+		if (!this.isPlaying) {
 			return;
 		}
 
 		this.isPlaying = false;
-		if ( this.track ) {
-			this.track.setAttribute( 'aria-live', 'polite' );
+		if (this.track) {
+			this.track.setAttribute('aria-live', 'polite');
 		}
-		if ( this.pauseButton ) {
-			this.pauseButton.setAttribute( 'aria-label', 'Reprendre le défilement automatique' );
+		if (this.pauseButton) {
+			this.pauseButton.setAttribute('aria-label', 'Reprendre le défilement automatique');
 			this.pauseButton.textContent = '▶';
 		}
 
-		if ( this.autoplayInterval ) {
-			clearInterval( this.autoplayInterval );
+		if (this.autoplayInterval) {
+			clearInterval(this.autoplayInterval);
 			this.autoplayInterval = null;
 		}
 	}
@@ -176,7 +176,7 @@ export class KiyoseCarousel {
 	 * Toggle autoplay
 	 */
 	toggleAutoplay() {
-		if ( this.isPlaying ) {
+		if (this.isPlaying) {
 			this.stopAutoplay();
 		} else {
 			this.startAutoplay();
@@ -210,13 +210,13 @@ export class KiyoseCarousel {
 	 * Handle keyboard navigation
 	 * @param {KeyboardEvent} event
 	 */
-	handleKeydown( event ) {
+	handleKeydown(event) {
 		// Only handle arrow keys when carousel has focus
-		if ( !this.carousel.contains( document.activeElement ) ) {
+		if (!this.carousel.contains(document.activeElement)) {
 			return;
 		}
 
-		switch ( event.key ) {
+		switch (event.key) {
 			case 'ArrowLeft':
 				event.preventDefault();
 				this.stopAutoplay();
@@ -235,15 +235,15 @@ export class KiyoseCarousel {
 	 */
 	destroy() {
 		this.stopAutoplay();
-		if ( this.prevButton ) {
-			this.prevButton.removeEventListener( 'click', this.handlePrevClick );
+		if (this.prevButton) {
+			this.prevButton.removeEventListener('click', this.handlePrevClick);
 		}
-		if ( this.nextButton ) {
-			this.nextButton.removeEventListener( 'click', this.handleNextClick );
+		if (this.nextButton) {
+			this.nextButton.removeEventListener('click', this.handleNextClick);
 		}
-		if ( this.pauseButton ) {
-			this.pauseButton.removeEventListener( 'click', this.handlePauseClick );
+		if (this.pauseButton) {
+			this.pauseButton.removeEventListener('click', this.handlePauseClick);
 		}
-		this.carousel.removeEventListener( 'keydown', this.handleKeydown );
+		this.carousel.removeEventListener('keydown', this.handleKeydown);
 	}
 }

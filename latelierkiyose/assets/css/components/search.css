@@ -11,53 +11,53 @@
 
 .search-form {
 	display: flex;
-	gap: var(--spacing-sm);
-	max-width: 600px;
+	gap: var(--kiyose-spacing-sm);
 	margin: 0 auto;
+	max-width: 600px;
 }
 
-@media (max-width: 767px) {
+@media (width <= 767px) {
 	.search-form {
 		flex-direction: column;
 	}
 }
 
 .search-form__input {
-	flex: 1;
-	padding: var(--spacing-md);
-	border: 1px solid var(--color-border);
+	background-color: #ffffff;
+	border: 1px solid var(--kiyose-color-border);
 	border-radius: 4px;
-	font-size: var(--font-size-base);
-	background-color: #fff;
+	flex: 1;
+	font-size: var(--kiyose-font-size-base);
 	min-height: 44px;
+	padding: var(--kiyose-spacing-md);
 }
 
 .search-form__input:focus {
-	outline: 2px solid var(--color-burgundy);
+	border-color: var(--kiyose-color-burgundy);
+	outline: 2px solid var(--kiyose-color-burgundy);
 	outline-offset: 2px;
-	border-color: var(--color-burgundy);
 }
 
 .search-form__submit {
-	padding: var(--spacing-md) var(--spacing-xl);
-	background-color: var(--color-primary);
-	color: var(--color-primary-dark);
+	background-color: var(--kiyose-color-primary);
 	border: none;
 	border-radius: 4px;
+	color: var(--kiyose-color-primary-dark);
 	font-weight: 600;
-	transition: var(--transition-base);
 	min-height: 44px;
 	min-width: 44px;
+	padding: var(--kiyose-spacing-md) var(--kiyose-spacing-xl);
+	transition: var(--kiyose-transition-base);
 	white-space: nowrap;
 }
 
 .search-form__submit:hover {
-	background-color: var(--color-secondary);
-	color: var(--color-burgundy);
+	background-color: var(--kiyose-color-secondary);
+	color: var(--kiyose-color-burgundy);
 }
 
 .search-form__submit:focus-visible {
-	outline: 2px solid var(--color-burgundy);
+	outline: 2px solid var(--kiyose-color-burgundy);
 	outline-offset: 2px;
 }
 
@@ -66,41 +66,41 @@
    ============================================ */
 
 .search-results {
-	max-width: 1000px;
 	margin: 0 auto;
-	padding: var(--spacing-2xl) var(--spacing-md);
+	max-width: 1000px;
+	padding: var(--kiyose-spacing-2xl) var(--kiyose-spacing-md);
 }
 
-@media (min-width: 768px) {
+@media (width >= 768px) {
 	.search-results {
-		padding: var(--spacing-3xl) var(--spacing-xl);
+		padding: var(--kiyose-spacing-3xl) var(--kiyose-spacing-xl);
 	}
 }
 
 .search-results__header {
-	margin-bottom: var(--spacing-xl);
+	margin-bottom: var(--kiyose-spacing-xl);
 	text-align: center;
 }
 
 .search-results__header h1 {
-	color: var(--color-burgundy);
-	font-size: var(--font-size-3xl);
-	margin-bottom: var(--spacing-md);
+	color: var(--kiyose-color-burgundy);
+	font-size: var(--kiyose-font-size-3xl);
+	margin-bottom: var(--kiyose-spacing-md);
 }
 
-@media (max-width: 767px) {
+@media (width <= 767px) {
 	.search-results__header h1 {
-		font-size: var(--font-size-2xl);
+		font-size: var(--kiyose-font-size-2xl);
 	}
 }
 
 .search-results__query {
-	color: var(--color-accent);
+	color: var(--kiyose-color-accent);
 	font-style: italic;
 }
 
 .search-results__form {
-	margin-bottom: var(--spacing-3xl);
+	margin-bottom: var(--kiyose-spacing-3xl);
 }
 
 /* ============================================
@@ -108,67 +108,67 @@
    ============================================ */
 
 .search-results__list {
-	margin-bottom: var(--spacing-2xl);
+	margin-bottom: var(--kiyose-spacing-2xl);
 }
 
 .search-result {
-	padding: var(--spacing-xl);
-	margin-bottom: var(--spacing-xl);
-	background-color: rgba(255, 255, 255, 0.5);
-	border: 1px solid var(--color-border);
+	background-color: rgb(255 255 255 / 50%);
+	border: 1px solid var(--kiyose-color-border);
 	border-radius: 8px;
-	transition: var(--transition-base);
+	margin-bottom: var(--kiyose-spacing-xl);
+	padding: var(--kiyose-spacing-xl);
+	transition: var(--kiyose-transition-base);
 }
 
 .search-result:hover {
-	background-color: rgba(255, 255, 255, 0.8);
-	border-color: var(--color-primary);
+	background-color: rgb(255 255 255 / 80%);
+	border-color: var(--kiyose-color-primary);
 }
 
 .search-result__title {
-	margin-bottom: var(--spacing-md);
-	font-size: var(--font-size-xl);
+	font-size: var(--kiyose-font-size-xl);
+	margin-bottom: var(--kiyose-spacing-md);
 }
 
 .search-result__title a {
-	color: var(--color-burgundy);
+	color: var(--kiyose-color-burgundy);
 	text-decoration: none;
-	transition: var(--transition-base);
+	transition: var(--kiyose-transition-base);
 }
 
 .search-result__title a:hover {
-	color: var(--color-primary);
+	color: var(--kiyose-color-primary);
 	text-decoration: underline;
 }
 
 .search-result__title a:focus-visible {
-	outline: 2px solid var(--color-burgundy);
-	outline-offset: 2px;
 	border-radius: 2px;
+	outline: 2px solid var(--kiyose-color-burgundy);
+	outline-offset: 2px;
 }
 
 .search-result__excerpt {
-	margin-bottom: var(--spacing-md);
-	color: var(--color-text);
-	line-height: var(--line-height-relaxed);
+	color: var(--kiyose-color-text);
+	line-height: var(--kiyose-line-height-relaxed);
+	margin-bottom: var(--kiyose-spacing-md);
 }
 
 .search-result__link {
+	color: var(--kiyose-color-burgundy);
 	display: inline-block;
-	color: var(--color-burgundy);
-	text-decoration: underline;
 	font-weight: 600;
-	transition: var(--transition-base);
+	text-decoration: underline;
+	transition: var(--kiyose-transition-base);
 }
 
 .search-result__link:hover {
-	color: var(--color-primary);
+	color: var(--kiyose-color-primary);
 }
 
 .search-result__link:focus-visible {
-	outline: 2px solid var(--color-burgundy);
-	outline-offset: 2px;
 	border-radius: 2px;
+	outline: 2px solid var(--kiyose-color-burgundy);
+	outline-offset: 2px;
 }
 
 /* ============================================
@@ -176,35 +176,35 @@
    ============================================ */
 
 .search-results__empty {
+	padding: var(--kiyose-spacing-3xl) var(--kiyose-spacing-md);
 	text-align: center;
-	padding: var(--spacing-3xl) var(--spacing-md);
 }
 
 .search-results__empty p {
-	font-size: var(--font-size-lg);
-	margin-bottom: var(--spacing-lg);
+	font-size: var(--kiyose-font-size-lg);
+	margin-bottom: var(--kiyose-spacing-lg);
 }
 
 .search-results__empty ul {
 	list-style: none;
-	padding: 0;
 	margin: 0 auto;
 	max-width: 500px;
+	padding: 0;
 	text-align: left;
 }
 
 .search-results__empty li {
-	padding: var(--spacing-sm) 0;
-	padding-left: var(--spacing-lg);
+	padding: var(--kiyose-spacing-sm) 0;
+	padding-left: var(--kiyose-spacing-lg);
 	position: relative;
 }
 
 .search-results__empty li::before {
+	color: var(--kiyose-color-accent);
 	content: "•";
-	position: absolute;
-	left: 0;
-	color: var(--color-accent);
 	font-weight: bold;
+	left: 0;
+	position: absolute;
 }
 
 /* ============================================
@@ -212,41 +212,41 @@
    ============================================ */
 
 .pagination {
-	display: flex;
-	justify-content: center;
 	align-items: center;
-	gap: var(--spacing-sm);
-	margin-top: var(--spacing-2xl);
+	display: flex;
+	gap: var(--kiyose-spacing-sm);
+	justify-content: center;
+	margin-top: var(--kiyose-spacing-2xl);
 }
 
 .pagination .page-numbers {
+	background-color: rgb(255 255 255 / 50%);
+	border: 1px solid var(--kiyose-color-border);
+	border-radius: 4px;
+	color: var(--kiyose-color-burgundy);
 	display: inline-block;
-	padding: var(--spacing-sm) var(--spacing-md);
-	min-width: 44px;
+	line-height: 1.5;
 	min-height: 44px;
+	min-width: 44px;
+	padding: var(--kiyose-spacing-sm) var(--kiyose-spacing-md);
 	text-align: center;
 	text-decoration: none;
-	color: var(--color-burgundy);
-	background-color: rgba(255, 255, 255, 0.5);
-	border: 1px solid var(--color-border);
-	border-radius: 4px;
-	transition: var(--transition-base);
-	line-height: 1.5;
+	transition: var(--kiyose-transition-base);
 }
 
 .pagination .page-numbers:hover {
-	background-color: var(--color-primary);
-	border-color: var(--color-primary);
+	background-color: var(--kiyose-color-primary);
+	border-color: var(--kiyose-color-primary);
 }
 
 .pagination .page-numbers.current {
-	background-color: var(--color-burgundy);
-	color: #fff;
-	border-color: var(--color-burgundy);
+	background-color: var(--kiyose-color-burgundy);
+	border-color: var(--kiyose-color-burgundy);
+	color: #ffffff;
 }
 
 .pagination .page-numbers:focus-visible {
-	outline: 2px solid var(--color-burgundy);
+	outline: 2px solid var(--kiyose-color-burgundy);
 	outline-offset: 2px;
 }
 

@@ -3,23 +3,25 @@
  * L'Atelier Kiyose
  */
 
+/* stylelint-disable no-descending-specificity -- Intentional specificity for overriding plugin/WordPress styles */
+
 /* ============================================
    SITE FOOTER
    ============================================ */
 
 .site-footer {
-	background-color: white;
-	border-top: 1px solid var(--color-border);
-	padding: var(--spacing-3xl) 0 var(--spacing-xl);
-	margin-top: var(--spacing-3xl);
+	background-color: #ffffff;
+	border-top: 1px solid var(--kiyose-color-border);
+	margin-top: var(--kiyose-spacing-3xl);
+	padding: var(--kiyose-spacing-3xl) 0 var(--kiyose-spacing-xl);
 }
 
 .site-footer__container {
-	max-width: var(--container-max-width);
-	margin: 0 auto;
-	padding: 0 var(--spacing-md);
 	display: grid;
-	gap: var(--spacing-2xl);
+	gap: var(--kiyose-spacing-2xl);
+	margin: 0 auto;
+	max-width: var(--kiyose-container-max-width);
+	padding: 0 var(--kiyose-spacing-md);
 }
 
 /* ============================================
@@ -28,20 +30,20 @@
 
 .site-footer__social {
 	display: flex;
-	gap: var(--spacing-md);
+	gap: var(--kiyose-spacing-md);
 	justify-content: center;
 }
 
 .site-footer__social a {
-	display: inline-flex;
 	align-items: center;
-	justify-content: center;
-	min-width: 44px;
-	min-height: 44px;
-	padding: var(--spacing-sm);
-	background-color: var(--color-background);
+	background-color: var(--kiyose-color-background);
 	border-radius: 50%;
-	color: var(--color-burgundy);
+	color: var(--kiyose-color-burgundy);
+	display: inline-flex;
+	justify-content: center;
+	min-height: 44px;
+	min-width: 44px;
+	padding: var(--kiyose-spacing-sm);
 	text-decoration: none;
 }
 
@@ -56,18 +58,18 @@
 }
 
 .site-footer__social a:hover {
-	background-color: var(--color-primary);
-	color: white;
+	background-color: var(--kiyose-color-primary);
+	color: #ffffff;
 }
 
 .site-footer__social a:focus-visible {
-	outline: 2px solid var(--color-burgundy);
+	outline: 2px solid var(--kiyose-color-burgundy);
 	outline-offset: 2px;
 }
 
 .site-footer__social svg {
-	width: 24px;
 	height: 24px;
+	width: 24px;
 }
 
 /* ============================================
@@ -79,22 +81,22 @@
 }
 
 .site-footer__newsletter-title {
-	font-family: var(--font-heading);
-	font-size: var(--font-size-lg);
+	color: var(--kiyose-color-burgundy);
+	font-family: var(--kiyose-font-heading);
+	font-size: var(--kiyose-font-size-lg);
 	font-weight: 600;
-	color: var(--color-burgundy);
-	margin: 0 0 var(--spacing-md);
+	margin: 0 0 var(--kiyose-spacing-md);
 }
 
 .site-footer__newsletter-placeholder {
-	padding: var(--spacing-lg);
-	background-color: var(--color-background);
+	background-color: var(--kiyose-color-background);
 	border-radius: 8px;
+	padding: var(--kiyose-spacing-lg);
 }
 
 .site-footer__newsletter-placeholder p {
-	margin: 0 0 var(--spacing-sm);
-	color: var(--color-text);
+	color: var(--kiyose-color-text);
+	margin: 0 0 var(--kiyose-spacing-sm);
 }
 
 .site-footer__newsletter-placeholder p:last-child {
@@ -102,8 +104,8 @@
 }
 
 .site-footer__newsletter-notice {
-	font-size: var(--font-size-sm);
-	color: var(--color-text-light);
+	color: var(--kiyose-color-text-light);
+	font-size: var(--kiyose-font-size-sm);
 }
 
 /* ============================================
@@ -111,31 +113,31 @@
    ============================================ */
 
 .site-footer__legal {
+	align-items: center;
 	display: flex;
 	flex-wrap: wrap;
-	gap: var(--spacing-md) var(--spacing-xl);
+	gap: var(--kiyose-spacing-md) var(--kiyose-spacing-xl);
 	justify-content: center;
-	align-items: center;
 }
 
 .site-footer__legal a {
-	font-size: var(--font-size-sm);
-	color: var(--color-text);
-	text-decoration: none;
-	padding: var(--spacing-xs) var(--spacing-sm);
-	border-radius: 4px;
-	min-height: 44px;
-	display: inline-flex;
 	align-items: center;
+	border-radius: 4px;
+	color: var(--kiyose-color-text);
+	display: inline-flex;
+	font-size: var(--kiyose-font-size-sm);
+	min-height: 44px;
+	padding: var(--kiyose-spacing-xs) var(--kiyose-spacing-sm);
+	text-decoration: none;
 }
 
 .site-footer__legal a:hover {
-	color: var(--color-primary);
+	color: var(--kiyose-color-primary);
 	text-decoration: underline;
 }
 
 .site-footer__legal a:focus-visible {
-	outline: 2px solid var(--color-burgundy);
+	outline: 2px solid var(--kiyose-color-burgundy);
 	outline-offset: 2px;
 }
 
@@ -144,14 +146,14 @@
    ============================================ */
 
 .site-footer__copyright {
+	border-top: 1px solid var(--kiyose-color-border);
+	padding-top: var(--kiyose-spacing-lg);
 	text-align: center;
-	padding-top: var(--spacing-lg);
-	border-top: 1px solid var(--color-border);
 }
 
 .site-footer__copyright p {
-	font-size: var(--font-size-sm);
-	color: var(--color-text-light);
+	color: var(--kiyose-color-text-light);
+	font-size: var(--kiyose-font-size-sm);
 	margin: 0;
 }
 
@@ -160,31 +162,31 @@
    ============================================ */
 
 /* Mobile (default) */
-@media (max-width: 767px) {
+@media (width <= 767px) {
 	.site-footer {
-		padding: var(--spacing-2xl) 0 var(--spacing-lg);
+		padding: var(--kiyose-spacing-2xl) 0 var(--kiyose-spacing-lg);
 	}
 
 	.site-footer__container {
-		gap: var(--spacing-xl);
+		gap: var(--kiyose-spacing-xl);
 	}
 
 	.site-footer__legal {
 		flex-direction: column;
-		gap: var(--spacing-sm);
+		gap: var(--kiyose-spacing-sm);
 	}
 }
 
 /* Tablet and desktop */
-@media (min-width: 768px) {
+@media (width >= 768px) {
 	.site-footer__container {
-		padding: 0 var(--spacing-xl);
+		padding: 0 var(--kiyose-spacing-xl);
 	}
 }
 
 /* Desktop large */
-@media (min-width: 1024px) {
+@media (width >= 1024px) {
 	.site-footer__container {
-		padding: 0 var(--spacing-2xl);
+		padding: 0 var(--kiyose-spacing-2xl);
 	}
 }

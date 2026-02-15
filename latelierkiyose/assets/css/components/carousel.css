@@ -10,9 +10,9 @@
    ============================================ */
 
 .carousel {
-	position: relative;
+	margin-block: var(--kiyose-spacing-xl);
 	overflow: hidden;
-	margin-block: var(--spacing-xl);
+	position: relative;
 }
 
 /* ============================================
@@ -21,39 +21,39 @@
 
 .carousel__controls {
 	display: flex;
+	gap: var(--kiyose-spacing-md);
 	justify-content: center;
-	gap: var(--spacing-md);
-	margin-block-end: var(--spacing-lg);
+	margin-block-end: var(--kiyose-spacing-lg);
 }
 
 .carousel__prev,
 .carousel__next,
 .carousel__pause {
-	background-color: var(--color-primary);
-	color: var(--color-primary-dark);
+	align-items: center;
+	background-color: var(--kiyose-color-primary);
 	border: 2px solid transparent;
 	border-radius: 50%;
-	width: 44px;
-	height: 44px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: var(--font-size-lg);
+	color: var(--kiyose-color-primary-dark);
 	cursor: pointer;
-	transition: all var(--transition-base);
+	display: flex;
+	font-size: var(--kiyose-font-size-lg);
+	height: 44px;
+	justify-content: center;
+	transition: all var(--kiyose-transition-base);
+	width: 44px;
 }
 
 .carousel__prev:hover,
 .carousel__next:hover,
 .carousel__pause:hover {
-	background-color: var(--color-secondary);
+	background-color: var(--kiyose-color-secondary);
 	transform: scale(1.05);
 }
 
 .carousel__prev:focus,
 .carousel__next:focus,
 .carousel__pause:focus {
-	outline: 2px solid var(--color-accent);
+	outline: 2px solid var(--kiyose-color-accent);
 	outline-offset: 2px;
 }
 
@@ -69,7 +69,7 @@
 
 .carousel__track {
 	display: flex;
-	transition: transform var(--transition-slow);
+	transition: transform var(--kiyose-transition-slow);
 	will-change: transform;
 }
 
@@ -82,8 +82,8 @@
 
 .carousel__slide {
 	flex: 0 0 100%;
-	width: 100%;
 	min-width: 100%;
+	width: 100%;
 }
 
 /* Hide inactive slides from screen readers and visually */
@@ -100,29 +100,29 @@
    ============================================ */
 
 .carousel__slide .testimony-card {
-	max-width: 800px;
 	margin-inline: auto;
+	max-width: 800px;
 }
 
 /* ============================================
    RESPONSIVE
    ============================================ */
 
-@media (min-width: 768px) {
+@media (width >= 768px) {
 	.carousel__controls {
-		gap: var(--spacing-lg);
+		gap: var(--kiyose-spacing-lg);
 	}
 
 	.carousel__prev,
 	.carousel__next,
 	.carousel__pause {
-		width: 48px;
+		font-size: var(--kiyose-font-size-xl);
 		height: 48px;
-		font-size: var(--font-size-xl);
+		width: 48px;
 	}
 }
 
-@media (min-width: 1024px) {
+@media (width >= 1024px) {
 	.carousel__slide .testimony-card {
 		max-width: 900px;
 	}
