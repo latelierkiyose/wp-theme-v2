@@ -206,12 +206,35 @@ add_action( 'wp_enqueue_scripts', 'kiyose_enqueue_assets' );
  * Override Events Manager styles with higher priority.
  *
  * Ensures our custom styles are loaded after Events Manager's default styles.
+ * Loads on:
+ * - Calendar page (template page-calendar.php)
+ * - Homepage (template page-home.php with hardcoded shortcode)
+ * - Any page with Events Manager shortcodes in content
  *
  * @since 1.0.0
  */
 function kiyose_override_events_manager_styles() {
-	// Only on calendar page template.
-	if ( ! is_page_template( 'templates/page-calendar.php' ) ) {
+	global $post;
+
+	$should_load = false;
+
+	// Load on calendar and home page templates.
+	if ( is_page_template( 'templates/page-calendar.php' ) || is_page_template( 'templates/page-home.php' ) ) {
+		$should_load = true;
+	}
+
+	// Load if Events Manager shortcode is present in content.
+	if ( is_a( $post, 'WP_Post' ) ) {
+		$em_shortcodes = array( 'events_list', 'events_calendar', 'events_map', 'event' );
+		foreach ( $em_shortcodes as $shortcode ) {
+			if ( has_shortcode( $post->post_content, $shortcode ) ) {
+				$should_load = true;
+				break;
+			}
+		}
+	}
+
+	if ( ! $should_load ) {
 		return;
 	}
 
