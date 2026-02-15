@@ -58,10 +58,10 @@ jobs:
 
       - name: Run PHPUnit
         run: |
-          if [ -d "tests" ] && [ -f "phpunit.xml" ]; then
+          if [ -f "phpunit.xml" ]; then
             ./vendor/bin/phpunit
           else
-            echo "No tests found, skipping PHPUnit"
+            echo "No PHPUnit configuration found, skipping tests"
           fi
 
   build:

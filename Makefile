@@ -1,7 +1,7 @@
 # L'Atelier Kiyose - WordPress Theme v2
 # Makefile pour simplifier les commandes de développement
 
-.PHONY: help install phpcs phpcs-fix lint-js lint-css lint lint-fix format-js format-check start stop clean test
+.PHONY: help install phpcs phpcs-fix phpunit lint-js lint-css lint lint-fix format-js format-check start stop clean test
 
 # Couleurs pour l'aide
 BLUE := \033[0;34m
@@ -30,6 +30,9 @@ phpcs: ## Valider le code avec PHPCS
 
 phpcs-fix: ## Corriger automatiquement les violations PHPCS
 	@./bin/phpcbf.sh
+
+phpunit: ## Exécuter les tests PHPUnit
+	@./bin/phpunit.sh --testdox
 
 lint-js: ## Valider le code JavaScript avec ESLint
 	@./bin/eslint.sh 'latelierkiyose/assets/js/**/*.js'
@@ -73,7 +76,7 @@ clean: ## Nettoyer les fichiers générés (vendor/, cache)
 	@rm -rf node_modules/
 	@echo "$(GREEN)✓ Nettoyage terminé$(NC)"
 
-test: phpcs lint ## Exécuter tous les tests (PHPCS + linters)
+test: phpcs phpunit lint ## Exécuter tous les tests (PHPCS + PHPUnit + linters)
 	@echo "$(GREEN)✓ Tous les tests sont passés$(NC)"
 
 .DEFAULT_GOAL := help

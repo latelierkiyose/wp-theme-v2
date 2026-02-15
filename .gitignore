@@ -15,4 +15,7 @@ Thumbs.db
 *.swp
 *.swo
 
+# Tests
+.phpunit.result.cache
+
 uploads
