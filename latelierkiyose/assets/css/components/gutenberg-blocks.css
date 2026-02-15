@@ -24,6 +24,7 @@
 .wp-block-button .wp-block-button__link,
 .wp-block-button .wp-element-button {
 	/* Reset WordPress default styles */
+	align-items: center;
 	background-color: var(--kiyose-color-primary) !important;
 	border: 2px solid var(--kiyose-color-primary) !important;
 	border-radius: 8px !important; /* Override WP's 9999px rounded */
@@ -31,16 +32,15 @@
 	color: var(--kiyose-color-burgundy) !important; /* 6.54:1 contrast ratio - WCAG AA compliant */
 	cursor: pointer;
 	display: inline-flex !important;
-	align-items: center;
-	justify-content: center;
 	font-family: var(--kiyose-font-body) !important;
 	font-size: var(--kiyose-font-size-base) !important;
 	font-weight: 700;
+	justify-content: center;
 	min-height: 44px !important; /* WCAG 2.2 AA touch target */
 	min-width: 44px !important; /* WCAG 2.2 AA touch target */
 	padding: var(--kiyose-spacing-md) var(--kiyose-spacing-xl) !important;
-	text-decoration: none !important;
 	text-align: center;
+	text-decoration: none !important;
 	transition: all var(--kiyose-transition-base);
 }
 
@@ -60,6 +60,13 @@
 	color: #ffffff !important;
 	outline: 3px solid var(--kiyose-color-gold) !important;
 	outline-offset: 3px !important;
+}
+
+/* Button - Squared style (maintient les coins arrondis du thème) */
+.wp-block-button.is-style-squared .wp-block-button__link,
+.wp-block-button .wp-block-button__link.is-style-squared,
+.wp-block-button.is-style-squared .wp-element-button {
+	border-radius: 8px !important; /* Garde notre border-radius au lieu de 0 */
 }
 
 /* Button - Outline style */
@@ -89,13 +96,6 @@
 	color: #ffffff !important;
 	outline: 3px solid var(--kiyose-color-gold) !important;
 	outline-offset: 3px !important;
-}
-
-/* Button - Squared style (maintient les coins arrondis du thème) */
-.wp-block-button.is-style-squared .wp-block-button__link,
-.wp-block-button .wp-block-button__link.is-style-squared,
-.wp-block-button.is-style-squared .wp-element-button {
-	border-radius: 8px !important; /* Garde notre border-radius au lieu de 0 */
 }
 
 /* ============================================
@@ -135,8 +135,8 @@
 
 /* Vertical layout */
 .wp-block-buttons.is-vertical {
-	flex-direction: column;
 	align-items: flex-start;
+	flex-direction: column;
 }
 
 .wp-block-buttons.is-vertical.is-content-justification-center {
@@ -166,8 +166,8 @@
 @media (width < 768px) {
 	/* Boutons empilés sur mobile pour meilleure lisibilité */
 	.wp-block-buttons {
-		flex-direction: column;
 		align-items: stretch;
+		flex-direction: column;
 	}
 
 	.wp-block-buttons .wp-block-button {
