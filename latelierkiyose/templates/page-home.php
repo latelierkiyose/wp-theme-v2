@@ -58,7 +58,7 @@ get_header();
 
 	<!-- Section 4 Piliers -->
 	<section class="home-services" aria-labelledby="services-title">
-		<h2 id="services-title" class="home-services__title">Nos activités</h2>
+		<h2 id="services-title" class="home-services__title">Mes activités</h2>
 		<div class="home-services__grid">
 			<?php
 			// Récupérer les pages de services marquées pour affichage sur la page d'accueil.

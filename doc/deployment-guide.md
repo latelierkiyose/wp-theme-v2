@@ -196,7 +196,7 @@ Pour chaque page de service (Art-thérapie, Rigologie, Bols tibétains, Ateliers
 
 1. Aller dans Pages > Modifier la page
 2. Dans la sidebar droite, section "Affichage page d'accueil"
-3. Cocher "Afficher dans la section 'Nos activités'"
+3. Cocher "Afficher dans la section 'Mes activités'"
 4. Dans la section "Attributs de page", définir un "Ordre" (1, 2, 3, 4) pour contrôler l'ordre d'affichage
 5. Cliquer sur "Mettre à jour"
 

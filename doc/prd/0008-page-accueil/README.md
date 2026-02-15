@@ -74,7 +74,7 @@ Template Name: Page d'accueil
 
 ```html
 <section class="home-services" aria-labelledby="services-title">
-    <h2 id="services-title">Nos activités</h2>
+    <h2 id="services-title">Mes activités</h2>
     <div class="home-services__grid">
         <!-- 4x template-parts/content-service.php -->
     </div>

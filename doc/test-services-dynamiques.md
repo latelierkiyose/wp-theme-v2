@@ -35,7 +35,7 @@
 
 2. Pour chaque page :
    - Vérifier que le template "Page de service" est sélectionné
-   - Cocher la case **"Afficher dans la section 'Nos activités'"**
+   - Cocher la case **"Afficher dans la section 'Mes activités'"**
    - Dans "Attributs de page", définir un **Ordre** (1, 2, 3, 4)
    - Cliquer sur **"Mettre à jour"**
 
@@ -48,7 +48,7 @@
 ### Test 3 : Vérifier l'affichage sur la page d'accueil
 
 1. Aller sur la page d'accueil : http://127.0.0.1:8000/
-2. Scroller jusqu'à la section **"Nos activités"**
+2. Scroller jusqu'à la section **"Mes activités"**
 3. **Vérifier** :
    - Les 4 cartes de services s'affichent
    - Elles sont dans l'ordre défini (1 → 2 → 3 → 4)
@@ -76,7 +76,7 @@
 ### Test 5 : Décocher une page
 
 1. Éditer la page "Rigologie"
-2. **Décocher** la case "Afficher dans la section 'Nos activités'"
+2. **Décocher** la case "Afficher dans la section 'Mes activités'"
 3. Mettre à jour
 4. Recharger la page d'accueil
 5. **Vérifier** : Seules 3 cartes s'affichent (plus de Rigologie)
@@ -89,7 +89,7 @@
 
 1. Créer une nouvelle page : "Sophrologie"
 2. Assigner le template **"Page de service"**
-3. Cocher **"Afficher dans la section 'Nos activités'"**
+3. Cocher **"Afficher dans la section 'Mes activités'"**
 4. Définir un **Ordre** : 5
 5. Publier
 6. Recharger la page d'accueil
@@ -104,7 +104,7 @@
 1. Décocher **toutes** les pages de services
 2. Mettre à jour
 3. Recharger la page d'accueil
-4. **Vérifier** : La section "Nos activités" affiche un message : "Aucun service n'est actuellement configuré pour l'affichage sur la page d'accueil."
+4. **Vérifier** : La section "Mes activités" affiche un message : "Aucun service n'est actuellement configuré pour l'affichage sur la page d'accueil."
 
 **Résultat attendu** : ✅ Un message informatif s'affiche si aucun service n'est marqué
 
@@ -131,7 +131,7 @@
 
 4. Aller dans l'admin WordPress
 5. Éditer chaque page de service
-6. **Vérifier** : La case "Afficher dans la section 'Nos activités'" est cochée
+6. **Vérifier** : La case "Afficher dans la section 'Mes activités'" est cochée
 7. **Vérifier** : L'ordre est défini (1, 2, 3, 4)
 
 **Résultat attendu** : ✅ Le script marque automatiquement les 4 pages existantes

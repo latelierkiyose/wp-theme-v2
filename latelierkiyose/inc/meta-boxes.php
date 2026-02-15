@@ -374,7 +374,7 @@ function kiyose_homepage_display_meta_box_callback( $post ) {
 				value="1"
 				<?php checked( $show_on_homepage, '1' ); ?>
 			/>
-			<?php esc_html_e( 'Afficher dans la section "Nos activités"', 'kiyose' ); ?>
+			<?php esc_html_e( 'Afficher dans la section "Mes activités"', 'kiyose' ); ?>
 		</label>
 	</p>
 	<p class="description">
