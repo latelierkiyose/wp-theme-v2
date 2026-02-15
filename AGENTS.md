@@ -2,7 +2,7 @@
 
 ## Statut du projet
 
-**État actuel**: PRD 0018 terminé — Animations de la page d'accueil  
+**État actuel**: PRD 0019 terminé — Minification des assets pour production  
 **Statut global**: ✅ PRÊT POUR PRODUCTION
 - Squelette du thème: ✅ Opérationnel (PRD 0001)
 - Design tokens: ✅ Implémentés (PRD 0002)
@@ -168,8 +168,17 @@
   - Graceful degradation pour navigateurs anciens
   - WCAG 2.2 AA: Animations < 5s, pas de boucle infinie, respect prefers-reduced-motion
   - Performance: GPU acceleration via CSS transforms, Intersection Observer vs scroll events
+- Minification des assets: ✅ Implémentée (PRD 0019)
+  - Build automatisé avec cssnano (CSS) + terser (JavaScript)
+  - Scripts npm: build:css, build:js, build, build:clean
+  - Génération automatique de fichiers .min.css et .min.js (30-70% de réduction)
+  - Enqueue conditionnel: .min en production (WP_DEBUG=false), sources en dev (WP_DEBUG=true)
+  - Intégration dans CI/CD: minification exécutée avant création du ZIP
+  - Performance: Réduction ~40% moyenne de la taille des assets
+  - Fonction helper: kiyose_get_asset_suffix() pour basculer entre versions
+  - Build scripts: bin/minify-css.js, bin/minify-js.js
 - Configuration: ✅ PHPCS, Composer, CI/CD GitHub Actions
-- **Statut final**: ✅ PRÊT POUR PRODUCTION — Tous les PRDs (0001-0016, 0018) terminés
+- **Statut final**: ✅ PRÊT POUR PRODUCTION — Tous les PRDs (0001-0019) terminés
 
 
 ## Contexte
