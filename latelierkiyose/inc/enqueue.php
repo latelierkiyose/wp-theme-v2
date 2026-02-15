@@ -7,6 +7,27 @@
  */
 
 /**
+ * Get asset version based on file modification time.
+ *
+ * Returns the file modification time (filemtime) for cache busting.
+ * Falls back to KIYOSE_VERSION if file doesn't exist (e.g., in production without source files).
+ *
+ * @param string $file_path Relative path to the asset file from theme directory.
+ * @return string|int File modification timestamp or theme version.
+ * @since 0.2.5
+ */
+function kiyose_get_asset_version( $file_path ) {
+	$full_path = get_template_directory() . $file_path;
+
+	if ( file_exists( $full_path ) ) {
+		return filemtime( $full_path );
+	}
+
+	// Fallback to theme version if file doesn't exist.
+	return KIYOSE_VERSION;
+}
+
+/**
  * Enqueue theme assets (CSS and JS).
  */
 function kiyose_enqueue_assets() {
@@ -15,7 +36,7 @@ function kiyose_enqueue_assets() {
 		'kiyose-fonts',
 		get_template_directory_uri() . '/assets/css/fonts.css',
 		array(),
-		KIYOSE_VERSION
+		kiyose_get_asset_version( '/assets/css/fonts.css' )
 	);
 
 	// Variables CSS.
@@ -23,7 +44,7 @@ function kiyose_enqueue_assets() {
 		'kiyose-variables',
 		get_template_directory_uri() . '/assets/css/variables.css',
 		array(),
-		KIYOSE_VERSION
+		kiyose_get_asset_version( '/assets/css/variables.css' )
 	);
 
 	// Plugins common styles (loaded early for all plugins).
@@ -31,7 +52,7 @@ function kiyose_enqueue_assets() {
 		'kiyose-plugins-common',
 		get_template_directory_uri() . '/assets/css/components/plugins-common.css',
 		array( 'kiyose-variables' ),
-		KIYOSE_VERSION
+		kiyose_get_asset_version( '/assets/css/components/plugins-common.css' )
 	);
 
 	// Component stylesheets.
@@ -39,21 +60,21 @@ function kiyose_enqueue_assets() {
 		'kiyose-header',
 		get_template_directory_uri() . '/assets/css/components/header.css',
 		array( 'kiyose-variables' ),
-		KIYOSE_VERSION
+		kiyose_get_asset_version( '/assets/css/components/header.css' )
 	);
 
 	wp_enqueue_style(
 		'kiyose-navigation',
 		get_template_directory_uri() . '/assets/css/components/navigation.css',
 		array( 'kiyose-variables' ),
-		KIYOSE_VERSION
+		kiyose_get_asset_version( '/assets/css/components/navigation.css' )
 	);
 
 	wp_enqueue_style(
 		'kiyose-footer',
 		get_template_directory_uri() . '/assets/css/components/footer.css',
 		array( 'kiyose-variables' ),
-		KIYOSE_VERSION
+		kiyose_get_asset_version( '/assets/css/components/footer.css' )
 	);
 
 	// Template-specific components.
@@ -61,21 +82,21 @@ function kiyose_enqueue_assets() {
 		'kiyose-page',
 		get_template_directory_uri() . '/assets/css/components/page.css',
 		array( 'kiyose-variables' ),
-		KIYOSE_VERSION
+		kiyose_get_asset_version( '/assets/css/components/page.css' )
 	);
 
 	wp_enqueue_style(
 		'kiyose-search',
 		get_template_directory_uri() . '/assets/css/components/search.css',
 		array( 'kiyose-variables' ),
-		KIYOSE_VERSION
+		kiyose_get_asset_version( '/assets/css/components/search.css' )
 	);
 
 	wp_enqueue_style(
 		'kiyose-404',
 		get_template_directory_uri() . '/assets/css/components/404.css',
 		array( 'kiyose-variables' ),
-		KIYOSE_VERSION
+		kiyose_get_asset_version( '/assets/css/components/404.css' )
 	);
 
 	// Blog components.
@@ -83,21 +104,21 @@ function kiyose_enqueue_assets() {
 		'kiyose-blog-card',
 		get_template_directory_uri() . '/assets/css/components/blog-card.css',
 		array( 'kiyose-variables' ),
-		KIYOSE_VERSION
+		kiyose_get_asset_version( '/assets/css/components/blog-card.css' )
 	);
 
 	wp_enqueue_style(
 		'kiyose-blog-archive',
 		get_template_directory_uri() . '/assets/css/components/blog-archive.css',
 		array( 'kiyose-variables' ),
-		KIYOSE_VERSION
+		kiyose_get_asset_version( '/assets/css/components/blog-archive.css' )
 	);
 
 	wp_enqueue_style(
 		'kiyose-blog-single',
 		get_template_directory_uri() . '/assets/css/components/blog-single.css',
 		array( 'kiyose-variables' ),
-		KIYOSE_VERSION
+		kiyose_get_asset_version( '/assets/css/components/blog-single.css' )
 	);
 
 	// Testimony component.
@@ -105,7 +126,7 @@ function kiyose_enqueue_assets() {
 		'kiyose-testimony',
 		get_template_directory_uri() . '/assets/css/components/testimony.css',
 		array( 'kiyose-variables' ),
-		KIYOSE_VERSION
+		kiyose_get_asset_version( '/assets/css/components/testimony.css' )
 	);
 
 	// Homepage components.
@@ -113,21 +134,21 @@ function kiyose_enqueue_assets() {
 		'kiyose-hero',
 		get_template_directory_uri() . '/assets/css/components/hero.css',
 		array( 'kiyose-variables' ),
-		KIYOSE_VERSION
+		kiyose_get_asset_version( '/assets/css/components/hero.css' )
 	);
 
 	wp_enqueue_style(
 		'kiyose-service-card',
 		get_template_directory_uri() . '/assets/css/components/service-card.css',
 		array( 'kiyose-variables' ),
-		KIYOSE_VERSION
+		kiyose_get_asset_version( '/assets/css/components/service-card.css' )
 	);
 
 	wp_enqueue_style(
 		'kiyose-home-sections',
 		get_template_directory_uri() . '/assets/css/components/home-sections.css',
 		array( 'kiyose-variables' ),
-		KIYOSE_VERSION
+		kiyose_get_asset_version( '/assets/css/components/home-sections.css' )
 	);
 
 	// Kintsugi decorative elements.
@@ -135,7 +156,7 @@ function kiyose_enqueue_assets() {
 		'kiyose-kintsugi',
 		get_template_directory_uri() . '/assets/css/components/kintsugi.css',
 		array( 'kiyose-variables' ),
-		KIYOSE_VERSION
+		kiyose_get_asset_version( '/assets/css/components/kintsugi.css' )
 	);
 
 	// Global animations and transitions.
@@ -143,7 +164,7 @@ function kiyose_enqueue_assets() {
 		'kiyose-animations',
 		get_template_directory_uri() . '/assets/css/components/animations.css',
 		array(),
-		KIYOSE_VERSION
+		kiyose_get_asset_version( '/assets/css/components/animations.css' )
 	);
 
 	// Service page component (conditional loading for page-services.php template).
@@ -152,7 +173,7 @@ function kiyose_enqueue_assets() {
 			'kiyose-service-page',
 			get_template_directory_uri() . '/assets/css/components/service-page.css',
 			array( 'kiyose-variables' ),
-			KIYOSE_VERSION
+			kiyose_get_asset_version( '/assets/css/components/service-page.css' )
 		);
 	}
 
@@ -162,7 +183,7 @@ function kiyose_enqueue_assets() {
 			'kiyose-about-page',
 			get_template_directory_uri() . '/assets/css/components/about-page.css',
 			array( 'kiyose-variables' ),
-			KIYOSE_VERSION
+			kiyose_get_asset_version( '/assets/css/components/about-page.css' )
 		);
 	}
 
@@ -172,14 +193,14 @@ function kiyose_enqueue_assets() {
 			'kiyose-contact-page',
 			get_template_directory_uri() . '/assets/css/components/contact-page.css',
 			array( 'kiyose-variables' ),
-			KIYOSE_VERSION
+			kiyose_get_asset_version( '/assets/css/components/contact-page.css' )
 		);
 
 		wp_enqueue_style(
 			'kiyose-cf7-override',
 			get_template_directory_uri() . '/assets/css/components/cf7-override.css',
 			array( 'kiyose-variables' ),
-			KIYOSE_VERSION
+			kiyose_get_asset_version( '/assets/css/components/cf7-override.css' )
 		);
 	}
 
@@ -188,7 +209,7 @@ function kiyose_enqueue_assets() {
 		'kiyose-main',
 		get_template_directory_uri() . '/assets/css/main.css',
 		array( 'kiyose-fonts', 'kiyose-variables', 'kiyose-header', 'kiyose-navigation', 'kiyose-footer', 'kiyose-page', 'kiyose-search', 'kiyose-404', 'kiyose-blog-card', 'kiyose-blog-archive', 'kiyose-blog-single', 'kiyose-testimony', 'kiyose-hero', 'kiyose-service-card', 'kiyose-home-sections', 'kiyose-kintsugi', 'kiyose-animations' ),
-		KIYOSE_VERSION
+		kiyose_get_asset_version( '/assets/css/main.css' )
 	);
 
 	// JS principal.
@@ -196,7 +217,7 @@ function kiyose_enqueue_assets() {
 		'kiyose-main',
 		get_template_directory_uri() . '/assets/js/main.js',
 		array(),
-		KIYOSE_VERSION,
+		kiyose_get_asset_version( '/assets/js/main.js' ),
 		true
 	);
 }
@@ -243,7 +264,7 @@ function kiyose_override_events_manager_styles() {
 		'kiyose-events-manager',
 		get_template_directory_uri() . '/assets/css/components/events-manager.css',
 		array( 'kiyose-variables' ),
-		KIYOSE_VERSION,
+		kiyose_get_asset_version( '/assets/css/components/events-manager.css' ),
 		'all'
 	);
 }
@@ -264,7 +285,7 @@ function kiyose_enqueue_brevo_styles() {
 		'kiyose-brevo-override',
 		get_template_directory_uri() . '/assets/css/components/brevo-override.css',
 		array( 'kiyose-variables', 'kiyose-plugins-common' ),
-		KIYOSE_VERSION
+		kiyose_get_asset_version( '/assets/css/components/brevo-override.css' )
 	);
 }
 add_action( 'wp_enqueue_scripts', 'kiyose_enqueue_brevo_styles' );
@@ -285,7 +306,7 @@ function kiyose_enqueue_testimonials_styles() {
 			'kiyose-carousel',
 			get_template_directory_uri() . '/assets/css/components/carousel.css',
 			array( 'kiyose-variables' ),
-			KIYOSE_VERSION
+			kiyose_get_asset_version( '/assets/css/components/carousel.css' )
 		);
 	}
 
@@ -295,7 +316,7 @@ function kiyose_enqueue_testimonials_styles() {
 			'kiyose-testimonials-grid',
 			get_template_directory_uri() . '/assets/css/components/testimonials-grid.css',
 			array( 'kiyose-variables' ),
-			KIYOSE_VERSION
+			kiyose_get_asset_version( '/assets/css/components/testimonials-grid.css' )
 		);
 
 		// Check if carousel mode is used.
@@ -304,7 +325,7 @@ function kiyose_enqueue_testimonials_styles() {
 				'kiyose-carousel',
 				get_template_directory_uri() . '/assets/css/components/carousel.css',
 				array( 'kiyose-variables' ),
-				KIYOSE_VERSION
+				kiyose_get_asset_version( '/assets/css/components/carousel.css' )
 			);
 		}
 	}
@@ -327,7 +348,7 @@ function kiyose_enqueue_signets_styles() {
 			'kiyose-signets',
 			get_template_directory_uri() . '/assets/css/components/signets.css',
 			array( 'kiyose-variables' ),
-			KIYOSE_VERSION
+			kiyose_get_asset_version( '/assets/css/components/signets.css' )
 		);
 	}
 }
