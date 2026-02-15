@@ -311,6 +311,40 @@ function kiyose_enqueue_signets_styles() {
 add_action( 'wp_enqueue_scripts', 'kiyose_enqueue_signets_styles' );
 
 /**
+ * Enqueue home page animations (CSS + JS).
+ *
+ * Conditionally loads animation styles and scripts only on the homepage.
+ *
+ * @since 0.2.4
+ * @return void
+ */
+function kiyose_enqueue_home_animations() {
+	// Only load on homepage template.
+	if ( ! is_page_template( 'templates/page-home.php' ) ) {
+		return;
+	}
+
+	// Enqueue CSS.
+	wp_enqueue_style(
+		'kiyose-home-animations',
+		get_template_directory_uri() . '/assets/css/components/home-animations.css',
+		array( 'kiyose-hero', 'kiyose-home-sections' ), // Dependencies.
+		filemtime( get_template_directory() . '/assets/css/components/home-animations.css' ),
+		'all'
+	);
+
+	// Enqueue JS.
+	wp_enqueue_script(
+		'kiyose-home-animations',
+		get_template_directory_uri() . '/assets/js/home-animations.js',
+		array(), // No dependencies (Vanilla JS).
+		filemtime( get_template_directory() . '/assets/js/home-animations.js' ),
+		true // Load in footer.
+	);
+}
+add_action( 'wp_enqueue_scripts', 'kiyose_enqueue_home_animations', 30 );
+
+/**
  * Preload critical fonts.
  *
  * @since 1.0.0

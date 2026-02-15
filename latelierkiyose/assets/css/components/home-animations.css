@@ -1,0 +1,87 @@
+/**
+ * Home Page Animations
+ *
+ * Animation styles for homepage sections.
+ * All animations respect prefers-reduced-motion.
+ *
+ * @package Kiyose
+ * @since   0.2.4
+ */
+
+/* ============================================
+   HERO IMAGE ANIMATION
+   ============================================ */
+
+/**
+ * Slide-in from left on page load.
+ * Initial state: hidden and translated left.
+ */
+.hero-section__image {
+	opacity: 0;
+	transform: translateX(-100px);
+}
+
+/**
+ * Final state: visible and in position.
+ * Triggered by JS adding .is-visible class.
+ * Durée ralentie à 1.4s pour une animation plus élégante.
+ */
+@media (prefers-reduced-motion: no-preference) {
+	.hero-section__image.is-visible {
+		opacity: 1;
+		transform: translateX(0);
+		transition: opacity 1.4s cubic-bezier(0.4, 0, 0.2, 1),
+		            transform 1.4s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+}
+
+/* ============================================
+   SERVICES GRID ANIMATION
+   ============================================ */
+
+/**
+ * Slide-in from right on scroll.
+ * Initial state: hidden and translated right.
+ * Position controlled by JavaScript based on scroll progress.
+ */
+.service-card {
+	opacity: 0;
+	transform: translateX(100px);
+	/* Smooth transition for JS-controlled values */
+	transition: transform 0.1s linear, opacity 0.1s linear;
+}
+
+/**
+ * Final state: visible and in position.
+ * Transform and opacity are controlled by JavaScript for progressive animation.
+ */
+@media (prefers-reduced-motion: no-preference) {
+	.service-card.is-visible {
+		/* Transform and opacity set dynamically by JS */
+	}
+}
+
+/* ============================================
+   REDUCED MOTION OVERRIDE
+   ============================================ */
+
+/**
+ * Users who prefer reduced motion see content immediately.
+ * No animations, no transitions.
+ * CRITICAL for WCAG 2.2 AA compliance.
+ */
+@media (prefers-reduced-motion: reduce) {
+	.hero-section__image,
+	.service-card {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
+
+	.hero-section__image.is-visible,
+	.service-card.is-visible {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
+}

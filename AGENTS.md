@@ -2,7 +2,7 @@
 
 ## Statut du projet
 
-**État actuel**: PRD 0016 terminé — Activation et pré-production  
+**État actuel**: PRD 0018 terminé — Animations de la page d'accueil  
 **Statut global**: ✅ PRÊT POUR PRODUCTION
 - Squelette du thème: ✅ Opérationnel (PRD 0001)
 - Design tokens: ✅ Implémentés (PRD 0002)
@@ -156,8 +156,20 @@
   - Validation sécurité (sanitization, escaping, nonces)
   - Documentation intégrations plugins (CF7, Brevo, Events Manager)
   - Recommandations post-déploiement (monitoring, SEO, performance)
+- Animations homepage: ✅ Implémentées (PRD 0018)
+  - Fichiers: home-animations.css, home-animations.js
+  - Animation hero image: Slide-in depuis la gauche au chargement (800ms, delay 200ms)
+  - Animation services: Apparition cascade depuis la droite au scroll (600ms, delay incrémental 150ms)
+  - Intersection Observer API pour déclenchement au scroll
+  - Animations inversées au remontage (scroll up)
+  - Respect complet de prefers-reduced-motion (CSS + JS)
+  - Enqueue conditionnel (uniquement sur page d'accueil)
+  - Timing function: cubic-bezier(0.4, 0, 0.2, 1) pour fluidité naturelle
+  - Graceful degradation pour navigateurs anciens
+  - WCAG 2.2 AA: Animations < 5s, pas de boucle infinie, respect prefers-reduced-motion
+  - Performance: GPU acceleration via CSS transforms, Intersection Observer vs scroll events
 - Configuration: ✅ PHPCS, Composer, CI/CD GitHub Actions
-- **Statut final**: ✅ PRÊT POUR PRODUCTION — Tous les PRDs (0001-0016) terminés
+- **Statut final**: ✅ PRÊT POUR PRODUCTION — Tous les PRDs (0001-0016, 0018) terminés
 
 
 ## Contexte
