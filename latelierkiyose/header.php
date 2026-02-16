@@ -26,9 +26,11 @@
 			<?php the_custom_logo(); ?>
 		</div>
 	<?php else : ?>
-		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-header__logo" aria-label="<?php echo esc_attr( get_bloginfo( 'name' ) . ' - ' . __( 'Accueil', 'kiyose' ) ); ?>">
-			<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logo-kiyose.png' ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" height="60" width="auto">
-		</a>
+		<div class="site-header__logo-bubble">
+			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-header__logo" aria-label="<?php echo esc_attr( get_bloginfo( 'name' ) . ' - ' . __( 'Accueil', 'kiyose' ) ); ?>">
+				<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logo-kiyose.png' ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" height="250" width="250">
+			</a>
+		</div>
 	<?php endif; ?>
 
 		<nav class="main-nav" role="navigation" aria-label="<?php esc_attr_e( 'Menu principal', 'kiyose' ); ?>">

@@ -26,12 +26,35 @@
 	justify-content: space-between;
 	margin: 0 auto;
 	max-width: var(--kiyose-container-max-width);
+	min-height: 60px; /* Keep header compact, logo will overflow */
 	padding: var(--kiyose-spacing-md);
+	position: relative; /* Reference point for absolute logo */
 }
 
 /* ============================================
    LOGO
    ============================================ */
+
+/* Logo bubble: Circle container with golden border */
+.site-header__logo-bubble {
+	align-items: center; /* Center logo vertically */
+	/* Perfect circle: width = height */
+	aspect-ratio: 1 / 1;
+	background-color: #ffffff;
+	border: 2px solid var(--kiyose-color-gold);
+	border-radius: 50%; /* Perfect circle */
+	display: flex;
+	flex-shrink: 0;
+	justify-content: center;
+	left: var(--kiyose-spacing-md); /* Position from left edge */
+	overflow: visible;
+	padding: var(--kiyose-spacing-sm);
+	position: absolute; /* Remove from flow to prevent pushing header height */
+	top: var(--kiyose-spacing-sm); /* Small offset from top for breathing room */
+	/* Responsive width using clamp: 80px mobile → scales with viewport → 280px max */
+	width: clamp(80px, 18vw, 280px);
+	z-index: 10; /* Above header content */
+}
 
 .site-header__logo {
 	align-items: center;
@@ -47,7 +70,8 @@
 }
 
 .site-header__logo img {
-	height: 60px;
+	/* Responsive logo size: 60px mobile → scales → 250px desktop */
+	height: clamp(60px, 15vw, 250px);
 	width: auto;
 }
 
@@ -136,14 +160,11 @@
 @media (width <= 1023px) {
 	.hamburger-button {
 		display: flex;
+		margin-left: auto; /* Push to right edge, accounting for absolute logo */
 	}
 
 	.main-nav {
 		display: none;
-	}
-
-	.site-header__logo img {
-		height: 48px;
 	}
 
 	.site-header__container {
@@ -159,5 +180,10 @@
 
 	.site-header__container {
 		padding: var(--kiyose-spacing-md) var(--kiyose-spacing-xl);
+	}
+
+	/* Push navigation to the right to avoid overlapping with absolute logo */
+	.main-nav {
+		margin-left: calc(clamp(80px, 18vw, 280px) + var(--kiyose-spacing-lg));
 	}
 }
