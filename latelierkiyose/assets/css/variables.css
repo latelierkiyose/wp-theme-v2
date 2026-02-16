@@ -45,18 +45,19 @@
 	/* ============================================
 	   TYPOGRAPHIE
 	   ============================================ */
-	--kiyose-font-heading: 'Lora', georgia, 'Times New Roman', serif;
+	--kiyose-font-heading: 'Caveat', 'Bradley Hand', 'Brush Script MT', cursive;
 	--kiyose-font-body: 'Nunito', 'Segoe UI', roboto, 'Helvetica Neue', arial, sans-serif;
 
 	/* Échelle typographique */
 	--kiyose-font-size-xs: 0.75rem;    /* 12px */
 	--kiyose-font-size-sm: 0.875rem;   /* 14px */
 	--kiyose-font-size-base: 1rem;     /* 16px - taille minimum pour body */
-	--kiyose-font-size-lg: 1.125rem;   /* 18px */
-	--kiyose-font-size-xl: 1.25rem;    /* 20px */
-	--kiyose-font-size-2xl: 1.5rem;    /* 24px */
-	--kiyose-font-size-3xl: 2rem;      /* 32px */
-	--kiyose-font-size-4xl: 2.5rem;    /* 40px */
+	--kiyose-font-size-lg: 1.25rem;    /* 20px - optimisé pour Caveat */
+	--kiyose-font-size-xl: 1.625rem;   /* 26px - optimisé pour Caveat */
+	--kiyose-font-size-2xl: 2rem;      /* 32px - optimisé pour Caveat */
+	--kiyose-font-size-3xl: 2.5rem;    /* 40px - optimisé pour Caveat */
+	--kiyose-font-size-4xl: 3.25rem;   /* 52px - optimisé pour Caveat */
+	--kiyose-font-size-5xl: 4rem;      /* 64px - optimisé pour h1 Caveat */
 
 	/* Hauteur de ligne */
 	--kiyose-line-height-tight: 1.2;

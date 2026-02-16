@@ -421,7 +421,8 @@ add_action( 'wp_enqueue_scripts', 'kiyose_enqueue_home_animations', 30 );
  */
 function kiyose_preload_fonts() {
 	?>
-	<link rel="preload" href="<?php echo esc_url( get_template_directory_uri() . '/assets/fonts/lora-v37-latin-regular.woff2' ); ?>" as="font" type="font/woff2" crossorigin>
+	<link rel="preload" href="<?php echo esc_url( get_template_directory_uri() . '/assets/fonts/caveat-v21-latin-regular.woff2' ); ?>" as="font" type="font/woff2" crossorigin>
+	<link rel="preload" href="<?php echo esc_url( get_template_directory_uri() . '/assets/fonts/mkabel-v1-latin-regular.woff2' ); ?>" as="font" type="font/woff2" crossorigin>
 	<link rel="preload" href="<?php echo esc_url( get_template_directory_uri() . '/assets/fonts/nunito-v32-latin-regular.woff2' ); ?>" as="font" type="font/woff2" crossorigin>
 	<?php
 }

@@ -32,9 +32,9 @@
 	color: var(--kiyose-color-burgundy);
 	display: block;
 	display: flex;
-	font-family: var(--kiyose-font-body);
-	font-size: var(--kiyose-font-size-base);
-	font-weight: 600;
+	font-family: 'MK Abel', 'Helvetica Neue', arial, sans-serif;
+	font-size: var(--kiyose-font-size-lg);
+	font-weight: 400;
 	min-height: 44px;
 	min-width: 44px;
 	padding: var(--kiyose-spacing-sm) var(--kiyose-spacing-md);
@@ -299,9 +299,9 @@
 	color: var(--kiyose-color-burgundy);
 	display: block;
 	display: flex;
-	font-family: var(--kiyose-font-body);
-	font-size: var(--kiyose-font-size-base);
-	font-weight: 600;
+	font-family: 'MK Abel', 'Helvetica Neue', arial, sans-serif;
+	font-size: var(--kiyose-font-size-lg);
+	font-weight: 400;
 	min-height: 44px;
 	padding: var(--kiyose-spacing-md);
 	text-decoration: none;
