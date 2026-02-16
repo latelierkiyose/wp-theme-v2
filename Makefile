@@ -45,7 +45,7 @@ lint-js: ## Valider le code JavaScript avec ESLint
 lint-css: ## Valider le code CSS avec Stylelint
 	@./bin/stylelint.sh 'latelierkiyose/**/*.css'
 
-lint: lint-js lint-css ## Valider tout le code (JS + CSS)
+lint: build lint-js lint-css ## Valider tout le code (JS + CSS)
 	@echo "$(GREEN)✓ Validation JS et CSS terminée$(NC)"
 
 lint-fix: ## Corriger automatiquement les violations JS et CSS
