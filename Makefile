@@ -61,6 +61,11 @@ format-js: ## Formatter le code JavaScript avec Prettier
 format-check: ## Vérifier le formatage JavaScript sans modifier
 	@./bin/prettier.sh --check 'latelierkiyose/assets/js/**/*.js'
 
+build-css: ## Minifier les fichiers CSS
+	@echo "$(BLUE)🎨 Minification des CSS...$(NC)"
+	@npm run build:css
+	@echo "$(GREEN)✓ CSS minifiés$(NC)"
+
 start: ## Démarrer l'environnement WordPress (Docker)
 	@echo "$(BLUE)🚀 Démarrage de WordPress...$(NC)"
 	@docker compose up -d
