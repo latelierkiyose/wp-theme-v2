@@ -227,17 +227,6 @@ function kiyose_enqueue_assets() {
 		);
 	}
 
-	// Font demo page (conditional loading for page-font-demo.php template).
-	// Used for comparing Lora vs Kalam fonts before permanent implementation.
-	if ( is_page_template( 'templates/page-font-demo.php' ) ) {
-		wp_enqueue_style(
-			'kiyose-font-demo',
-			get_template_directory_uri() . '/assets/css/components/font-demo.css',
-			array( 'kiyose-variables' ),
-			kiyose_get_asset_version( '/assets/css/components/font-demo.css' )
-		);
-	}
-
 	// Main stylesheet (depends on fonts, variables, and components).
 	wp_enqueue_style(
 		'kiyose-main',
@@ -428,15 +417,11 @@ add_action( 'wp_enqueue_scripts', 'kiyose_enqueue_home_animations', 30 );
 /**
  * Preload critical fonts.
  *
- * Preloads:
- * - Playfair Display Regular (headings)
- * - Nunito Regular (body text)
- *
  * @since 1.0.0
  */
 function kiyose_preload_fonts() {
 	?>
-	<link rel="preload" href="<?php echo esc_url( get_template_directory_uri() . '/assets/fonts/playfair-display-v40-latin-regular.woff2' ); ?>" as="font" type="font/woff2" crossorigin>
+	<link rel="preload" href="<?php echo esc_url( get_template_directory_uri() . '/assets/fonts/lora-v37-latin-regular.woff2' ); ?>" as="font" type="font/woff2" crossorigin>
 	<link rel="preload" href="<?php echo esc_url( get_template_directory_uri() . '/assets/fonts/nunito-v32-latin-regular.woff2' ); ?>" as="font" type="font/woff2" crossorigin>
 	<?php
 }

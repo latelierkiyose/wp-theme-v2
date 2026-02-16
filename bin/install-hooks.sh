@@ -34,11 +34,9 @@ else
 fi
 
 echo -e "\n${GREEN}Git hooks installed successfully!${NC}"
-echo -e "${YELLOW}The pre-commit hook will now:${NC}"
-echo -e "  1. Auto-fix issues with PHPCBF, ESLint, and Stylelint"
-echo -e "  2. Run checks on staged files:"
-echo -e "     - PHPCS on PHP files"
-echo -e "     - ESLint on JavaScript files"
-echo -e "     - Stylelint on CSS files"
+echo -e "${YELLOW}The pre-commit hook will now run:${NC}"
+echo -e "  - PHPCS on staged PHP files"
+echo -e "  - ESLint on staged JavaScript files"
+echo -e "  - Stylelint on staged CSS files"
 echo -e "\n${YELLOW}To bypass hooks (not recommended):${NC}"
 echo -e "  git commit --no-verify"

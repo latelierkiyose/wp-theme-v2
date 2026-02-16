@@ -2,13 +2,12 @@
 
 ## Statut du projet
 
-**État actuel**: Remplacement police titres par Playfair Display (2026-02-16)
+**État actuel**: PRD 0019 terminé — Minification des assets pour production  
 **Statut global**: ✅ PRÊT POUR PRODUCTION
 - Squelette du thème: ✅ Opérationnel (PRD 0001)
 - Design tokens: ✅ Implémentés (PRD 0002)
   - Variables CSS: couleurs, typographie, espacements, animations
-  - Polices auto-hébergées: **Playfair Display** (serif, titres) et Nunito (sans-serif, corps)
-  - Lora conservée dans fichiers mais retirée du fallback
+  - Polices auto-hébergées: Lora (serif) et Nunito (sans-serif)
   - Reset CSS et styles de base
   - Contraste WCAG 2.2 AA validé
 - Layout et navigation: ✅ Implémentés (PRD 0003)
@@ -178,21 +177,8 @@
   - Performance: Réduction ~40% moyenne de la taille des assets
   - Fonction helper: kiyose_get_asset_suffix() pour basculer entre versions
   - Build scripts: bin/minify-css.js, bin/minify-js.js
-- Remplacement police titres: ✅ Implémenté (2026-02-16)
-  - Police Lora remplacée par Playfair Display (serif display moderne)
-  - Fichiers: fonts.css, variables.css, enqueue.php mis à jour
-  - Page de démo créée pour test visuel: templates/page-font-demo.php
-  - Polices testées: Kalam (manuscrite), Dancing Script, Great Vibes, Allura (scripts), Josefin Sans (sans-serif), **Playfair Display ✅ validée**
-  - Stack finale: `'Playfair Display', georgia, 'Times New Roman', serif`
-  - Lora retirée du fallback, fichiers conservés dans assets/fonts/
-  - Preload mis à jour: Playfair Display Regular + Nunito Regular
-  - Minification: fonts.min.css, variables.min.css regénérés
-  - Validation WCAG 2.2 AA maintenue (contraste ≥4.5:1)
-  - Performance: 21-27 KB (similaire à Lora), LCP < 2.5s
-  - Caractère: Serif display avec fort contraste, élégante sans être académique
-  - CSS: Règle Stylelint d'ordre alphabétique des propriétés appliquée
 - Configuration: ✅ PHPCS, Composer, CI/CD GitHub Actions
-- **Statut final**: ✅ PRÊT POUR PRODUCTION — Tous les PRDs (0001-0019) terminés + Police titres mise à jour
+- **Statut final**: ✅ PRÊT POUR PRODUCTION — Tous les PRDs (0001-0019) terminés
 
 
 ## Contexte
@@ -348,7 +334,6 @@ latelierkiyose/
 - Préfixe: `kiyose_` (fonctions, hooks)
 - Text domain: `kiyose`
 - CSS: Méthodologie BEM
-- **CSS Properties Order**: TOUJOURS respecter l'ordre alphabétique des propriétés CSS (appliqué par Stylelint `order/properties-alphabetical-order`)
 
 
 ## Standards & Contraintes
@@ -396,7 +381,6 @@ Pour la documentation complète des standards, voir **[doc/standards.md](doc/sta
 ### Avant de coder
 
 - ✅ Vérifier les conventions (préfixe `kiyose_`, BEM pour CSS)
-- ✅ **Ordre alphabétique des propriétés CSS** : Toujours écrire les propriétés CSS par ordre alphabétique (a-z) pour respecter la règle Stylelint `order/properties-alphabetical-order`
 - ✅ Consulter la palette de couleurs et tester les contrastes
 - ✅ Écrire les tests en premier (approche TDD)
 - ✅ Respecter l'architecture modulaire (fichiers dans `inc/`)

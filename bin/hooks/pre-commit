@@ -25,51 +25,6 @@ STAGED_JS_FILES=$(git diff --cached --name-only --diff-filter=ACMR | grep '\.js$
 STAGED_CSS_FILES=$(git diff --cached --name-only --diff-filter=ACMR | grep '\.css$' | grep '^latelierkiyose/' || true)
 
 # ============================================
-# Auto-fix linting issues (PHPCS + ESLint + Stylelint)
-# ============================================
-echo -e "${YELLOW}Auto-fixing linting issues...${NC}"
-
-# Fix PHP files with PHPCBF
-if [ -n "$STAGED_PHP_FILES" ]; then
-	echo -e "${YELLOW}→ Fixing PHP files with PHPCBF...${NC}"
-	if [ -f "./bin/phpcbf.sh" ]; then
-		# Use Docker wrapper
-		./bin/phpcbf.sh --standard=phpcs.xml $STAGED_PHP_FILES || true
-		git add $STAGED_PHP_FILES
-		echo -e "${GREEN}✓ PHP files auto-fixed and re-staged${NC}"
-	elif command -v vendor/bin/phpcbf &> /dev/null; then
-		# Use local vendor installation
-		vendor/bin/phpcbf --standard=phpcs.xml $STAGED_PHP_FILES || true
-		git add $STAGED_PHP_FILES
-		echo -e "${GREEN}✓ PHP files auto-fixed and re-staged${NC}"
-	else
-		echo -e "${YELLOW}⚠ PHPCBF not found, skipping PHP auto-fix${NC}"
-	fi
-fi
-
-# Fix JS and CSS files with ESLint + Stylelint
-if [ -n "$STAGED_JS_FILES" ] || [ -n "$STAGED_CSS_FILES" ]; then
-	if command -v npm &> /dev/null; then
-		echo -e "${YELLOW}→ Fixing JS/CSS files with ESLint + Stylelint...${NC}"
-		# Run lint:fix to automatically fix ESLint and Stylelint issues
-		npm run lint:fix --silent || true
-
-		# Re-stage the fixed files
-		if [ -n "$STAGED_JS_FILES" ]; then
-			git add $STAGED_JS_FILES
-		fi
-		if [ -n "$STAGED_CSS_FILES" ]; then
-			git add $STAGED_CSS_FILES
-		fi
-		echo -e "${GREEN}✓ JS/CSS files auto-fixed and re-staged${NC}"
-	else
-		echo -e "${YELLOW}⚠ npm not found, skipping JS/CSS auto-fix${NC}"
-	fi
-fi
-
-echo -e "${GREEN}✓ Auto-fix completed${NC}\n"
-
-# ============================================
 # PHP CodeSniffer (PHPCS)
 # ============================================
 if [ -n "$STAGED_PHP_FILES" ]; then
