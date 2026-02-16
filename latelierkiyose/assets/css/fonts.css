@@ -1,7 +1,8 @@
 /**
  * Font faces for L'Atelier Kiyose
- * 
- * Fonts: Lora (serif) and Nunito (sans-serif)
+ *
+ * Fonts: Playfair Display (serif, headings), Nunito (sans-serif, body)
+ * Lora kept as fallback for headings
  * Self-hosted for GDPR compliance
  */
 
@@ -33,6 +34,26 @@
 	font-weight: 400;
 	src: url('../fonts/lora-v37-latin-italic.woff2') format('woff2'),
 	     url('../fonts/lora-v37-latin-italic.woff') format('woff');
+}
+
+/* Playfair Display Regular */
+@font-face {
+	font-display: swap;
+	font-family: 'Playfair Display';
+	font-style: normal;
+	font-weight: 400;
+	src: url('../fonts/playfair-display-v40-latin-regular.woff2') format('woff2'),
+	     url('../fonts/playfair-display-v40-latin-regular.woff') format('woff');
+}
+
+/* Playfair Display Bold */
+@font-face {
+	font-display: swap;
+	font-family: 'Playfair Display';
+	font-style: normal;
+	font-weight: 700;
+	src: url('../fonts/playfair-display-v40-latin-700.woff2') format('woff2'),
+	     url('../fonts/playfair-display-v40-latin-700.woff') format('woff');
 }
 
 /* Nunito Regular */
