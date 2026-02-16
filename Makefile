@@ -74,6 +74,11 @@ build-js: ## Minifier les fichiers JavaScript
 build: build-css build-js ## Minifier tous les assets (CSS + JS)
 	@echo "$(GREEN)✓ Tous les assets sont minifiés$(NC)"
 
+build-clean: ## Supprimer tous les fichiers minifiés
+	@echo "$(BLUE)🧹 Suppression des fichiers minifiés...$(NC)"
+	@npm run build:clean
+	@echo "$(GREEN)✓ Fichiers minifiés supprimés$(NC)"
+
 start: ## Démarrer l'environnement WordPress (Docker)
 	@echo "$(BLUE)🚀 Démarrage de WordPress...$(NC)"
 	@docker compose up -d
