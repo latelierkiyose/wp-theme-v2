@@ -1,7 +1,7 @@
 /**
  * Font faces for L'Atelier Kiyose
  *
- * Fonts: Caveat (handwritten), MK Abel (sans-serif), and Nunito (sans-serif)
+ * Fonts: Caveat (handwritten) and Nunito (sans-serif)
  * Self-hosted for GDPR compliance
  */
 
@@ -36,7 +36,7 @@
 }
 
 /* ============================================
-   NOUVELLES POLICES - Caveat & MK Abel
+   NOUVELLES POLICES - Caveat
    ============================================ */
 
 /* Caveat Regular - Titres */
@@ -57,14 +57,4 @@
 	font-weight: 700;
 	src: url('../fonts/caveat-v21-latin-700.woff2') format('woff2'),
 	     url('../fonts/caveat-v21-latin-700.woff') format('woff');
-}
-
-/* MK Abel Regular - Menu de navigation */
-@font-face {
-	font-display: swap;
-	font-family: 'MK Abel';
-	font-style: normal;
-	font-weight: 400;
-	src: url('../fonts/mkabel-v1-latin-regular.woff2') format('woff2'),
-	     url('../fonts/mkabel-v1-latin-regular.woff') format('woff');
 }

@@ -88,7 +88,7 @@ L'identité visuelle s'inspire du Kintsugi japonais - l'art de réparer les cér
 
 **Polices retenues:**
 - **Titres (manuscrite)**: **Caveat** — Manuscrite naturelle et lisible, playful mais professionnelle
-- **Menu (sans-serif)**: **MK Abel** — Épurée et moderne (tall & thin), minimaliste
+- **Menu (sans-serif)**: **Nunito** — Arrondie, très lisible, ton doux et accessible
 - **Corps (sans-serif)**: **Nunito** — Arrondie, très lisible, ton doux et accessible
 
 **Hébergement**: Auto-hébergées dans `assets/fonts/` (conformité RGPD — pas de chargement depuis Google Fonts CDN)
@@ -96,12 +96,11 @@ L'identité visuelle s'inspire du Kintsugi japonais - l'art de réparer les cér
 **Optimisation:**
 - Subset latin uniquement
 - Formats: woff2 (principal) + woff (fallback)
-- Preload pour les polices critiques (Caveat Regular, MK Abel Regular, Nunito Regular)
+- Preload pour les polices critiques (Caveat Regular, Nunito Regular)
 - Déclaration via `@font-face` dans `assets/css/fonts.css`, chargement via `kiyose_enqueue_styles()` dans `inc/enqueue.php`
 
 **Graisses à inclure:**
 - Caveat: Regular (400), Bold (700)
-- MK Abel: Regular (400) uniquement
 - Nunito: Regular (400), SemiBold (600), Bold (700)
 
 **Échelle typographique**: Voir `references/css-examples.css` pour les variables CSS complètes.

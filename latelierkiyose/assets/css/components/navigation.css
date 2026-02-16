@@ -32,8 +32,8 @@
 	color: var(--kiyose-color-burgundy);
 	display: block;
 	display: flex;
-	font-family: 'MK Abel', 'Helvetica Neue', arial, sans-serif;
-	font-size: var(--kiyose-font-size-lg);
+	font-family: Nunito, 'Helvetica Neue', arial, sans-serif;
+	font-size: var(--kiyose-font-size-base);
 	font-weight: 400;
 	min-height: 44px;
 	min-width: 44px;
@@ -299,8 +299,8 @@
 	color: var(--kiyose-color-burgundy);
 	display: block;
 	display: flex;
-	font-family: 'MK Abel', 'Helvetica Neue', arial, sans-serif;
-	font-size: var(--kiyose-font-size-lg);
+	font-family: Nunito, 'Helvetica Neue', arial, sans-serif;
+	font-size: var(--kiyose-font-size-base);
 	font-weight: 400;
 	min-height: 44px;
 	padding: var(--kiyose-spacing-md);
