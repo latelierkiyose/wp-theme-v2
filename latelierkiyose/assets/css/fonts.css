@@ -1,7 +1,7 @@
 /**
  * Font faces for L'Atelier Kiyose
  *
- * Fonts: Caveat (handwritten) and Nunito (sans-serif)
+ * Fonts: Dancing Script (script) and Nunito (sans-serif)
  * Self-hosted for GDPR compliance
  */
 
@@ -36,25 +36,25 @@
 }
 
 /* ============================================
-   NOUVELLES POLICES - Caveat
+   Dancing Script - Titres
    ============================================ */
 
-/* Caveat Regular - Titres */
+/* Dancing Script Regular - Titres */
 @font-face {
 	font-display: swap;
-	font-family: Caveat;
+	font-family: 'Dancing Script';
 	font-style: normal;
 	font-weight: 400;
-	src: url('../fonts/caveat-v21-latin-regular.woff2') format('woff2'),
-	     url('../fonts/caveat-v21-latin-regular.woff') format('woff');
+	src: url('../fonts/dancing-script-v29-latin-regular.woff2') format('woff2'),
+	     url('../fonts/dancing-script-v29-latin-regular.woff') format('woff');
 }
 
-/* Caveat Bold - Titres emphase */
+/* Dancing Script Bold - Titres emphase */
 @font-face {
 	font-display: swap;
-	font-family: Caveat;
+	font-family: 'Dancing Script';
 	font-style: normal;
 	font-weight: 700;
-	src: url('../fonts/caveat-v21-latin-700.woff2') format('woff2'),
-	     url('../fonts/caveat-v21-latin-700.woff') format('woff');
+	src: url('../fonts/dancing-script-v29-latin-700.woff2') format('woff2'),
+	     url('../fonts/dancing-script-v29-latin-700.woff') format('woff');
 }
