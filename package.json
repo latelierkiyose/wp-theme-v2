@@ -24,7 +24,7 @@
 		"prettier": "^3.2.5",
 		"stylelint": "^16.2.1",
 		"stylelint-config-standard": "^36.0.0",
-		"stylelint-order": "^6.0.4",
+		"stylelint-order": "^7.0.0",
 		"terser": "^5.37.0"
 	},
 	"engines": {
