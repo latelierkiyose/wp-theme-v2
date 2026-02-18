@@ -134,7 +134,7 @@ Pour la documentation complète de l'architecture, voir **[doc/architecture.md](
 **Type de thème**: Thème WordPress classique avec templates PHP (pas de Block Theme/FSE)
 
 **Stack technique:**
-- PHP 8.1+, WordPress 6.7+
+- PHP 8.3+, WordPress 6.7+
 - CSS natif moderne (variables, Grid, Flexbox)
 - Vanilla JS ES6+
 

@@ -34,7 +34,7 @@
 
 	<!-- PHP et WordPress minimums -->
 	<config name="minimum_supported_wp_version" value="6.7"/>
-	<config name="testVersion" value="8.1-"/>
+	<config name="testVersion" value="8.3-"/>
 
 	<!-- Afficher les erreurs et warnings -->
 	<arg name="colors"/>

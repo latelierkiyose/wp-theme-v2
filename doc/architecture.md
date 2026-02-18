@@ -57,7 +57,7 @@ wp-theme-v2/
 
 ## Stack technique
 
-- **PHP**: 8.1+ (dernière version stable)
+- **PHP**: 8.3+ (dernière version stable)
 - **WordPress**: 6.7+ (dernière version)
 - **CSS**: CSS natif moderne (variables CSS, Grid, Flexbox) - Pas de framework lourd
 - **JavaScript**: Vanilla JS ES6+ - Bibliothèques minimales uniquement si nécessaire

@@ -37,7 +37,7 @@ wp-theme-v2/
 
 Étapes :
 1. Checkout du code
-2. Setup PHP 8.1
+2. Setup PHP 8.3
 3. `composer install`
 4. Exécuter PHPCS : `./vendor/bin/phpcs`
 5. Exécuter PHPUnit : `./vendor/bin/phpunit` (si des tests existent)

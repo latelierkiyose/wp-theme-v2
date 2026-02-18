@@ -27,7 +27,7 @@ docker run --rm \
 	${DOCKER_FLAGS} \
 	--volume "$PWD":/app \
 	--workdir /app \
-	php:8.1-cli \
+	php:8.3-cli \
 	./vendor/bin/phpcbf "$@" || true
 
 echo -e "${GREEN}✓ Terminé${NC}"
