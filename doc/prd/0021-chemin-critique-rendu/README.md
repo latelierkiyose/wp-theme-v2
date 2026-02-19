@@ -2,7 +2,7 @@
 
 ## Statut
 
-**brouillon**
+**prêt à l'implémentation**
 
 ## Objectif
 
@@ -20,11 +20,13 @@ Le score Lighthouse Performance est de **56/100** sur l'environnement local. Les
 | TBT | 0ms | < 200ms (OK) |
 | CLS | 0 | < 0.1 (OK) |
 
-**Cause racine** : le navigateur doit télécharger et parser **21 à 23 fichiers CSS** et **plusieurs scripts render-blocking** avant de peindre quoi que ce soit.
+**Cause racine** : le navigateur doit télécharger et parser **~18 fichiers CSS inconditionnels** (plus les CSS conditionnels déjà en place selon la page) et **plusieurs scripts render-blocking** avant de peindre quoi que ce soit.
 
 ### Diagnostic détaillé
 
-**CSS chargés sur CHAQUE page** (21 fichiers, ~130 KB non minifiés) :
+**CSS chargés inconditionnellement sur CHAQUE page** (~18 fichiers, ~100 KB non minifiés) :
+
+> **Note** : Plusieurs fichiers CSS sont déjà chargés conditionnellement (voir tableau des CSS déjà conditionnels plus bas). Le nombre total de CSS sur une page donnée dépend du template utilisé.
 
 | Fichier | Taille | Nécessaire partout ? |
 |---------|--------|---------------------|
@@ -47,8 +49,21 @@ Le score Lighthouse Performance est de **56/100** sur l'environnement local. Les
 | hero.css | 3.8 KB | Non — pages avec hero uniquement |
 | service-card.css | 2.8 KB | Non — pages avec services uniquement |
 | home-sections.css | 5.3 KB | Non — homepage uniquement |
-| kintsugi.css | 6.1 KB | Non — pages avec décorations Kintsugi |
-| brevo-override.css | 6.9 KB | Non — pages avec formulaire newsletter |
+| kintsugi.css | 6.1 KB | Oui — `.section-divider--header` utilisé dans `header.php` sur toutes les pages |
+| brevo-override.css | 6.9 KB | Oui — le formulaire newsletter Brevo est dans `footer.php` sur toutes les pages |
+
+**CSS déjà chargés conditionnellement** (pas de changement nécessaire) :
+
+| Fichier | Condition actuelle |
+|---------|-------------------|
+| service-page.css | `is_page_template('templates/page-services.php')` |
+| about-page.css | `is_page_template('templates/page-about.php')` |
+| contact-page.css + cf7-override.css | `is_page_template('templates/page-contact.php')` |
+| events-manager.css | Calendrier, homepage, ou shortcode Events Manager |
+| carousel.css | Homepage |
+| testimonials-grid.css | Shortcode `[kiyose_testimonials]` |
+| signets.css | Shortcode `[kiyose_signets]` |
+| home-animations.css | Homepage |
 
 **Ressources render-blocking les plus coûteuses** (Lighthouse) :
 
@@ -80,16 +95,27 @@ Le score Lighthouse Performance est de **56/100** sur l'environnement local. Les
 | blog-archive.css | `is_home() \|\| is_archive()` |
 | blog-single.css | `is_singular('post')` |
 | testimony.css | `is_page_template('templates/page-home.php') \|\| has_shortcode(...)` |
-| hero.css | `is_page_template('templates/page-home.php') \|\| is_page_template('templates/page-services.php')` |
+| hero.css | `is_page_template('templates/page-home.php')` |
 | service-card.css | `is_page_template('templates/page-home.php') \|\| is_page_template('templates/page-services.php')` |
 | home-sections.css | `is_page_template('templates/page-home.php')` |
-| kintsugi.css | `is_page_template('templates/page-home.php')` |
 | page.css | `is_page() && !is_page_template()` (pages génériques sans template custom) |
 
-**CSS toujours chargés** (9 fichiers, ~43 KB — le noyau) :
-- fonts.css, variables.css, plugins-common.css, header.css, navigation.css, footer.css, main.css, animations.css, gutenberg-blocks.css
+> **Note hero.css** : `hero.css` ne contient que les styles `.hero-section` (hero de la homepage). La page services utilise `.service-page__hero-image` qui est dans `service-page.css`. Ne pas charger `hero.css` sur la page services.
 
-**Résultat attendu** : La homepage passe de 23 requêtes CSS à ~15. Les pages intérieures sans hero/services/blog passent de 21 à ~9.
+> **Note kintsugi.css** : `kintsugi.css` contient les styles `.section-divider--header` utilisés dans `header.php` sur **toutes les pages**. Ce fichier doit rester chargé inconditionnellement. Une optimisation future pourrait déplacer `.section-divider--header` et `.section-divider` (base) vers `header.css`, ce qui permettrait de rendre le reste de `kintsugi.css` conditionnel à la homepage.
+
+**CSS toujours chargés** (11 fichiers, ~56 KB — le noyau) :
+- fonts.css, variables.css, plugins-common.css, header.css, navigation.css, footer.css, main.css, animations.css, gutenberg-blocks.css, kintsugi.css, brevo-override.css
+
+> **Note brevo-override.css** : Bien que ce fichier soit un candidat à l'async loading (§4), il doit rester chargé sur toutes les pages car le formulaire newsletter Brevo est présent dans `footer.php` sur chaque page.
+
+**Nettoyage du tableau de dépendances `kiyose-main`** : Le style `kiyose-main` (ligne 234 de `enqueue.php`) déclare tous les CSS composants comme dépendances. Quand un CSS devient conditionnel (ex: `kiyose-page` non enregistré hors pages génériques), WordPress le traite comme une dépendance manquante — `kiyose-main` se charge quand même, mais ça laisse des handles non résolus dans le tracking interne. **Il faut mettre à jour le tableau de dépendances de `kiyose-main`** pour ne lister que les CSS toujours chargés (le noyau) :
+
+```php
+array( 'kiyose-fonts', 'kiyose-variables', 'kiyose-header', 'kiyose-navigation', 'kiyose-footer', 'kiyose-kintsugi', 'kiyose-animations', 'kiyose-gutenberg-blocks' )
+```
+
+**Résultat attendu** : La homepage passe de ~18 requêtes CSS inconditionnelles à ~11 + les conditionnelles pertinentes. Les pages intérieures sans hero/services/blog passent à ~11 fichiers CSS.
 
 ### 2. Chargement conditionnel des assets Events Manager
 
@@ -97,24 +123,19 @@ Le score Lighthouse Performance est de **56/100** sur l'environnement local. Les
 
 **Solution** : Restreindre le chargement au strict nécessaire.
 
-Dans `inc/enqueue.php`, modifier `kiyose_should_load_events_manager()` (ou créer cette fonction helper) :
+La fonction `kiyose_override_events_manager_styles()` existante gère déjà correctement ce chargement conditionnel. **Ne pas modifier sa logique de détection.** L'objectif ici est de compléter par le dequeue des assets Events Manager natifs sur les pages hors périmètre.
+
+**État actuel** (correct, à conserver) :
 
 ```php
-function kiyose_should_load_events_manager() {
-	if ( is_page_template( 'templates/page-calendar.php' ) ) {
-		return true;
-	}
-
-	global $post;
-	if ( $post && has_shortcode( $post->post_content, 'events_list' ) ) {
-		return true;
-	}
-
-	return false;
+// Dans kiyose_override_events_manager_styles() — existant
+if ( is_page_template( 'templates/page-calendar.php' ) || is_page_template( 'templates/page-home.php' ) ) {
+	$should_load = true;
 }
+// + détection shortcodes dans $post->post_content
 ```
 
-**Homepage** : Les prochains événements sur la homepage sont affichés via un appel PHP direct (`EM_Events::get()`), pas via un shortcode JS. Vérifier si les assets Events Manager sont réellement nécessaires pour le rendu de cette section. Si seul le CSS est nécessaire (pas le JS), charger uniquement le CSS.
+> **Important** : La homepage charge les événements via `do_shortcode( '[events_list ...]' )` dans `page-home.php:183`. Ce shortcode est écrit directement dans le template PHP, pas dans `$post->post_content`. La condition `is_page_template('templates/page-home.php')` est donc **indispensable** car `has_shortcode()` ne détecterait pas ce cas.
 
 **Note** : Events Manager enqueue ses propres scripts via ses hooks. Utiliser `wp_dequeue_script('events-manager')` et `wp_dequeue_style('events-manager')` aux priorités appropriées pour les pages hors périmètre.
 
@@ -170,13 +191,15 @@ function kiyose_async_stylesheet( $html, $handle ) {
 	$async_handles = array(
 		'kiyose-animations',
 		'kiyose-gutenberg-blocks',
-		'kiyose-kintsugi',
 		'kiyose-brevo-override',
 	);
 
 	if ( in_array( $handle, $async_handles, true ) ) {
-		$html = str_replace(
-			"media='all'",
+		// Gère les deux styles de guillemets (simples et doubles)
+		// WordPress core utilise des guillemets simples, mais certains plugins/filtres
+		// peuvent produire des guillemets doubles.
+		$html = preg_replace(
+			'/media=[\'"]all[\'"]/',
 			"media='print' onload=\"this.media='all'\"",
 			$html
 		);
@@ -187,23 +210,50 @@ function kiyose_async_stylesheet( $html, $handle ) {
 add_filter( 'style_loader_tag', 'kiyose_async_stylesheet', 10, 2 );
 ```
 
+> **Note** : `kiyose-kintsugi` a été retiré de la liste async car il est nécessaire au rendu du header (`.section-divider--header`) et doit se charger de manière synchrone.
+
+**Maintenance de `critical.css`** : Le fichier `critical.css` est extrait manuellement de `variables.css`, `header.css`, `navigation.css`, et `hero.css`. Toute modification de ces fichiers source doit être répercutée dans `critical.css`.
+
+Processus de synchronisation :
+- Ajouter une entrée dans la checklist de vérification (§ Vérification) : vérifier la cohérence de `critical.css` avec ses sources
+- Lors de la revue de code, tout changement à `variables.css`, `header.css`, `navigation.css`, ou `hero.css` doit vérifier si `critical.css` nécessite une mise à jour
+- Un commentaire en en-tête de `critical.css` listera les fichiers sources et leur date de dernière synchronisation
+
 ### 5. Correction du fichier de police manquant
 
-**Problème** : Lighthouse détecte une erreur 404 pour `caveat-v21-latin-regular.woff2`. Le fichier est référencé dans `fonts.css` mais absent du dossier `assets/fonts/`.
+**Problème** : Lighthouse détecte une erreur 404 pour `caveat-v21-latin-regular.woff2`. Le fichier est référencé dans `inc/enqueue.php:449` via un `<link rel="preload">` dans la fonction `kiyose_preload_fonts()`, mais **absent du dossier `assets/fonts/`**. Le fichier `fonts.css` ne contient aucune référence à Caveat — il ne définit que les `@font-face` pour Nunito et Dancing Script.
 
-**Solution** : Vérifier si le fichier existe dans le repo. Si absent, le télécharger depuis Google Fonts (police Caveat, format WOFF2) et le placer dans `assets/fonts/`.
+**Solution** : Deux options possibles (choisir l'une ou l'autre) :
+
+1. **Si Caveat n'est plus utilisée** : Supprimer le `<link rel="preload">` de `kiyose_preload_fonts()` dans `enqueue.php:449`.
+2. **Si Caveat est nécessaire** : Télécharger le fichier WOFF2 depuis Google Fonts, le placer dans `assets/fonts/`, ET ajouter la déclaration `@font-face` correspondante dans `fonts.css`.
 
 ### 6. Preconnect pour ressources externes
 
-Si des ressources externes sont chargées (Google reCAPTCHA pour CF7/Brevo), ajouter des hints de preconnect :
+Si des ressources externes sont chargées (Google reCAPTCHA pour CF7), ajouter des hints de preconnect **uniquement sur les pages concernées**. reCAPTCHA n'est chargé que sur les pages avec Contact Form 7 — ajouter un preconnect sur toutes les pages gaspillerait une connexion réseau.
 
 ```php
 function kiyose_resource_hints() {
-	echo '<link rel="preconnect" href="https://www.gstatic.com" crossorigin>';
-	echo '<link rel="dns-prefetch" href="https://www.gstatic.com">';
+	// reCAPTCHA n'est nécessaire que sur les pages avec formulaire CF7.
+	if ( is_page_template( 'templates/page-contact.php' ) ) {
+		echo '<link rel="preconnect" href="https://www.gstatic.com" crossorigin>';
+		echo '<link rel="dns-prefetch" href="https://www.gstatic.com">';
+	}
 }
 add_action( 'wp_head', 'kiyose_resource_hints', 2 );
 ```
+
+### 7. Correction de bugs pré-existants dans `enqueue.php`
+
+Ces bugs ne sont pas causés par ce PRD mais doivent être corrigés lors de l'implémentation pour éviter des erreurs PHP :
+
+**7a. Variable `$suffix` non définie dans deux fonctions** :
+- `kiyose_enqueue_testimonials_styles()` (ligne 325) utilise `$suffix` sans le définir
+- `kiyose_enqueue_signets_styles()` (ligne 367) utilise `$suffix` sans le définir
+
+**Correction** : Ajouter `$suffix = kiyose_get_asset_suffix();` au début de chaque fonction.
+
+**7b. Preload de police inexistante** : Corrigé dans §5 ci-dessus.
 
 ## Fichiers impactés
 
@@ -211,8 +261,7 @@ add_action( 'wp_head', 'kiyose_resource_hints', 2 );
 
 | Fichier | Modification |
 |---------|-------------|
-| `inc/enqueue.php` | Conditions de chargement CSS, jQuery footer, CSS critique inline, async stylesheets, preconnect |
-| `assets/css/fonts.css` | Vérifier/corriger le chemin du fichier Caveat |
+| `inc/enqueue.php` | Conditions de chargement CSS, dépendances `kiyose-main`, jQuery footer, CSS critique inline, async stylesheets, preconnect conditionnel, correction `$suffix` manquant (§7), correction preload Caveat (§5) |
 
 ### Fichiers créés
 
@@ -227,7 +276,7 @@ add_action( 'wp_head', 'kiyose_resource_hints', 2 );
 
 ```php
 function kiyose_noscript_styles() {
-	$async_handles = array( 'kiyose-animations', 'kiyose-gutenberg-blocks', 'kiyose-kintsugi', 'kiyose-brevo-override' );
+	$async_handles = array( 'kiyose-animations', 'kiyose-gutenberg-blocks', 'kiyose-brevo-override' );
 	echo '<noscript>';
 	foreach ( $async_handles as $handle ) {
 		$src = wp_styles()->registered[ $handle ]->src ?? '';
@@ -244,8 +293,8 @@ add_action( 'wp_head', 'kiyose_noscript_styles', 99 );
 
 | Métrique | Avant | Après (estimé) |
 |----------|-------|----------------|
-| Requêtes CSS (homepage) | 23 | ~12 |
-| Requêtes CSS (page intérieure) | 21 | ~9 |
+| Requêtes CSS (homepage) | ~18 inconditionnels + conditionnels homepage | ~11 + conditionnels |
+| Requêtes CSS (page intérieure) | ~18 inconditionnels | ~11 |
 | FCP | 9.1s | ~3-4s |
 | LCP | 16.6s | ~5-8s |
 | Render-blocking resources | ~38 items | ~10 items |
@@ -264,6 +313,8 @@ add_action( 'wp_head', 'kiyose_noscript_styles', 99 );
 7. **PHPCS** : `make phpcs` — aucune violation
 8. **Plugins** : Vérifier que Events Manager, CF7, Brevo fonctionnent toujours correctement
 9. **jQuery en footer** : Tester les fonctionnalités dépendantes de jQuery (formulaires, calendrier)
+10. **critical.css** : Vérifier que `critical.css` est cohérent avec ses fichiers sources (`variables.css`, `header.css`, `navigation.css`, `hero.css`)
+11. **Bugs corrigés** : Vérifier que `$suffix` est défini dans `kiyose_enqueue_testimonials_styles()` et `kiyose_enqueue_signets_styles()`
 
 ## Risques et rollback
 
