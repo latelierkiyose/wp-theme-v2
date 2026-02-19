@@ -1,6 +1,6 @@
 # PRD 0019 — Minification des assets pour production
 
-**Statut**: prêt à l'implémentation  
+**Statut**: terminé
 **Créé le**: 15 février 2026  
 **Dépendances**: PRD 0001 (Squelette), PRD 0015 (CI/CD)
 
