@@ -4,7 +4,7 @@
  * Decorative elements inspired by the Kintsugi philosophy:
  * - Golden section dividers (repaired cracks metaphor)
  * - Stained glass overlays (vitrail metaphor)
- * - Decorative bubbles (interactive accents)
+ * - Collage créatif (torn papers & micro-elements)
  *
  * All elements are purely decorative and marked with aria-hidden="true"
  *
@@ -155,8 +155,8 @@
 
 .hero-section--with-overlay::before {
 	background:
-		radial-gradient(ellipse at 20% 30%, rgb(201 171 167 / 15%) 0%, transparent 50%),
-		radial-gradient(ellipse at 80% 70%, rgb(215 164 164 / 15%) 0%, transparent 50%);
+		radial-gradient(ellipse at 65% 40%, rgb(230 165 40 / 10%) 0%, transparent 35%),
+		radial-gradient(ellipse at 25% 60%, rgb(244 201 117 / 6%) 0%, transparent 30%);
 	content: '';
 	height: 100%;
 	left: 0;
@@ -178,8 +178,8 @@
 
 .section--with-overlay::after {
 	background:
-		radial-gradient(circle at 70% 40%, rgb(230 165 40 / 10%) 0%, transparent 60%),
-		radial-gradient(circle at 30% 80%, rgb(244 201 117 / 8%) 0%, transparent 50%);
+		radial-gradient(circle at 70% 40%, rgb(230 165 40 / 8%) 0%, transparent 60%),
+		radial-gradient(circle at 30% 80%, rgb(244 201 117 / 6%) 0%, transparent 50%);
 	content: '';
 	height: 100%;
 	pointer-events: none;
@@ -191,60 +191,141 @@
 }
 
 /* ============================================
-   DECORATIVE BUBBLES
+   COLLAGE CRÉATIF - Torn papers & micro-elements
    ============================================ */
 
 /**
- * Decorative SVG bubbles.
- * Appear on hover/focus of interactive elements.
- * No automatic animation (WCAG 2.2 AA compliance).
+ * Torn paper shapes — large semi-transparent SVG backgrounds.
+ * Positioned absolutely within sections.
  */
-.bubble {
+.collage-paper {
+	pointer-events: none;
+	position: absolute;
+	z-index: 0;
+}
+
+/* Hero section papers */
+.collage-paper--hero-main {
+	height: 300px;
+	opacity: 0.13;
+	right: -2%;
+	top: 10%;
+	transform: rotate(-3deg);
+	width: 400px;
+}
+
+.collage-paper--hero-accent {
+	bottom: 8%;
+	height: 150px;
+	left: -1%;
+	opacity: 0.09;
+	transform: rotate(4deg);
+	width: 180px;
+}
+
+/* Services section paper */
+.collage-paper--services {
+	height: 220px;
+	left: -3%;
+	opacity: 0.1;
+	top: -5%;
+	transform: rotate(2deg);
+	width: 300px;
+}
+
+/* Events section paper */
+.collage-paper--events {
+	height: 280px;
+	opacity: 0.09;
+	right: -2%;
+	top: 5%;
+	transform: rotate(-4deg);
+	width: 250px;
+}
+
+/* Testimonials section paper */
+.collage-paper--testimonials {
+	height: 180px;
+	opacity: 0.1;
+	right: -1%;
+	top: -3%;
+	transform: rotate(3deg);
+	width: 200px;
+}
+
+/* Blog section paper */
+.collage-paper--blog {
+	bottom: 5%;
+	height: 200px;
+	left: -2%;
+	opacity: 0.08;
+	transform: rotate(-2deg);
+	width: 230px;
+}
+
+/**
+ * Micro-elements — small SVG doodles revealed on scroll.
+ * Initially invisible, revealed via JS with .is-revealed class.
+ */
+.collage-micro {
 	opacity: 0;
 	pointer-events: none;
 	position: absolute;
-	transform: translateY(0);
-	transition: opacity 0.3s ease, transform 0.3s ease;
+	transition: opacity 300ms ease;
+	z-index: 0;
+}
+
+.collage-micro.is-revealed {
+	opacity: 1;
 }
 
 /**
- * Bubble appearance on service card hover/focus.
+ * Responsive: reduce decorative elements on mobile.
  */
-.service-card:hover .bubble,
-.service-card:focus-within .bubble {
-	opacity: 0.7;
-	transform: translateY(-5px);
-}
+@media (width <= 767px) {
 
-/**
- * Bubble positioning variants for service cards.
- */
-.bubble--1 {
-	right: 10%;
-	top: 10%;
-}
+	.collage-paper {
+		height: calc(var(--kiyose-collage-h, 200px) * 0.6);
+		opacity: calc(var(--kiyose-collage-o, 0.1) * 0.7);
+		width: calc(var(--kiyose-collage-w, 200px) * 0.6);
+	}
 
-.bubble--2 {
-	bottom: 15%;
-	left: 8%;
-}
+	.collage-paper--hero-main {
+		--kiyose-collage-h: 300px;
+		--kiyose-collage-o: 0.13;
+		--kiyose-collage-w: 400px;
+	}
 
-/**
- * Bubble appearance on button hover/focus.
- */
-.button:hover .bubble,
-.button:focus .bubble {
-	opacity: 0.6;
-	transform: scale(1.1);
+	.collage-paper--hero-accent,
+	.collage-paper--services,
+	.collage-paper--events {
+		display: none;
+	}
+
+	.collage-paper--testimonials {
+		--kiyose-collage-h: 180px;
+		--kiyose-collage-o: 0.1;
+		--kiyose-collage-w: 200px;
+	}
+
+	.collage-paper--blog {
+		--kiyose-collage-h: 200px;
+		--kiyose-collage-o: 0.08;
+		--kiyose-collage-w: 230px;
+	}
+
+	.collage-micro {
+		display: none;
+	}
 }
 
 /**
  * Respect prefers-reduced-motion.
- * Disable all bubble animations.
+ * Instant reveal, no transitions.
  */
 @media (prefers-reduced-motion: reduce) {
-	.bubble {
-		transform: none;
+
+	.collage-micro {
 		transition: none;
 	}
 }

@@ -32,8 +32,12 @@
 | ![#F4C975](https://img.shields.io/badge/-F4C975-F4C975?style=flat-square) | `#F4C975` | Accent doré clair - Dégradés, highlights | Jaune doré |
 | ![#5D0505](https://img.shields.io/badge/-5D0505-5D0505?style=flat-square) | `#5D0505` | Texte fort, logo, titres importants | Bordeaux foncé |
 | ![#EFE5E4](https://img.shields.io/badge/-EFE5E4-EFE5E4?style=flat-square) | `#EFE5E4` | Couleur de fond - Arrière-plan principal | Beige clair |
+| ![#E07A5F](https://img.shields.io/badge/-E07A5F-E07A5F?style=flat-square) | `#E07A5F` | Décoratif uniquement - Papiers collage, énergie | Corail chaud |
+| ![#7EB8B0](https://img.shields.io/badge/-7EB8B0-7EB8B0?style=flat-square) | `#7EB8B0` | Décoratif uniquement - Micro-éléments, fraîcheur | Turquoise doux |
 
 > **Note** : L'image `references/palette.jpg` contient une inversion entre les cercles 4 et 5 (les codes hex affichés sous les cercles sont échangés par rapport aux couleurs visibles). Les codes ci-dessus reflètent les couleurs réelles.
+
+> **Note** : Les couleurs Corail chaud et Turquoise doux sont réservées aux éléments décoratifs (papiers déchirés, micro-éléments). Elles ne sont pas utilisées pour les composants UI (boutons, liens, texte).
 
 **Variables CSS**: Voir `references/css-examples.css` pour l'implémentation complète des variables CSS.
 
@@ -190,14 +194,23 @@ Cette modification s'appliquera automatiquement à tous les éléments utilisant
 - Pas d'animations automatiques qui distraient
 - Transitions au survol/focus pour retour visuel utilisateur
 
-**Bulles décoratives interactives:**
-- Pas d'animation automatique (conformité WCAG 2.2 AA)
-- Bulles SVG apparaissent au survol/focus d'éléments interactifs
-- Timing: apparition fade-in 300ms, disparition fade-out 200ms
-- Couleurs: palette officielle (rose poudré, taupe rosé) avec opacité 0.6-0.8
-- Positionnement: ne jamais chevaucher du contenu important
+**Système décoratif Collage Créatif:**
 
-**Implémentation complète**: Voir `references/css-examples.css#bulles-decoratives` et `#animations-transitions`
+Système décoratif en 3 couches inspiré du journal créatif et du collage mixed media :
+
+1. **Papiers déchirés** (couche fond) — Grandes formes SVG semi-transparentes aux bords dentelés, positionnées en arrière-plan des sections. Couleurs : rose poudré, corail, turquoise. Opacités 8-15%.
+2. **Lignes dorées Kintsugi** (couche intermédiaire) — Section dividers existants (inchangés), recontextualisés comme les joints d'or entre les morceaux de papier.
+3. **Micro-éléments** (couche détail) — Petites formes SVG (30-60px) révélées au scroll : spirales, traits de crayon, cercles imparfaits, étoiles découpées, croix, points d'encre. Fade-in 300ms avec délai en cascade (100ms entre éléments).
+
+**Implémentation** :
+- Template part : `template-parts/decorative-collage.php` — Accepte `papers` (tableau de formes SVG) et `micros` (tableau de micro-éléments)
+- CSS : `.collage-paper` (papiers), `.collage-micro` (micro-éléments) dans `assets/css/components/kintsugi.css`
+- JS : `assets/js/modules/decorative-reveal.js` — Intersection Observer pour le scroll reveal
+- Variables CSS : `--kiyose-color-coral` (`#E07A5F`), `--kiyose-color-turquoise` (`#7EB8B0`)
+
+**Accessibilité** : Tous les éléments ont `aria-hidden="true"`, `role="presentation"`, `pointer-events: none`. Respect de `prefers-reduced-motion: reduce` (apparition instantanée, pas de transition).
+
+**Responsive** : Tailles réduites de 40% sur mobile (< 768px), opacités réduites de 30%, morceaux secondaires masqués.
 
 ## Images & Médias
 

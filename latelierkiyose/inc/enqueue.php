@@ -415,6 +415,31 @@ function kiyose_enqueue_home_animations() {
 add_action( 'wp_enqueue_scripts', 'kiyose_enqueue_home_animations', 30 );
 
 /**
+ * Enqueue decorative collage reveal script.
+ *
+ * Conditionally loads scroll reveal for decorative micro-elements on the homepage.
+ *
+ * @since 2.0.0
+ * @return void
+ */
+function kiyose_enqueue_decorative_reveal() {
+	$suffix = kiyose_get_asset_suffix();
+	// Only load on homepage template.
+	if ( ! is_page_template( 'templates/page-home.php' ) ) {
+		return;
+	}
+
+	wp_enqueue_script(
+		'kiyose-decorative-reveal',
+		get_template_directory_uri() . "/assets/js/modules/decorative-reveal{$suffix}.js",
+		array(),
+		kiyose_get_asset_version( "/assets/js/modules/decorative-reveal{$suffix}.js" ),
+		true
+	);
+}
+add_action( 'wp_enqueue_scripts', 'kiyose_enqueue_decorative_reveal', 30 );
+
+/**
  * Preload critical fonts.
  *
  * @since 1.0.0
@@ -435,7 +460,8 @@ add_action( 'wp_head', 'kiyose_preload_fonts' );
  * @return string Modified script tag.
  */
 function kiyose_defer_main_script( $tag, $handle ) {
-	if ( 'kiyose-main' === $handle ) {
+	$deferred_scripts = array( 'kiyose-main', 'kiyose-decorative-reveal' );
+	if ( in_array( $handle, $deferred_scripts, true ) ) {
 		$tag = str_replace( ' src', ' defer src', $tag );
 		$tag = str_replace( '<script', '<script type="module"', $tag );
 		return $tag;
