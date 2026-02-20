@@ -36,6 +36,33 @@ get_header();
 	$kiyose_has_image = ! empty( $kiyose_hero_image_id );
 	?>
 	<section class="hero-section hero-section--with-overlay<?php echo $kiyose_has_image ? ' hero-section--with-image' : ''; ?>" aria-label="Présentation de l'atelier">
+		<?php
+		// Decorative shapes — Hero: splash only. Wave is now the section separator below.
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'splash',
+				'color'    => '--kiyose-color-accent',
+				'opacity'  => 0.4,
+				'size'     => 'md',
+				'position' => 'top-right',
+				'rotation' => -6,
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'blob',
+				'color'    => '--kiyose-color-primary',
+				'opacity'  => 0.3,
+				'size'     => 'sm',
+				'position' => 'bottom-left',
+				'rotation' => 12,
+			)
+		);
+		?>
 		<div class="hero-section__inner">
 			<?php if ( $kiyose_has_image ) : ?>
 				<div class="hero-section__image">
@@ -54,10 +81,47 @@ get_header();
 		</div>
 	</section>
 
-	<div class="section-divider section-divider--beige-to-white" role="presentation" aria-hidden="true"></div>
+	<?php
+	// Wave separator — Hero (beige) → Services (white).
+	get_template_part(
+		'template-parts/decorative',
+		'shapes',
+		array(
+			'mode'    => 'separator',
+			'color'   => '#ffffff',
+			'from_bg' => '--kiyose-color-background',
+		)
+	);
+	?>
 
 	<!-- Section 4 Piliers -->
 	<section class="home-services" aria-labelledby="services-title">
+		<?php
+		// Decorative — Services: blob + scribble. Lighter section (respiration).
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'blob',
+				'color'    => '--kiyose-color-accent',
+				'opacity'  => 0.3,
+				'size'     => 'sm',
+				'position' => 'bottom-right',
+				'rotation' => 5,
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'scribbles',
+			array(
+				'type'     => 'spiral',
+				'color'    => '--kiyose-color-primary',
+				'size'     => 100,
+				'rotation' => -8,
+				'float'    => true,
+			)
+		);
+		?>
 		<h2 id="services-title" class="home-services__title">Mes activités</h2>
 		<div class="home-services__grid">
 			<?php
@@ -95,10 +159,47 @@ get_header();
 		</div>
 	</section>
 
-	<div class="section-divider section-divider--white-to-tinted" role="presentation" aria-hidden="true"></div>
+	<?php
+	// Wave separator — Services (white) → Events (tinted).
+	get_template_part(
+		'template-parts/decorative',
+		'shapes',
+		array(
+			'mode'    => 'separator',
+			'color'   => 'rgb(201 171 167 / 10%)',
+			'from_bg' => '#ffffff',
+		)
+	);
+	?>
 
 	<!-- Section Prochaines Dates -->
 	<section class="home-events section--tinted" aria-labelledby="events-title">
+		<?php
+		// Decorative — Events: splash + squiggle. Bold section.
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'splash',
+				'color'    => '--kiyose-color-primary',
+				'opacity'  => 0.35,
+				'size'     => 'md',
+				'position' => 'top-left',
+				'rotation' => 4,
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'scribbles',
+			array(
+				'type'     => 'squiggle',
+				'color'    => '--kiyose-color-warm-yellow',
+				'size'     => 120,
+				'rotation' => 15,
+				'float'    => true,
+			)
+		);
+		?>
 		<h2 id="events-title" class="home-events__title">Prochaines dates</h2>
 		<div class="home-events__list">
 			<?php
@@ -121,10 +222,47 @@ get_header();
 		</a>
 	</section>
 
-	<div class="section-divider section-divider--tinted-to-white" role="presentation" aria-hidden="true"></div>
+	<?php
+	// Wave separator — Events (tinted) → Testimonials (white).
+	get_template_part(
+		'template-parts/decorative',
+		'shapes',
+		array(
+			'mode'    => 'separator',
+			'color'   => '#ffffff',
+			'from_bg' => 'rgb(201 171 167 / 10%)',
+		)
+	);
+	?>
 
 	<!-- Section Témoignages (Carousel) -->
 	<section class="home-testimonials" aria-labelledby="testimonials-title">
+		<?php
+		// Decorative — Testimonials: brushstrokes only. Light section (respiration).
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'brushstroke',
+				'color'    => '--kiyose-color-accent',
+				'opacity'  => 0.45,
+				'size'     => 'sm',
+				'position' => 'top-right',
+				'rotation' => -12,
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'scribbles',
+			array(
+				'type'     => 'mini-splash',
+				'color'    => '--kiyose-color-warm-yellow',
+				'size'     => 70,
+				'rotation' => 20,
+				'float'    => false,
+			)
+		);
+		?>
 		<h2 id="testimonials-title" class="home-testimonials__title">Témoignages</h2>
 		<?php
 		// Query testimonials.
@@ -172,10 +310,47 @@ get_header();
 		?>
 	</section>
 
-	<div class="section-divider section-divider--white-to-tinted" role="presentation" aria-hidden="true"></div>
+	<?php
+	// Wave separator — Testimonials (white) → Newsletter (tinted).
+	get_template_part(
+		'template-parts/decorative',
+		'shapes',
+		array(
+			'mode'    => 'separator',
+			'color'   => 'rgb(201 171 167 / 10%)',
+			'from_bg' => '#ffffff',
+		)
+	);
+	?>
 
 	<!-- Section Newsletter -->
 	<section class="home-newsletter section--tinted" aria-labelledby="newsletter-title">
+		<?php
+		// Decorative — Newsletter: splash + virgules. Bold warm section.
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'splash',
+				'color'    => '--kiyose-color-accent',
+				'opacity'  => 0.35,
+				'size'     => 'sm',
+				'position' => 'bottom-right',
+				'rotation' => -5,
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'scribbles',
+			array(
+				'type'     => 'virgules',
+				'color'    => '--kiyose-color-burgundy',
+				'size'     => 60,
+				'rotation' => -10,
+				'float'    => false,
+			)
+		);
+		?>
 		<div class="home-newsletter__content">
 			<h2 id="newsletter-title" class="home-newsletter__title">Restez informé·e</h2>
 			<p class="home-newsletter__description">
@@ -203,10 +378,47 @@ get_header();
 		</div>
 	</section>
 
-	<div class="section-divider section-divider--tinted-to-beige" role="presentation" aria-hidden="true"></div>
+	<?php
+	// Wave separator — Newsletter (tinted) → Blog (beige).
+	get_template_part(
+		'template-parts/decorative',
+		'shapes',
+		array(
+			'mode'    => 'separator',
+			'color'   => '--kiyose-color-background',
+			'from_bg' => 'rgb(201 171 167 / 10%)',
+		)
+	);
+	?>
 
 	<!-- Section Actualités (Blog) -->
 	<section class="home-blog" aria-labelledby="blog-title">
+		<?php
+		// Decorative — Blog: blob + cross. Light section (respiration).
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'blob',
+				'color'    => '--kiyose-color-primary',
+				'opacity'  => 0.3,
+				'size'     => 'md',
+				'position' => 'bottom-left',
+				'rotation' => 7,
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'scribbles',
+			array(
+				'type'     => 'cross',
+				'color'    => '--kiyose-color-accent',
+				'size'     => 50,
+				'rotation' => 22,
+				'float'    => true,
+			)
+		);
+		?>
 		<h2 id="blog-title" class="home-blog__title">Actualités</h2>
 		<?php
 		// Query 3 derniers articles de blog.

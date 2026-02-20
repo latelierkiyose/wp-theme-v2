@@ -323,6 +323,7 @@ add_action( 'wp_enqueue_scripts', 'kiyose_enqueue_brevo_styles' );
  * @since 0.1.7
  */
 function kiyose_enqueue_testimonials_styles() {
+	$suffix = kiyose_get_asset_suffix();
 	global $post;
 
 	// Enqueue carousel on home page template.
@@ -365,6 +366,7 @@ add_action( 'wp_enqueue_scripts', 'kiyose_enqueue_testimonials_styles' );
  * @since 0.2.4
  */
 function kiyose_enqueue_signets_styles() {
+	$suffix = kiyose_get_asset_suffix();
 	global $post;
 
 	// Enqueue signets CSS when shortcode is present.
@@ -413,6 +415,31 @@ function kiyose_enqueue_home_animations() {
 	);
 }
 add_action( 'wp_enqueue_scripts', 'kiyose_enqueue_home_animations', 30 );
+
+/**
+ * Enqueue decorative reveal animations (JS).
+ *
+ * Conditionally loads the scroll-triggered reveal script only on the homepage.
+ *
+ * @since 2.0.0
+ * @return void
+ */
+function kiyose_enqueue_decorative_reveal() {
+	$suffix = kiyose_get_asset_suffix();
+
+	if ( ! is_page_template( 'templates/page-home.php' ) ) {
+		return;
+	}
+
+	wp_enqueue_script(
+		'kiyose-decorative-reveal',
+		get_template_directory_uri() . "/assets/js/modules/decorative-reveal{$suffix}.js",
+		array(),
+		kiyose_get_asset_version( "/assets/js/modules/decorative-reveal{$suffix}.js" ),
+		true
+	);
+}
+add_action( 'wp_enqueue_scripts', 'kiyose_enqueue_decorative_reveal', 30 );
 
 /**
  * Preload critical fonts.

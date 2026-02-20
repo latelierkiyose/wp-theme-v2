@@ -30,6 +30,12 @@
 	--kiyose-color-gold-transparent: rgb(230 165 40 / 30%); /* Or transparent (overlays) */
 
 	/* ============================================
+	   COULEURS DÉCORATIVES (PRD 0020)
+	   ============================================ */
+	--kiyose-color-cream-gold: #FDF0D5;        /* Crème doré — fond de sections lumineuses */
+	--kiyose-color-warm-yellow: #FBBE2E;       /* Jaune chaud — taches de peinture, éclaboussures */
+
+	/* ============================================
 	   VARIANTES DE CONTRASTE (WCAG 2.2 AA)
 	   ============================================ */
 	

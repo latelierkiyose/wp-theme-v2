@@ -32,6 +32,8 @@
 | ![#F4C975](https://img.shields.io/badge/-F4C975-F4C975?style=flat-square) | `#F4C975` | Accent doré clair - Dégradés, highlights | Jaune doré |
 | ![#5D0505](https://img.shields.io/badge/-5D0505-5D0505?style=flat-square) | `#5D0505` | Texte fort, logo, titres importants | Bordeaux foncé |
 | ![#EFE5E4](https://img.shields.io/badge/-EFE5E4-EFE5E4?style=flat-square) | `#EFE5E4` | Couleur de fond - Arrière-plan principal | Beige clair |
+| ![#FDF0D5](https://img.shields.io/badge/-FDF0D5-FDF0D5?style=flat-square) | `#FDF0D5` | Fond de sections lumineuses (alternative au beige) | Crème doré |
+| ![#FBBE2E](https://img.shields.io/badge/-FBBE2E-FBBE2E?style=flat-square) | `#FBBE2E` | Éclaboussures, taches de peinture | Jaune chaud |
 
 > **Note** : L'image `references/palette.jpg` contient une inversion entre les cercles 4 et 5 (les codes hex affichés sous les cercles sont échangés par rapport aux couleurs visibles). Les codes ci-dessus reflètent les couleurs réelles.
 
@@ -60,29 +62,60 @@ Les couleurs de la palette peuvent être légèrement assombries ou éclaircies 
 **Philosophie de design:**
 L'identité visuelle s'inspire du Kintsugi japonais - l'art de réparer les céramiques avec de la poudre d'or. Cette métaphore guide le design: les imperfections et fêlures laissent passer la lumière, transformant les blessures en beauté.
 
-**Éléments visuels Kintsugi:**
+**Éléments visuels — Système décoratif "Art expressif" (PRD 0020):**
 
-**1. Lignes dorées subtiles**
-- Séparateurs de sections inspirés des fissures réparées à l'or
-- Couleur: Or miel (`#E6A528`)
-- Épaisseur: 1-2px, style: irrégulier/organique
-- Utilisation: Entre les sections de la homepage, autour des cartes de services
-- **Implémentation**: Voir `references/css-examples.css#section-divider`
+Le système décoratif s'organise en 3 couches superposées :
 
-**2. Effets vitrail (overlays colorés)**
-- Overlays semi-transparents évoquant "l'être humain comme un vitrail"
-- Utilisation: Arrière-plans de sections avec dégradés (taupe rosé, rose poudré)
-- Opacité: 0.05-0.15 pour ne pas nuire à la lisibilité
-- **Implémentation**: Voir `references/css-examples.css#overlays-vitrail`
+**1. Formes organiques audacieuses (couche fond)**
 
-**3. Imagerie Kintsugi**
-- Graphisme subtil: motifs de fissures dorées en arrière-plan (opacity très faible)
-- Icône: Possibilité d'utiliser un symbole Kintsugi stylisé comme élément graphique récurrent
+Grandes formes SVG en arrière-plan des sections. Haute opacité (30-60%), couleurs franches, positionnées aux marges.
+
+- **Éclaboussures de peinture** (élément signature) : Forme centrale avec pointes en étoile irrégulières, gouttelettes satellites, coulure optionnelle. Style `tache.png`.
+- **Vagues organiques** : Grandes formes fluides (400-600px), bords ondulés en courbes de Bézier. Fond de section, débordement entre sections.
+- **Blobs** : Formes compactes asymétriques (200-400px), comme des flaques. Coins des sections.
+- **Virgules / touches de pinceau** : Coups de pinceau courts (60-120px), groupés par 2-3.
+- Proportions couleurs : 40% or/jaune, 40% rose, 20% bordeaux (accent uniquement)
+- **Implémentation** : `template-parts/decorative-shapes.php`, classe CSS `.deco-shape`
+
+**2. Cicatrices dorées Kintsugi (couche intermédiaire)**
+
+Lignes dorées organiques et irrégulières, inspirées de la ligne dorée du logo (`assets/images/logo-kiyose.png`). Trait d'épaisseur variable, courbes naturelles — pas des lignes droites.
+
+- Couleur : Or miel (`#E6A528`), toujours dorées (jamais d'autre couleur)
+- Utilisées avec parcimonie (max 3-4 sur toute la page) :
+  - Filigrane sous la navigation
+  - Autour du logo
+  - Autour de certains blobs contenant du texte
+- Ne pas placer sur les sections à fond crème doré (`#FDF0D5`) — invisibles
+- **Implémentation** : SVG `<path>` avec `stroke-width` variable, `stroke-linecap: round`
+
+**3. Gribouillis dynamiques (couche détail)**
+
+Éléments expressifs révélés au scroll avec animation "pop" + flottement léger.
+
+- **Spirales épaisses** : Tourbillons au marqueur (stroke 5-8px, 80-120px)
+- **Gribouillis / squiggles** : Lignes ondulées libres (stroke 4-6px, 100-150px)
+- **Mini-éclaboussures** : Versions réduites des éclaboussures (fill, 50-90px)
+- **Virgules groupées** : 2-3 coups de pinceau courts parallèles (fill, 40-80px)
+- **Croix / astérisques** : Traits croisés épais (stroke 5-7px, 40-60px)
+- Couleurs : piocher librement dans or, jaune chaud, rose, bordeaux (accent)
+- **Implémentation** : `template-parts/decorative-scribbles.php`, classe CSS `.deco-element`, module JS `assets/js/modules/decorative-reveal.js`
+
+**Overlay hero** : Halo doré subtil remplaçant l'ancien overlay vitrail :
+```css
+.hero-section--with-overlay::before {
+	background:
+		radial-gradient(ellipse at 65% 40%, rgb(230 165 40 / 10%) 0%, transparent 35%),
+		radial-gradient(ellipse at 25% 60%, rgb(244 201 117 / 6%) 0%, transparent 30%);
+}
+```
 
 **Contraintes accessibilité:**
-- Tous les éléments dorés sont purement décoratifs (pas d'information transmise uniquement par la couleur)
+- Tous les éléments décoratifs : `aria-hidden="true"` et `role="presentation"`
+- `pointer-events: none` sur tous les éléments décoratifs
 - Contraste suffisant maintenu pour tous les textes (≥ 4.5:1)
-- Overlays et arrière-plans n'interfèrent jamais avec la lisibilité du contenu
+- Formes de fond ne chevauchent jamais le texte sans fond opaque intermédiaire
+- `prefers-reduced-motion: reduce` désactive toutes les animations et le parallax
 
 ## Typographie
 
@@ -190,14 +223,18 @@ Cette modification s'appliquera automatiquement à tous les éléments utilisant
 - Pas d'animations automatiques qui distraient
 - Transitions au survol/focus pour retour visuel utilisateur
 
-**Bulles décoratives interactives:**
-- Pas d'animation automatique (conformité WCAG 2.2 AA)
-- Bulles SVG apparaissent au survol/focus d'éléments interactifs
-- Timing: apparition fade-in 300ms, disparition fade-out 200ms
-- Couleurs: palette officielle (rose poudré, taupe rosé) avec opacité 0.6-0.8
-- Positionnement: ne jamais chevaucher du contenu important
-
-**Implémentation complète**: Voir `references/css-examples.css#bulles-decoratives` et `#animations-transitions`
+**Éléments décoratifs dynamiques (PRD 0020):**
+- Apparition au scroll (Intersection Observer) avec effet "pop" :
+  - Départ : `opacity: 0; transform: scale(0.6) rotate(-15deg)`
+  - Arrivée : `opacity: 1; transform: scale(1) rotate(var(--deco-rotation))`
+  - Durée : 500ms, easing : `cubic-bezier(0.34, 1.56, 0.64, 1)` (léger overshoot)
+  - Cascade : 150ms de décalage entre éléments d'une même section
+- Flottement léger après apparition (optionnel) :
+  - `translateY(-8px)` + rotation +2°, durée 6s, infini
+  - Maximum 3 éléments flottants visibles simultanément
+- Parallax subtil sur les formes de fond : `translateY(scroll * -0.05)`
+- `prefers-reduced-motion: reduce` : Tout désactivé, éléments visibles immédiatement
+- **Implémentation** : `assets/js/modules/decorative-reveal.js`, `assets/css/components/kintsugi.css`
 
 ## Images & Médias
 
