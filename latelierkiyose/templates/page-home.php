@@ -36,6 +36,34 @@ get_header();
 	$kiyose_has_image = ! empty( $kiyose_hero_image_id );
 	?>
 	<section class="hero-section hero-section--with-overlay<?php echo $kiyose_has_image ? ' hero-section--with-image' : ''; ?>" aria-label="Présentation de l'atelier">
+		<?php
+		get_template_part(
+			'template-parts/decorative',
+			'scribbles',
+			array(
+				'type'     => 'squiggle',
+				'color'    => '--kiyose-color-warm-yellow',
+				'size'     => 80,
+				'rotation' => -20,
+				'float'    => true,
+				'bottom'   => '12%',
+				'right'    => '5%',
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'scribbles',
+			array(
+				'type'     => 'cross',
+				'color'    => '--kiyose-color-accent',
+				'size'     => 35,
+				'rotation' => 30,
+				'float'    => false,
+				'top'      => '18%',
+				'left'     => '3%',
+			)
+		);
+		?>
 		<div class="hero-section__inner">
 			<?php if ( $kiyose_has_image ) : ?>
 				<div class="hero-section__image">
@@ -79,6 +107,34 @@ get_header();
 				'size'     => 100,
 				'rotation' => -8,
 				'float'    => true,
+				'top'      => '5%',
+				'left'     => '2%',
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'scribbles',
+			array(
+				'type'     => 'cross',
+				'color'    => '--kiyose-color-warm-yellow',
+				'size'     => 45,
+				'rotation' => 18,
+				'float'    => false,
+				'top'      => '12%',
+				'right'    => '4%',
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'scribbles',
+			array(
+				'type'     => 'virgules',
+				'color'    => '--kiyose-color-accent',
+				'size'     => 55,
+				'rotation' => -14,
+				'float'    => false,
+				'bottom'   => '8%',
+				'right'    => '6%',
 			)
 		);
 		?>
@@ -144,6 +200,34 @@ get_header();
 				'size'     => 120,
 				'rotation' => 15,
 				'float'    => true,
+				'top'      => '8%',
+				'right'    => '3%',
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'scribbles',
+			array(
+				'type'     => 'spiral',
+				'color'    => '--kiyose-color-primary',
+				'size'     => 65,
+				'rotation' => -22,
+				'float'    => false,
+				'bottom'   => '12%',
+				'left'     => '3%',
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'scribbles',
+			array(
+				'type'     => 'mini-splash',
+				'color'    => '--kiyose-color-accent',
+				'size'     => 50,
+				'rotation' => 8,
+				'float'    => false,
+				'top'      => '45%',
+				'left'     => '1%',
 			)
 		);
 		?>
@@ -194,6 +278,34 @@ get_header();
 				'size'     => 70,
 				'rotation' => 20,
 				'float'    => false,
+				'top'      => '10%',
+				'left'     => '5%',
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'scribbles',
+			array(
+				'type'     => 'squiggle',
+				'color'    => '--kiyose-color-primary',
+				'size'     => 90,
+				'rotation' => -12,
+				'float'    => true,
+				'bottom'   => '15%',
+				'right'    => '2%',
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'scribbles',
+			array(
+				'type'     => 'cross',
+				'color'    => '--kiyose-color-accent',
+				'size'     => 40,
+				'rotation' => 35,
+				'float'    => false,
+				'top'      => '55%',
+				'right'    => '8%',
 			)
 		);
 		?>
@@ -269,6 +381,21 @@ get_header();
 				'size'     => 60,
 				'rotation' => -10,
 				'float'    => false,
+				'top'      => '15%',
+				'right'    => '5%',
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'scribbles',
+			array(
+				'type'     => 'squiggle',
+				'color'    => '--kiyose-color-warm-yellow',
+				'size'     => 80,
+				'rotation' => 25,
+				'float'    => false,
+				'bottom'   => '10%',
+				'left'     => '4%',
 			)
 		);
 		?>
@@ -324,6 +451,34 @@ get_header();
 				'size'     => 50,
 				'rotation' => 22,
 				'float'    => true,
+				'top'      => '6%',
+				'right'    => '7%',
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'scribbles',
+			array(
+				'type'     => 'virgules',
+				'color'    => '--kiyose-color-primary',
+				'size'     => 50,
+				'rotation' => -18,
+				'float'    => false,
+				'bottom'   => '10%',
+				'left'     => '2%',
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'scribbles',
+			array(
+				'type'     => 'mini-splash',
+				'color'    => '--kiyose-color-warm-yellow',
+				'size'     => 55,
+				'rotation' => 12,
+				'float'    => false,
+				'top'      => '40%',
+				'left'     => '6%',
 			)
 		);
 		?>

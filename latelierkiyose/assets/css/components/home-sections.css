@@ -13,7 +13,9 @@
    ============================================ */
 
 .home-page section {
+	overflow: hidden;
 	padding: var(--kiyose-spacing-3xl) var(--kiyose-spacing-md);
+	position: relative;
 }
 
 .home-page section h2 {
@@ -21,7 +23,14 @@
 	font-family: var(--kiyose-font-heading);
 	font-size: var(--kiyose-font-size-3xl);
 	margin-bottom: var(--kiyose-spacing-2xl);
+	position: relative;
 	text-align: center;
+	z-index: 1;
+}
+
+.home-page section > :not(.deco-element) {
+	position: relative;
+	z-index: 1;
 }
 
 /* ============================================

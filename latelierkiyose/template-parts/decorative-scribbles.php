@@ -16,6 +16,10 @@
  *     @type int    $size     Size in pixels. Default 80.
  *     @type int    $rotation Rotation in degrees. Default 0.
  *     @type bool   $float    Whether to add float animation class. Default false.
+ *     @type string $top      CSS value for top position. Default unset.
+ *     @type string $right    CSS value for right position. Default unset.
+ *     @type string $bottom   CSS value for bottom position. Default unset.
+ *     @type string $left     CSS value for left position. Default unset.
  * }
  */
 
@@ -24,6 +28,13 @@ $kiyose_color    = isset( $args['color'] ) ? $args['color'] : '--kiyose-color-ac
 $kiyose_size     = isset( $args['size'] ) ? (int) $args['size'] : 80;
 $kiyose_rotation = isset( $args['rotation'] ) ? (int) $args['rotation'] : 0;
 $kiyose_float    = ! empty( $args['float'] );
+
+$kiyose_position_styles = array();
+foreach ( array( 'top', 'right', 'bottom', 'left' ) as $kiyose_prop ) {
+	if ( isset( $args[ $kiyose_prop ] ) ) {
+		$kiyose_position_styles[] = $kiyose_prop . ':' . esc_attr( $args[ $kiyose_prop ] );
+	}
+}
 
 $kiyose_classes = array( 'deco-element' );
 if ( $kiyose_float ) {
@@ -468,7 +479,7 @@ $kiyose_viewbox = isset( $kiyose_viewbox_map[ $kiyose_type ] ) ? $kiyose_viewbox
 	width="<?php echo esc_attr( $kiyose_size ); ?>"
 	height="<?php echo esc_attr( $kiyose_size ); ?>"
 	viewBox="<?php echo esc_attr( $kiyose_viewbox ); ?>"
-	style="--kiyose-deco-rotation: <?php echo esc_attr( $kiyose_rotation ); ?>deg"
+	style="--kiyose-deco-rotation: <?php echo esc_attr( $kiyose_rotation ); ?>deg<?php echo $kiyose_position_styles ? ';' . esc_attr( implode( ';', $kiyose_position_styles ) ) : ''; ?>"
 	preserveAspectRatio="xMidYMid meet"
 >
 	<?php call_user_func( $kiyose_variant_fn, $kiyose_color ); ?>
