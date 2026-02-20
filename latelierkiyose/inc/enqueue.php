@@ -455,18 +455,27 @@ function kiyose_preload_fonts() {
 add_action( 'wp_head', 'kiyose_preload_fonts' );
 
 /**
- * Add defer attribute to the main script.
+ * Load the main script as an ES module.
+ *
+ * Replaces WordPress's default type="text/javascript" with type="module"
+ * so that ES import/export syntax is supported. Module scripts are deferred
+ * by default, so no explicit defer attribute is needed.
  *
  * @param string $tag    The script tag.
  * @param string $handle The script handle.
  * @return string Modified script tag.
  */
-function kiyose_defer_main_script( $tag, $handle ) {
-	if ( 'kiyose-main' === $handle ) {
-		$tag = str_replace( ' src', ' defer src', $tag );
-		$tag = str_replace( '<script', '<script type="module"', $tag );
+function kiyose_load_main_as_module( $tag, $handle ) {
+	if ( 'kiyose-main' !== $handle ) {
 		return $tag;
 	}
+
+	// Remove any existing type attribute to avoid duplicates.
+	$tag = preg_replace( '/\s+type=["\'][^"\']*["\']/', '', $tag );
+
+	// Add type="module" (modules are deferred by default, no need for defer).
+	$tag = str_replace( '<script ', '<script type="module" ', $tag );
+
 	return $tag;
 }
-add_filter( 'script_loader_tag', 'kiyose_defer_main_script', 10, 2 );
+add_filter( 'script_loader_tag', 'kiyose_load_main_as_module', 10, 2 );
