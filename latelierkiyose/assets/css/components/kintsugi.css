@@ -224,6 +224,24 @@
    ============================================ */
 
 /**
+ * Page-level anchor for decorative shapes.
+ */
+.home-page {
+	position: relative;
+}
+
+/**
+ * Page-level container for all margin shapes.
+ * Covers the full page area, non-interactive.
+ */
+.deco-page-shapes {
+	inset: 0;
+	pointer-events: none;
+	position: absolute;
+	z-index: 0;
+}
+
+/**
  * Base class for large organic background shapes.
  * Positioned absolutely within their parent section.
  */
@@ -258,6 +276,20 @@
 .deco-shape--bottom-right {
 	bottom: -5%;
 	right: -5%;
+}
+
+/**
+ * Margin-positioned shapes (page-level container).
+ * Placed along left/right edges with a vertical offset.
+ */
+.deco-shape--margin-left {
+	left: -3%;
+	top: var(--kiyose-deco-top, 0%);
+}
+
+.deco-shape--margin-right {
+	right: -3%;
+	top: var(--kiyose-deco-top, 0%);
 }
 
 /**
@@ -365,6 +397,14 @@
 	.deco-shape--bottom-right {
 		bottom: -3%;
 		right: -10%;
+	}
+
+	.deco-shape--margin-left {
+		left: -8%;
+	}
+
+	.deco-shape--margin-right {
+		right: -8%;
 	}
 
 	.deco-element {

@@ -16,8 +16,10 @@
  *     @type string $color    CSS variable name for fill color. Default '--kiyose-color-primary'.
  *     @type float  $opacity  Fill opacity, 0 to 1. Default 0.4.
  *     @type string $size     Size preset: 'sm' (200px), 'md' (350px), 'lg' (500px). Default 'md'.
- *     @type string $position Position: 'top-left', 'top-right', 'bottom-left', 'bottom-right'. Default 'top-left'.
+ *     @type string $position Position: 'top-left', 'top-right', 'bottom-left', 'bottom-right',
+ *                            'margin-left', 'margin-right'. Default 'top-left'.
  *     @type int    $rotation Rotation in degrees. Default 0.
+ *     @type string $top      Vertical offset for margin positions (e.g. '15%'). Default ''.
  * }
  */
 
@@ -27,6 +29,7 @@ $kiyose_opacity  = isset( $args['opacity'] ) ? (float) $args['opacity'] : 0.4;
 $kiyose_size     = isset( $args['size'] ) ? $args['size'] : 'md';
 $kiyose_position = isset( $args['position'] ) ? $args['position'] : 'top-left';
 $kiyose_rotation = isset( $args['rotation'] ) ? (int) $args['rotation'] : 0;
+$kiyose_top      = isset( $args['top'] ) ? $args['top'] : '';
 $kiyose_mode     = isset( $args['mode'] ) ? $args['mode'] : 'shape';
 $kiyose_from_bg  = isset( $args['from_bg'] ) ? $args['from_bg'] : '#ffffff';
 
@@ -658,6 +661,11 @@ $kiyose_par_map = array(
 
 $kiyose_viewbox = isset( $kiyose_viewbox_map[ $kiyose_type ] ) ? $kiyose_viewbox_map[ $kiyose_type ] : '0 0 400 400';
 $kiyose_par     = isset( $kiyose_par_map[ $kiyose_type ] ) ? $kiyose_par_map[ $kiyose_type ] : 'none';
+
+$kiyose_inline_style = '--kiyose-deco-rotation: ' . $kiyose_rotation . 'deg';
+if ( '' !== $kiyose_top ) {
+	$kiyose_inline_style .= '; --kiyose-deco-top: ' . $kiyose_top;
+}
 ?>
 
 <svg
@@ -667,7 +675,7 @@ $kiyose_par     = isset( $kiyose_par_map[ $kiyose_type ] ) ? $kiyose_par_map[ $k
 	width="<?php echo esc_attr( $kiyose_px ); ?>"
 	height="<?php echo esc_attr( $kiyose_px ); ?>"
 	viewBox="<?php echo esc_attr( $kiyose_viewbox ); ?>"
-	style="--kiyose-deco-rotation: <?php echo esc_attr( $kiyose_rotation ); ?>deg"
+	style="<?php echo esc_attr( $kiyose_inline_style ); ?>"
 	preserveAspectRatio="<?php echo esc_attr( $kiyose_par ); ?>"
 >
 	<?php call_user_func( $kiyose_variant_fn, $kiyose_color, $kiyose_opacity ); ?>

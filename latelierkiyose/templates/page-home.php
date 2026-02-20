@@ -36,33 +36,6 @@ get_header();
 	$kiyose_has_image = ! empty( $kiyose_hero_image_id );
 	?>
 	<section class="hero-section hero-section--with-overlay<?php echo $kiyose_has_image ? ' hero-section--with-image' : ''; ?>" aria-label="Présentation de l'atelier">
-		<?php
-		// Decorative shapes — Hero: splash only. Wave is now the section separator below.
-		get_template_part(
-			'template-parts/decorative',
-			'shapes',
-			array(
-				'type'     => 'splash',
-				'color'    => '--kiyose-color-accent',
-				'opacity'  => 0.4,
-				'size'     => 'md',
-				'position' => 'top-right',
-				'rotation' => -6,
-			)
-		);
-		get_template_part(
-			'template-parts/decorative',
-			'shapes',
-			array(
-				'type'     => 'blob',
-				'color'    => '--kiyose-color-primary',
-				'opacity'  => 0.3,
-				'size'     => 'sm',
-				'position' => 'bottom-left',
-				'rotation' => 12,
-			)
-		);
-		?>
 		<div class="hero-section__inner">
 			<?php if ( $kiyose_has_image ) : ?>
 				<div class="hero-section__image">
@@ -97,19 +70,6 @@ get_header();
 	<!-- Section 4 Piliers -->
 	<section class="home-services" aria-labelledby="services-title">
 		<?php
-		// Decorative — Services: blob + scribble. Lighter section (respiration).
-		get_template_part(
-			'template-parts/decorative',
-			'shapes',
-			array(
-				'type'     => 'blob',
-				'color'    => '--kiyose-color-accent',
-				'opacity'  => 0.3,
-				'size'     => 'sm',
-				'position' => 'bottom-right',
-				'rotation' => 5,
-			)
-		);
 		get_template_part(
 			'template-parts/decorative',
 			'scribbles',
@@ -175,19 +135,6 @@ get_header();
 	<!-- Section Prochaines Dates -->
 	<section class="home-events section--tinted" aria-labelledby="events-title">
 		<?php
-		// Decorative — Events: splash + squiggle. Bold section.
-		get_template_part(
-			'template-parts/decorative',
-			'shapes',
-			array(
-				'type'     => 'splash',
-				'color'    => '--kiyose-color-primary',
-				'opacity'  => 0.35,
-				'size'     => 'md',
-				'position' => 'top-left',
-				'rotation' => 4,
-			)
-		);
 		get_template_part(
 			'template-parts/decorative',
 			'scribbles',
@@ -238,19 +185,6 @@ get_header();
 	<!-- Section Témoignages (Carousel) -->
 	<section class="home-testimonials" aria-labelledby="testimonials-title">
 		<?php
-		// Decorative — Testimonials: brushstrokes only. Light section (respiration).
-		get_template_part(
-			'template-parts/decorative',
-			'shapes',
-			array(
-				'type'     => 'brushstroke',
-				'color'    => '--kiyose-color-accent',
-				'opacity'  => 0.45,
-				'size'     => 'sm',
-				'position' => 'top-right',
-				'rotation' => -12,
-			)
-		);
 		get_template_part(
 			'template-parts/decorative',
 			'scribbles',
@@ -326,19 +260,6 @@ get_header();
 	<!-- Section Newsletter -->
 	<section class="home-newsletter section--tinted" aria-labelledby="newsletter-title">
 		<?php
-		// Decorative — Newsletter: splash + virgules. Bold warm section.
-		get_template_part(
-			'template-parts/decorative',
-			'shapes',
-			array(
-				'type'     => 'splash',
-				'color'    => '--kiyose-color-accent',
-				'opacity'  => 0.35,
-				'size'     => 'sm',
-				'position' => 'bottom-right',
-				'rotation' => -5,
-			)
-		);
 		get_template_part(
 			'template-parts/decorative',
 			'scribbles',
@@ -394,19 +315,6 @@ get_header();
 	<!-- Section Actualités (Blog) -->
 	<section class="home-blog" aria-labelledby="blog-title">
 		<?php
-		// Decorative — Blog: blob + cross. Light section (respiration).
-		get_template_part(
-			'template-parts/decorative',
-			'shapes',
-			array(
-				'type'     => 'blob',
-				'color'    => '--kiyose-color-primary',
-				'opacity'  => 0.3,
-				'size'     => 'md',
-				'position' => 'bottom-left',
-				'rotation' => 7,
-			)
-		);
 		get_template_part(
 			'template-parts/decorative',
 			'scribbles',
@@ -453,6 +361,142 @@ get_header();
 		endif;
 		?>
 	</section>
+
+	<!-- Decorative shapes — distributed along page margins -->
+	<div class="deco-page-shapes" aria-hidden="true">
+		<?php
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'blob',
+				'color'    => '--kiyose-color-accent',
+				'opacity'  => 0.3,
+				'size'     => 'sm',
+				'position' => 'margin-left',
+				'top'      => '1%',
+				'rotation' => 15,
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'splash',
+				'color'    => '--kiyose-color-accent',
+				'opacity'  => 0.4,
+				'size'     => 'md',
+				'position' => 'margin-right',
+				'top'      => '3%',
+				'rotation' => -6,
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'brushstroke',
+				'color'    => '--kiyose-color-primary',
+				'opacity'  => 0.25,
+				'size'     => 'sm',
+				'position' => 'margin-left',
+				'top'      => '9%',
+				'rotation' => 20,
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'blob',
+				'color'    => '--kiyose-color-primary',
+				'opacity'  => 0.3,
+				'size'     => 'sm',
+				'position' => 'margin-left',
+				'top'      => '15%',
+				'rotation' => 12,
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'splash',
+				'color'    => '--kiyose-color-accent',
+				'opacity'  => 0.3,
+				'size'     => 'sm',
+				'position' => 'margin-right',
+				'top'      => '21%',
+				'rotation' => -10,
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'blob',
+				'color'    => '--kiyose-color-accent',
+				'opacity'  => 0.25,
+				'size'     => 'sm',
+				'position' => 'margin-right',
+				'top'      => '28%',
+				'rotation' => 5,
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'splash',
+				'color'    => '--kiyose-color-primary',
+				'opacity'  => 0.35,
+				'size'     => 'md',
+				'position' => 'margin-left',
+				'top'      => '42%',
+				'rotation' => 4,
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'brushstroke',
+				'color'    => '--kiyose-color-accent',
+				'opacity'  => 0.4,
+				'size'     => 'sm',
+				'position' => 'margin-right',
+				'top'      => '56%',
+				'rotation' => -12,
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'spiral',
+				'color'    => '--kiyose-color-accent',
+				'opacity'  => 0.25,
+				'size'     => 'sm',
+				'position' => 'margin-left',
+				'top'      => '71%',
+				'rotation' => -15,
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'blob',
+				'color'    => '--kiyose-color-primary',
+				'opacity'  => 0.3,
+				'size'     => 'md',
+				'position' => 'margin-right',
+				'top'      => '86%',
+				'rotation' => 7,
+			)
+		);
+		?>
+	</div>
 </main>
 
 <?php
