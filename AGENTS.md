@@ -153,6 +153,7 @@ latelierkiyose/
 - Préfixe: `kiyose_` (fonctions, hooks)
 - Text domain: `kiyose`
 - CSS: Méthodologie BEM
+- CSS custom properties: préfixe obligatoire `--kiyose-` (Stylelint pattern `^kiyose-.+`)
 
 
 ## Standards & Contraintes
