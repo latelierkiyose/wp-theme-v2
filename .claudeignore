@@ -1,0 +1,25 @@
+# WordPress core (if mounted)
+wordpress/
+wp-content/plugins/
+wp-content/uploads/
+
+# Dependencies
+vendor/
+node_modules/
+
+# Build artifacts
+*.min.css
+*.min.js
+
+# Docker
+docker-compose.override.yml
+
+# Large binary assets
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.woff2
+*.woff
+references/palette.jpg
+references/logo-kiyose.png
