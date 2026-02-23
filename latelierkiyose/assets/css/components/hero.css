@@ -15,7 +15,6 @@
 
 .hero-section {
 	background-color: var(--kiyose-color-background);
-	overflow: hidden;
 	padding: var(--kiyose-spacing-2xl) var(--kiyose-spacing-md);
 	position: relative;
 }

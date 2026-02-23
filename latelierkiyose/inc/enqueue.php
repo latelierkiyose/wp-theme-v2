@@ -432,9 +432,17 @@ function kiyose_enqueue_decorative_reveal() {
 	}
 
 	wp_enqueue_script(
+		'kiyose-deco-overlap',
+		get_template_directory_uri() . "/assets/js/modules/deco-overlap{$suffix}.js",
+		array(),
+		kiyose_get_asset_version( "/assets/js/modules/deco-overlap{$suffix}.js" ),
+		true
+	);
+
+	wp_enqueue_script(
 		'kiyose-decorative-reveal',
 		get_template_directory_uri() . "/assets/js/modules/decorative-reveal{$suffix}.js",
-		array(),
+		array( 'kiyose-deco-overlap' ),
 		kiyose_get_asset_version( "/assets/js/modules/decorative-reveal{$suffix}.js" ),
 		true
 	);

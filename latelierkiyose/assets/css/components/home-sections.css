@@ -13,7 +13,6 @@
    ============================================ */
 
 .home-page section {
-	overflow: hidden;
 	padding: var(--kiyose-spacing-3xl) var(--kiyose-spacing-md);
 	position: relative;
 }
