@@ -3,6 +3,7 @@
   "extends": [
     "config:recommended"
   ],
+  "postUpdateOptions": ["composerLockUpdate"],
   "packageRules": [
     {
       "groupName": "stylelint",
@@ -12,6 +13,20 @@
         "stylelint-config-recommended",
         "stylelint-order"
       ]
+    },
+    {
+      "description": "Group PHP_CodeSniffer ecosystem packages together",
+      "matchManagers": ["composer"],
+      "matchPackageNames": [
+        "squizlabs/php_codesniffer",
+        "wp-coding-standards/wpcs",
+        "phpcompatibility/php-compatibility",
+        "phpcompatibility/phpcompatibility-wp",
+        "phpcsstandards/phpcsutils",
+        "phpcsstandards/phpcsextra",
+        "dealerdirect/phpcodesniffer-composer-installer"
+      ],
+      "groupName": "PHP_CodeSniffer ecosystem"
     }
   ]
 }
