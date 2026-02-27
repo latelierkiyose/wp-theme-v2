@@ -7,5 +7,5 @@ set -e
 docker run --rm \
 	-v "$(pwd):/app" \
 	-w /app \
-	node:18-alpine \
+	node:20-alpine \
 	sh -c "npm install --silent && npx eslint $*"
