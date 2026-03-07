@@ -12,7 +12,7 @@
  * @param array $args {
  *     Optional. Shape parameters.
  *
- *     @type string $type     Shape type: 'splash', 'wave', 'blob', 'brushstroke', 'spiral'. Default 'splash'.
+ *     @type string $type     Shape type: 'splash', 'blob', 'brushstroke', 'spiral'. Default 'splash'.
  *     @type string $color    CSS variable name for fill color. Default '--kiyose-color-primary'.
  *     @type float  $opacity  Fill opacity, 0 to 1. Default 0.4.
  *     @type string $size     Size preset: 'sm' (200px), 'md' (350px), 'lg' (500px). Default 'md'.
@@ -309,42 +309,6 @@ if ( ! function_exists( 'kiyose_render_splash_3' ) ) {
 	}
 }
 
-if ( ! function_exists( 'kiyose_render_wave_1' ) ) {
-	/**
-	 * Render a wave SVG variant.
-	 *
-	 * @param string $color   CSS variable name for the fill color.
-	 * @param float  $opacity Fill opacity.
-	 */
-	function kiyose_render_wave_1( $color, $opacity ) {
-		?>
-		<path
-			d="M0,220 C45,180 90,260 150,200 C210,140 240,230 310,190 C380,150 400,220 400,220 L400,400 L0,400 Z"
-			fill="var(<?php echo esc_attr( $color ); ?>)"
-			opacity="<?php echo esc_attr( $opacity ); ?>"
-		/>
-		<?php
-	}
-}
-
-if ( ! function_exists( 'kiyose_render_wave_2' ) ) {
-	/**
-	 * Render wave variant 2 - more undulating, asymmetric.
-	 *
-	 * @param string $color   CSS variable name for the fill color.
-	 * @param float  $opacity Fill opacity.
-	 */
-	function kiyose_render_wave_2( $color, $opacity ) {
-		?>
-		<path
-			d="M0,250 C60,190 100,280 170,230 C240,180 270,270 340,210 C380,175 400,240 400,250 L400,400 L0,400 Z"
-			fill="var(<?php echo esc_attr( $color ); ?>)"
-			opacity="<?php echo esc_attr( $opacity ); ?>"
-		/>
-		<?php
-	}
-}
-
 if ( ! function_exists( 'kiyose_render_blob_1' ) ) {
 	/**
 	 * Render a blob SVG variant.
@@ -597,7 +561,6 @@ if ( ! function_exists( 'kiyose_render_spiral_shape_2' ) ) {
 
 $kiyose_variants = array(
 	'splash'      => array( 'kiyose_render_splash_1', 'kiyose_render_splash_2', 'kiyose_render_splash_3' ),
-	'wave'        => array( 'kiyose_render_wave_1', 'kiyose_render_wave_2' ),
 	'blob'        => array( 'kiyose_render_blob_1', 'kiyose_render_blob_2' ),
 	'brushstroke' => array( 'kiyose_render_brushstroke_1', 'kiyose_render_brushstroke_2' ),
 	'spiral'      => array( 'kiyose_render_spiral_shape_1', 'kiyose_render_spiral_shape_2' ),
@@ -645,7 +608,6 @@ $kiyose_variant_fn    = $kiyose_type_variants[ array_rand( $kiyose_type_variants
 
 $kiyose_viewbox_map = array(
 	'splash'      => '0 0 1280 1225',
-	'wave'        => '0 0 400 400',
 	'blob'        => '0 0 400 400',
 	'brushstroke' => '0 0 400 400',
 	'spiral'      => '0 0 1280 1280',
@@ -653,7 +615,6 @@ $kiyose_viewbox_map = array(
 
 $kiyose_par_map = array(
 	'splash'      => 'xMidYMid meet',
-	'wave'        => 'none',
 	'blob'        => 'none',
 	'brushstroke' => 'none',
 	'spiral'      => 'xMidYMid meet',

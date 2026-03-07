@@ -223,15 +223,48 @@
 	}
 
 	/**
+	 * Determine if a shape is a content-positioned shape.
+	 *
+	 * @param {Element} el The decorative element to test.
+	 * @return {boolean} True when the element uses a content position class.
+	 */
+	function isContentShape(el) {
+		return (
+			el.classList.contains('deco-shape--content-left') ||
+			el.classList.contains('deco-shape--content-right')
+		);
+	}
+
+	/**
+	 * Return the priority level of a decorative element.
+	 *
+	 * Priority 0 — margin shapes: immovable anchors.
+	 * Priority 1 — content shapes: nudged by margin shapes and by each other.
+	 * Priority 2 — scribbles: most mobile, nudged by everything.
+	 *
+	 * @param {Element} el The decorative element.
+	 * @return {number} Priority level (0, 1, or 2).
+	 */
+	function getPriority(el) {
+		if (el.classList.contains('deco-element')) {
+			return 2;
+		}
+		if (isContentShape(el)) {
+			return 1;
+		}
+		return 0;
+	}
+
+	/**
 	 * Main overlap resolution algorithm.
 	 *
-	 * Shapes have higher visual priority (anchored background layer) and are
-	 * only moved to resolve shape-vs-shape overlaps. Scribbles are moved to
-	 * resolve both scribble-vs-scribble and scribble-vs-shape overlaps.
+	 * Three-tier priority system:
+	 *   0 — margin shapes (immovable anchors)
+	 *   1 — content shapes (nudged by margin shapes and by each other)
+	 *   2 — scribbles (nudged by everything)
 	 *
-	 * Priority order: shapes first (sorted by area desc), then scribbles
-	 * (sorted by area desc). Each element is only checked against elements
-	 * with higher priority (lower index).
+	 * Elements hidden via display:none (content shapes on mobile) are excluded
+	 * from collision detection via the `visible` filter.
 	 */
 	function resolveAll() {
 		const shapes = Array.from(document.querySelectorAll('.deco-shape'));
@@ -249,14 +282,25 @@
 			el._rect = getIntendedRect(el);
 			el._nudgeX = 0;
 			el._nudgeY = 0;
-			el._isShape = el.classList.contains('deco-shape');
+			el._priority = getPriority(el);
 		});
 
-		// Sort: shapes first (immovable against scribbles), then scribbles.
-		// Within each category, sort by area descending.
-		all.sort((a, b) => {
-			if (a._isShape !== b._isShape) {
-				return a._isShape ? -1 : 1;
+		// Exclure les éléments masqués (shapes content en mobile).
+		// getIntendedRect lit l'attribut SVG width/height, pas le rect visuel,
+		// donc un élément display:none aurait un rect fictif non nul.
+		const visible = all.filter((el) => {
+			const box = el.getBoundingClientRect();
+			return box.width > 0 || box.height > 0;
+		});
+
+		if (visible.length < 2) {
+			return;
+		}
+
+		// Sort by priority ascending (lower = more anchored), then by area descending.
+		visible.sort((a, b) => {
+			if (a._priority !== b._priority) {
+				return a._priority - b._priority;
 			}
 			return b._rect.width * b._rect.height - a._rect.width * a._rect.height;
 		});
@@ -265,20 +309,20 @@
 		for (let pass = 0; pass < MAX_PASSES; pass++) {
 			let overlapsFound = false;
 
-			for (let i = 1; i < all.length; i++) {
+			for (let i = 1; i < visible.length; i++) {
 				for (let j = 0; j < i; j++) {
-					// Skip shape-vs-shape (shapes don't move against each other
-					// since they are manually placed with known positions).
-					if (all[i]._isShape && all[j]._isShape) {
+					// Skip margin-shape-vs-margin-shape (priority 0 vs 0):
+					// they are manually placed with known non-overlapping positions.
+					if (visible[i]._priority === 0 && visible[j]._priority === 0) {
 						continue;
 					}
 
-					if (rectsOverlap(all[i]._rect, all[j]._rect)) {
-						const nudge = computeNudge(all[i]._rect, all[j]._rect);
-						all[i]._nudgeX += nudge.dx;
-						all[i]._nudgeY += nudge.dy;
-						all[i]._rect.x += nudge.dx;
-						all[i]._rect.y += nudge.dy;
+					if (rectsOverlap(visible[i]._rect, visible[j]._rect)) {
+						const nudge = computeNudge(visible[i]._rect, visible[j]._rect);
+						visible[i]._nudgeX += nudge.dx;
+						visible[i]._nudgeY += nudge.dy;
+						visible[i]._rect.x += nudge.dx;
+						visible[i]._rect.y += nudge.dy;
 						overlapsFound = true;
 					}
 				}
@@ -289,21 +333,23 @@
 			}
 		}
 
-		// Apply results (only to scribbles — shapes stay put).
-		all.forEach((el) => {
-			if (!el._isShape) {
+		// Apply results (only to priority > 0 elements — margin shapes stay put).
+		visible.forEach((el) => {
+			if (el._priority > 0) {
 				if (Math.abs(el._nudgeX) > MAX_NUDGE || Math.abs(el._nudgeY) > MAX_NUDGE) {
 					el.classList.add('deco-overlap-hidden');
 				} else if (el._nudgeX !== 0 || el._nudgeY !== 0) {
 					el.style.translate = el._nudgeX + 'px ' + el._nudgeY + 'px';
 				}
 			}
+		});
 
-			// Clean up temporary properties.
+		// Clean up temporary properties on all elements (including hidden ones).
+		all.forEach((el) => {
 			delete el._rect;
 			delete el._nudgeX;
 			delete el._nudgeY;
-			delete el._isShape;
+			delete el._priority;
 		});
 	}
 

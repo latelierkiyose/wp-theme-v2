@@ -291,6 +291,16 @@
 	top: var(--kiyose-deco-top, 0%);
 }
 
+.deco-shape--content-left {
+	left: 22%;
+	top: var(--kiyose-deco-top, 0%);
+}
+
+.deco-shape--content-right {
+	right: 22%;
+	top: var(--kiyose-deco-top, 0%);
+}
+
 /**
  * Section content stays above decorative elements.
  */
@@ -414,6 +424,11 @@
 
 	.deco-shape--margin-right {
 		right: -8%;
+	}
+
+	.deco-shape--content-left,
+	.deco-shape--content-right {
+		display: none;
 	}
 
 	.deco-element {

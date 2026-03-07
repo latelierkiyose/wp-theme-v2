@@ -695,6 +695,162 @@ $kiyose_has_about_image = ! empty( $kiyose_hero_image_id );
 				'rotation' => 7,
 			)
 		);
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'blob',
+				'color'    => '--kiyose-color-accent',
+				'opacity'  => 0.12,
+				'size'     => 'md',
+				'position' => 'content-right',
+				'top'      => '4%',
+				'rotation' => 8,
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'blob',
+				'color'    => '--kiyose-color-accent',
+				'opacity'  => 0.10,
+				'size'     => 'sm',
+				'position' => 'content-left',
+				'top'      => '12%',
+				'rotation' => -6,
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'brushstroke',
+				'color'    => '--kiyose-color-primary',
+				'opacity'  => 0.10,
+				'size'     => 'lg',
+				'position' => 'content-left',
+				'top'      => '20%',
+				'rotation' => -5,
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'blob',
+				'color'    => '--kiyose-color-accent',
+				'opacity'  => 0.10,
+				'size'     => 'sm',
+				'position' => 'content-right',
+				'top'      => '28%',
+				'rotation' => 4,
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'brushstroke',
+				'color'    => '--kiyose-color-accent',
+				'opacity'  => 0.12,
+				'size'     => 'md',
+				'position' => 'content-right',
+				'top'      => '36%',
+				'rotation' => 10,
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'blob',
+				'color'    => '--kiyose-color-primary',
+				'opacity'  => 0.08,
+				'size'     => 'sm',
+				'position' => 'content-right',
+				'top'      => '44%',
+				'rotation' => 7,
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'blob',
+				'color'    => '--kiyose-color-primary',
+				'opacity'  => 0.15,
+				'size'     => 'md',
+				'position' => 'content-left',
+				'top'      => '52%',
+				'rotation' => -12,
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'brushstroke',
+				'color'    => '--kiyose-color-accent',
+				'opacity'  => 0.09,
+				'size'     => 'sm',
+				'position' => 'content-left',
+				'top'      => '60%',
+				'rotation' => -8,
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'brushstroke',
+				'color'    => '--kiyose-color-accent',
+				'opacity'  => 0.10,
+				'size'     => 'lg',
+				'position' => 'content-right',
+				'top'      => '68%',
+				'rotation' => 6,
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'brushstroke',
+				'color'    => '--kiyose-color-accent',
+				'opacity'  => 0.09,
+				'size'     => 'sm',
+				'position' => 'content-left',
+				'top'      => '76%',
+				'rotation' => -5,
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'blob',
+				'color'    => '--kiyose-color-primary',
+				'opacity'  => 0.12,
+				'size'     => 'md',
+				'position' => 'content-left',
+				'top'      => '84%',
+				'rotation' => -8,
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'type'     => 'brushstroke',
+				'color'    => '--kiyose-color-primary',
+				'opacity'  => 0.10,
+				'size'     => 'sm',
+				'position' => 'content-right',
+				'top'      => '92%',
+				'rotation' => 5,
+			)
+		);
 		?>
 	</div>
 </main>
