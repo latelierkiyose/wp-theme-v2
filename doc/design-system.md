@@ -53,7 +53,7 @@
 
 **Ajustements de contraste autorisés**:
 Les couleurs de la palette peuvent être légèrement assombries ou éclaircies pour atteindre les ratios WCAG AA, tout en restant dans l'esprit de la palette. Combinaisons connues à ajuster :
-- Texte `#5D0505` sur bouton `#D7A4A4` : ratio 3.8:1 (insuffisant pour texte normal ≤18pt) — assombrir le fond ou éclaircir le texte
+- Texte `#5D0505` sur bouton `#D7A4A4` : ratio 6.54:1 ✅ (suffisant pour tout type de texte)
 - Rose poudré `#D7A4A4` sur beige `#EFE5E4` : ratio 1.48:1 — ne jamais utiliser cette combinaison pour du texte
 - Les variantes ajustées doivent être documentées comme variables CSS dédiées (ex: `--color-primary-dark`)
 

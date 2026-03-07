@@ -40,11 +40,9 @@
 	   ============================================ */
 	
 	/* Boutons primaires - Texte sur fond rose poudré */
-	--kiyose-color-primary-dark: #8B4A4A;     /* Version assombrie pour texte sur rose poudré - Ratio 4.52:1 ✅ */
-	
-	/* Alternative: utiliser directement burgundy sur primary */
+	--kiyose-color-primary-dark: #603030;     /* Version assombrie pour texte sur rose poudré - Ratio 4.96:1 sur primary ✅, 5.03:1 sur secondary ✅ */
 
-	/* Ratio #5D0505 sur #D7A4A4 = 3.8:1 ⚠️ (insuffisant pour texte < 18pt) */
+	/* Ratio #5D0505 sur #D7A4A4 = 6.54:1 ✅ (suffisant pour tout type de texte) */
 
 	/* Solution: Utiliser --kiyose-color-primary-dark pour le texte des boutons */
 

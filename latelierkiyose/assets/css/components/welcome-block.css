@@ -117,10 +117,6 @@
 	outline-offset: 2px;
 }
 
-a.welcome-block__keyword:hover {
-	color: var(--kiyose-color-primary-dark);
-}
-
 /* ============================================
    SLOGAN
    ============================================ */
