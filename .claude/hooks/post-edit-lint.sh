@@ -11,7 +11,7 @@ fi
 
 # Run Stylelint for CSS files
 if [[ "$FILE_PATH" == *.css ]]; then
-	npx stylelint "$FILE_PATH" 2>&1
+	"$CLAUDE_PROJECT_DIR"/node_modules/.bin/stylelint "$FILE_PATH" 2>&1
 	exit $?
 fi
 

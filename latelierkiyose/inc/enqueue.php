@@ -413,6 +413,30 @@ function kiyose_enqueue_home_animations() {
 		filemtime( get_template_directory() . '/assets/js/home-animations.js' ),
 		true // Load in footer.
 	);
+
+	// Welcome block styles.
+	wp_enqueue_style(
+		'kiyose-welcome-block',
+		get_template_directory_uri() . "/assets/css/components/welcome-block{$suffix}.css",
+		array( 'kiyose-variables' ),
+		kiyose_get_asset_version( "/assets/css/components/welcome-block{$suffix}.css" )
+	);
+
+	// Overlay À propos — styles et script.
+	wp_enqueue_style(
+		'kiyose-about-overlay',
+		get_template_directory_uri() . "/assets/css/components/about-overlay{$suffix}.css",
+		array( 'kiyose-variables' ),
+		kiyose_get_asset_version( "/assets/css/components/about-overlay{$suffix}.css" )
+	);
+
+	wp_enqueue_script(
+		'kiyose-about-overlay',
+		get_template_directory_uri() . "/assets/js/modules/about-overlay{$suffix}.js",
+		array(),
+		kiyose_get_asset_version( "/assets/js/modules/about-overlay{$suffix}.js" ),
+		true
+	);
 }
 add_action( 'wp_enqueue_scripts', 'kiyose_enqueue_home_animations', 30 );
 

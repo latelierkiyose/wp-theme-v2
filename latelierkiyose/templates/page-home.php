@@ -7,35 +7,44 @@
  */
 
 get_header();
+
+// Récupérer les données du bloc bienvenue.
+$kiyose_welcome_title        = get_post_meta( get_the_ID(), 'kiyose_welcome_title', true );
+$kiyose_welcome_subtitle     = get_post_meta( get_the_ID(), 'kiyose_welcome_subtitle', true );
+$kiyose_welcome_text         = get_post_meta( get_the_ID(), 'kiyose_welcome_text', true );
+$kiyose_welcome_keywords_raw = get_post_meta( get_the_ID(), 'kiyose_welcome_keywords', true );
+$kiyose_welcome_keywords     = $kiyose_welcome_keywords_raw ? json_decode( $kiyose_welcome_keywords_raw, true ) : array();
+if ( ! is_array( $kiyose_welcome_keywords ) ) {
+	$kiyose_welcome_keywords = array();
+}
+$kiyose_welcome_slogan = get_post_meta( get_the_ID(), 'kiyose_welcome_slogan', true );
+
+// Récupérer les données de l'overlay / section À propos (champs hero existants).
+$kiyose_hero_content  = get_post_meta( get_the_ID(), 'kiyose_hero_content', true );
+$kiyose_hero_cta_text = get_post_meta( get_the_ID(), 'kiyose_hero_cta_text', true );
+$kiyose_hero_cta_url  = get_post_meta( get_the_ID(), 'kiyose_hero_cta_url', true );
+$kiyose_hero_image_id = get_post_meta( get_the_ID(), 'kiyose_hero_image_id', true );
+
+// Valeurs par défaut.
+if ( empty( $kiyose_welcome_title ) ) {
+	$kiyose_welcome_title = "L'être humain est un vitrail, révélons ensemble sa lumière";
+}
+if ( empty( $kiyose_hero_content ) ) {
+	$kiyose_hero_content = "Au sein de L'Atelier Kiyose, découvrez des pratiques de bien-être et de développement personnel qui vous accompagnent dans votre transformation : art-thérapie, rigologie, bols tibétains et ateliers philo.";
+}
+if ( empty( $kiyose_hero_cta_text ) ) {
+	$kiyose_hero_cta_text = "En savoir plus sur l'atelier";
+}
+if ( empty( $kiyose_hero_cta_url ) ) {
+	$kiyose_hero_cta_url = home_url( '/a-propos/' );
+}
+
+$kiyose_has_about_image = ! empty( $kiyose_hero_image_id );
 ?>
 
 <main id="main" class="site-main home-page">
-	<!-- Hero Section -->
-	<?php
-	// Récupérer les données du hero depuis les meta fields.
-	$kiyose_hero_title    = get_post_meta( get_the_ID(), 'kiyose_hero_title', true );
-	$kiyose_hero_content  = get_post_meta( get_the_ID(), 'kiyose_hero_content', true );
-	$kiyose_hero_cta_text = get_post_meta( get_the_ID(), 'kiyose_hero_cta_text', true );
-	$kiyose_hero_cta_url  = get_post_meta( get_the_ID(), 'kiyose_hero_cta_url', true );
-	$kiyose_hero_image_id = get_post_meta( get_the_ID(), 'kiyose_hero_image_id', true );
-
-	// Valeurs par défaut.
-	if ( empty( $kiyose_hero_title ) ) {
-		$kiyose_hero_title = 'L\'être humain est un vitrail, révélons ensemble sa lumière';
-	}
-	if ( empty( $kiyose_hero_content ) ) {
-		$kiyose_hero_content = 'Au sein de L\'Atelier Kiyose, découvrez des pratiques de bien-être et de développement personnel qui vous accompagnent dans votre transformation : art-thérapie, rigologie, bols tibétains et ateliers philo.';
-	}
-	if ( empty( $kiyose_hero_cta_text ) ) {
-		$kiyose_hero_cta_text = 'Découvrir les prochains ateliers';
-	}
-	if ( empty( $kiyose_hero_cta_url ) ) {
-		$kiyose_hero_cta_url = home_url( '/calendrier-tarifs/' );
-	}
-
-	$kiyose_has_image = ! empty( $kiyose_hero_image_id );
-	?>
-	<section class="hero-section hero-section--with-overlay<?php echo $kiyose_has_image ? ' hero-section--with-image' : ''; ?>" aria-label="Présentation de l'atelier">
+	<!-- Bloc Bienvenue -->
+	<section class="welcome-block" aria-label="<?php esc_attr_e( 'Bienvenue à L\'Atelier Kiyose', 'kiyose' ); ?>">
 		<?php
 		get_template_part(
 			'template-parts/decorative',
@@ -64,26 +73,62 @@ get_header();
 			)
 		);
 		?>
-		<div class="hero-section__inner">
-			<?php if ( $kiyose_has_image ) : ?>
-				<div class="hero-section__image">
-					<?php echo wp_get_attachment_image( $kiyose_hero_image_id, 'medium_large', false, array( 'alt' => esc_attr( $kiyose_hero_title ) ) ); ?>
-				</div>
+		<div class="welcome-block__inner">
+			<h1 class="welcome-block__title"><?php echo esc_html( $kiyose_welcome_title ); ?></h1>
+			<?php if ( ! empty( $kiyose_welcome_subtitle ) ) : ?>
+				<p class="welcome-block__subtitle"><?php echo esc_html( $kiyose_welcome_subtitle ); ?></p>
 			<?php endif; ?>
-			<div class="hero-section__content">
-				<h1 class="hero-section__title"><?php echo esc_html( $kiyose_hero_title ); ?></h1>
-				<p class="hero-section__subtitle">
-					<?php echo esc_html( $kiyose_hero_content ); ?>
-				</p>
-				<a href="<?php echo esc_url( $kiyose_hero_cta_url ); ?>" class="button button--primary hero-section__cta">
-					<?php echo esc_html( $kiyose_hero_cta_text ); ?>
-				</a>
-			</div>
+			<?php if ( ! empty( $kiyose_welcome_text ) ) : ?>
+				<p class="welcome-block__text"><?php echo esc_html( $kiyose_welcome_text ); ?></p>
+			<?php endif; ?>
+			<?php if ( ! empty( $kiyose_welcome_keywords ) ) : ?>
+				<ul class="welcome-block__keywords" aria-label="<?php esc_attr_e( 'Thèmes', 'kiyose' ); ?>">
+					<?php foreach ( $kiyose_welcome_keywords as $kiyose_keyword ) : ?>
+						<?php
+						if ( empty( $kiyose_keyword['label'] ) ) {
+							continue;
+						}
+						?>
+						<li>
+							<?php if ( ! empty( $kiyose_keyword['url'] ) ) : ?>
+								<a href="<?php echo esc_url( $kiyose_keyword['url'] ); ?>" class="welcome-block__keyword">
+									<?php echo esc_html( $kiyose_keyword['label'] ); ?>
+								</a>
+							<?php else : ?>
+								<span class="welcome-block__keyword">
+									<?php echo esc_html( $kiyose_keyword['label'] ); ?>
+								</span>
+							<?php endif; ?>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			<?php endif; ?>
+			<?php if ( ! empty( $kiyose_welcome_slogan ) ) : ?>
+				<p class="welcome-block__slogan"><?php echo esc_html( $kiyose_welcome_slogan ); ?></p>
+			<?php endif; ?>
 		</div>
 	</section>
 
+	<!-- Section À propos — Mobile uniquement (masquée sur desktop via CSS) -->
+	<div class="home-about-mobile">
+		<section class="home-about" aria-labelledby="about-mobile-heading">
+			<?php if ( $kiyose_has_about_image ) : ?>
+				<div class="home-about__image">
+					<?php echo wp_get_attachment_image( $kiyose_hero_image_id, 'medium', false, array( 'alt' => '' ) ); ?>
+				</div>
+			<?php endif; ?>
+			<h2 id="about-mobile-heading" class="home-about__title">
+				<?php esc_html_e( 'À propos', 'kiyose' ); ?>
+			</h2>
+			<p class="home-about__text"><?php echo esc_html( $kiyose_hero_content ); ?></p>
+			<a href="<?php echo esc_url( $kiyose_hero_cta_url ); ?>" class="home-about__link">
+				<?php echo esc_html( $kiyose_hero_cta_text ); ?>
+			</a>
+		</section>
+	</div>
+
 	<?php
-	// Wave separator — Hero (beige) → Services (white).
+	// Wave separator — Bienvenue (beige) → Services (white).
 	get_template_part(
 		'template-parts/decorative',
 		'shapes',
@@ -653,6 +698,36 @@ get_header();
 		?>
 	</div>
 </main>
+
+<?php
+// Overlay À propos — desktop uniquement (position: fixed, déclenché par JS au premier scroll).
+$kiyose_has_about_image = ! empty( $kiyose_hero_image_id );
+?>
+<div class="about-overlay" id="about-overlay" role="complementary" hidden>
+	<button
+		class="about-overlay__close"
+		id="about-overlay-close"
+		type="button"
+		aria-label="<?php esc_attr_e( 'Fermer le panneau À propos', 'kiyose' ); ?>"
+	>
+		<span aria-hidden="true">&times;</span>
+	</button>
+	<div class="about-overlay__body">
+		<?php if ( $kiyose_has_about_image ) : ?>
+			<div class="about-overlay__image">
+				<?php echo wp_get_attachment_image( $kiyose_hero_image_id, 'thumbnail', false, array( 'alt' => '' ) ); ?>
+			</div>
+		<?php endif; ?>
+		<div class="about-overlay__content">
+			<p class="about-overlay__text"><?php echo esc_html( $kiyose_hero_content ); ?></p>
+			<a href="<?php echo esc_url( $kiyose_hero_cta_url ); ?>" class="about-overlay__link">
+				<?php echo esc_html( $kiyose_hero_cta_text ); ?>
+			</a>
+		</div>
+	</div>
+</div>
+<!-- Annonce screen reader pour l'overlay (aria-live="polite") -->
+<div class="sr-only" id="about-overlay-announcement" aria-live="polite" aria-atomic="true"></div>
 
 <?php
 get_footer();

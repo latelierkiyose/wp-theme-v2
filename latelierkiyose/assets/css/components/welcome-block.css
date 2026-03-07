@@ -1,0 +1,159 @@
+/**
+ * Welcome Block - L'Atelier Kiyose
+ *
+ * Premier bloc de la page d'accueil. Remplace l'ancien hero.
+ * WCAG 2.2 AA compliant.
+ *
+ * @package Kiyose
+ * @since   0.2.6
+ */
+
+/* ============================================
+   WELCOME BLOCK
+   ============================================ */
+
+.welcome-block {
+	background-color: var(--kiyose-color-background);
+	padding: var(--kiyose-spacing-2xl) var(--kiyose-spacing-md);
+	position: relative;
+	text-align: center;
+}
+
+.welcome-block__inner {
+	margin: 0 auto;
+	max-width: 900px;
+	position: relative;
+	z-index: 1;
+}
+
+/* ============================================
+   TITRE (H1)
+   ============================================ */
+
+.welcome-block__title {
+	color: var(--kiyose-color-burgundy);
+	font-family: var(--kiyose-font-heading);
+	font-size: var(--kiyose-font-size-3xl);
+	font-weight: 400;
+	line-height: var(--kiyose-line-height-tight);
+	margin-bottom: var(--kiyose-spacing-lg);
+}
+
+@media (width >= 768px) {
+	.welcome-block__title {
+		font-size: var(--kiyose-font-size-4xl);
+	}
+}
+
+/* ============================================
+   SOUS-TITRE
+   ============================================ */
+
+.welcome-block__subtitle {
+	color: var(--kiyose-color-text);
+	font-family: var(--kiyose-font-body);
+	font-size: var(--kiyose-font-size-xl);
+	line-height: var(--kiyose-line-height-normal);
+	margin-bottom: var(--kiyose-spacing-lg);
+}
+
+/* ============================================
+   TEXTE DESCRIPTIF
+   ============================================ */
+
+.welcome-block__text {
+	color: var(--kiyose-color-text);
+	font-family: var(--kiyose-font-body);
+	font-size: var(--kiyose-font-size-base);
+	line-height: var(--kiyose-line-height-relaxed);
+	margin-bottom: var(--kiyose-spacing-xl);
+	text-align: justify;
+}
+
+/* ============================================
+   MOTS-CLEFS (CHIPS/PILLS)
+   ============================================ */
+
+.welcome-block__keywords {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--kiyose-spacing-sm);
+	justify-content: center;
+	list-style: none;
+	margin: 0 0 var(--kiyose-spacing-xl);
+	padding: 0;
+}
+
+.welcome-block__keyword {
+	align-items: center;
+	background-color: var(--kiyose-color-primary);
+	border-radius: 2rem;
+	color: var(--kiyose-color-primary-dark);
+	display: inline-flex;
+	font-family: var(--kiyose-font-body);
+	font-size: var(--kiyose-font-size-sm);
+	font-weight: 600;
+	min-height: 44px;
+	padding: var(--kiyose-spacing-sm) var(--kiyose-spacing-lg);
+	text-decoration: none;
+	transition: background-color var(--kiyose-transition-base);
+}
+
+.welcome-block__keyword:focus-visible {
+	outline: 2px solid var(--kiyose-color-burgundy);
+	outline-offset: 2px;
+}
+
+a.welcome-block__keyword:hover {
+	color: var(--kiyose-color-primary-dark);
+}
+
+/* ============================================
+   SLOGAN
+   ============================================ */
+
+.welcome-block__slogan {
+	color: var(--kiyose-color-burgundy);
+	font-family: var(--kiyose-font-heading);
+	font-size: var(--kiyose-font-size-2xl);
+	line-height: var(--kiyose-line-height-tight);
+	margin: var(--kiyose-spacing-xl) 0 0;
+}
+
+@media (width >= 768px) {
+	.welcome-block__slogan {
+		font-size: var(--kiyose-font-size-3xl);
+	}
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (width >= 768px) {
+	.welcome-block {
+		padding: var(--kiyose-spacing-3xl) var(--kiyose-spacing-xl);
+	}
+}
+
+@media (width >= 1024px) {
+	.welcome-block {
+		padding: var(--kiyose-spacing-3xl) var(--kiyose-spacing-2xl);
+	}
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@media (prefers-reduced-motion: no-preference) {
+	.welcome-block__keyword:hover {
+		background-color: var(--kiyose-color-secondary);
+		color: var(--kiyose-color-burgundy);
+		transform: translateY(-2px);
+	}
+
+	.welcome-block__keyword:active {
+		transform: translateY(0);
+	}
+}

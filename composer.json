@@ -10,6 +10,11 @@
 		"dealerdirect/phpcodesniffer-composer-installer": "^1.0",
 		"phpunit/phpunit": "^9.5"
 	},
+	"autoload-dev": {
+		"classmap": [
+			"latelierkiyose/tests/"
+		]
+	},
 	"config": {
 		"platform": {
 			"php": "8.3.0"

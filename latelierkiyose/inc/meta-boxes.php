@@ -7,6 +7,29 @@
  */
 
 /**
+ * Sanitize a single welcome block keyword item.
+ *
+ * Pure function — usable and testable outside WordPress context.
+ *
+ * @param string $label Raw label text.
+ * @param string $url   Raw URL string.
+ * @return array|null Sanitized array with 'label' and 'url' keys, or null if invalid.
+ */
+function kiyose_sanitize_welcome_keyword_item( string $label, string $url ): ?array {
+	$clean_label = sanitize_text_field( $label );
+	$clean_url   = esc_url_raw( $url );
+
+	if ( '' === $clean_label ) {
+		return null;
+	}
+
+	return array(
+		'label' => $clean_label,
+		'url'   => $clean_url,
+	);
+}
+
+/**
  * Add meta box for hero section on home page template.
  *
  * @return void
@@ -14,7 +37,7 @@
 function kiyose_add_home_hero_meta_box() {
 	add_meta_box(
 		'kiyose_home_hero',
-		__( 'Section Hero (En-tête)', 'kiyose' ),
+		__( 'Page d\'accueil — Bienvenue &amp; Overlay À propos', 'kiyose' ),
 		'kiyose_render_home_hero_meta_box',
 		'page',
 		'normal',
@@ -37,25 +60,32 @@ function kiyose_render_home_hero_meta_box( $post ) {
 	// Add nonce for security.
 	wp_nonce_field( 'kiyose_home_hero_nonce_action', 'kiyose_home_hero_nonce' );
 
-	// Get current values.
-	$hero_title    = get_post_meta( $post->ID, 'kiyose_hero_title', true );
+	// Get current values — Bloc Bienvenue.
+	$welcome_title        = get_post_meta( $post->ID, 'kiyose_welcome_title', true );
+	$welcome_subtitle     = get_post_meta( $post->ID, 'kiyose_welcome_subtitle', true );
+	$welcome_text         = get_post_meta( $post->ID, 'kiyose_welcome_text', true );
+	$welcome_keywords_raw = get_post_meta( $post->ID, 'kiyose_welcome_keywords', true );
+	$welcome_keywords     = $welcome_keywords_raw ? json_decode( $welcome_keywords_raw, true ) : array();
+	if ( ! is_array( $welcome_keywords ) ) {
+		$welcome_keywords = array();
+	}
+	$welcome_slogan = get_post_meta( $post->ID, 'kiyose_welcome_slogan', true );
+
+	// Get current values — Overlay À propos (existing hero fields).
 	$hero_content  = get_post_meta( $post->ID, 'kiyose_hero_content', true );
 	$hero_cta_text = get_post_meta( $post->ID, 'kiyose_hero_cta_text', true );
 	$hero_cta_url  = get_post_meta( $post->ID, 'kiyose_hero_cta_url', true );
 	$hero_image_id = get_post_meta( $post->ID, 'kiyose_hero_image_id', true );
 
-	// Default values.
-	if ( empty( $hero_title ) ) {
-		$hero_title = 'L\'être humain est un vitrail, révélons ensemble sa lumière';
-	}
+	// Default values for overlay fields.
 	if ( empty( $hero_content ) ) {
 		$hero_content = 'Au sein de L\'Atelier Kiyose, découvrez des pratiques de bien-être et de développement personnel qui vous accompagnent dans votre transformation : art-thérapie, rigologie, bols tibétains et ateliers philo.';
 	}
 	if ( empty( $hero_cta_text ) ) {
-		$hero_cta_text = 'Découvrir les prochains ateliers';
+		$hero_cta_text = 'En savoir plus sur l\'atelier';
 	}
 	if ( empty( $hero_cta_url ) ) {
-		$hero_cta_url = home_url( '/calendrier-tarifs/' );
+		$hero_cta_url = home_url( '/a-propos/' );
 	}
 
 	?>
@@ -92,79 +122,165 @@ function kiyose_render_home_hero_meta_box( $post ) {
 
 		<!-- Champs (masqués si template pas sélectionné) -->
 		<div class="kiyose-meta-box__fields">
-		<!-- Titre -->
+
+		<h3 style="margin: 0 0 15px; padding-bottom: 8px; border-bottom: 1px solid #ddd;">
+			<?php esc_html_e( 'Bloc Bienvenue', 'kiyose' ); ?>
+		</h3>
+
+		<!-- Titre bienvenue -->
 		<div class="field-group">
-			<label for="kiyose_hero_title">
-				<?php esc_html_e( 'Titre principal (H1)', 'kiyose' ); ?>
+			<label for="kiyose_welcome_title">
+				<?php esc_html_e( 'Titre (H1) du bloc bienvenue', 'kiyose' ); ?>
 			</label>
-			<input 
-				type="text" 
-				name="kiyose_hero_title" 
-				id="kiyose_hero_title" 
-				value="<?php echo esc_attr( $hero_title ); ?>"
+			<input
+				type="text"
+				name="kiyose_welcome_title"
+				id="kiyose_welcome_title"
+				value="<?php echo esc_attr( $welcome_title ); ?>"
 			>
 			<p class="description">
-				<?php esc_html_e( 'Le titre principal affiché en haut de la page d\'accueil.', 'kiyose' ); ?>
+				<?php esc_html_e( 'Titre principal affiché en haut de la page, en typographie Dancing Script.', 'kiyose' ); ?>
 			</p>
 		</div>
 
-		<!-- Contenu / Sous-titre -->
+		<!-- Sous-titre -->
 		<div class="field-group">
-			<label for="kiyose_hero_content">
+			<label for="kiyose_welcome_subtitle">
+				<?php esc_html_e( 'Sous-titre', 'kiyose' ); ?>
+			</label>
+			<input
+				type="text"
+				name="kiyose_welcome_subtitle"
+				id="kiyose_welcome_subtitle"
+				value="<?php echo esc_attr( $welcome_subtitle ); ?>"
+			>
+		</div>
+
+		<!-- Texte descriptif -->
+		<div class="field-group">
+			<label for="kiyose_welcome_text">
 				<?php esc_html_e( 'Texte descriptif', 'kiyose' ); ?>
 			</label>
-			<textarea 
-				name="kiyose_hero_content" 
-				id="kiyose_hero_content" 
+			<textarea
+				name="kiyose_welcome_text"
+				id="kiyose_welcome_text"
+				rows="4"
+			><?php echo esc_textarea( $welcome_text ); ?></textarea>
+		</div>
+
+		<!-- Mots-clefs (repeater) -->
+		<div class="field-group">
+			<label>
+				<?php esc_html_e( 'Mots-clefs (chips cliquables)', 'kiyose' ); ?>
+			</label>
+			<input
+				type="hidden"
+				name="kiyose_welcome_keywords"
+				id="kiyose_welcome_keywords"
+				value="<?php echo esc_attr( $welcome_keywords_raw ? $welcome_keywords_raw : '[]' ); ?>"
+			>
+			<div id="kiyose_welcome_keywords_list">
+				<?php foreach ( $welcome_keywords as $kw ) : ?>
+				<div class="keyword-row" style="display:flex;gap:8px;margin-bottom:8px;align-items:center;">
+					<input
+						type="text"
+						placeholder="<?php esc_attr_e( 'Label', 'kiyose' ); ?>"
+						class="kw-label"
+						value="<?php echo esc_attr( $kw['label'] ); ?>"
+						style="flex:1;"
+					>
+					<input
+						type="text"
+						placeholder="<?php esc_attr_e( 'URL (ex: /services/ ou #ancre)', 'kiyose' ); ?>"
+						class="kw-url"
+						value="<?php echo esc_attr( $kw['url'] ); ?>"
+						style="flex:2;"
+					>
+					<button type="button" class="button kw-remove">
+						<?php esc_html_e( 'Supprimer', 'kiyose' ); ?>
+					</button>
+				</div>
+				<?php endforeach; ?>
+			</div>
+			<button type="button" class="button" id="kiyose_keyword_add">
+				<?php esc_html_e( 'Ajouter un mot-clef', 'kiyose' ); ?>
+			</button>
+			<p class="description">
+				<?php esc_html_e( 'Chaque mot-clef est un lien cliquable. L\'URL peut pointer vers une ancre (#section) ou une autre page.', 'kiyose' ); ?>
+			</p>
+		</div>
+
+		<!-- Slogan -->
+		<div class="field-group">
+			<label for="kiyose_welcome_slogan">
+				<?php esc_html_e( 'Slogan', 'kiyose' ); ?>
+			</label>
+			<input
+				type="text"
+				name="kiyose_welcome_slogan"
+				id="kiyose_welcome_slogan"
+				value="<?php echo esc_attr( $welcome_slogan ); ?>"
+			>
+			<p class="description">
+				<?php esc_html_e( 'Affiché sous les mots-clefs, en typographie Dancing Script avec couleur accent.', 'kiyose' ); ?>
+			</p>
+		</div>
+
+		<h3 style="margin: 25px 0 15px; padding-bottom: 8px; border-bottom: 1px solid #ddd;">
+			<?php esc_html_e( 'Overlay « À propos »', 'kiyose' ); ?>
+		</h3>
+		<p class="description" style="margin-bottom:15px;">
+			<?php esc_html_e( 'Ces champs alimentent le panneau flottant qui s\'affiche au premier scroll (desktop) et la section À propos sur mobile.', 'kiyose' ); ?>
+		</p>
+
+		<!-- Texte de description (overlay / mobile) -->
+		<div class="field-group">
+			<label for="kiyose_hero_content">
+				<?php esc_html_e( 'Texte de description (overlay / mobile)', 'kiyose' ); ?>
+			</label>
+			<textarea
+				name="kiyose_hero_content"
+				id="kiyose_hero_content"
 				rows="4"
 			><?php echo esc_textarea( $hero_content ); ?></textarea>
-			<p class="description">
-				<?php esc_html_e( 'Le texte descriptif affiché sous le titre.', 'kiyose' ); ?>
-			</p>
 		</div>
 
-		<!-- CTA Texte -->
+		<!-- Texte du lien En savoir plus -->
 		<div class="field-group">
 			<label for="kiyose_hero_cta_text">
-				<?php esc_html_e( 'Texte du bouton', 'kiyose' ); ?>
+				<?php esc_html_e( 'Texte du lien « En savoir plus »', 'kiyose' ); ?>
 			</label>
-			<input 
-				type="text" 
-				name="kiyose_hero_cta_text" 
-				id="kiyose_hero_cta_text" 
+			<input
+				type="text"
+				name="kiyose_hero_cta_text"
+				id="kiyose_hero_cta_text"
 				value="<?php echo esc_attr( $hero_cta_text ); ?>"
 			>
-			<p class="description">
-				<?php esc_html_e( 'Le texte affiché sur le bouton d\'appel à l\'action.', 'kiyose' ); ?>
-			</p>
 		</div>
 
-		<!-- CTA URL -->
+		<!-- URL de la page À propos -->
 		<div class="field-group">
 			<label for="kiyose_hero_cta_url">
-				<?php esc_html_e( 'Lien du bouton', 'kiyose' ); ?>
+				<?php esc_html_e( 'URL de la page « À propos »', 'kiyose' ); ?>
 			</label>
-			<input 
-				type="url" 
-				name="kiyose_hero_cta_url" 
-				id="kiyose_hero_cta_url" 
+			<input
+				type="url"
+				name="kiyose_hero_cta_url"
+				id="kiyose_hero_cta_url"
 				value="<?php echo esc_url( $hero_cta_url ); ?>"
-				placeholder="<?php echo esc_attr( home_url( '/' ) ); ?>"
+				placeholder="<?php echo esc_attr( home_url( '/a-propos/' ) ); ?>"
 			>
-			<p class="description">
-				<?php esc_html_e( 'L\'URL vers laquelle le bouton redirige (ex: /calendrier-tarifs/).', 'kiyose' ); ?>
-			</p>
 		</div>
 
-		<!-- Image de fond -->
+		<!-- Photo (overlay / mobile) -->
 		<div class="field-group">
 			<label for="kiyose_hero_image">
-				<?php esc_html_e( 'Image de fond', 'kiyose' ); ?>
+				<?php esc_html_e( 'Photo (overlay / mobile)', 'kiyose' ); ?>
 			</label>
-			<input 
-				type="hidden" 
-				name="kiyose_hero_image_id" 
-				id="kiyose_hero_image_id" 
+			<input
+				type="hidden"
+				name="kiyose_hero_image_id"
+				id="kiyose_hero_image_id"
 				value="<?php echo esc_attr( $hero_image_id ); ?>"
 			>
 			<div class="button-group">
@@ -182,10 +298,8 @@ function kiyose_render_home_hero_meta_box( $post ) {
 				}
 				?>
 			</div>
-			<p class="description">
-				<?php esc_html_e( 'Image de fond pour la section hero. Si aucune image n\'est définie, la couleur de fond par défaut sera utilisée.', 'kiyose' ); ?>
-			</p>
 		</div>
+
 		</div><!-- .kiyose-meta-box__fields -->
 	</div><!-- .kiyose-meta-box -->
 
@@ -193,12 +307,14 @@ function kiyose_render_home_hero_meta_box( $post ) {
 	jQuery(document).ready(function($) {
 		var mediaUploader;
 
-		// Show/hide hero fields based on template selection
+		// Show/hide fields based on template selection (classic editor only).
+		// In the block editor #page_template does not exist — trust PHP rendering.
 		function toggleHeroFields() {
-			var selectedTemplate = $('#page_template').val();
-			var requiredTemplate = 'templates/page-home.php';
-			
-			if (selectedTemplate === requiredTemplate) {
+			var $tmpl = $('#page_template');
+			if (!$tmpl.length) {
+				return;
+			}
+			if ($tmpl.val() === 'templates/page-home.php') {
 				$('.kiyose-meta-box__notice').hide();
 				$('.kiyose-meta-box__fields').show();
 			} else {
@@ -213,6 +329,43 @@ function kiyose_render_home_hero_meta_box( $post ) {
 		// Run when template changes
 		$('#page_template').on('change', function() {
 			toggleHeroFields();
+		});
+
+		// Keywords repeater
+		function serializeKeywords() {
+			var keywords = [];
+			$('#kiyose_welcome_keywords_list .keyword-row').each(function() {
+				var label = $(this).find('.kw-label').val().trim();
+				var url = $(this).find('.kw-url').val().trim();
+				if (label) {
+					keywords.push({ label: label, url: url });
+				}
+			});
+			$('#kiyose_welcome_keywords').val(JSON.stringify(keywords));
+		}
+
+		$('#kiyose_keyword_add').on('click', function() {
+			var row = '<div class="keyword-row" style="display:flex;gap:8px;margin-bottom:8px;align-items:center;">' +
+				'<input type="text" placeholder="Label" class="kw-label" style="flex:1;">' +
+				'<input type="text" placeholder="URL (ex: /services/ ou #ancre)" class="kw-url" style="flex:2;">' +
+				'<button type="button" class="button kw-remove">Supprimer</button>' +
+				'</div>';
+			$('#kiyose_welcome_keywords_list').append(row);
+		});
+
+		$(document).on('click', '.kw-remove', function() {
+			$(this).closest('.keyword-row').remove();
+			serializeKeywords();
+		});
+
+		// Serialize on any input change in keywords list
+		$(document).on('change input', '#kiyose_welcome_keywords_list input', function() {
+			serializeKeywords();
+		});
+
+		// Serialize before form submit
+		$('form#post').on('submit', function() {
+			serializeKeywords();
 		});
 
 		// Media uploader
@@ -285,9 +438,43 @@ function kiyose_save_home_hero_meta( $post_id ) {
 		return;
 	}
 
-	// Save hero title.
-	if ( isset( $_POST['kiyose_hero_title'] ) ) {
-		update_post_meta( $post_id, 'kiyose_hero_title', sanitize_text_field( wp_unslash( $_POST['kiyose_hero_title'] ) ) );
+	// Save welcome title.
+	if ( isset( $_POST['kiyose_welcome_title'] ) ) {
+		update_post_meta( $post_id, 'kiyose_welcome_title', sanitize_text_field( wp_unslash( $_POST['kiyose_welcome_title'] ) ) );
+	}
+
+	// Save welcome subtitle.
+	if ( isset( $_POST['kiyose_welcome_subtitle'] ) ) {
+		update_post_meta( $post_id, 'kiyose_welcome_subtitle', sanitize_text_field( wp_unslash( $_POST['kiyose_welcome_subtitle'] ) ) );
+	}
+
+	// Save welcome text.
+	if ( isset( $_POST['kiyose_welcome_text'] ) ) {
+		update_post_meta( $post_id, 'kiyose_welcome_text', sanitize_textarea_field( wp_unslash( $_POST['kiyose_welcome_text'] ) ) );
+	}
+
+	// Save welcome keywords.
+	if ( isset( $_POST['kiyose_welcome_keywords'] ) ) {
+		$raw_json = sanitize_text_field( wp_unslash( $_POST['kiyose_welcome_keywords'] ) );
+		$decoded  = json_decode( $raw_json, true );
+
+		if ( is_array( $decoded ) ) {
+			$sanitized = array();
+			foreach ( $decoded as $item ) {
+				if ( isset( $item['label'], $item['url'] ) ) {
+					$clean = kiyose_sanitize_welcome_keyword_item( $item['label'], $item['url'] );
+					if ( null !== $clean ) {
+						$sanitized[] = $clean;
+					}
+				}
+			}
+			update_post_meta( $post_id, 'kiyose_welcome_keywords', wp_json_encode( $sanitized ) );
+		}
+	}
+
+	// Save welcome slogan.
+	if ( isset( $_POST['kiyose_welcome_slogan'] ) ) {
+		update_post_meta( $post_id, 'kiyose_welcome_slogan', sanitize_text_field( wp_unslash( $_POST['kiyose_welcome_slogan'] ) ) );
 	}
 
 	// Save hero content.
