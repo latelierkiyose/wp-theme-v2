@@ -89,14 +89,16 @@
 
 .about-overlay__image {
 	align-self: center;
+	border-radius: 50%;
+	box-shadow: 0 4px 12px rgb(93 5 5 / 12%);
+	height: 120px;
+	overflow: hidden;
 	width: 120px;
 }
 
 .about-overlay__image img {
-	border-radius: 8px;
-	box-shadow: 0 4px 12px rgb(93 5 5 / 12%);
-	height: auto;
-	transform: rotate(-2deg);
+	height: 100%;
+	object-fit: cover;
 	width: 100%;
 }
 
@@ -205,15 +207,17 @@
 }
 
 .home-about__image {
+	border-radius: 50%;
+	box-shadow: 0 8px 24px rgb(93 5 5 / 15%);
+	height: 200px;
 	margin: 0 auto var(--kiyose-spacing-lg);
-	max-width: 200px;
+	overflow: hidden;
+	width: 200px;
 }
 
 .home-about__image img {
-	border-radius: 8px;
-	box-shadow: 0 8px 24px rgb(93 5 5 / 15%);
-	height: auto;
-	transform: rotate(-3deg);
+	height: 100%;
+	object-fit: cover;
 	width: 100%;
 }
 
