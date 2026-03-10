@@ -1,0 +1,71 @@
+/**
+ * Callout Box - Cadre de contenu important
+ * L'Atelier Kiyose
+ *
+ * Composant de mise en valeur de contenu important (mention légale,
+ * information tarifaire, message-clé). Fond crème doré avec bordure
+ * gauche or miel.
+ *
+ * @package Kiyose
+ * @since   2.1.0
+ */
+
+/* ============================================
+   CONTENEUR PRINCIPAL
+   ============================================ */
+.callout-box {
+	background-color: var(--kiyose-color-cream-gold);
+	border-left: 4px solid var(--kiyose-color-gold);
+	border-radius: 4px;
+	color: var(--kiyose-color-burgundy); /* Ratio 12.49:1 sur cream-gold ✅ */
+	margin-block: var(--kiyose-spacing-lg);
+	padding: var(--kiyose-spacing-lg);
+}
+
+/* ============================================
+   TITRE OPTIONNEL
+   ============================================ */
+.callout-box__title {
+	font-family: var(--kiyose-font-body);
+	font-size: var(--kiyose-font-size-lg);
+	font-weight: 700;
+	line-height: var(--kiyose-line-height-tight);
+	margin-block: 0 var(--kiyose-spacing-sm);
+}
+
+/* ============================================
+   CONTENU
+   ============================================ */
+.callout-box__content > :first-child {
+	margin-top: 0;
+}
+
+.callout-box__content > :last-child {
+	margin-bottom: 0;
+}
+
+/* Liens dans le callout */
+.callout-box a {
+	color: var(--kiyose-color-burgundy);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+.callout-box a:hover,
+.callout-box a:focus {
+	text-decoration-thickness: 2px;
+}
+
+.callout-box a:focus-visible {
+	outline: 2px solid var(--kiyose-color-burgundy);
+	outline-offset: 2px;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (width <= 768px) {
+	.callout-box {
+		padding: var(--kiyose-spacing-md);
+	}
+}

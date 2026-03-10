@@ -212,3 +212,46 @@ function kiyose_signets_shortcode( $atts, $content = null ) {
 	return ob_get_clean();
 }
 add_shortcode( 'kiyose_signets', 'kiyose_signets_shortcode' );
+
+/**
+ * Display a callout box to highlight important content.
+ *
+ * Usage:
+ * - Simple: [kiyose_callout]Important content here[/kiyose_callout]
+ * - With title: [kiyose_callout titre="Bon à savoir"]Content[/kiyose_callout]
+ *
+ * @param array  $atts    Shortcode attributes.
+ * @param string $content Shortcode enclosed content.
+ * @return string HTML output.
+ *
+ * @since 2.1.0
+ */
+function kiyose_callout_shortcode( $atts, $content = null ) {
+	if ( empty( $content ) ) {
+		return '';
+	}
+
+	$args = shortcode_atts(
+		array(
+			'titre' => '',
+		),
+		$atts,
+		'kiyose_callout'
+	);
+
+	$titre = sanitize_text_field( $args['titre'] );
+
+	$output = '<div class="callout-box" role="note">';
+
+	if ( ! empty( $titre ) ) {
+		$output .= '<p class="callout-box__title"><strong>' . esc_html( $titre ) . '</strong></p>';
+	}
+
+	$output .= '<div class="callout-box__content">';
+	$output .= wp_kses_post( wpautop( do_shortcode( $content ) ) );
+	$output .= '</div>';
+	$output .= '</div>';
+
+	return $output;
+}
+add_shortcode( 'kiyose_callout', 'kiyose_callout_shortcode' );

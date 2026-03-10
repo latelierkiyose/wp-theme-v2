@@ -382,6 +382,28 @@ function kiyose_enqueue_signets_styles() {
 add_action( 'wp_enqueue_scripts', 'kiyose_enqueue_signets_styles' );
 
 /**
+ * Enqueue callout box styles conditionally.
+ *
+ * Only loads when the [kiyose_callout] shortcode is present on the page.
+ *
+ * @since 2.1.0
+ */
+function kiyose_enqueue_callout_styles() {
+	$suffix = kiyose_get_asset_suffix();
+	global $post;
+
+	if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'kiyose_callout' ) ) {
+		wp_enqueue_style(
+			'kiyose-callout-box',
+			get_template_directory_uri() . "/assets/css/components/callout-box{$suffix}.css",
+			array( 'kiyose-variables' ),
+			kiyose_get_asset_version( "/assets/css/components/callout-box{$suffix}.css" )
+		);
+	}
+}
+add_action( 'wp_enqueue_scripts', 'kiyose_enqueue_callout_styles' );
+
+/**
  * Enqueue home page animations (CSS + JS).
  *
  * Conditionally loads animation styles and scripts only on the homepage.
