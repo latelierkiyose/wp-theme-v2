@@ -1,18 +1,23 @@
 /**
  * About Overlay
  *
- * Panneau flottant « À propos » déclenché au premier scroll.
+ * Panneau flottant « À propos » déclenché au scroll.
  * Desktop uniquement (>= 768px).
  *
  * Comportement :
- * - Déclenché dès 30px de scroll.
- * - Affiché immédiatement (sans animation) si la page est déjà scrollée.
- * - Fermeture : bouton × ou Échap.
- * - Fermé = ne revient pas jusqu'au prochain rechargement de la page.
+ * - Apparaît dès 30px de scroll (au-dessus de « Prochaines dates »).
+ * - Disparaît quand le bord supérieur de .home-events atteint le viewport.
+ * - Réapparaît quand l'utilisateur remonte au-dessus de ce seuil (sauf si fermé manuellement).
+ * - Fermeture manuelle = ne revient pas jusqu'au prochain rechargement de la page.
  * - Pas de focus trap : le contenu derrière reste accessible au clavier.
  *
+ * Coordination :
+ * - Émet un CustomEvent 'kiyose:overlay-zone' sur document avec { zone: 'above' | 'below' }
+ *   quand la zone de scroll change (au-dessus / en dessous de .home-events).
+ * - Les deux overlays (about + newsletter) réagissent à ce même événement.
+ *
  * @package Kiyose
- * @since   0.2.6
+ * @since   2.0.0
  */
 
 (function () {
@@ -20,27 +25,39 @@
 
 	const SCROLL_THRESHOLD = 30;
 	const DESKTOP_BREAKPOINT = 768;
+	const HYSTERESIS_PX = 100;
 
 	const overlay = document.getElementById('about-overlay');
 	const closeBtn = document.getElementById('about-overlay-close');
-	const announcement = document.getElementById('about-overlay-announcement');
+	const announcement = document.getElementById('overlay-announcement');
+	const eventsSection = document.querySelector('.home-events');
 
 	if (!overlay || !closeBtn) {
 		return;
 	}
 
-	// Desktop only.
-	if (window.innerWidth < DESKTOP_BREAKPOINT) {
-		return;
-	}
-
 	const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-	/** Set to true once the overlay is closed — resets on every page load. */
-	let isClosed = false;
-
-	/** Element focused before overlay appeared, for focus restoration on close. */
+	let isManuallyClosed = false;
+	let isVisible = false;
 	let focusedElementBeforeOverlay = null;
+	let currentZone = null;
+
+	/**
+	 * Determine the current scroll zone relative to .home-events.
+	 *
+	 * @returns {'above'|'below'} The current zone.
+	 */
+	function getScrollZone() {
+		if (!eventsSection) {
+			return 'above';
+		}
+		const rect = eventsSection.getBoundingClientRect();
+		if (currentZone === 'below') {
+			return rect.top <= HYSTERESIS_PX ? 'below' : 'above';
+		}
+		return rect.top <= -HYSTERESIS_PX ? 'below' : 'above';
+	}
 
 	/**
 	 * Show the overlay.
@@ -48,10 +65,13 @@
 	 * @param {boolean} shouldAnimate Whether to play the arc entrance animation.
 	 */
 	function showOverlay(shouldAnimate) {
-		// Snapshot current focus — restored on close.
-		focusedElementBeforeOverlay = document.activeElement;
+		if (isVisible) {
+			return;
+		}
 
+		focusedElementBeforeOverlay = document.activeElement;
 		overlay.removeAttribute('hidden');
+		isVisible = true;
 
 		if (shouldAnimate && !prefersReducedMotion) {
 			overlay.classList.add('about-overlay--entering');
@@ -64,56 +84,89 @@
 			);
 		}
 
-		// Announce to screen readers via polite aria-live region.
 		if (announcement) {
 			announcement.textContent = 'Le panneau À propos est maintenant visible.';
 		}
-
-		window.removeEventListener('scroll', onScroll);
 	}
 
-	/** Close the overlay and restore focus to previous element. */
-	function closeOverlay() {
+	/** Hide the overlay (scroll-triggered, not manual close). */
+	function hideOverlay() {
+		if (!isVisible) {
+			return;
+		}
+
 		overlay.setAttribute('hidden', '');
 		overlay.classList.remove('about-overlay--entering');
-
-		isClosed = true;
-
-		if (focusedElementBeforeOverlay && typeof focusedElementBeforeOverlay.focus === 'function') {
-			focusedElementBeforeOverlay.focus();
-		}
+		isVisible = false;
 
 		if (announcement) {
 			announcement.textContent = '';
 		}
 	}
 
-	/** Scroll handler — shows overlay once scroll threshold is reached. */
-	function onScroll() {
-		if (window.scrollY >= SCROLL_THRESHOLD) {
-			showOverlay(true);
+	/** Close the overlay manually and restore focus. */
+	function closeOverlay() {
+		hideOverlay();
+		isManuallyClosed = true;
+
+		if (focusedElementBeforeOverlay && typeof focusedElementBeforeOverlay.focus === 'function') {
+			focusedElementBeforeOverlay.focus();
 		}
 	}
 
-	// Show immediately without animation if page is already scrolled (e.g., back navigation).
-	if (window.scrollY >= SCROLL_THRESHOLD) {
-		showOverlay(false);
-	} else {
+	/**
+	 * Update overlay visibility based on current scroll zone.
+	 *
+	 * @param {string} zone Current zone ('above' or 'below').
+	 * @param {boolean} shouldAnimate Whether to animate on show.
+	 */
+	function updateVisibility(zone, shouldAnimate) {
+		if (window.innerWidth < DESKTOP_BREAKPOINT) {
+			return;
+		}
+
+		if (zone === 'above' && window.scrollY >= SCROLL_THRESHOLD && !isManuallyClosed) {
+			showOverlay(shouldAnimate);
+		} else {
+			hideOverlay();
+		}
+	}
+
+	/** Scroll handler with zone detection and event dispatch. */
+	function onScroll() {
+		const zone = getScrollZone();
+
+		if (zone !== currentZone) {
+			currentZone = zone;
+			document.dispatchEvent(new CustomEvent('kiyose:overlay-zone', { detail: { zone } }));
+		}
+
+		updateVisibility(zone, true);
+	}
+
+	// Initial state on page load.
+	if (window.innerWidth >= DESKTOP_BREAKPOINT) {
+		currentZone = getScrollZone();
+
+		// Dispatch initial zone for newsletter overlay.
+		document.dispatchEvent(new CustomEvent('kiyose:overlay-zone', { detail: { zone: currentZone } }));
+
+		updateVisibility(currentZone, false);
+
 		window.addEventListener('scroll', onScroll, { passive: true });
 	}
 
 	closeBtn.addEventListener('click', closeOverlay);
 
 	document.addEventListener('keydown', (e) => {
-		if (e.key === 'Escape' && !overlay.hasAttribute('hidden')) {
+		if (e.key === 'Escape' && isVisible) {
 			closeOverlay();
 		}
 	});
 
-	// Hide overlay if viewport resizes below desktop breakpoint.
 	window.addEventListener('resize', () => {
-		if (window.innerWidth < DESKTOP_BREAKPOINT && !overlay.hasAttribute('hidden')) {
-			overlay.setAttribute('hidden', '');
+		if (window.innerWidth < DESKTOP_BREAKPOINT && isVisible) {
+			hideOverlay();
 		}
 	});
 })();

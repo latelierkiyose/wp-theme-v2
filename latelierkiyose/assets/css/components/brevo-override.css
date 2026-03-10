@@ -88,6 +88,32 @@
 }
 
 /* ==========================================================================
+   Layout overlay newsletter — Formulaire compact (desktop)
+   ========================================================================== */
+
+/**
+ * Dans l'overlay newsletter : formulaire compact dans un panneau étroit (360px)
+ */
+.newsletter-overlay__form .sib-form {
+	margin-top: 0.5rem;
+}
+
+.newsletter-overlay__form .sib-form__container {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+.newsletter-overlay__form .sib-form__field {
+	width: 100%;
+}
+
+.newsletter-overlay__form .sib-form button[type='submit'],
+.newsletter-overlay__form .sib-form input[type='submit'] {
+	width: 100%;
+}
+
+/* ==========================================================================
    Champs de saisie
    ========================================================================== */
 
@@ -125,7 +151,7 @@
 	margin-bottom: 1rem;
 }
 
-.sib-form__checkbox input[type="checkbox"] {
+.sib-form__checkbox input[type='checkbox'] {
 	cursor: pointer;
 	flex-shrink: 0;
 	height: 18px;
@@ -163,15 +189,15 @@
 	margin-bottom: 0;
 }
 
-.sib-form button[type="submit"],
-.sib-form input[type="submit"] {
+.sib-form button[type='submit'],
+.sib-form input[type='submit'] {
 	width: 100%;
 }
 
 /* Desktop footer : bouton auto-width */
 @media (width >= 768px) {
-	.site-footer__newsletter .sib-form button[type="submit"],
-	.site-footer__newsletter .sib-form input[type="submit"] {
+	.site-footer__newsletter .sib-form button[type='submit'],
+	.site-footer__newsletter .sib-form input[type='submit'] {
 		width: auto;
 	}
 }
@@ -196,7 +222,7 @@
 }
 
 .sib-form__message--success::before {
-	content: "✓ ";
+	content: '✓ ';
 	font-weight: 700;
 }
 
@@ -216,7 +242,7 @@
 }
 
 .sib-form__message--error::before {
-	content: "⚠ ";
+	content: '⚠ ';
 	font-weight: 700;
 }
 
@@ -244,8 +270,8 @@
    Loading state
    ========================================================================== */
 
-.sib-form--loading button[type="submit"],
-.sib-form--loading input[type="submit"] {
+.sib-form--loading button[type='submit'],
+.sib-form--loading input[type='submit'] {
 	cursor: wait;
 	opacity: 0.6;
 }
@@ -258,8 +284,8 @@
  * Mobile (<768px) : Champs empilés, bouton pleine largeur
  */
 @media (width <= 767px) {
-	.sib-form button[type="submit"],
-	.sib-form input[type="submit"] {
+	.sib-form button[type='submit'],
+	.sib-form input[type='submit'] {
 		width: 100%;
 	}
 

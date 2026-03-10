@@ -299,17 +299,107 @@ $kiyose_has_about_image = ! empty( $kiyose_hero_image_id );
 	</section>
 
 	<?php
-	// Wave separator — Events (tinted) → Testimonials (white).
-	get_template_part(
-		'template-parts/decorative',
-		'shapes',
-		array(
-			'mode'    => 'separator',
-			'color'   => '#ffffff',
-			'from_bg' => 'rgb(201 171 167 / 10%)',
-		)
-	);
+	// Wave separator — Events (tinted) → Newsletter (white) — Mobile only.
 	?>
+	<div class="home-newsletter-wave home-newsletter-wave--before">
+		<?php
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'mode'    => 'separator',
+				'color'   => '#ffffff',
+				'from_bg' => 'rgb(201 171 167 / 10%)',
+			)
+		);
+		?>
+	</div>
+
+	<!-- Section Newsletter — Mobile inline (masquée sur desktop, remplacée par l'overlay) -->
+	<section class="home-newsletter" aria-labelledby="newsletter-title">
+		<?php
+		get_template_part(
+			'template-parts/decorative',
+			'scribbles',
+			array(
+				'type'     => 'virgules',
+				'color'    => '--kiyose-color-burgundy',
+				'size'     => 60,
+				'rotation' => -10,
+				'float'    => false,
+				'top'      => '15%',
+				'right'    => '5%',
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'scribbles',
+			array(
+				'type'     => 'squiggle',
+				'color'    => '--kiyose-color-warm-yellow',
+				'size'     => 80,
+				'rotation' => 25,
+				'float'    => false,
+				'bottom'   => '10%',
+				'left'     => '4%',
+			)
+		);
+		?>
+		<div class="home-newsletter__content">
+			<h2 id="newsletter-title" class="home-newsletter__title">Restez informé·e</h2>
+			<p class="home-newsletter__description">
+				Recevez les prochaines dates et actualités de l'atelier directement dans votre boîte mail.
+			</p>
+			<?php
+			if ( shortcode_exists( 'sibwp_form' ) ) {
+				echo do_shortcode( '[sibwp_form id=1]' );
+			} else {
+				?>
+				<div class="home-newsletter__form-placeholder">
+					<p><?php esc_html_e( 'Le formulaire d\'inscription à la newsletter sera intégré ici une fois le plugin Brevo configuré.', 'kiyose' ); ?></p>
+				</div>
+				<?php
+			}
+			?>
+		</div>
+	</section>
+
+	<?php
+	// Wave separator — Newsletter (white) → Testimonials (white).
+	// On mobile: visible (newsletter white bg → testimonials white bg, same color transition).
+	// On desktop: hidden along with the newsletter section.
+	?>
+	<div class="home-newsletter-wave home-newsletter-wave--after">
+		<?php
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'mode'    => 'separator',
+				'color'   => '#ffffff',
+				'from_bg' => '#ffffff',
+			)
+		);
+		?>
+	</div>
+
+	<?php
+	// Wave separator — Events (tinted) → Testimonials (white) — Desktop only.
+	// On desktop: newsletter section is hidden, so we need a direct separator.
+	?>
+	<div class="home-events-testimonials-wave">
+		<?php
+		get_template_part(
+			'template-parts/decorative',
+			'shapes',
+			array(
+				'mode'    => 'separator',
+				'color'   => '#ffffff',
+				'from_bg' => 'rgb(201 171 167 / 10%)',
+			)
+		);
+		?>
+	</div>
 
 	<!-- Section Témoignages (Carousel) -->
 	<section class="home-testimonials" aria-labelledby="testimonials-title">
@@ -402,84 +492,14 @@ $kiyose_has_about_image = ! empty( $kiyose_hero_image_id );
 	</section>
 
 	<?php
-	// Wave separator — Testimonials (white) → Newsletter (tinted).
-	get_template_part(
-		'template-parts/decorative',
-		'shapes',
-		array(
-			'mode'    => 'separator',
-			'color'   => 'rgb(201 171 167 / 10%)',
-			'from_bg' => '#ffffff',
-		)
-	);
-	?>
-
-	<!-- Section Newsletter -->
-	<section class="home-newsletter section--tinted" aria-labelledby="newsletter-title">
-		<?php
-		get_template_part(
-			'template-parts/decorative',
-			'scribbles',
-			array(
-				'type'     => 'virgules',
-				'color'    => '--kiyose-color-burgundy',
-				'size'     => 60,
-				'rotation' => -10,
-				'float'    => false,
-				'top'      => '15%',
-				'right'    => '5%',
-			)
-		);
-		get_template_part(
-			'template-parts/decorative',
-			'scribbles',
-			array(
-				'type'     => 'squiggle',
-				'color'    => '--kiyose-color-warm-yellow',
-				'size'     => 80,
-				'rotation' => 25,
-				'float'    => false,
-				'bottom'   => '10%',
-				'left'     => '4%',
-			)
-		);
-		?>
-		<div class="home-newsletter__content">
-			<h2 id="newsletter-title" class="home-newsletter__title">Restez informé·e</h2>
-			<p class="home-newsletter__description">
-				Recevez les prochaines dates et actualités de l'atelier directement dans votre boîte mail.
-			</p>
-			<?php
-			/**
-			 * Formulaire newsletter Brevo.
-			 *
-			 * Le shortcode [brevo_form id="X"] sera fourni par le plugin Brevo après configuration.
-			 * Remplacer le placeholder ci-dessous par le shortcode réel en production.
-			 *
-			 * @since 0.1.13
-			 */
-			if ( shortcode_exists( 'sibwp_form' ) ) {
-				echo do_shortcode( '[sibwp_form id=1]' );
-			} else {
-				?>
-				<div class="home-newsletter__form-placeholder">
-					<p><?php esc_html_e( 'Le formulaire d\'inscription à la newsletter sera intégré ici une fois le plugin Brevo configuré.', 'kiyose' ); ?></p>
-				</div>
-				<?php
-			}
-			?>
-		</div>
-	</section>
-
-	<?php
-	// Wave separator — Newsletter (tinted) → Blog (beige).
+	// Wave separator — Testimonials (white) → Blog (beige).
 	get_template_part(
 		'template-parts/decorative',
 		'shapes',
 		array(
 			'mode'    => 'separator',
 			'color'   => '--kiyose-color-background',
-			'from_bg' => 'rgb(201 171 167 / 10%)',
+			'from_bg' => '#ffffff',
 		)
 	);
 	?>
@@ -856,10 +876,10 @@ $kiyose_has_about_image = ! empty( $kiyose_hero_image_id );
 </main>
 
 <?php
-// Overlay À propos — desktop uniquement (position: fixed, déclenché par JS au premier scroll).
+// Overlay À propos — desktop uniquement (position: fixed, déclenché par JS au scroll).
 $kiyose_has_about_image = ! empty( $kiyose_hero_image_id );
 ?>
-<div class="about-overlay" id="about-overlay" role="complementary" hidden>
+<div class="about-overlay" id="about-overlay" role="complementary" aria-label="<?php esc_attr_e( 'À propos de L\'Atelier Kiyose', 'kiyose' ); ?>" hidden>
 	<button
 		class="about-overlay__close"
 		id="about-overlay-close"
@@ -882,8 +902,40 @@ $kiyose_has_about_image = ! empty( $kiyose_hero_image_id );
 		</div>
 	</div>
 </div>
-<!-- Annonce screen reader pour l'overlay (aria-live="polite") -->
-<div class="sr-only" id="about-overlay-announcement" aria-live="polite" aria-atomic="true"></div>
+
+<?php // Overlay Newsletter — desktop uniquement (position: fixed, côté gauche, déclenché par JS au scroll). ?>
+<div class="newsletter-overlay" id="newsletter-overlay" role="complementary" aria-label="<?php esc_attr_e( 'Inscription à la newsletter', 'kiyose' ); ?>" hidden>
+	<button
+		class="newsletter-overlay__close"
+		id="newsletter-overlay-close"
+		type="button"
+		aria-label="<?php esc_attr_e( 'Fermer le panneau Newsletter', 'kiyose' ); ?>"
+	>
+		<span aria-hidden="true">&times;</span>
+	</button>
+	<div class="newsletter-overlay__body">
+		<h2 class="newsletter-overlay__title"><?php esc_html_e( 'Restez informé·e', 'kiyose' ); ?></h2>
+		<p class="newsletter-overlay__description">
+			<?php esc_html_e( 'Recevez les prochaines dates et actualités directement dans votre boîte mail.', 'kiyose' ); ?>
+		</p>
+		<div class="newsletter-overlay__form">
+			<?php
+			if ( shortcode_exists( 'sibwp_form' ) ) {
+				echo do_shortcode( '[sibwp_form id=1]' );
+			} else {
+				?>
+				<div class="home-newsletter__form-placeholder">
+					<p><?php esc_html_e( 'Le formulaire d\'inscription à la newsletter sera intégré ici une fois le plugin Brevo configuré.', 'kiyose' ); ?></p>
+				</div>
+				<?php
+			}
+			?>
+		</div>
+	</div>
+</div>
+
+<!-- Annonce screen reader partagée pour les overlays (aria-live="polite") -->
+<div class="sr-only" id="overlay-announcement" aria-live="polite" aria-atomic="true"></div>
 
 <?php
 get_footer();

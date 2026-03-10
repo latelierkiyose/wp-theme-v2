@@ -437,6 +437,22 @@ function kiyose_enqueue_home_animations() {
 		kiyose_get_asset_version( "/assets/js/modules/about-overlay{$suffix}.js" ),
 		true
 	);
+
+	// Overlay Newsletter — styles et script.
+	wp_enqueue_style(
+		'kiyose-newsletter-overlay',
+		get_template_directory_uri() . "/assets/css/components/newsletter-overlay{$suffix}.css",
+		array( 'kiyose-variables' ),
+		kiyose_get_asset_version( "/assets/css/components/newsletter-overlay{$suffix}.css" )
+	);
+
+	wp_enqueue_script(
+		'kiyose-newsletter-overlay',
+		get_template_directory_uri() . "/assets/js/modules/newsletter-overlay{$suffix}.js",
+		array( 'kiyose-about-overlay' ),
+		kiyose_get_asset_version( "/assets/js/modules/newsletter-overlay{$suffix}.js" ),
+		true
+	);
 }
 add_action( 'wp_enqueue_scripts', 'kiyose_enqueue_home_animations', 30 );
 
