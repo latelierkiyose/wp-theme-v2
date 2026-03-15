@@ -346,7 +346,7 @@ $kiyose_has_about_image = ! empty( $kiyose_hero_image_id );
 		);
 		?>
 		<div class="home-newsletter__content">
-			<h2 id="newsletter-title" class="home-newsletter__title">Restez informé·e</h2>
+			<h2 id="newsletter-title" class="home-newsletter__title">Restez informés</h2>
 			<p class="home-newsletter__description">
 				Recevez les prochaines dates et actualités de l'atelier directement dans votre boîte mail.
 			</p>
@@ -914,7 +914,7 @@ $kiyose_has_about_image = ! empty( $kiyose_hero_image_id );
 		<span aria-hidden="true">&times;</span>
 	</button>
 	<div class="newsletter-overlay__body">
-		<h2 class="newsletter-overlay__title"><?php esc_html_e( 'Restez informé·e', 'kiyose' ); ?></h2>
+		<h2 class="newsletter-overlay__title"><?php esc_html_e( 'Restez informés', 'kiyose' ); ?></h2>
 		<p class="newsletter-overlay__description">
 			<?php esc_html_e( 'Recevez les prochaines dates et actualités directement dans votre boîte mail.', 'kiyose' ); ?>
 		</p>
