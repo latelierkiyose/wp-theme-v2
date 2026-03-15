@@ -18,4 +18,4 @@ Thumbs.db
 # Tests
 .phpunit.result.cache
 
-uploads
+uploads.worktrees
