@@ -115,8 +115,18 @@ if ( ! function_exists( 'sanitize_key' ) ) {
 }
 
 if ( ! function_exists( 'sanitize_text_field' ) ) {
+	/**
+	 * Mock sanitize_text_field function.
+	 *
+	 * WordPress removes the content of script/style tags (not just the tags),
+	 * then strips all remaining HTML tags. This mock approximates that behavior.
+	 *
+	 * @param string $text Text to sanitize.
+	 * @return string Sanitized text.
+	 */
 	function sanitize_text_field( $text ) {
-		return trim( strip_tags( (string) $text ) );
+		$text = preg_replace( '@<(script|style)[^>]*?>.*?</\\1>@si', '', (string) $text );
+		return trim( strip_tags( $text ) );
 	}
 }
 
@@ -216,6 +226,15 @@ if ( ! function_exists( 'wp_unslash' ) ) {
 	}
 }
 
+if ( ! function_exists( 'wp_slash' ) ) {
+	function wp_slash( $value ) {
+		if ( is_array( $value ) ) {
+			return array_map( 'wp_slash', $value );
+		}
+		return is_string( $value ) ? addslashes( $value ) : $value;
+	}
+}
+
 if ( ! function_exists( 'absint' ) ) {
 	function absint( $maybeint ) {
 		return abs( (int) $maybeint );
@@ -225,6 +244,59 @@ if ( ! function_exists( 'absint' ) ) {
 if ( ! function_exists( 'current_user_can' ) ) {
 	function current_user_can( $capability ) {
 		return true;
+	}
+}
+
+if ( ! function_exists( 'wp_json_encode' ) ) {
+	/**
+	 * Mock wp_json_encode function.
+	 *
+	 * @param mixed $data    Data to encode.
+	 * @param int   $options JSON encode options.
+	 * @param int   $depth   Maximum depth.
+	 * @return string|false JSON encoded string, or false on failure.
+	 */
+	function wp_json_encode( $data, $options = 0, $depth = 512 ) {
+		return json_encode( $data, $options, $depth );
+	}
+}
+
+if ( ! function_exists( 'wp_kses_post' ) ) {
+	/**
+	 * Mock wp_kses_post function.
+	 *
+	 * @param string $data Content to filter.
+	 * @return string Filtered content.
+	 */
+	function wp_kses_post( $data ) {
+		return wp_kses( $data, array() );
+	}
+}
+
+if ( ! function_exists( 'wp_kses' ) ) {
+	/**
+	 * Mock wp_kses function.
+	 *
+	 * @param string $data    Content to filter.
+	 * @param array  $allowed_html Allowed HTML tags.
+	 * @return string Filtered content.
+	 */
+	function wp_kses( $data, $allowed_html ) {
+		return strip_tags( (string) $data );
+	}
+}
+
+if ( ! function_exists( 'wp_editor' ) ) {
+	/**
+	 * Mock wp_editor function.
+	 *
+	 * @param string $content   Initial content.
+	 * @param string $editor_id HTML ID for the textarea.
+	 * @param array  $settings  Settings array.
+	 * @return void
+	 */
+	function wp_editor( $content, $editor_id, $settings = array() ) {
+		// No-op in tests.
 	}
 }
 

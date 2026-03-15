@@ -40,14 +40,12 @@
  */
 @media (prefers-reduced-motion: no-preference) {
 	.blog-card,
-	.service-card,
 	.testimony-card,
 	.card {
 		transition: transform 0.3s ease, box-shadow 0.3s ease;
 	}
 
 	.blog-card:hover,
-	.service-card:hover,
 	.testimony-card:hover,
 	.card:hover {
 		box-shadow: 0 8px 24px rgb(0 0 0 / 15%);

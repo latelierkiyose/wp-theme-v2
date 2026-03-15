@@ -44,7 +44,6 @@ function kiyose_setup() {
 
 	// Tailles d'images personnalisées.
 	add_image_size( 'kiyose-hero', 1920, 800, true );
-	add_image_size( 'kiyose-service-card', 600, 400, true );
 	add_image_size( 'kiyose-testimony-thumb', 150, 150, true );
 
 	// Désactiver les commentaires sur les articles.

@@ -1,9 +1,9 @@
 /**
  * Home Page Sections - L'Atelier Kiyose
- * 
- * Styles for all sections on the homepage: services, events, testimonials, newsletter, blog.
+ *
+ * Styles for all sections on the homepage: content blocks, events, testimonials, newsletter, blog.
  * WCAG 2.2 AA compliant with proper spacing and responsive design.
- * 
+ *
  * @package Kiyose
  * @since   0.1.9
  */
@@ -15,6 +15,11 @@
 .home-page section {
 	padding: var(--kiyose-spacing-3xl) var(--kiyose-spacing-md);
 	position: relative;
+}
+
+/* Contenu 1 suit un séparateur wave : réduire le padding-top */
+.home-page .home-content1 {
+	padding-top: var(--kiyose-spacing-md);
 }
 
 .home-page section h2 {
@@ -33,27 +38,11 @@
 }
 
 /* ============================================
-   SERVICES SECTION (4 PILIERS)
-   ============================================ */
-
-.home-services {
-	background-color: #ffffff;
-}
-
-.home-services__grid {
-	display: grid;
-	gap: var(--kiyose-spacing-xl);
-	grid-template-columns: 1fr;
-	margin: 0 auto;
-	max-width: 1400px;
-}
-
-/* ============================================
    EVENTS SECTION
    ============================================ */
 
 .home-events {
-	/* Background handled by .section--tinted class in page-home.php */
+	background-color: #ffffff;
 	text-align: center;
 }
 
@@ -90,7 +79,7 @@
    ============================================ */
 
 .home-testimonials {
-	background-color: #ffffff;
+	background-color: var(--kiyose-color-background);
 }
 
 .home-testimonials__empty {
@@ -105,7 +94,7 @@
    ============================================ */
 
 .home-newsletter {
-	background-color: #ffffff;
+	background-color: var(--kiyose-color-background);
 	text-align: center;
 }
 
@@ -138,31 +127,12 @@
 	margin: 0;
 }
 
-/* Desktop: newsletter inline section hidden (replaced by fixed overlay) */
-@media (width >= 768px) {
-	.home-newsletter {
-		display: none;
-	}
-
-	/* Hide newsletter-specific wave separators on desktop */
-	.home-newsletter-wave {
-		display: none;
-	}
-}
-
-/* Mobile: show newsletter wave separators, hide desktop-only events→testimonials wave */
-@media (width < 768px) {
-	.home-events-testimonials-wave {
-		display: none;
-	}
-}
-
 /* ============================================
    BLOG SECTION
    ============================================ */
 
 .home-blog {
-	background-color: var(--kiyose-color-background);
+	background-color: #ffffff;
 	text-align: center;
 }
 
@@ -206,11 +176,6 @@
 		padding: var(--kiyose-spacing-3xl) var(--kiyose-spacing-xl);
 	}
 
-	/* Services grid: 2 columns on tablet */
-	.home-services__grid {
-		grid-template-columns: repeat(2, 1fr);
-	}
-
 	/* Blog grid: 2 columns on tablet */
 	.home-blog__grid {
 		grid-template-columns: repeat(2, 1fr);
@@ -229,11 +194,6 @@
 	.home-page section h2 {
 		font-size: var(--kiyose-font-size-4xl);
 		margin-bottom: var(--kiyose-spacing-3xl);
-	}
-
-	/* Services grid: 4 columns on desktop */
-	.home-services__grid {
-		grid-template-columns: repeat(4, 1fr);
 	}
 
 	/* Blog grid: 3 columns on desktop */

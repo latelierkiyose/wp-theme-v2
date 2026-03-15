@@ -38,7 +38,7 @@
 	/* ============================================
 	   VARIANTES DE CONTRASTE (WCAG 2.2 AA)
 	   ============================================ */
-	
+
 	/* Boutons primaires - Texte sur fond rose poudré */
 	--kiyose-color-primary-dark: #603030;     /* Version assombrie pour texte sur rose poudré - Ratio 4.96:1 sur primary ✅, 5.03:1 sur secondary ✅ */
 

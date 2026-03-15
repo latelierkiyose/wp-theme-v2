@@ -1,0 +1,207 @@
+/*
+ * Home Content Sections - L'Atelier Kiyose
+ *
+ * Styles pour les sections Contenu 1 (Q&A) et Contenu 2 (texte/citation/CTA).
+ * WCAG 2.2 AA compliant.
+ *
+ * @package Kiyose
+ * @since   0.2.5
+ */
+
+/* ============================================
+   SECTION CONTENU 1 — Q&A (fond blanc)
+   ============================================ */
+
+.home-content1 {
+	background-color: #ffffff;
+	padding: var(--kiyose-spacing-2xl) var(--kiyose-spacing-md);
+}
+
+.home-content1__inner {
+	margin: 0 auto;
+	max-width: 800px;
+}
+
+/* ============================================
+   LISTE Q&A
+   ============================================ */
+
+.home-content1__qa-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.home-content1__qa-item {
+	padding: var(--kiyose-spacing-xl) 0;
+}
+
+.home-content1__question {
+	color: var(--kiyose-color-burgundy);
+	font-family: var(--kiyose-font-heading);
+	font-size: var(--kiyose-font-size-2xl);
+	font-weight: 400;
+	margin-bottom: var(--kiyose-spacing-sm);
+}
+
+.home-content1__answer {
+	color: var(--kiyose-color-text);
+	font-family: var(--kiyose-font-body);
+	font-size: var(--kiyose-font-size-base);
+	line-height: var(--kiyose-line-height-relaxed);
+	text-align: justify;
+}
+
+/* ============================================
+   SLOGAN CONTENU 1
+   ============================================ */
+
+.home-content1__slogan {
+	color: var(--kiyose-color-burgundy);
+	font-family: var(--kiyose-font-heading);
+	font-size: var(--kiyose-font-size-2xl);
+	font-weight: 400;
+	margin-top: var(--kiyose-spacing-2xl);
+	text-align: center;
+}
+
+/* ============================================
+   SECTION CONTENU 2 — texte/citation/CTA (fond rose)
+   ============================================ */
+
+.home-content2 {
+	background-color: var(--kiyose-color-background);
+	padding: var(--kiyose-spacing-2xl) var(--kiyose-spacing-md);
+}
+
+.home-content2__inner {
+	margin: 0 auto;
+	max-width: 800px;
+}
+
+/* ============================================
+   TEXTE CONTENU 2
+   ============================================ */
+
+.home-content2__text {
+	color: var(--kiyose-color-text);
+	font-family: var(--kiyose-font-body);
+	font-size: var(--kiyose-font-size-base);
+	line-height: var(--kiyose-line-height-relaxed);
+}
+
+.home-content2__text p,
+.home-content2__text ul,
+.home-content2__text ol {
+	margin-bottom: var(--kiyose-spacing-md);
+}
+
+/* ============================================
+   SLOGAN CONTENU 2
+   ============================================ */
+
+.home-content2__slogan {
+	color: var(--kiyose-color-burgundy);
+	font-family: var(--kiyose-font-heading);
+	font-size: var(--kiyose-font-size-2xl);
+	font-weight: 400;
+	margin-bottom: var(--kiyose-spacing-2xl);
+	margin-top: var(--kiyose-spacing-2xl);
+	text-align: center;
+}
+
+/* ============================================
+   CTA CONTENU 2
+   ============================================ */
+
+.home-content2__cta-wrapper {
+	margin-top: var(--kiyose-spacing-2xl);
+	text-align: center;
+}
+
+.home-content2__cta {
+	align-items: center;
+	background-color: var(--kiyose-color-gold-light);
+	border: 2px solid var(--kiyose-color-gold-light);
+	border-radius: 8px;
+	color: var(--kiyose-color-burgundy);
+	display: inline-flex;
+	font-family: var(--kiyose-font-body);
+	font-size: var(--kiyose-font-size-lg);
+	font-weight: 600;
+	justify-content: center;
+	min-height: 44px;
+	min-width: 44px;
+	padding: var(--kiyose-spacing-md) var(--kiyose-spacing-xl);
+	text-decoration: none;
+	transition: all var(--kiyose-transition-base);
+}
+
+.home-content2__cta:focus-visible {
+	outline: 2px solid var(--kiyose-color-burgundy);
+	outline-offset: 4px;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (width >= 768px) {
+	.home-content1 {
+		padding: var(--kiyose-spacing-3xl) var(--kiyose-spacing-xl);
+	}
+
+	.home-content1__question {
+		font-size: var(--kiyose-font-size-3xl);
+	}
+
+	.home-content1__answer {
+		font-size: var(--kiyose-font-size-lg);
+	}
+
+	.home-content1__slogan {
+		font-size: var(--kiyose-font-size-3xl);
+	}
+
+	.home-content2 {
+		padding: var(--kiyose-spacing-3xl) var(--kiyose-spacing-xl);
+	}
+
+	.home-content2__text {
+		font-size: var(--kiyose-font-size-lg);
+	}
+
+	.home-content2__slogan {
+		font-size: var(--kiyose-font-size-3xl);
+	}
+}
+
+@media (width >= 1024px) {
+	.home-content1 {
+		padding: var(--kiyose-spacing-3xl) var(--kiyose-spacing-2xl);
+	}
+
+	.home-content1__question {
+		font-size: var(--kiyose-font-size-3xl);
+	}
+
+	.home-content2 {
+		padding: var(--kiyose-spacing-3xl) var(--kiyose-spacing-2xl);
+	}
+}
+
+/* ============================================
+   ANIMATIONS (respecte prefers-reduced-motion)
+   ============================================ */
+
+@media (prefers-reduced-motion: no-preference) {
+	.home-content2__cta:hover {
+		background-color: #E0B45E;
+		color: var(--kiyose-color-burgundy);
+		transform: translateY(-2px);
+	}
+
+	.home-content2__cta:active {
+		transform: translateY(0);
+	}
+}

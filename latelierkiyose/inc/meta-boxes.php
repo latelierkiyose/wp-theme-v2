@@ -30,6 +30,44 @@ function kiyose_sanitize_welcome_keyword_item( string $label, string $url ): ?ar
 }
 
 /**
+ * Sanitize a list of Q&A items from JSON input.
+ *
+ * Pure function — usable and testable outside WordPress context.
+ *
+ * @param string $raw_json Raw JSON string from form input.
+ * @return array Sanitized array of Q&A items with 'question' and 'answer' keys. Empty array if invalid.
+ */
+function kiyose_sanitize_qa_items( string $raw_json ): array {
+	$decoded = json_decode( $raw_json, true );
+
+	if ( ! is_array( $decoded ) ) {
+		return array();
+	}
+
+	$sanitized = array();
+
+	foreach ( $decoded as $item ) {
+		if ( ! isset( $item['question'], $item['answer'] ) ) {
+			continue;
+		}
+
+		$question = sanitize_text_field( $item['question'] );
+		$answer   = sanitize_text_field( $item['answer'] );
+
+		if ( '' === $question && '' === $answer ) {
+			continue;
+		}
+
+		$sanitized[] = array(
+			'question' => $question,
+			'answer'   => $answer,
+		);
+	}
+
+	return $sanitized;
+}
+
+/**
  * Add meta box for hero section on home page template.
  *
  * @return void
@@ -70,6 +108,14 @@ function kiyose_render_home_hero_meta_box( $post ) {
 		$welcome_keywords = array();
 	}
 	$welcome_slogan = get_post_meta( $post->ID, 'kiyose_welcome_slogan', true );
+
+	// Get current values — Bloc Contenu 1 (Q&A).
+	$content1_qa_raw = get_post_meta( $post->ID, 'kiyose_content1_qa', true );
+	$content1_slogan = get_post_meta( $post->ID, 'kiyose_content1_slogan', true );
+
+	// Get current values — Bloc Contenu 2.
+	$content2_text   = get_post_meta( $post->ID, 'kiyose_content2_text', true );
+	$content2_slogan = get_post_meta( $post->ID, 'kiyose_content2_slogan', true );
 
 	// Get current values — Overlay À propos (existing hero fields).
 	$hero_content  = get_post_meta( $post->ID, 'kiyose_hero_content', true );
@@ -300,6 +346,111 @@ function kiyose_render_home_hero_meta_box( $post ) {
 			</div>
 		</div>
 
+		<h3 style="margin: 25px 0 15px; padding-bottom: 8px; border-bottom: 1px solid #ddd;">
+			<?php esc_html_e( 'Bloc Contenu 1 — Questions & Réponses', 'kiyose' ); ?>
+		</h3>
+		<p class="description" style="margin-bottom:15px;">
+			<?php esc_html_e( 'Liste de questions/réponses. Si vide, la section est masquée.', 'kiyose' ); ?>
+		</p>
+
+		<!-- Repeater Q&A -->
+		<div class="field-group">
+			<input
+				type="hidden"
+				name="kiyose_content1_qa"
+				id="kiyose_content1_qa"
+				value="<?php echo esc_attr( $content1_qa_raw ? $content1_qa_raw : '[]' ); ?>"
+			>
+			<div id="kiyose_content1_qa_list">
+				<?php
+				$content1_qa_items = $content1_qa_raw ? json_decode( $content1_qa_raw, true ) : array();
+				if ( ! is_array( $content1_qa_items ) ) {
+					$content1_qa_items = array();
+				}
+				foreach ( $content1_qa_items as $kiyose_qa_item ) :
+					?>
+				<div class="qa-row" style="margin-bottom:16px;padding:12px;background:#f9f9f9;border:1px solid #ddd;border-radius:4px;">
+					<div style="margin-bottom:8px;">
+						<label style="display:block;font-weight:600;margin-bottom:4px;"><?php esc_html_e( 'Question', 'kiyose' ); ?></label>
+						<input
+							type="text"
+							class="qa-question"
+							value="<?php echo esc_attr( $kiyose_qa_item['question'] ); ?>"
+							style="width:100%;"
+						>
+					</div>
+					<div style="margin-bottom:8px;">
+						<label style="display:block;font-weight:600;margin-bottom:4px;"><?php esc_html_e( 'Réponse', 'kiyose' ); ?></label>
+						<textarea class="qa-answer" rows="3" style="width:100%;resize:vertical;"><?php echo esc_textarea( $kiyose_qa_item['answer'] ); ?></textarea>
+					</div>
+					<button type="button" class="button qa-remove"><?php esc_html_e( 'Supprimer', 'kiyose' ); ?></button>
+				</div>
+				<?php endforeach; ?>
+			</div>
+			<button type="button" class="button" id="kiyose_qa_add">
+				<?php esc_html_e( 'Ajouter une question', 'kiyose' ); ?>
+			</button>
+		</div>
+
+		<!-- Slogan Contenu 1 -->
+		<div class="field-group">
+			<label for="kiyose_content1_slogan">
+				<?php esc_html_e( 'Citation / Slogan (optionnel)', 'kiyose' ); ?>
+			</label>
+			<input
+				type="text"
+				name="kiyose_content1_slogan"
+				id="kiyose_content1_slogan"
+				value="<?php echo esc_attr( $content1_slogan ); ?>"
+			>
+			<p class="description">
+				<?php esc_html_e( 'Affiché sous les Q&R, en typographie Dancing Script.', 'kiyose' ); ?>
+			</p>
+		</div>
+
+		<h3 style="margin: 25px 0 15px; padding-bottom: 8px; border-bottom: 1px solid #ddd;">
+			<?php esc_html_e( 'Bloc Contenu 2 — Texte libre', 'kiyose' ); ?>
+		</h3>
+
+		<!-- Texte riche Contenu 2 -->
+		<div class="field-group">
+			<label for="kiyose_content2_text">
+				<?php esc_html_e( 'Texte (HTML limité : gras, italique, listes, liens)', 'kiyose' ); ?>
+			</label>
+			<?php
+			wp_editor(
+				wp_kses_post( $content2_text ),
+				'kiyose_content2_text',
+				array(
+					'textarea_name' => 'kiyose_content2_text',
+					'media_buttons' => false,
+					'teeny'         => true,
+					'tinymce'       => array(
+						'toolbar1' => 'bold,italic,bullist,numlist,link,unlink',
+					),
+					'quicktags'     => false,
+					'textarea_rows' => 8,
+				)
+			);
+			?>
+		</div>
+
+		<!-- Slogan Contenu 2 -->
+		<div class="field-group">
+			<label for="kiyose_content2_slogan">
+				<?php esc_html_e( 'Citation / Slogan (optionnel)', 'kiyose' ); ?>
+			</label>
+			<input
+				type="text"
+				name="kiyose_content2_slogan"
+				id="kiyose_content2_slogan"
+				value="<?php echo esc_attr( $content2_slogan ); ?>"
+			>
+			<p class="description">
+				<?php esc_html_e( 'Affiché sous le texte, en typographie Dancing Script.', 'kiyose' ); ?>
+			</p>
+		</div>
+
 		</div><!-- .kiyose-meta-box__fields -->
 	</div><!-- .kiyose-meta-box -->
 
@@ -366,6 +517,44 @@ function kiyose_render_home_hero_meta_box( $post ) {
 		// Serialize before form submit
 		$('form#post').on('submit', function() {
 			serializeKeywords();
+		});
+
+		// Q&A repeater
+		function serializeQA() {
+			var items = [];
+			$('#kiyose_content1_qa_list .qa-row').each(function() {
+				var question = $(this).find('.qa-question').val().trim();
+				var answer = $(this).find('.qa-answer').val().trim();
+				if (question || answer) {
+					items.push({ question: question, answer: answer });
+				}
+			});
+			$('#kiyose_content1_qa').val(JSON.stringify(items));
+		}
+
+		$('#kiyose_qa_add').on('click', function() {
+			var row = '<div class="qa-row" style="margin-bottom:16px;padding:12px;background:#f9f9f9;border:1px solid #ddd;border-radius:4px;">' +
+				'<div style="margin-bottom:8px;"><label style="display:block;font-weight:600;margin-bottom:4px;"><?php echo esc_html__( 'Question', 'kiyose' ); ?></label>' +
+				'<input type="text" class="qa-question" style="width:100%;"></div>' +
+				'<div style="margin-bottom:8px;"><label style="display:block;font-weight:600;margin-bottom:4px;"><?php echo esc_html__( 'Réponse', 'kiyose' ); ?></label>' +
+				'<textarea class="qa-answer" rows="3" style="width:100%;resize:vertical;"></textarea></div>' +
+				'<button type="button" class="button qa-remove"><?php echo esc_html__( 'Supprimer', 'kiyose' ); ?></button>' +
+				'</div>';
+			$('#kiyose_content1_qa_list').append(row);
+		});
+
+		$(document).on('click', '.qa-remove', function() {
+			$(this).closest('.qa-row').remove();
+			serializeQA();
+		});
+
+		$(document).on('change input', '#kiyose_content1_qa_list input, #kiyose_content1_qa_list textarea', function() {
+			serializeQA();
+		});
+
+		// Serialize Q&A before form submit
+		$('form#post').on('submit', function() {
+			serializeQA();
 		});
 
 		// Media uploader
@@ -455,7 +644,8 @@ function kiyose_save_home_hero_meta( $post_id ) {
 
 	// Save welcome keywords.
 	if ( isset( $_POST['kiyose_welcome_keywords'] ) ) {
-		$raw_json = sanitize_text_field( wp_unslash( $_POST['kiyose_welcome_keywords'] ) );
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitization happens inside kiyose_sanitize_welcome_keyword_item() after json_decode(); applying sanitize_text_field() here would corrupt \uXXXX Unicode escapes.
+		$raw_json = wp_unslash( $_POST['kiyose_welcome_keywords'] );
 		$decoded  = json_decode( $raw_json, true );
 
 		if ( is_array( $decoded ) ) {
@@ -468,7 +658,7 @@ function kiyose_save_home_hero_meta( $post_id ) {
 					}
 				}
 			}
-			update_post_meta( $post_id, 'kiyose_welcome_keywords', wp_json_encode( $sanitized ) );
+			update_post_meta( $post_id, 'kiyose_welcome_keywords', wp_slash( wp_json_encode( $sanitized ) ) );
 		}
 	}
 
@@ -501,111 +691,28 @@ function kiyose_save_home_hero_meta( $post_id ) {
 			delete_post_meta( $post_id, 'kiyose_hero_image_id' );
 		}
 	}
+
+	// Save content1 Q&A items.
+	if ( isset( $_POST['kiyose_content1_qa'] ) ) {
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitization happens inside kiyose_sanitize_qa_items() after json_decode(); applying sanitize_text_field() here would corrupt \uXXXX Unicode escapes.
+		$qa_items = kiyose_sanitize_qa_items( wp_unslash( $_POST['kiyose_content1_qa'] ) );
+		update_post_meta( $post_id, 'kiyose_content1_qa', wp_slash( wp_json_encode( $qa_items ) ) );
+	}
+
+	// Save content1 slogan.
+	if ( isset( $_POST['kiyose_content1_slogan'] ) ) {
+		update_post_meta( $post_id, 'kiyose_content1_slogan', sanitize_text_field( wp_unslash( $_POST['kiyose_content1_slogan'] ) ) );
+	}
+
+	// Save content2 text.
+	if ( isset( $_POST['kiyose_content2_text'] ) ) {
+		update_post_meta( $post_id, 'kiyose_content2_text', wp_kses_post( wp_unslash( $_POST['kiyose_content2_text'] ) ) );
+	}
+
+	// Save content2 slogan.
+	if ( isset( $_POST['kiyose_content2_slogan'] ) ) {
+		update_post_meta( $post_id, 'kiyose_content2_slogan', sanitize_text_field( wp_unslash( $_POST['kiyose_content2_slogan'] ) ) );
+	}
 }
 add_action( 'save_post_page', 'kiyose_save_home_hero_meta' );
 
-/**
- * Enregistrer la meta box pour l'affichage sur la page d'accueil.
- *
- * Cette meta box est visible uniquement sur les pages utilisant le template "Page de service".
- *
- * @since 0.1.17
- */
-function kiyose_register_homepage_display_meta_box() {
-	add_meta_box(
-		'kiyose_homepage_display',
-		__( 'Affichage page d\'accueil', 'kiyose' ),
-		'kiyose_homepage_display_meta_box_callback',
-		'page',
-		'side',
-		'default'
-	);
-}
-add_action( 'add_meta_boxes', 'kiyose_register_homepage_display_meta_box' );
-
-/**
- * Callback pour afficher le contenu de la meta box.
- *
- * @since 0.1.17
- *
- * @param WP_Post $post L'objet post actuel.
- */
-function kiyose_homepage_display_meta_box_callback( $post ) {
-	// Vérifier le template de la page.
-	$page_template = get_post_meta( $post->ID, '_wp_page_template', true );
-
-	// N'afficher la meta box que pour les pages avec template "Page de service".
-	if ( 'templates/page-services.php' !== $page_template ) {
-		?>
-		<p class="description" style="background: #fff8e5; border-left: 4px solid #f0b849; padding: 12px; margin: 0;">
-			<strong><?php esc_html_e( 'Information :', 'kiyose' ); ?></strong><br>
-			<?php esc_html_e( 'Cette option est disponible uniquement pour les pages utilisant le template "Page de service".', 'kiyose' ); ?>
-		</p>
-		<?php
-		return;
-	}
-
-	// Récupérer la valeur actuelle.
-	$show_on_homepage = get_post_meta( $post->ID, 'kiyose_show_on_homepage', true );
-
-	// Nonce pour la sécurité.
-	wp_nonce_field( 'kiyose_save_homepage_display', 'kiyose_homepage_display_nonce' );
-
-	?>
-	<p>
-		<label for="kiyose_show_on_homepage">
-			<input
-				type="checkbox"
-				id="kiyose_show_on_homepage"
-				name="kiyose_show_on_homepage"
-				value="1"
-				<?php checked( $show_on_homepage, '1' ); ?>
-			/>
-			<?php esc_html_e( 'Afficher dans la section "Mes activités"', 'kiyose' ); ?>
-		</label>
-	</p>
-	<p class="description">
-		<?php esc_html_e( 'Pour contrôler l\'ordre d\'affichage, utilisez le champ "Ordre" dans la section "Attributs de page" ci-dessous.', 'kiyose' ); ?>
-	</p>
-	<?php
-}
-
-/**
- * Sauvegarder la meta box lors de la sauvegarde de la page.
- *
- * @since 0.1.17
- *
- * @param int $post_id L'ID du post.
- */
-function kiyose_save_homepage_display_meta_box( $post_id ) {
-	// Vérifier le nonce.
-	if ( ! isset( $_POST['kiyose_homepage_display_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['kiyose_homepage_display_nonce'] ) ), 'kiyose_save_homepage_display' ) ) {
-		return;
-	}
-
-	// Vérifier l'autosave.
-	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-		return;
-	}
-
-	// Vérifier les permissions.
-	if ( ! current_user_can( 'edit_page', $post_id ) ) {
-		return;
-	}
-
-	// Vérifier le template de la page.
-	$page_template = get_post_meta( $post_id, '_wp_page_template', true );
-	if ( 'templates/page-services.php' !== $page_template ) {
-		// Si ce n'est pas une page de service, supprimer la meta pour éviter les incohérences.
-		delete_post_meta( $post_id, 'kiyose_show_on_homepage' );
-		return;
-	}
-
-	// Sauvegarder la valeur.
-	if ( isset( $_POST['kiyose_show_on_homepage'] ) && '1' === $_POST['kiyose_show_on_homepage'] ) {
-		update_post_meta( $post_id, 'kiyose_show_on_homepage', '1' );
-	} else {
-		delete_post_meta( $post_id, 'kiyose_show_on_homepage' );
-	}
-}
-add_action( 'save_post_page', 'kiyose_save_homepage_display_meta_box' );

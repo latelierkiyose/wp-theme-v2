@@ -153,13 +153,6 @@ function kiyose_enqueue_assets() {
 	);
 
 	wp_enqueue_style(
-		'kiyose-service-card',
-		get_template_directory_uri() . "/assets/css/components/service-card{$suffix}.css",
-		array( 'kiyose-variables' ),
-		kiyose_get_asset_version( "/assets/css/components/service-card{$suffix}.css" )
-	);
-
-	wp_enqueue_style(
 		'kiyose-home-sections',
 		get_template_directory_uri() . "/assets/css/components/home-sections{$suffix}.css",
 		array( 'kiyose-variables' ),
@@ -231,7 +224,7 @@ function kiyose_enqueue_assets() {
 	wp_enqueue_style(
 		'kiyose-main',
 		get_template_directory_uri() . "/assets/css/main{$suffix}.css",
-		array( 'kiyose-fonts', 'kiyose-variables', 'kiyose-header', 'kiyose-navigation', 'kiyose-footer', 'kiyose-page', 'kiyose-search', 'kiyose-404', 'kiyose-blog-card', 'kiyose-blog-archive', 'kiyose-blog-single', 'kiyose-testimony', 'kiyose-hero', 'kiyose-service-card', 'kiyose-home-sections', 'kiyose-kintsugi', 'kiyose-animations', 'kiyose-gutenberg-blocks' ),
+		array( 'kiyose-fonts', 'kiyose-variables', 'kiyose-header', 'kiyose-navigation', 'kiyose-footer', 'kiyose-page', 'kiyose-search', 'kiyose-404', 'kiyose-blog-card', 'kiyose-blog-archive', 'kiyose-blog-single', 'kiyose-testimony', 'kiyose-hero', 'kiyose-home-sections', 'kiyose-kintsugi', 'kiyose-animations', 'kiyose-gutenberg-blocks' ),
 		kiyose_get_asset_version( "/assets/css/main{$suffix}.css" )
 	);
 
@@ -442,6 +435,14 @@ function kiyose_enqueue_home_animations() {
 		get_template_directory_uri() . "/assets/css/components/welcome-block{$suffix}.css",
 		array( 'kiyose-variables' ),
 		kiyose_get_asset_version( "/assets/css/components/welcome-block{$suffix}.css" )
+	);
+
+	// Home content sections (Q&A, texte/citation, CTA).
+	wp_enqueue_style(
+		'kiyose-home-content',
+		get_template_directory_uri() . "/assets/css/components/home-content{$suffix}.css",
+		array( 'kiyose-variables' ),
+		kiyose_get_asset_version( "/assets/css/components/home-content{$suffix}.css" )
 	);
 
 	// Overlay À propos — styles et script.

@@ -25,6 +25,18 @@ $kiyose_hero_cta_text = get_post_meta( get_the_ID(), 'kiyose_hero_cta_text', tru
 $kiyose_hero_cta_url  = get_post_meta( get_the_ID(), 'kiyose_hero_cta_url', true );
 $kiyose_hero_image_id = get_post_meta( get_the_ID(), 'kiyose_hero_image_id', true );
 
+// Récupérer les données Contenu 1 (Q&A).
+$kiyose_content1_qa_raw = get_post_meta( get_the_ID(), 'kiyose_content1_qa', true );
+$kiyose_content1_qa     = $kiyose_content1_qa_raw ? json_decode( $kiyose_content1_qa_raw, true ) : array();
+if ( ! is_array( $kiyose_content1_qa ) ) {
+	$kiyose_content1_qa = array();
+}
+$kiyose_content1_slogan = get_post_meta( get_the_ID(), 'kiyose_content1_slogan', true );
+
+// Récupérer les données Contenu 2.
+$kiyose_content2_text   = get_post_meta( get_the_ID(), 'kiyose_content2_text', true );
+$kiyose_content2_slogan = get_post_meta( get_the_ID(), 'kiyose_content2_slogan', true );
+
 // Valeurs par défaut.
 if ( empty( $kiyose_welcome_title ) ) {
 	$kiyose_welcome_title = "L'être humain est un vitrail, révélons ensemble sa lumière";
@@ -106,6 +118,11 @@ $kiyose_has_about_image = ! empty( $kiyose_hero_image_id );
 			<?php if ( ! empty( $kiyose_welcome_slogan ) ) : ?>
 				<p class="welcome-block__slogan"><?php echo esc_html( $kiyose_welcome_slogan ); ?></p>
 			<?php endif; ?>
+			<div class="welcome-block__cta-wrapper" style="margin-top: var(--kiyose-spacing-xl);">
+				<a href="<?php echo esc_url( KIYOSE_DISCOVERY_CALL_URL ); ?>" class="welcome-block__cta">
+					<?php esc_html_e( 'Réserver votre appel découverte', 'kiyose' ); ?>
+				</a>
+			</div>
 		</div>
 	</section>
 
@@ -128,7 +145,7 @@ $kiyose_has_about_image = ! empty( $kiyose_hero_image_id );
 	</div>
 
 	<?php
-	// Wave separator — Bienvenue (beige) → Services (white).
+	// Wave separator — Bienvenue (beige) → Contenu 1 (blanc).
 	get_template_part(
 		'template-parts/decorative',
 		'shapes',
@@ -140,101 +157,89 @@ $kiyose_has_about_image = ! empty( $kiyose_hero_image_id );
 	);
 	?>
 
-	<!-- Section 4 Piliers -->
-	<section class="home-services" aria-labelledby="services-title">
-		<?php
-		get_template_part(
-			'template-parts/decorative',
-			'scribbles',
-			array(
-				'type'     => 'spiral',
-				'color'    => '--kiyose-color-primary',
-				'size'     => 100,
-				'rotation' => -8,
-				'float'    => true,
-				'top'      => '5%',
-				'left'     => '2%',
-			)
-		);
-		get_template_part(
-			'template-parts/decorative',
-			'scribbles',
-			array(
-				'type'     => 'cross',
-				'color'    => '--kiyose-color-warm-yellow',
-				'size'     => 45,
-				'rotation' => 18,
-				'float'    => false,
-				'top'      => '12%',
-				'right'    => '4%',
-			)
-		);
-		get_template_part(
-			'template-parts/decorative',
-			'scribbles',
-			array(
-				'type'     => 'virgules',
-				'color'    => '--kiyose-color-accent',
-				'size'     => 55,
-				'rotation' => -14,
-				'float'    => false,
-				'bottom'   => '8%',
-				'right'    => '6%',
-			)
-		);
-		?>
-		<h2 id="services-title" class="home-services__title">Mes activités</h2>
-		<div class="home-services__grid">
-			<?php
-			// Récupérer les pages de services marquées pour affichage sur la page d'accueil.
-			$kiyose_service_pages = get_posts(
-				array(
-					'post_type'      => 'page',
-					'meta_key'       => 'kiyose_show_on_homepage', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Query intentionnelle.
-					'meta_value'     => '1', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Query intentionnelle.
-					'orderby'        => 'menu_order',
-					'order'          => 'ASC',
-					'posts_per_page' => -1,
-				)
-			);
-
-			if ( ! empty( $kiyose_service_pages ) ) {
-				foreach ( $kiyose_service_pages as $kiyose_service_page ) {
-					// Setup post data pour get_template_part.
-					global $post;
-					$post = $kiyose_service_page; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
-					setup_postdata( $post );
-
-					get_template_part( 'template-parts/content', 'service' );
-
-					wp_reset_postdata();
-				}
-			} else {
-				?>
-				<p class="home-services__empty">
-					<?php esc_html_e( 'Aucun service n\'est actuellement configuré pour l\'affichage sur la page d\'accueil.', 'kiyose' ); ?>
-				</p>
-				<?php
-			}
-			?>
+	<!-- Section Contenu 1 — Questions & Réponses -->
+	<?php if ( ! empty( $kiyose_content1_qa ) ) : ?>
+	<section class="home-content1" aria-labelledby="content1-heading">
+		<h2 id="content1-heading" class="sr-only">
+			<?php esc_html_e( 'Questions fréquentes', 'kiyose' ); ?>
+		</h2>
+		<div class="home-content1__inner">
+			<ul class="home-content1__qa-list" role="list">
+				<?php foreach ( $kiyose_content1_qa as $kiyose_qa_item ) : ?>
+					<?php
+					if ( empty( $kiyose_qa_item['question'] ) && empty( $kiyose_qa_item['answer'] ) ) {
+						continue;
+					}
+					?>
+					<li class="home-content1__qa-item">
+						<?php if ( ! empty( $kiyose_qa_item['question'] ) ) : ?>
+							<p class="home-content1__question"><?php echo esc_html( $kiyose_qa_item['question'] ); ?></p>
+						<?php endif; ?>
+						<?php if ( ! empty( $kiyose_qa_item['answer'] ) ) : ?>
+							<p class="home-content1__answer"><?php echo esc_html( $kiyose_qa_item['answer'] ); ?></p>
+						<?php endif; ?>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+			<?php if ( ! empty( $kiyose_content1_slogan ) ) : ?>
+				<p class="home-content1__slogan"><?php echo esc_html( $kiyose_content1_slogan ); ?></p>
+			<?php endif; ?>
 		</div>
 	</section>
+	<?php endif; ?>
 
 	<?php
-	// Wave separator — Services (white) → Events (tinted).
+	// Wave separator — Contenu 1 (blanc) → Contenu 2 (rose).
 	get_template_part(
 		'template-parts/decorative',
 		'shapes',
 		array(
 			'mode'    => 'separator',
-			'color'   => 'rgb(201 171 167 / 10%)',
+			'color'   => '--kiyose-color-background',
 			'from_bg' => '#ffffff',
 		)
 	);
 	?>
 
+	<!-- Section Contenu 2 — Texte libre -->
+	<?php if ( ! empty( $kiyose_content2_text ) || ! empty( $kiyose_content2_slogan ) ) : ?>
+	<section class="home-content2" aria-labelledby="content2-heading">
+		<h2 id="content2-heading" class="sr-only">
+			<?php esc_html_e( 'À propos de ma pratique', 'kiyose' ); ?>
+		</h2>
+		<div class="home-content2__inner">
+			<?php if ( ! empty( $kiyose_content2_text ) ) : ?>
+				<div class="home-content2__text">
+					<?php echo wp_kses_post( $kiyose_content2_text ); ?>
+				</div>
+			<?php endif; ?>
+			<?php if ( ! empty( $kiyose_content2_slogan ) ) : ?>
+				<p class="home-content2__slogan"><?php echo esc_html( $kiyose_content2_slogan ); ?></p>
+			<?php endif; ?>
+			<div class="home-content2__cta-wrapper">
+				<a href="<?php echo esc_url( KIYOSE_DISCOVERY_CALL_URL ); ?>" class="home-content2__cta">
+					<?php esc_html_e( 'Réserver votre appel découverte', 'kiyose' ); ?>
+				</a>
+			</div>
+		</div>
+	</section>
+	<?php endif; ?>
+
+	<?php
+	// Wave separator — Contenu 2 (rose) → Events (blanc).
+	get_template_part(
+		'template-parts/decorative',
+		'shapes',
+		array(
+			'mode'    => 'separator',
+			'color'   => '#ffffff',
+			'from_bg' => '--kiyose-color-background',
+		)
+	);
+	?>
+
 	<!-- Section Prochaines Dates -->
-	<section class="home-events section--tinted" aria-labelledby="events-title">
+	<section class="home-events" aria-labelledby="events-title">
 		<?php
 		get_template_part(
 			'template-parts/decorative',
@@ -299,107 +304,17 @@ $kiyose_has_about_image = ! empty( $kiyose_hero_image_id );
 	</section>
 
 	<?php
-	// Wave separator — Events (tinted) → Newsletter (white) — Mobile only.
+	// Wave separator — Events (blanc) → Témoignages (rose).
+	get_template_part(
+		'template-parts/decorative',
+		'shapes',
+		array(
+			'mode'    => 'separator',
+			'color'   => '--kiyose-color-background',
+			'from_bg' => '#ffffff',
+		)
+	);
 	?>
-	<div class="home-newsletter-wave home-newsletter-wave--before">
-		<?php
-		get_template_part(
-			'template-parts/decorative',
-			'shapes',
-			array(
-				'mode'    => 'separator',
-				'color'   => '#ffffff',
-				'from_bg' => 'rgb(201 171 167 / 10%)',
-			)
-		);
-		?>
-	</div>
-
-	<!-- Section Newsletter — Mobile inline (masquée sur desktop, remplacée par l'overlay) -->
-	<section class="home-newsletter" aria-labelledby="newsletter-title">
-		<?php
-		get_template_part(
-			'template-parts/decorative',
-			'scribbles',
-			array(
-				'type'     => 'virgules',
-				'color'    => '--kiyose-color-burgundy',
-				'size'     => 60,
-				'rotation' => -10,
-				'float'    => false,
-				'top'      => '15%',
-				'right'    => '5%',
-			)
-		);
-		get_template_part(
-			'template-parts/decorative',
-			'scribbles',
-			array(
-				'type'     => 'squiggle',
-				'color'    => '--kiyose-color-warm-yellow',
-				'size'     => 80,
-				'rotation' => 25,
-				'float'    => false,
-				'bottom'   => '10%',
-				'left'     => '4%',
-			)
-		);
-		?>
-		<div class="home-newsletter__content">
-			<h2 id="newsletter-title" class="home-newsletter__title">Restez informés</h2>
-			<p class="home-newsletter__description">
-				Recevez les prochaines dates et actualités de l'atelier directement dans votre boîte mail.
-			</p>
-			<?php
-			if ( shortcode_exists( 'sibwp_form' ) ) {
-				echo do_shortcode( '[sibwp_form id=1]' );
-			} else {
-				?>
-				<div class="home-newsletter__form-placeholder">
-					<p><?php esc_html_e( 'Le formulaire d\'inscription à la newsletter sera intégré ici une fois le plugin Brevo configuré.', 'kiyose' ); ?></p>
-				</div>
-				<?php
-			}
-			?>
-		</div>
-	</section>
-
-	<?php
-	// Wave separator — Newsletter (white) → Testimonials (white).
-	// On mobile: visible (newsletter white bg → testimonials white bg, same color transition).
-	// On desktop: hidden along with the newsletter section.
-	?>
-	<div class="home-newsletter-wave home-newsletter-wave--after">
-		<?php
-		get_template_part(
-			'template-parts/decorative',
-			'shapes',
-			array(
-				'mode'    => 'separator',
-				'color'   => '#ffffff',
-				'from_bg' => '#ffffff',
-			)
-		);
-		?>
-	</div>
-
-	<?php
-	// Wave separator — Events (tinted) → Testimonials (white) — Desktop only.
-	// On desktop: newsletter section is hidden, so we need a direct separator.
-	?>
-	<div class="home-events-testimonials-wave">
-		<?php
-		get_template_part(
-			'template-parts/decorative',
-			'shapes',
-			array(
-				'mode'    => 'separator',
-				'color'   => '#ffffff',
-				'from_bg' => 'rgb(201 171 167 / 10%)',
-			)
-		);
-		?>
-	</div>
 
 	<!-- Section Témoignages (Carousel) -->
 	<section class="home-testimonials" aria-labelledby="testimonials-title">
@@ -492,14 +407,14 @@ $kiyose_has_about_image = ! empty( $kiyose_hero_image_id );
 	</section>
 
 	<?php
-	// Wave separator — Testimonials (white) → Blog (beige).
+	// Wave separator — Témoignages (rose) → Blog (blanc).
 	get_template_part(
 		'template-parts/decorative',
 		'shapes',
 		array(
 			'mode'    => 'separator',
-			'color'   => '--kiyose-color-background',
-			'from_bg' => '#ffffff',
+			'color'   => '#ffffff',
+			'from_bg' => '--kiyose-color-background',
 		)
 	);
 	?>
@@ -580,6 +495,68 @@ $kiyose_has_about_image = ! empty( $kiyose_hero_image_id );
 			<?php
 		endif;
 		?>
+	</section>
+
+	<?php
+	// Wave separator — Blog (blanc) → Newsletter (rose).
+	get_template_part(
+		'template-parts/decorative',
+		'shapes',
+		array(
+			'mode'    => 'separator',
+			'color'   => '--kiyose-color-background',
+			'from_bg' => '#ffffff',
+		)
+	);
+	?>
+
+	<!-- Section Newsletter -->
+	<section class="home-newsletter" aria-labelledby="newsletter-title">
+		<?php
+		get_template_part(
+			'template-parts/decorative',
+			'scribbles',
+			array(
+				'type'     => 'virgules',
+				'color'    => '--kiyose-color-burgundy',
+				'size'     => 60,
+				'rotation' => -10,
+				'float'    => false,
+				'top'      => '15%',
+				'right'    => '5%',
+			)
+		);
+		get_template_part(
+			'template-parts/decorative',
+			'scribbles',
+			array(
+				'type'     => 'squiggle',
+				'color'    => '--kiyose-color-warm-yellow',
+				'size'     => 80,
+				'rotation' => 25,
+				'float'    => false,
+				'bottom'   => '10%',
+				'left'     => '4%',
+			)
+		);
+		?>
+		<div class="home-newsletter__content">
+			<h2 id="newsletter-title" class="home-newsletter__title">Restez informés</h2>
+			<p class="home-newsletter__description">
+				Recevez les prochaines dates et actualités de l'atelier directement dans votre boîte mail.
+			</p>
+			<?php
+			if ( shortcode_exists( 'sibwp_form' ) ) {
+				echo do_shortcode( '[sibwp_form id=1]' );
+			} else {
+				?>
+				<div class="home-newsletter__form-placeholder">
+					<p><?php esc_html_e( 'Le formulaire d\'inscription à la newsletter sera intégré ici une fois le plugin Brevo configuré.', 'kiyose' ); ?></p>
+				</div>
+				<?php
+			}
+			?>
+		</div>
 	</section>
 
 	<!-- Decorative shapes — distributed along page margins -->

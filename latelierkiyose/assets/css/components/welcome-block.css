@@ -143,11 +143,54 @@
 	.welcome-block {
 		padding: var(--kiyose-spacing-3xl) var(--kiyose-spacing-xl);
 	}
+
+	.welcome-block__text {
+		font-size: var(--kiyose-font-size-lg);
+	}
 }
 
 @media (width >= 1024px) {
 	.welcome-block {
 		padding: var(--kiyose-spacing-3xl) var(--kiyose-spacing-2xl);
+	}
+}
+
+/* ============================================
+   CTA APPEL DÉCOUVERTE
+   ============================================ */
+
+.welcome-block__cta {
+	align-items: center;
+	background-color: var(--kiyose-color-gold-light);
+	border: 2px solid var(--kiyose-color-gold-light);
+	border-radius: 8px;
+	color: var(--kiyose-color-burgundy);
+	display: inline-flex;
+	font-family: var(--kiyose-font-body);
+	font-size: var(--kiyose-font-size-lg);
+	font-weight: 600;
+	justify-content: center;
+	min-height: 44px;
+	min-width: 44px;
+	padding: var(--kiyose-spacing-md) var(--kiyose-spacing-xl);
+	text-decoration: none;
+	transition: all var(--kiyose-transition-base);
+}
+
+.welcome-block__cta:focus-visible {
+	outline: 2px solid var(--kiyose-color-burgundy);
+	outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.welcome-block__cta:hover {
+		background-color: #E0B45E;
+		color: var(--kiyose-color-burgundy);
+		transform: translateY(-2px);
+	}
+
+	.welcome-block__cta:active {
+		transform: translateY(0);
 	}
 }
 
