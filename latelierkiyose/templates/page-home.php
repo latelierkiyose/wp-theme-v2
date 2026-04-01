@@ -497,68 +497,6 @@ $kiyose_has_about_image = ! empty( $kiyose_hero_image_id );
 		?>
 	</section>
 
-	<?php
-	// Wave separator — Blog (blanc) → Newsletter (rose).
-	get_template_part(
-		'template-parts/decorative',
-		'shapes',
-		array(
-			'mode'    => 'separator',
-			'color'   => '--kiyose-color-background',
-			'from_bg' => '#ffffff',
-		)
-	);
-	?>
-
-	<!-- Section Newsletter -->
-	<section class="home-newsletter" aria-labelledby="newsletter-title">
-		<?php
-		get_template_part(
-			'template-parts/decorative',
-			'scribbles',
-			array(
-				'type'     => 'virgules',
-				'color'    => '--kiyose-color-burgundy',
-				'size'     => 60,
-				'rotation' => -10,
-				'float'    => false,
-				'top'      => '15%',
-				'right'    => '5%',
-			)
-		);
-		get_template_part(
-			'template-parts/decorative',
-			'scribbles',
-			array(
-				'type'     => 'squiggle',
-				'color'    => '--kiyose-color-warm-yellow',
-				'size'     => 80,
-				'rotation' => 25,
-				'float'    => false,
-				'bottom'   => '10%',
-				'left'     => '4%',
-			)
-		);
-		?>
-		<div class="home-newsletter__content">
-			<h2 id="newsletter-title" class="home-newsletter__title">Restez informés</h2>
-			<p class="home-newsletter__description">
-				Recevez les prochaines dates et actualités de l'atelier directement dans votre boîte mail.
-			</p>
-			<?php
-			if ( shortcode_exists( 'sibwp_form' ) ) {
-				echo do_shortcode( '[sibwp_form id=1]' );
-			} else {
-				?>
-				<div class="home-newsletter__form-placeholder">
-					<p><?php esc_html_e( 'Le formulaire d\'inscription à la newsletter sera intégré ici une fois le plugin Brevo configuré.', 'kiyose' ); ?></p>
-				</div>
-				<?php
-			}
-			?>
-		</div>
-	</section>
-
 	<!-- Decorative shapes — distributed along page margins -->
 	<div class="deco-page-shapes" aria-hidden="true">
 		<?php

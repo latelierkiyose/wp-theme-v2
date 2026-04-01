@@ -17,12 +17,12 @@
 	position: relative;
 }
 
-/* Contenu 1 suit un séparateur wave : réduire le padding-top */
-.home-page .home-content1 {
+/* Sections après un séparateur wave : rapprocher le contenu */
+.home-page .wave-separator + section {
 	padding-top: var(--kiyose-spacing-md);
 }
 
-.home-page section h2 {
+.home-page section h2:not(.sr-only) {
 	color: var(--kiyose-color-burgundy);
 	font-family: var(--kiyose-font-heading);
 	font-size: var(--kiyose-font-size-3xl);
@@ -32,7 +32,7 @@
 	z-index: 1;
 }
 
-.home-page section > :not(.deco-element) {
+.home-page section > :not(.deco-element, .sr-only) {
 	position: relative;
 	z-index: 1;
 }
@@ -191,7 +191,7 @@
 		padding: var(--kiyose-spacing-3xl) var(--kiyose-spacing-2xl);
 	}
 
-	.home-page section h2 {
+	.home-page section h2:not(.sr-only) {
 		font-size: var(--kiyose-font-size-4xl);
 		margin-bottom: var(--kiyose-spacing-3xl);
 	}
@@ -216,4 +216,20 @@
 	.home-blog__cta:active {
 		transform: translateY(0);
 	}
+}
+
+/* ============================================
+   FOOTER SPACING — Homepage
+   Le body a un fond rose ; sans ceci le margin-top
+   du footer et le padding-bottom du main laissent
+   un bandeau rose visible.
+   ============================================ */
+
+/* stylelint-disable-next-line selector-max-id */
+.page-template-page-home #main-content {
+	padding-bottom: 0;
+}
+
+.page-template-page-home .site-footer {
+	margin-top: 0;
 }

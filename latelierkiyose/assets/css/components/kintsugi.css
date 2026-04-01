@@ -225,6 +225,7 @@
  * Page-level anchor for decorative shapes.
  */
 .home-page {
+	background-color: #ffffff;
 	overflow-x: clip;
 	position: relative;
 }
