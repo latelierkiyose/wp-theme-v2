@@ -1,8 +1,6 @@
 # PRD 0035 — Hauteur fixe et « Voir plus » du carousel de témoignages
 
-## Statut
-
-**prêt à l'implémentation**
+**Statut** : terminé
 
 ## Objectif
 
