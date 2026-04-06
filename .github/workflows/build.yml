@@ -142,7 +142,13 @@ jobs:
             The theme ZIP contains only the `latelierkiyose/` folder ready to upload to WordPress.
           files: build/${{ steps.release_tag.outputs.zipname }}
           prerelease: true
-          draft: false
+          draft: true
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ steps.release_tag.outputs.tag }}
+        run: gh release edit "$RELEASE_TAG" --draft=false --prerelease
 
       - name: Cleanup old releases
         uses: actions/github-script@v8
