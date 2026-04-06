@@ -59,6 +59,7 @@
 	font-size: var(--kiyose-font-size-base);
 	line-height: var(--kiyose-line-height-relaxed);
 	margin-bottom: var(--kiyose-spacing-3xl);
+	text-align: justify;
 }
 
 /* Paragraphes */

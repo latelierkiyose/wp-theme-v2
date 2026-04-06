@@ -71,6 +71,7 @@
 	font-size: var(--kiyose-font-size-lg);
 	line-height: var(--kiyose-line-height-relaxed);
 	margin-bottom: var(--kiyose-spacing-3xl);
+	text-align: justify;
 }
 
 .blog-single__content p {

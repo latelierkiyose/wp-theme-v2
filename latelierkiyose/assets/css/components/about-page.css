@@ -43,6 +43,7 @@
 	font-family: var(--kiyose-font-body);
 	font-size: var(--kiyose-font-size-base);
 	line-height: var(--kiyose-line-height-relaxed);
+	text-align: justify;
 }
 
 /* Paragraphes */
