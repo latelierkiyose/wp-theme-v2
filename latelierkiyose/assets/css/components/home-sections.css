@@ -168,6 +168,39 @@
 }
 
 /* ============================================
+   HOME EMPHASE — Slogans mis en valeur
+   ============================================ */
+
+.home-emphase {
+	color: var(--kiyose-color-burgundy);
+	font-family: var(--kiyose-font-body);
+	font-size: var(--kiyose-font-size-xl);
+	font-weight: 600;
+	line-height: var(--kiyose-line-height-tight);
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 700px;
+	position: relative;
+	text-align: center;
+}
+
+.home-emphase::before,
+.home-emphase::after {
+	color: #e6a528;
+	font-family: var(--kiyose-font-heading);
+	font-size: 1.4em;
+	line-height: 1;
+}
+
+.home-emphase::before {
+	content: '\00AB\00A0';
+}
+
+.home-emphase::after {
+	content: '\00A0\00BB';
+}
+
+/* ============================================
    RESPONSIVE - TABLET
    ============================================ */
 

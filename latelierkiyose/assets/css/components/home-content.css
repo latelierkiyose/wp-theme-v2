@@ -57,12 +57,7 @@
    ============================================ */
 
 .home-content1__slogan {
-	color: var(--kiyose-color-burgundy);
-	font-family: var(--kiyose-font-heading);
-	font-size: var(--kiyose-font-size-2xl);
-	font-weight: 400;
 	margin-top: var(--kiyose-spacing-2xl);
-	text-align: center;
 }
 
 /* ============================================
@@ -101,13 +96,8 @@
    ============================================ */
 
 .home-content2__slogan {
-	color: var(--kiyose-color-burgundy);
-	font-family: var(--kiyose-font-heading);
-	font-size: var(--kiyose-font-size-2xl);
-	font-weight: 400;
 	margin-bottom: var(--kiyose-spacing-2xl);
 	margin-top: var(--kiyose-spacing-2xl);
-	text-align: center;
 }
 
 /* ============================================
@@ -159,20 +149,12 @@
 		font-size: var(--kiyose-font-size-lg);
 	}
 
-	.home-content1__slogan {
-		font-size: var(--kiyose-font-size-3xl);
-	}
-
 	.home-content2 {
 		padding: var(--kiyose-spacing-3xl) var(--kiyose-spacing-xl);
 	}
 
 	.home-content2__text {
 		font-size: var(--kiyose-font-size-lg);
-	}
-
-	.home-content2__slogan {
-		font-size: var(--kiyose-font-size-3xl);
 	}
 }
 

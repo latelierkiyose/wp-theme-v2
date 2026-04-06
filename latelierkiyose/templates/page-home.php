@@ -116,7 +116,7 @@ $kiyose_has_about_image = ! empty( $kiyose_hero_image_id );
 				</ul>
 			<?php endif; ?>
 			<?php if ( ! empty( $kiyose_welcome_slogan ) ) : ?>
-				<p class="welcome-block__slogan"><?php echo esc_html( $kiyose_welcome_slogan ); ?></p>
+				<p class="welcome-block__slogan home-emphase"><?php echo esc_html( $kiyose_welcome_slogan ); ?></p>
 			<?php endif; ?>
 			<div class="welcome-block__cta-wrapper" style="margin-top: var(--kiyose-spacing-xl);">
 				<a href="<?php echo esc_url( KIYOSE_DISCOVERY_CALL_URL ); ?>" class="welcome-block__cta">
@@ -182,7 +182,7 @@ $kiyose_has_about_image = ! empty( $kiyose_hero_image_id );
 				<?php endforeach; ?>
 			</ul>
 			<?php if ( ! empty( $kiyose_content1_slogan ) ) : ?>
-				<p class="home-content1__slogan"><?php echo esc_html( $kiyose_content1_slogan ); ?></p>
+				<p class="home-content1__slogan home-emphase"><?php echo esc_html( $kiyose_content1_slogan ); ?></p>
 			<?php endif; ?>
 		</div>
 	</section>
@@ -214,7 +214,7 @@ $kiyose_has_about_image = ! empty( $kiyose_hero_image_id );
 				</div>
 			<?php endif; ?>
 			<?php if ( ! empty( $kiyose_content2_slogan ) ) : ?>
-				<p class="home-content2__slogan"><?php echo esc_html( $kiyose_content2_slogan ); ?></p>
+				<p class="home-content2__slogan home-emphase"><?php echo esc_html( $kiyose_content2_slogan ); ?></p>
 			<?php endif; ?>
 			<div class="home-content2__cta-wrapper">
 				<a href="<?php echo esc_url( KIYOSE_DISCOVERY_CALL_URL ); ?>" class="home-content2__cta">
