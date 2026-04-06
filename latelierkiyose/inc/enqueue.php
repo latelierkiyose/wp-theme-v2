@@ -338,6 +338,14 @@ function kiyose_enqueue_testimonials_styles() {
 			kiyose_get_asset_version( "/assets/css/components/testimonials-grid{$suffix}.css" )
 		);
 
+		wp_enqueue_script(
+			'kiyose-masonry',
+			get_template_directory_uri() . "/assets/js/modules/masonry{$suffix}.js",
+			array(),
+			kiyose_get_asset_version( '/assets/js/modules/masonry.js' ),
+			true
+		);
+
 		// Check if carousel mode is used.
 		if ( strpos( $post->post_content, 'display="carousel"' ) !== false ) {
 			wp_enqueue_style(

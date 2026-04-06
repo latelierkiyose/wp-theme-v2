@@ -54,7 +54,7 @@
 }
 
 .testimony-card__attribution {
-	border-top: 1px solid var(--kiyose-color-border);
+	border-top: 1px solid var(--kiyose-color-accent);
 	display: flex;
 	flex-direction: column;
 	gap: var(--kiyose-spacing-xs);

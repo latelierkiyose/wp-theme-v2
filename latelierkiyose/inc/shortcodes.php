@@ -19,7 +19,7 @@ function kiyose_testimonials_shortcode( $atts ) {
 			'display' => 'grid',
 			'limit'   => -1,
 			'context' => '',
-			'columns' => 3,
+			'columns' => 2,
 		),
 		$atts,
 		'kiyose_testimonials'
@@ -36,7 +36,7 @@ function kiyose_testimonials_shortcode( $atts ) {
 		$display = 'grid';
 	}
 	if ( $columns < 1 || $columns > 4 ) {
-		$columns = 3;
+		$columns = 2;
 	}
 
 	// WP_Query.

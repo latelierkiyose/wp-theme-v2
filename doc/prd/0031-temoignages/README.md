@@ -1,6 +1,6 @@
 # PRD 0031 — Refonte de la grille de témoignages
 
-**Statut** : prêt à l'implémentation
+**Statut** : terminé
 
 ## Contexte
 
@@ -8,6 +8,7 @@ Les témoignages affichés via le shortcode `[kiyose_testimonials]` en mode gril
 - 3 colonnes par défaut sur grand écran → texte trop étroit
 - Fond jaune pâle involontaire (`.page__content blockquote` écrase le fond blanc de `.testimony-card` par spécificité CSS)
 - Le séparateur entre le contenu et l'auteurice utilise `--kiyose-color-border` au lieu de la couleur dorée du thème
+- La hauteur des cards est imposée par la rangée CSS Grid (les cards d'une même rangée ont toutes la même hauteur)
 
 ## Périmètre
 
@@ -34,13 +35,38 @@ Changer la couleur du `border-top` de `.testimony-card__attribution` :
 - **Avant** : `var(--kiyose-color-border)`
 - **Après** : `var(--kiyose-color-accent)`
 
-### 4. Attribution en bas du card
+### 4. Layout masonry — Hauteurs naturelles
 
-Utiliser Flexbox sur `.testimony-card` pour pousser l'attribution en bas :
-- `.testimony-card` : `display: flex; flex-direction: column;`
-- `.testimony-card__quote` : `flex: 1;`
+Remplacer le CSS Grid (`display: grid; grid-template-columns`) par un layout CSS multi-column (`column-count`). Chaque card garde sa hauteur naturelle et les colonnes sont équilibrées automatiquement par le navigateur.
 
-Note : dans une CSS Grid, les cards d'une même rangée ont la même hauteur par défaut (`align-items: stretch`). Cela permet à l'attribution de s'aligner visuellement en bas sur chaque rangée grâce au flex.
+```
+ ---  ---        (souhaité : hauteurs naturelles, colonnes équilibrées)
+|   ||   |
+|   | ---
+|   | ---
+|   ||   |
+|   | ---
+ ---
+```
+
+Plutôt que :
+```
+ ---  ---        (non souhaité : hauteur imposée par la rangée Grid)
+|   ||   |
+|   | ---
+|   |
+|   |
+|   |
+ ---
+ ---
+|   |
+ ---
+```
+
+**Implémentation** :
+- `.testimonials-grid` : `column-count` au lieu de `display: grid + grid-template-columns`
+- `.testimonials-grid .testimony-card` : `break-inside: avoid` pour éviter qu'une card soit coupée entre deux colonnes
+- Espacement vertical des cards via `margin-bottom` (pas de `gap` en multi-column)
 
 ## Fichiers impactés
 
@@ -48,14 +74,17 @@ Note : dans une CSS Grid, les cards d'une même rangée ont la même hauteur par
 |---|---|
 | `latelierkiyose/inc/shortcodes.php` | Défaut `columns` : 3 → 2 |
 | `latelierkiyose/assets/css/components/page.css` | Exclure `.testimony-card` du sélecteur blockquote |
-| `latelierkiyose/assets/css/components/testimony.css` | Flex column sur le card, séparateur accent |
+| `latelierkiyose/assets/css/components/testimony.css` | Séparateur accent |
+| `latelierkiyose/assets/css/components/testimonials-grid.css` | CSS multi-column au lieu de CSS Grid |
 
 ## Critères d'acceptation
 
-- [ ] Grille par défaut = 2 colonnes sur viewport ≥ 768px, 1 colonne en dessous
-- [ ] Fond des cards = blanc (#ffffff), vérifié dans le contexte `.page__content`
-- [ ] Séparateur contenu/attribution = doré (`--kiyose-color-accent`)
-- [ ] Attribution alignée en bas du card quand les cards ont des hauteurs différentes
-- [ ] Pas de régression visuelle sur les `<blockquote>` standard dans les pages de contenu
-- [ ] Pas de régression sur le carousel (homepage ou shortcode)
-- [ ] `make test` passe
+- [x] Grille par défaut = 2 colonnes sur viewport ≥ 768px, 1 colonne en dessous
+- [x] Fond des cards = blanc (#ffffff), vérifié dans le contexte `.page__content`
+- [x] Séparateur contenu/attribution = doré (`--kiyose-color-accent`)
+- [x] Chaque card a sa hauteur naturelle (pas de hauteur imposée par la rangée)
+- [x] Les colonnes sont équilibrées automatiquement
+- [x] Pas de card coupée entre deux colonnes (`break-inside: avoid`)
+- [x] Pas de régression visuelle sur les `<blockquote>` standard dans les pages de contenu
+- [x] Pas de régression sur le carousel (homepage ou shortcode)
+- [x] `make test` passe

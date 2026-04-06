@@ -87,7 +87,7 @@ article.page {
 	margin: var(--kiyose-spacing-xl) 0;
 }
 
-.page__content blockquote {
+.page__content blockquote:not(.testimony-card) {
 	background-color: rgb(230 165 40 / 10%);
 	border-left: 4px solid var(--kiyose-color-accent);
 	font-style: italic;
