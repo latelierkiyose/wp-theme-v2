@@ -97,9 +97,7 @@
 
 .blog-card__title {
 	color: var(--kiyose-color-burgundy);
-	font-family: var(--kiyose-font-body);
-	font-size: var(--kiyose-font-size-lg);
-	font-weight: 700;
+	font-size: var(--kiyose-font-size-xl);
 	line-height: var(--kiyose-line-height-snug);
 	margin: 0;
 }
@@ -179,6 +177,10 @@
    ============================================ */
 
 @media (width <= 767px) {
+	.blog-card__title {
+		font-size: var(--kiyose-font-size-lg);
+	}
+
 	.blog-card__excerpt {
 		font-size: var(--kiyose-font-size-sm);
 	}
