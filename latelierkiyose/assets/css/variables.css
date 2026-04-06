@@ -83,6 +83,7 @@
 	   LAYOUT
 	   ============================================ */
 	--kiyose-container-max-width: 1600px;
+	--kiyose-content-max-width: 120ch;
 
 	/* ============================================
 	   BREAKPOINTS (commentaires - CSS ne supporte pas les variables dans media queries)

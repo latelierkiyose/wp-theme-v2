@@ -13,7 +13,7 @@
 
 .service-page {
 	margin: 0 auto;
-	max-width: 900px;
+	max-width: var(--kiyose-content-max-width);
 	padding: var(--kiyose-spacing-2xl) var(--kiyose-spacing-md);
 	width: 100%;
 }

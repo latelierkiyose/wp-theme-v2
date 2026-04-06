@@ -11,7 +11,7 @@
 
 article.page {
 	margin: 0 auto;
-	max-width: var(--kiyose-container-max-width);
+	max-width: var(--kiyose-content-max-width);
 	padding: var(--kiyose-spacing-2xl) var(--kiyose-spacing-md);
 }
 
