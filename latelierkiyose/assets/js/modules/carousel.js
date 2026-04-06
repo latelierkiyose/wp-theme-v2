@@ -141,7 +141,8 @@ export class KiyoseCarousel {
 		}
 		if (this.pauseButton) {
 			this.pauseButton.setAttribute('aria-label', 'Mettre en pause le défilement automatique');
-			this.pauseButton.textContent = '⏸';
+			this.pauseButton.querySelector('.carousel__icon--pause').hidden = false;
+			this.pauseButton.querySelector('.carousel__icon--play').hidden = true;
 		}
 
 		this.autoplayInterval = setInterval(() => {
@@ -163,7 +164,8 @@ export class KiyoseCarousel {
 		}
 		if (this.pauseButton) {
 			this.pauseButton.setAttribute('aria-label', 'Reprendre le défilement automatique');
-			this.pauseButton.textContent = '▶';
+			this.pauseButton.querySelector('.carousel__icon--pause').hidden = true;
+			this.pauseButton.querySelector('.carousel__icon--play').hidden = false;
 		}
 
 		if (this.autoplayInterval) {

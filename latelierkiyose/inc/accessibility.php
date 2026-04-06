@@ -23,6 +23,23 @@ function kiyose_social_icon_svg( $network ) {
 }
 
 /**
+ * Generate SVG icon for carousel controls.
+ *
+ * @param string $icon Icon name: prev, next, pause, play.
+ * @return string SVG markup with aria-hidden="true".
+ */
+function kiyose_carousel_icon_svg( $icon ) {
+	$icons = array(
+		'prev'  => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>',
+		'next'  => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>',
+		'pause' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>',
+		'play'  => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"/></svg>',
+	);
+
+	return isset( $icons[ $icon ] ) ? $icons[ $icon ] : '';
+}
+
+/**
  * Get skip link markup.
  *
  * @return string Skip link HTML.

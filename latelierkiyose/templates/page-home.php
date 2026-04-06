@@ -378,11 +378,18 @@ $kiyose_has_about_image = ! empty( $kiyose_hero_image_id );
 				aria-roledescription="carousel"
 				aria-label="Témoignages de participants"
 			>
-				<div class="carousel__controls">
-					<button class="carousel__prev" aria-label="Témoignage précédent">←</button>
-					<button class="carousel__pause" aria-label="Mettre en pause le défilement">⏸</button>
-					<button class="carousel__next" aria-label="Témoignage suivant">→</button>
-				</div>
+			<div class="carousel__controls">
+				<button class="carousel__prev" aria-label="<?php esc_attr_e( 'Témoignage précédent', 'kiyose' ); ?>">
+					<?php echo kiyose_carousel_icon_svg( 'prev' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				</button>
+				<button class="carousel__pause" aria-label="<?php esc_attr_e( 'Mettre en pause le défilement', 'kiyose' ); ?>">
+					<span class="carousel__icon carousel__icon--pause"><?php echo kiyose_carousel_icon_svg( 'pause' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+					<span class="carousel__icon carousel__icon--play" hidden><?php echo kiyose_carousel_icon_svg( 'play' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+				</button>
+				<button class="carousel__next" aria-label="<?php esc_attr_e( 'Témoignage suivant', 'kiyose' ); ?>">
+					<?php echo kiyose_carousel_icon_svg( 'next' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				</button>
+			</div>
 				<div class="carousel__track" aria-live="polite">
 					<?php
 					while ( $kiyose_testimonials_query->have_posts() ) :

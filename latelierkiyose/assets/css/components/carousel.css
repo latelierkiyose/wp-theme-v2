@@ -36,7 +36,6 @@
 	color: var(--kiyose-color-primary-dark);
 	cursor: pointer;
 	display: flex;
-	font-size: var(--kiyose-font-size-lg);
 	height: 44px;
 	justify-content: center;
 	transition: all var(--kiyose-transition-base);
@@ -87,11 +86,11 @@
 }
 
 /* Hide inactive slides from screen readers and visually */
-.carousel__slide[aria-hidden="true"] {
+.carousel__slide[aria-hidden='true'] {
 	visibility: hidden;
 }
 
-.carousel__slide[aria-hidden="false"] {
+.carousel__slide[aria-hidden='false'] {
 	visibility: visible;
 }
 
@@ -116,7 +115,6 @@
 	.carousel__prev,
 	.carousel__next,
 	.carousel__pause {
-		font-size: var(--kiyose-font-size-xl);
 		height: 48px;
 		width: 48px;
 	}
