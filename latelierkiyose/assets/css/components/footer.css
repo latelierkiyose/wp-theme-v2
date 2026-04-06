@@ -14,6 +14,8 @@
 	border-top: 1px solid var(--kiyose-color-border);
 	margin-top: var(--kiyose-spacing-3xl);
 	padding: var(--kiyose-spacing-3xl) 0 var(--kiyose-spacing-xl);
+	position: relative;
+	z-index: 1;
 }
 
 .site-footer__container {

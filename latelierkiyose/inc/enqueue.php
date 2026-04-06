@@ -488,19 +488,14 @@ function kiyose_enqueue_home_animations() {
 add_action( 'wp_enqueue_scripts', 'kiyose_enqueue_home_animations', 30 );
 
 /**
- * Enqueue decorative reveal animations (JS).
+ * Loads scroll-triggered reveal and overlap resolution scripts for decorative shapes.
+ * Loaded on all pages — scripts gracefully handle pages with no decorative elements.
  *
- * Conditionally loads the scroll-triggered reveal script only on the homepage.
- *
- * @since 2.0.0
+ * @since 2.5.0
  * @return void
  */
 function kiyose_enqueue_decorative_reveal() {
 	$suffix = kiyose_get_asset_suffix();
-
-	if ( ! is_page_template( 'templates/page-home.php' ) ) {
-		return;
-	}
 
 	wp_enqueue_script(
 		'kiyose-deco-overlap',

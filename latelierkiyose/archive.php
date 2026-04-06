@@ -40,6 +40,7 @@ get_header();
 			<p class="blog-archive__no-posts"><?php esc_html_e( 'Aucun article pour le moment.', 'kiyose' ); ?></p>
 		<?php endif; ?>
 	</section>
+	<?php get_template_part( 'template-parts/page-shapes', 'container' ); ?>
 </main>
 
 <?php

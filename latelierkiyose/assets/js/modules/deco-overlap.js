@@ -1,9 +1,12 @@
 /**
- * Decorative Overlap Resolution
+ * Decorative Overlap Resolution and Density Control
  *
  * Detects and resolves overlaps between decorative elements (scribbles and
- * shapes) on the homepage. Runs before decorative-reveal.js so that elements
- * are nudged into non-overlapping positions before being revealed.
+ * shapes). Runs before decorative-reveal.js so that elements are nudged into
+ * non-overlapping positions before being revealed.
+ *
+ * Also applies density control on non-homepage pages: shapes that are too
+ * close together (based on container height) are hidden via deco-density-hidden.
  *
  * Uses the CSS `translate` property (independent from `transform`) so that
  * existing transform-based animations (parallax, float, reveal) are
@@ -353,13 +356,83 @@
 		});
 	}
 
+	/**
+	 * Adjusts visible shapes based on container height and minimum pixel spacing.
+	 *
+	 * Shapes within each position column (margin-left, margin-right,
+	 * content-left, content-right) are evaluated in DOM order. Shapes whose
+	 * pixel position is closer than spacingMin to the previous visible shape
+	 * in the same column are hidden via deco-density-hidden.
+	 *
+	 * @param {HTMLElement} container - The .deco-page-shapes element.
+	 */
+	function applyDensityControl(container) {
+		const spacingMin = parseInt(container.dataset.decoDensitySpacing, 10) || 180;
+		const siteMain = container.closest('.site-main');
+
+		if (!siteMain) {
+			return;
+		}
+
+		const containerHeight = siteMain.getBoundingClientRect().height;
+
+		// Group shapes by position column.
+		const groups = {
+			'margin-left': [],
+			'margin-right': [],
+			'content-left': [],
+			'content-right': [],
+		};
+
+		container.querySelectorAll('.deco-shape').forEach((shape) => {
+			for (const key of Object.keys(groups)) {
+				if (shape.classList.contains(`deco-shape--${key}`)) {
+					groups[key].push(shape);
+					break;
+				}
+			}
+		});
+
+		// For each column: reset, then hide shapes that are too close.
+		Object.values(groups).forEach((shapes) => {
+			let lastVisiblePx = -Infinity;
+
+			shapes.forEach((shape) => {
+				shape.classList.remove('deco-density-hidden');
+				const topPercent =
+					parseFloat(shape.style.getPropertyValue('--kiyose-deco-top')) || 0;
+				const topPx = (topPercent / 100) * containerHeight;
+
+				if (topPx - lastVisiblePx < spacingMin) {
+					shape.classList.add('deco-density-hidden');
+				} else {
+					lastVisiblePx = topPx;
+				}
+			});
+		});
+	}
+
+	/**
+	 * Run density control on containers that opt in via data-deco-density-spacing.
+	 * The homepage container has no such attribute — its shapes are hand-curated.
+	 */
+	function resolveAllDensity() {
+		document
+			.querySelectorAll('.deco-page-shapes[data-deco-density-spacing]')
+			.forEach(applyDensityControl);
+	}
+
 	// Run on load.
 	resolveAll();
+	resolveAllDensity();
 
 	// Re-run on resize (debounced).
 	let resizeTimer;
 	window.addEventListener('resize', () => {
 		clearTimeout(resizeTimer);
-		resizeTimer = setTimeout(resolveAll, RESIZE_DEBOUNCE);
+		resizeTimer = setTimeout(() => {
+			resolveAll();
+			resolveAllDensity();
+		}, RESIZE_DEBOUNCE);
 	});
 })();

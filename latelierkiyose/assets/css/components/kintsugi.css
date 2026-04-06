@@ -229,9 +229,12 @@
 }
 
 /**
- * Guarantees page content stays above decorative shapes on all pages.
+ * Guarantees page content stays above decorative shapes on non-homepage pages.
+ * The homepage uses a different stacking strategy: section children (not sections
+ * themselves) get z-index via home-sections.css, so that section backgrounds
+ * remain behind shapes while text content stays above them.
  */
-.site-main > :not(.deco-page-shapes) {
+.site-main:not(.home-page) > :not(.deco-page-shapes) {
 	position: relative;
 	z-index: 1;
 }
@@ -375,6 +378,10 @@
 
 .deco-overlap-hidden {
 	display: none !important;
+}
+
+.deco-density-hidden {
+	display: none;
 }
 
 /* ============================================

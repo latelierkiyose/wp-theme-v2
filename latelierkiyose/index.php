@@ -53,6 +53,7 @@ get_header();
 		endif;
 		?>
 	</div>
+	<?php get_template_part( 'template-parts/page-shapes', 'container' ); ?>
 </main>
 
 <?php

@@ -130,7 +130,20 @@ Ajouter avant la fermeture `</main>` dans `footer.php` :
 require_once get_template_directory() . '/inc/decorative-config.php';
 ```
 
-### 5. Densité dynamique — enrichissement de `deco-overlap.js`
+### 5. Footer au-dessus des shapes — `footer.css`
+
+Les shapes positionnées à des pourcentages élevés (ex : 91%) peuvent déborder visuellement sous le footer. Ajouter sur `.site-footer` :
+
+```css
+.site-footer {
+    position: relative;
+    z-index: 1;
+}
+```
+
+Cela garantit que le footer empile au-dessus des shapes absolument positionnées dans `.site-main`, sans impacter le layout.
+
+### 6. Densité dynamique — enrichissement de `deco-overlap.js`
 
 #### Comportement
 
