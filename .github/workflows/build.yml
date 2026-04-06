@@ -5,6 +5,8 @@ on:
     branches:
       - main
       - develop
+    tags:
+      - 'v[0-9]*.[0-9]*.[0-9]*'
   pull_request:
     branches:
       - main
@@ -68,7 +70,11 @@ jobs:
     name: Build Theme Artifact
     runs-on: ubuntu-latest
     needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: >-
+      github.event_name == 'push' && (
+        github.ref == 'refs/heads/main' ||
+        startsWith(github.ref, 'refs/tags/v')
+      )
     permissions:
       contents: write
 
@@ -98,9 +104,14 @@ jobs:
       - name: Create ZIP artifact
         run: |
           cd build
-          SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
-          DATE=$(date +'%Y-%m-%d')
-          zip -r latelierkiyose-theme-${DATE}-${SHORT_SHA}.zip latelierkiyose/
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            VERSION="${GITHUB_REF#refs/tags/v}"
+            zip -r latelierkiyose-theme-${VERSION}.zip latelierkiyose/
+          else
+            SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
+            DATE=$(date +'%Y-%m-%d')
+            zip -r latelierkiyose-theme-${DATE}-${SHORT_SHA}.zip latelierkiyose/
+          fi
           cd ..
 
       - name: Upload artifact
@@ -113,44 +124,62 @@ jobs:
       - name: Generate release tag
         id: release_tag
         run: |
-          SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
-          DATE=$(date +'%Y-%m-%d')
-          DATETIME=$(date +'%Y-%m-%d-%H%M%S')
-          TAG="build-${DATE}-${SHORT_SHA}"
-          ZIPNAME="latelierkiyose-theme-${DATE}-${SHORT_SHA}.zip"
-          echo "tag=${TAG}" >> $GITHUB_OUTPUT
-          echo "date=${DATE}" >> $GITHUB_OUTPUT
-          echo "datetime=${DATETIME}" >> $GITHUB_OUTPUT
-          echo "zipname=${ZIPNAME}" >> $GITHUB_OUTPUT
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            TAG="${GITHUB_REF#refs/tags/}"
+            VERSION="${TAG#v}"
+            ZIPNAME="latelierkiyose-theme-${VERSION}.zip"
+            echo "tag=${TAG}" >> $GITHUB_OUTPUT
+            echo "zipname=${ZIPNAME}" >> $GITHUB_OUTPUT
+            echo "release_name=Release ${TAG}" >> $GITHUB_OUTPUT
+            echo "is_prerelease=false" >> $GITHUB_OUTPUT
+          else
+            SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
+            DATE=$(date +'%Y-%m-%d')
+            DATETIME=$(date +'%Y-%m-%d-%H%M%S')
+            TAG="build-${DATE}-${SHORT_SHA}"
+            ZIPNAME="latelierkiyose-theme-${DATE}-${SHORT_SHA}.zip"
+            echo "tag=${TAG}" >> $GITHUB_OUTPUT
+            echo "date=${DATE}" >> $GITHUB_OUTPUT
+            echo "datetime=${DATETIME}" >> $GITHUB_OUTPUT
+            echo "zipname=${ZIPNAME}" >> $GITHUB_OUTPUT
+            echo "release_name=Build ${DATETIME}" >> $GITHUB_OUTPUT
+            echo "is_prerelease=true" >> $GITHUB_OUTPUT
+          fi
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.release_tag.outputs.tag }}
-          name: "Build ${{ steps.release_tag.outputs.datetime }}"
+          name: ${{ steps.release_tag.outputs.release_name }}
           body: |
             Automated build from commit ${{ github.sha }}
-            
+
             **Branch**: ${{ github.ref_name }}
             **Commit**: ${{ github.sha }}
             **Date**: ${{ steps.release_tag.outputs.date }}
-            
+
             ## 📦 Download the WordPress Theme
-            
+
             **⬇️ Download this file**: `${{ steps.release_tag.outputs.zipname }}`
-            
+
             ⚠️ **Important**: Do NOT download "Source code (zip)" or "Source code (tar.gz)" - these contain the entire repository, not just the theme.
-            
+
             The theme ZIP contains only the `latelierkiyose/` folder ready to upload to WordPress.
           files: build/${{ steps.release_tag.outputs.zipname }}
-          prerelease: true
+          prerelease: ${{ steps.release_tag.outputs.is_prerelease == 'true' }}
           draft: true
 
       - name: Publish release
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ steps.release_tag.outputs.tag }}
-        run: gh release edit "$RELEASE_TAG" --draft=false --prerelease
+          IS_PRERELEASE: ${{ steps.release_tag.outputs.is_prerelease }}
+        run: |
+          if [ "$IS_PRERELEASE" = "true" ]; then
+            gh release edit "$RELEASE_TAG" --draft=false --prerelease
+          else
+            gh release edit "$RELEASE_TAG" --draft=false
+          fi
 
       - name: Cleanup old releases
         uses: actions/github-script@v8
