@@ -58,6 +58,7 @@
 	display: flex;
 	flex-direction: column;
 	gap: var(--kiyose-spacing-xs);
+	margin-top: auto;
 	padding-top: var(--kiyose-spacing-md);
 }
 
@@ -72,6 +73,39 @@
 	color: var(--kiyose-color-text-light);
 	font-size: var(--kiyose-font-size-sm);
 	font-style: normal;
+}
+
+/* Toggle button ("Voir plus" / close) */
+.testimony-card__toggle {
+	background: none;
+	border: none;
+	color: var(--kiyose-color-burgundy);
+	cursor: pointer;
+	font-size: var(--kiyose-font-size-sm);
+	font-weight: 600;
+	margin-top: var(--kiyose-spacing-sm);
+	min-height: 44px;
+	min-width: 44px;
+	padding: var(--kiyose-spacing-xs) var(--kiyose-spacing-sm);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+.testimony-card__toggle:hover {
+	color: var(--kiyose-color-text);
+}
+
+.testimony-card__toggle:focus-visible {
+	outline: 2px solid var(--kiyose-color-accent);
+	outline-offset: 2px;
+}
+
+/* Close button positioning when card is expanded */
+.testimony-card--expanded .testimony-card__toggle {
+	position: absolute;
+	right: var(--kiyose-spacing-sm);
+	text-decoration: none;
+	top: var(--kiyose-spacing-sm);
 }
 
 /* Responsive adjustments */

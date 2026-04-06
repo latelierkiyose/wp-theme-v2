@@ -31,7 +31,7 @@ Utiliser le sélecteur `.carousel__slide .testimony-card__quote` pour scoper la 
 .carousel__slide .testimony-card__quote {
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 5;
+	-webkit-line-clamp: 3;
 	overflow: hidden;
 }
 ```
@@ -40,8 +40,8 @@ Utiliser le sélecteur `.carousel__slide .testimony-card__quote` pour scoper la 
 
 | Breakpoint        | `line-clamp` | Hauteur visible approximative |
 | ----------------- | ------------ | ----------------------------- |
-| Mobile (< 768px)  | 5            | ~136px (16px × 1.7 × 5)       |
-| Desktop (≥ 768px) | 5            | ~170px (20px × 1.7 × 5)       |
+| Mobile (< 768px)  | 3            | ~82px (16px × 1.7 × 3)        |
+| Desktop (≥ 768px) | 3            | ~102px (20px × 1.7 × 3)       |
 
 > **Note :** `line-clamp` tronque nativement avec `…` en fin de dernière ligne visible. Pas besoin de pseudo-élément personnalisé.
 
@@ -211,9 +211,19 @@ Le module `testimony-expand.js` doit interagir avec `KiyoseCarousel` :
 - **À l'expansion** : appeler `carousel.stopAutoplay()` et désactiver les boutons prev/next (prévenir le changement de slide quand une carte est dépliée)
 - **À la fermeture** : réactiver les boutons prev/next. Ne pas relancer l'autoplay.
 
-### 8. Enqueue — `inc/enqueue.php`
+### 8. Chargement JS — `main.js`
 
-Enqueue `testimony-expand.js` (+ sa version `.min.js`) avec les mêmes conditions que `carousel.js` (page d'accueil ou shortcode carousel). Dépendance : après `carousel.js`.
+Le module `testimony-expand.js` est chargé comme ES module import depuis `main.js`, en cohérence avec l'architecture existante (`carousel.js` est importé de la même manière). Pas d'enqueue séparé via `inc/enqueue.php`.
+
+```js
+import { TestimonyExpand } from './modules/testimony-expand.js';
+
+// Dans init(), après l'initialisation des carousels :
+const testimonyExpand = new TestimonyExpand();
+testimonyExpand.init();
+```
+
+> **Note** : `carousel.js` n'est pas enqueué séparément — il est importé statiquement par `main.js` (chargé en `type="module"`). `testimony-expand.js` suit le même pattern pour la cohérence architecturale.
 
 ## Périmètre
 
@@ -255,24 +265,25 @@ Ce comportement s'applique à **tous les carousels de témoignages** :
 
 ### Fichiers modifiés
 
-| Fichier                                   | Modification                                                                                    |
-| ----------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| `template-parts/content-testimony.php`    | Ajout du `<button class="testimony-card__toggle">` entre `.testimony-card__quote` et `<footer>` |
-| `assets/css/components/carousel.css`      | Ajout du `line-clamp` sur `.carousel__slide .testimony-card__quote` + styles expansion          |
-| `assets/css/components/carousel.min.css`  | Régénérer                                                                                       |
-| `assets/css/components/testimony.css`     | Styles du bouton `.testimony-card__toggle`                                                      |
-| `assets/css/components/testimony.min.css` | Régénérer                                                                                       |
-| `assets/js/modules/carousel.js`           | Exposer l'instance via `element._kiyoseCarousel = this` dans `init()`                           |
-| `assets/js/modules/carousel.min.js`       | Régénérer                                                                                       |
-| `inc/enqueue.php`                         | Enqueue de `testimony-expand.js` conditionnel carousel                                          |
+| Fichier                                   | Modification                                                                                              |
+| ----------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `template-parts/content-testimony.php`    | Ajout du `<button class="testimony-card__toggle">` entre `.testimony-card__quote` et `<footer>`           |
+| `assets/css/components/carousel.css`      | Ajout du `line-clamp` sur `.carousel__slide .testimony-card__quote` + styles expansion                    |
+| `assets/css/components/carousel.min.css`  | Régénérer                                                                                                 |
+| `assets/css/components/testimony.css`     | Styles du bouton `.testimony-card__toggle`                                                                |
+| `assets/css/components/testimony.min.css` | Régénérer                                                                                                 |
+| `assets/js/modules/carousel.js`           | Exposer l'instance via `element._kiyoseCarousel = this` + méthodes `disableNavigation`/`enableNavigation` |
+| `assets/js/modules/carousel.min.js`       | Régénérer                                                                                                 |
+| `assets/js/main.js`                       | Import et initialisation de `TestimonyExpand`                                                             |
+| `assets/js/main.min.js`                   | Régénérer                                                                                                 |
 
 ## Tests et validation
 
 ### Visuel
 
 - [ ] Tous les témoignages dans le carousel ont la même hauteur visible (pas d'espace vide)
-- [ ] Les citations courtes (≤ 5 lignes) n'affichent pas le bouton « Voir plus »
-- [ ] Les citations longues (> 5 lignes) affichent « Voir plus » et se terminent par `…`
+- [ ] Les citations courtes (≤ 3 lignes) n'affichent pas le bouton « Voir plus »
+- [ ] Les citations longues (> 3 lignes) affichent « Voir plus » et se terminent par `…`
 - [ ] Au clic sur « Voir plus », la citation complète apparaît en overlay sans décaler la page
 - [ ] Le fond de la carte dépliée masque le contenu en dessous
 - [ ] La croix de fermeture est visible et bien positionnée

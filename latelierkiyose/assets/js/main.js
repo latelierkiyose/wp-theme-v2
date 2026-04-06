@@ -9,6 +9,7 @@ import Dropdown from './modules/dropdown.js';
 import MobileMenu from './modules/mobile-menu.js';
 import ShareLinkCopier from './modules/share-link-copier.js';
 import { KiyoseCarousel } from './modules/carousel.js';
+import { TestimonyExpand } from './modules/testimony-expand.js';
 
 function init() {
 	new Dropdown();
@@ -20,6 +21,9 @@ function init() {
 		const carousel = new KiyoseCarousel(carouselElement);
 		carousel.init();
 	});
+
+	const testimonyExpand = new TestimonyExpand();
+	testimonyExpand.init();
 }
 
 if (document.readyState === 'loading') {

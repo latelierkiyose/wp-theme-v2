@@ -44,6 +44,9 @@ export class KiyoseCarousel {
 		// Mark carousel as initialized
 		this.carousel.setAttribute('data-carousel-initialized', 'true');
 
+		// Expose instance on DOM element for external modules
+		this.carousel._kiyoseCarousel = this;
+
 		// Setup initial state
 		this.updateSlides();
 		this.updateControls();
@@ -229,6 +232,38 @@ export class KiyoseCarousel {
 				this.stopAutoplay();
 				this.nextSlide();
 				break;
+		}
+	}
+
+	/**
+	 * Disable navigation controls (prev/next/pause).
+	 * Used when a testimony card is expanded.
+	 */
+	disableNavigation() {
+		if (this.prevButton) {
+			this.prevButton.disabled = true;
+		}
+		if (this.nextButton) {
+			this.nextButton.disabled = true;
+		}
+		if (this.pauseButton) {
+			this.pauseButton.disabled = true;
+		}
+	}
+
+	/**
+	 * Enable navigation controls (prev/next/pause).
+	 * Used when a testimony card is collapsed.
+	 */
+	enableNavigation() {
+		if (this.prevButton) {
+			this.prevButton.disabled = false;
+		}
+		if (this.nextButton) {
+			this.nextButton.disabled = false;
+		}
+		if (this.pauseButton) {
+			this.pauseButton.disabled = false;
 		}
 	}
 

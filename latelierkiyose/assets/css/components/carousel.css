@@ -80,8 +80,10 @@
 }
 
 .carousel__slide {
+	display: flex;
 	flex: 0 0 100%;
 	min-width: 100%;
+	position: relative;
 	width: 100%;
 }
 
@@ -99,8 +101,53 @@
    ============================================ */
 
 .carousel__slide .testimony-card {
+	display: flex;
+	flex-direction: column;
 	margin-inline: auto;
 	max-width: 800px;
+	width: 100%;
+}
+
+/* ============================================
+   TESTIMONY TRUNCATION (carousel context only)
+   ============================================ */
+
+.carousel__slide .testimony-card__quote {
+	-webkit-box-orient: vertical;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	overflow: hidden;
+}
+
+/* ============================================
+   EXPANDED TESTIMONY STATE
+   ============================================ */
+
+/* Allow vertical overflow when a testimony is expanded */
+.carousel--has-expanded {
+	overflow: visible;
+}
+
+.testimony-card--expanded {
+	inset-inline: 0;
+	position: absolute;
+	top: 0;
+	z-index: 10;
+}
+
+/* Remove truncation when expanded */
+.testimony-card--expanded .testimony-card__quote {
+	-webkit-line-clamp: unset;
+	overflow: visible;
+}
+
+/* Opaque background behind expanded card to cover content below */
+.testimony-card--expanded::after {
+	background: #ffffff;
+	content: '';
+	inset: 0;
+	position: absolute;
+	z-index: -1;
 }
 
 /* ============================================

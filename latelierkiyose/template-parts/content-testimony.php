@@ -18,6 +18,13 @@ $kiyose_context_label = kiyose_get_testimony_context_label( $kiyose_context_key 
 	<div class="testimony-card__quote">
 		<?php the_content(); ?>
 	</div>
+	<button
+		class="testimony-card__toggle"
+		aria-expanded="false"
+		hidden
+	>
+		<?php esc_html_e( 'Voir plus', 'kiyose' ); ?>
+	</button>
 	<footer class="testimony-card__attribution">
 		<cite class="testimony-card__name">
 			<?php the_title(); ?>
