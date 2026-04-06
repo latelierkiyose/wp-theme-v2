@@ -115,17 +115,19 @@ jobs:
         run: |
           SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
           DATE=$(date +'%Y-%m-%d')
+          DATETIME=$(date +'%Y-%m-%d-%H%M%S')
           TAG="build-${DATE}-${SHORT_SHA}"
           ZIPNAME="latelierkiyose-theme-${DATE}-${SHORT_SHA}.zip"
           echo "tag=${TAG}" >> $GITHUB_OUTPUT
           echo "date=${DATE}" >> $GITHUB_OUTPUT
+          echo "datetime=${DATETIME}" >> $GITHUB_OUTPUT
           echo "zipname=${ZIPNAME}" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.release_tag.outputs.tag }}
-          name: "Build ${{ steps.release_tag.outputs.date }}"
+          name: "Build ${{ steps.release_tag.outputs.datetime }}"
           body: |
             Automated build from commit ${{ github.sha }}
             
