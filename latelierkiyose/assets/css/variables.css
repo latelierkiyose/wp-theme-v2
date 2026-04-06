@@ -65,6 +65,7 @@
 
 	/* Hauteur de ligne */
 	--kiyose-line-height-tight: 1.2;
+	--kiyose-line-height-snug: 1.35;
 	--kiyose-line-height-normal: 1.5;
 	--kiyose-line-height-relaxed: 1.7;
 
