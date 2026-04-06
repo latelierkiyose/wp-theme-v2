@@ -12,7 +12,7 @@
 get_header();
 ?>
 
-<main id="main" class="site-main">
+<main id="main" class="site-main" tabindex="-1">
 	<div class="container">
 		<?php
 		if ( have_posts() ) :

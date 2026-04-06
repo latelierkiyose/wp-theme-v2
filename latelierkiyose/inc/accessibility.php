@@ -29,7 +29,7 @@ function kiyose_social_icon_svg( $network ) {
  */
 function kiyose_get_skip_link() {
 	return sprintf(
-		'<a href="#main-content" class="skip-link">%s</a>',
+		'<a href="#main" class="skip-link">%s</a>',
 		esc_html__( 'Aller au contenu principal', 'kiyose' )
 	);
 }

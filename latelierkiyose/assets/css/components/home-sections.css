@@ -225,9 +225,9 @@
    un bandeau rose visible.
    ============================================ */
 
-/* stylelint-disable-next-line selector-max-id */
-.page-template-page-home #main-content {
-	padding-bottom: 0;
+.page-template-page-home .site-main {
+	margin-top: var(--kiyose-spacing-2xl);
+	padding: 0;
 }
 
 .page-template-page-home .site-footer {

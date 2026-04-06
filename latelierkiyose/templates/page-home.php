@@ -54,7 +54,7 @@ if ( empty( $kiyose_hero_cta_url ) ) {
 $kiyose_has_about_image = ! empty( $kiyose_hero_image_id );
 ?>
 
-<main id="main" class="site-main home-page">
+<main id="main" class="site-main home-page" tabindex="-1">
 	<!-- Bloc Bienvenue -->
 	<section class="welcome-block" aria-label="<?php esc_attr_e( 'Bienvenue à L\'Atelier Kiyose', 'kiyose' ); ?>">
 		<?php

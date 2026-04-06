@@ -2,7 +2,7 @@
 
 ## Statut
 
-**prêt à l'implémentation**
+**terminé**
 
 ## Objectif
 

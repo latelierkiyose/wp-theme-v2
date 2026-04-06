@@ -226,8 +226,14 @@
  */
 .home-page {
 	background-color: #ffffff;
-	overflow-x: clip;
+}
+
+/**
+ * Guarantees page content stays above decorative shapes on all pages.
+ */
+.site-main > :not(.deco-page-shapes) {
 	position: relative;
+	z-index: 1;
 }
 
 /**

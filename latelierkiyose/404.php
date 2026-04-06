@@ -9,7 +9,7 @@
 get_header();
 ?>
 
-<main id="main" class="site-main">
+<main id="main" class="site-main" tabindex="-1">
 	<section class="error-404">
 		<h1 class="error-404__title"><?php esc_html_e( 'Page introuvable', 'kiyose' ); ?></h1>
 		<p class="error-404__message">

@@ -9,7 +9,7 @@
 get_header();
 ?>
 
-<main id="main" class="site-main">
+<main id="main" class="site-main" tabindex="-1">
 	<section class="search-results">
 		<header class="search-results__header">
 			<h1>

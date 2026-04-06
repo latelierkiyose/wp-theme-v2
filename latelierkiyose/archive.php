@@ -9,7 +9,7 @@
 get_header();
 ?>
 
-<main id="main" class="site-main">
+<main id="main" class="site-main" tabindex="-1">
 	<section class="blog-archive">
 		<header class="blog-archive__header">
 			<h1 class="blog-archive__title"><?php the_archive_title(); ?></h1>

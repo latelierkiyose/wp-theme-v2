@@ -256,10 +256,11 @@ button {
 /**
  * Main content area
  */
-/* stylelint-disable-next-line selector-max-id */
-#main-content {
+.site-main {
 	min-height: 60vh;
+	overflow-x: clip;
 	padding: var(--kiyose-spacing-2xl) 0;
+	position: relative;
 }
 
 /* ============================================
