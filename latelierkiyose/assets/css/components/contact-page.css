@@ -96,6 +96,26 @@
 }
 
 /* ========================================
+   Contact Photo
+   ======================================== */
+
+.contact-page__photo {
+	aspect-ratio: 1 / 1;
+	border-radius: 50%;
+	box-shadow: 0 4px 12px rgb(93 5 5 / 12%);
+	margin: 0 auto var(--kiyose-spacing-xl);
+	max-width: 200px;
+	overflow: hidden;
+	width: 100%;
+}
+
+.contact-page__photo img {
+	height: 100%;
+	object-fit: cover;
+	width: 100%;
+}
+
+/* ========================================
    Contact Info Items
    ======================================== */
 

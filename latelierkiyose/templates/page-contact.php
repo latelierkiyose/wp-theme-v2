@@ -33,6 +33,22 @@ get_header();
 
 				<!-- Colonne informations -->
 				<aside class="contact-page__info" aria-label="Informations de contact">
+					<?php
+					$kiyose_contact_photo_id  = get_post_meta( get_the_ID(), 'kiyose_contact_photo_id', true );
+					$kiyose_contact_photo_alt = get_post_meta( get_the_ID(), 'kiyose_contact_photo_alt', true );
+					if ( ! empty( $kiyose_contact_photo_id ) ) :
+						?>
+					<div class="contact-page__photo">
+						<?php
+						echo wp_get_attachment_image(
+							$kiyose_contact_photo_id,
+							'medium',
+							false,
+							array( 'alt' => esc_attr( $kiyose_contact_photo_alt ) )
+						);
+						?>
+					</div>
+					<?php endif; ?>
 					<h2>Coordonnées</h2>
 
 					<div class="contact-info">

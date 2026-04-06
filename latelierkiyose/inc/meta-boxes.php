@@ -466,11 +466,11 @@ function kiyose_render_home_hero_meta_box( $post ) {
 				return;
 			}
 			if ($tmpl.val() === 'templates/page-home.php') {
-				$('.kiyose-meta-box__notice').hide();
-				$('.kiyose-meta-box__fields').show();
+				$('#kiyose_home_hero .kiyose-meta-box__notice').hide();
+				$('#kiyose_home_hero .kiyose-meta-box__fields').show();
 			} else {
-				$('.kiyose-meta-box__notice').show();
-				$('.kiyose-meta-box__fields').hide();
+				$('#kiyose_home_hero .kiyose-meta-box__notice').show();
+				$('#kiyose_home_hero .kiyose-meta-box__fields').hide();
 			}
 		}
 
@@ -715,4 +715,200 @@ function kiyose_save_home_hero_meta( $post_id ) {
 	}
 }
 add_action( 'save_post_page', 'kiyose_save_home_hero_meta' );
+
+/**
+ * Add meta box for contact photo on contact page template.
+ *
+ * @return void
+ */
+function kiyose_add_contact_photo_meta_box() {
+	add_meta_box(
+		'kiyose_contact_photo',
+		__( 'Page de contact — Photo', 'kiyose' ),
+		'kiyose_render_contact_photo_meta_box',
+		'page',
+		'normal',
+		'high'
+	);
+}
+add_action( 'add_meta_boxes', 'kiyose_add_contact_photo_meta_box' );
+
+/**
+ * Render the contact photo meta box.
+ *
+ * @param WP_Post $post Current post object.
+ * @return void
+ */
+function kiyose_render_contact_photo_meta_box( $post ) {
+	$template   = get_post_meta( $post->ID, '_wp_page_template', true );
+	$is_visible = ( 'templates/page-contact.php' === $template );
+
+	wp_nonce_field( 'kiyose_save_contact_photo', 'kiyose_contact_photo_nonce' );
+
+	$photo_id  = get_post_meta( $post->ID, 'kiyose_contact_photo_id', true );
+	$photo_alt = get_post_meta( $post->ID, 'kiyose_contact_photo_alt', true );
+	?>
+	<div class="kiyose-meta-box" data-template-required="templates/page-contact.php">
+		<!-- Notice -->
+		<div class="kiyose-meta-box__notice" style="display: <?php echo $is_visible ? 'none' : 'block'; ?>;">
+			<p>
+				<strong><?php esc_html_e( 'Information :', 'kiyose' ); ?></strong>
+				<?php esc_html_e( 'Cette section sera active une fois que vous aurez sélectionné le template "Page de contact" dans l\'encadré "Attributs de page" ci-dessous.', 'kiyose' ); ?>
+			</p>
+		</div>
+
+		<!-- Champs (masqués si template pas sélectionné) -->
+		<div class="kiyose-meta-box__fields" style="display: <?php echo $is_visible ? 'block' : 'none'; ?>;">
+			<fieldset style="border: none; margin: 0; padding: 0;">
+				<legend style="font-weight: 600; margin-bottom: 15px; font-size: 14px;">
+					<?php esc_html_e( 'Photo de contact', 'kiyose' ); ?>
+				</legend>
+
+				<!-- Champ image -->
+				<div class="field-group">
+					<input
+						type="hidden"
+						name="kiyose_contact_photo_id"
+						id="kiyose_contact_photo_id"
+						value="<?php echo esc_attr( $photo_id ); ?>"
+					>
+					<div class="button-group">
+						<button type="button" class="button" id="kiyose_contact_photo_button">
+							<?php esc_html_e( 'Choisir une image', 'kiyose' ); ?>
+						</button>
+						<button type="button" class="button" id="kiyose_contact_photo_remove" style="<?php echo empty( $photo_id ) ? 'display:none;' : ''; ?>">
+							<?php esc_html_e( 'Supprimer l\'image', 'kiyose' ); ?>
+						</button>
+					</div>
+					<div class="image-preview" id="kiyose_contact_photo_preview">
+						<?php
+						if ( ! empty( $photo_id ) ) {
+							echo wp_get_attachment_image( $photo_id, 'medium' );
+						}
+						?>
+					</div>
+				</div>
+
+				<!-- Champ alt text -->
+				<div class="field-group">
+					<label for="kiyose_contact_photo_alt">
+						<?php esc_html_e( 'Texte alternatif (accessibilité)', 'kiyose' ); ?>
+					</label>
+					<input
+						type="text"
+						name="kiyose_contact_photo_alt"
+						id="kiyose_contact_photo_alt"
+						value="<?php echo esc_attr( $photo_alt ); ?>"
+						style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; margin-top: 5px;"
+					>
+					<p class="description" style="font-size: 13px; color: #666; margin-top: 5px; font-style: italic;">
+						<?php esc_html_e( 'Recommandé : renseigner le nom de la personne (ex : « Sandrine Delmas »). Laisser vide pour marquer l\'image comme décorative.', 'kiyose' ); ?>
+					</p>
+				</div>
+			</fieldset>
+		</div><!-- .kiyose-meta-box__fields -->
+	</div><!-- .kiyose-meta-box -->
+
+	<script>
+	jQuery(document).ready(function($) {
+		var contactPhotoUploader;
+
+		function toggleContactPhotoFields() {
+			var $tmpl = $('#page_template');
+			if (!$tmpl.length) {
+				return;
+			}
+			if ($tmpl.val() === 'templates/page-contact.php') {
+				$('#kiyose_contact_photo .kiyose-meta-box__notice').hide();
+				$('#kiyose_contact_photo .kiyose-meta-box__fields').show();
+			} else {
+				$('#kiyose_contact_photo .kiyose-meta-box__notice').show();
+				$('#kiyose_contact_photo .kiyose-meta-box__fields').hide();
+			}
+		}
+
+		toggleContactPhotoFields();
+		$('#page_template').on('change', function() {
+			toggleContactPhotoFields();
+		});
+
+		$('#kiyose_contact_photo_button').on('click', function(e) {
+			e.preventDefault();
+
+			if (contactPhotoUploader) {
+				contactPhotoUploader.open();
+				return;
+			}
+
+			contactPhotoUploader = wp.media({
+				title: '<?php esc_html_e( 'Choisir une photo de contact', 'kiyose' ); ?>',
+				button: {
+					text: '<?php esc_html_e( 'Utiliser cette image', 'kiyose' ); ?>'
+				},
+				multiple: false
+			});
+
+			contactPhotoUploader.on('select', function() {
+				var attachment = contactPhotoUploader.state().get('selection').first().toJSON();
+				$('#kiyose_contact_photo_id').val(attachment.id);
+				$('#kiyose_contact_photo_preview').html('<img src="' + attachment.url + '" style="max-width:200px;height:auto;border-radius:50%;margin-top:10px;">');
+				$('#kiyose_contact_photo_remove').show();
+			});
+
+			contactPhotoUploader.open();
+		});
+
+		$('#kiyose_contact_photo_remove').on('click', function(e) {
+			e.preventDefault();
+			$('#kiyose_contact_photo_id').val('');
+			$('#kiyose_contact_photo_preview').html('');
+			$(this).hide();
+		});
+	});
+	</script>
+	<?php
+}
+
+/**
+ * Save contact photo meta box data.
+ *
+ * @param int $post_id Post ID.
+ * @return void
+ */
+function kiyose_save_contact_photo_meta( $post_id ) {
+	if ( ! isset( $_POST['kiyose_contact_photo_nonce'] ) ) {
+		return;
+	}
+
+	if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['kiyose_contact_photo_nonce'] ) ), 'kiyose_save_contact_photo' ) ) {
+		return;
+	}
+
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+
+	$template = get_post_meta( $post_id, '_wp_page_template', true );
+	if ( 'templates/page-contact.php' !== $template ) {
+		return;
+	}
+
+	if ( isset( $_POST['kiyose_contact_photo_id'] ) ) {
+		$photo_id = absint( $_POST['kiyose_contact_photo_id'] );
+		if ( $photo_id > 0 ) {
+			update_post_meta( $post_id, 'kiyose_contact_photo_id', $photo_id );
+		} else {
+			delete_post_meta( $post_id, 'kiyose_contact_photo_id' );
+		}
+	}
+
+	if ( isset( $_POST['kiyose_contact_photo_alt'] ) ) {
+		update_post_meta( $post_id, 'kiyose_contact_photo_alt', sanitize_text_field( wp_unslash( $_POST['kiyose_contact_photo_alt'] ) ) );
+	}
+}
+add_action( 'save_post_page', 'kiyose_save_contact_photo_meta' );
 
