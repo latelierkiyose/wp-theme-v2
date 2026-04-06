@@ -47,6 +47,7 @@ Wrappers Docker (pas besoin de PHP local) : `./bin/phpcs.sh`, `./bin/phpcbf.sh`,
 ## PRDs
 
 Spécifications dans `doc/prd/NNNN-nom/`. Statuts : `brouillon` → `prêt à l'implémentation` → `terminé`.
+Quand l'implémentation est terminée, toujours passer le statut à `terminé`.
 
 ## Checklist post-fonctionnalité
 
