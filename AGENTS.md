@@ -61,6 +61,17 @@ La doc utilisateur vit dans `doc/user/` (public cible : rédacteurices non-techn
 
 Ton : tutoiement, français, sans jargon non introduit. Toujours donner un exemple copiable.
 
+## Documentation release
+
+La procédure de mise en production vit dans `doc/release/`. Quand une modification impacte l'installation ou la configuration en production, mettre à jour `doc/release/` dans le même changement. Déclencheurs :
+
+- Ajout/suppression d'un plugin requis (shortcode tiers consommé par un template) → `doc/release/plugins.md` + étape 3 de `doc/release/README.md`
+- Ajout/suppression d'un CPT, d'un meta field ou d'une option attendue côté admin → `doc/release/content-migration.md`
+- Nouveau template de page, nouveau menu location ou nouvelle taille d'image → `doc/release/content-migration.md`
+- Nouveau hook d'activation (`after_switch_theme`…) ou nouvelle constante `wp-config.php` requise → étape 5 de `doc/release/README.md`
+- Changement de la chaîne de build qui modifie l'artefact livré → étape 4 de `doc/release/README.md`
+- Changement de version minimale PHP/WordPress → prérequis de `doc/release/README.md`
+
 ## Checklist post-fonctionnalité
 
 - [ ] Contraste WCAG 2.2 AA validé
@@ -70,12 +81,14 @@ Ton : tutoiement, français, sans jargon non introduit. Toujours donner un exemp
 - [ ] `make test` passe
 - [ ] Images avec `alt` approprié
 - [ ] `doc/user/` mis à jour si l'évolution est visible côté rédaction
+- [ ] `doc/release/` mis à jour si la mise en production est impactée
 
 ## Documentation détaillée
 
 Consulter à la demande avec l'outil Read (ne pas importer avec @) :
 
 - `doc/user/README.md` — Documentation pour les rédacteurices (public non-technique)
+- `doc/release/README.md` — Procédure de mise en production (plugins requis, migration contenu, rollback)
 - `doc/quick-reference.md` — Commandes, structure, standards critiques
 - `doc/architecture.md` — Structure technique détaillée
 - `doc/standards.md` — WPCS, accessibilité, sécurité, performance

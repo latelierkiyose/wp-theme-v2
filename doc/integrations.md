@@ -1,5 +1,7 @@
 # Plugins & Intégrations
 
+> ℹ️ Pour la mise en production (quels plugins installer, dans quel ordre, avec quelle configuration minimale), voir [`doc/release/plugins.md`](release/plugins.md). Ce fichier reste la vue développeur synthétique des intégrations.
+
 ## Calendrier & Réservations (En place)
 
 **Events Manager** ✅
