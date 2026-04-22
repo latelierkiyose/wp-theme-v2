@@ -4,11 +4,15 @@
 
 **prêt à l'implémentation**
 
+> Mis à jour 2026-04-22 : inventaire aligné sur l'état actuel du code après les PRDs 0019 (minification), 0029 (restructuration homepage), et les évolutions suivantes (callout-box, overlays, home-content). Les bugs §7 du PRD d'origine sont déjà corrigés ; la baseline performance doit être re-mesurée avant validation des gains.
+
 ## Objectif
 
 Réduire drastiquement le First Contentful Paint (FCP) et le Largest Contentful Paint (LCP) en optimisant le chemin critique de rendu : rendre les CSS conditionnels, éliminer les ressources render-blocking inutiles, et inliner le CSS critique au-dessus de la ligne de flottaison.
 
 ## Contexte
+
+> ⚠️ **Baseline à re-mesurer** : les chiffres ci-dessous ont été relevés avant les PRDs 0019 (minification) et 0029 (restructuration homepage — suppression de la grille services, ajout de sections Q&A et texte/citation). Refaire un audit Lighthouse avant implémentation pour avoir une baseline représentative et pour valider les gains estimés.
 
 Le score Lighthouse Performance est de **56/100** sur l'environnement local. Les métriques critiques :
 
@@ -47,7 +51,6 @@ Le score Lighthouse Performance est de **56/100** sur l'environnement local. Les
 | blog-single.css | 10.9 KB | Non — article seul uniquement |
 | testimony.css | 2.2 KB | Non — pages avec témoignages uniquement |
 | hero.css | 3.8 KB | Non — pages avec hero uniquement |
-| service-card.css | 2.8 KB | Non — pages avec services uniquement |
 | home-sections.css | 5.3 KB | Non — homepage uniquement |
 | kintsugi.css | 6.1 KB | Oui — `.section-divider--header` utilisé dans `header.php` sur toutes les pages |
 | brevo-override.css | 6.9 KB | Oui — le formulaire newsletter Brevo est dans `footer.php` sur toutes les pages |
@@ -64,6 +67,11 @@ Le score Lighthouse Performance est de **56/100** sur l'environnement local. Les
 | testimonials-grid.css | Shortcode `[kiyose_testimonials]` |
 | signets.css | Shortcode `[kiyose_signets]` |
 | home-animations.css | Homepage |
+| home-content.css | Homepage (via `kiyose_enqueue_home_animations`) |
+| welcome-block.css | Homepage |
+| about-overlay.css | Homepage |
+| newsletter-overlay.css | Homepage |
+| callout-box.css | Shortcode `[kiyose_callout]` |
 
 **Ressources render-blocking les plus coûteuses** (Lighthouse) :
 
@@ -78,6 +86,15 @@ Le score Lighthouse Performance est de **56/100** sur l'environnement local. Les
 
 - **PRD 0019** : Minification des assets (complémentaire — réduit la taille, ce PRD réduit le nombre de requêtes)
 - **PRD 0002** : Design tokens (variables CSS)
+
+## Phasage
+
+Les spécifications ci-dessous couvrent deux classes de changements à risque très différent. Pour découpler les gains rapides des travaux plus risqués, l'implémentation se fait en deux phases livrées séparément :
+
+- **Phase A — Conditionnalisation & cleanup (faible risque)** : §1 (CSS conditionnels restants + dépendances `kiyose-main`), §2 (dequeue Events Manager hors périmètre), §5 (suppression preload Caveat), §6 (preconnect reCAPTCHA conditionnel). Rollback simple, gain direct sur le nombre de requêtes. **À livrer en premier.**
+- **Phase B — Defer, critical CSS, async (risque plus élevé)** : §3 (jQuery en footer — risque de casser des plugins qui inlinent du jQuery dans le `<head>`), §4 (CSS critique inline + async via `media="print"` — crée une dette de maintenance puisque `critical.css` doit rester synchronisé avec ses sources). **À livrer après validation visuelle et fonctionnelle de la Phase A.**
+
+La Phase A apporte déjà une part importante du gain estimé (réduction du nombre de requêtes CSS). Si la Phase B s'avère plus coûteuse que prévu (régression plugin, FOUC, maintenance de `critical.css`), on peut la repousser sans sacrifier les bénéfices de la Phase A.
 
 ## Spécifications
 
@@ -96,11 +113,12 @@ Le score Lighthouse Performance est de **56/100** sur l'environnement local. Les
 | blog-single.css | `is_singular('post')` |
 | testimony.css | `is_page_template('templates/page-home.php') \|\| has_shortcode(...)` |
 | hero.css | `is_page_template('templates/page-home.php')` |
-| service-card.css | `is_page_template('templates/page-home.php') \|\| is_page_template('templates/page-services.php')` |
 | home-sections.css | `is_page_template('templates/page-home.php')` |
 | page.css | `is_page() && !is_page_template()` (pages génériques sans template custom) |
 
 > **Note hero.css** : `hero.css` ne contient que les styles `.hero-section` (hero de la homepage). La page services utilise `.service-page__hero-image` qui est dans `service-page.css`. Ne pas charger `hero.css` sur la page services.
+
+> **Note service-card.css** : le fichier `assets/css/components/service-card.css` a été supprimé par le PRD 0029 (grille de services remplacée par deux sections de contenu éditorial). Aucune action à prévoir — il n'y a plus rien à rendre conditionnel sur ce composant.
 
 > **Note kintsugi.css** : `kintsugi.css` contient les styles `.section-divider--header` utilisés dans `header.php` sur **toutes les pages**. Ce fichier doit rester chargé inconditionnellement. Une optimisation future pourrait déplacer `.section-divider--header` et `.section-divider` (base) vers `header.css`, ce qui permettrait de rendre le reste de `kintsugi.css` conditionnel à la homepage.
 
@@ -109,11 +127,13 @@ Le score Lighthouse Performance est de **56/100** sur l'environnement local. Les
 
 > **Note brevo-override.css** : Bien que ce fichier soit un candidat à l'async loading (§4), il doit rester chargé sur toutes les pages car le formulaire newsletter Brevo est présent dans `footer.php` sur chaque page.
 
-**Nettoyage du tableau de dépendances `kiyose-main`** : Le style `kiyose-main` (ligne 234 de `enqueue.php`) déclare tous les CSS composants comme dépendances. Quand un CSS devient conditionnel (ex: `kiyose-page` non enregistré hors pages génériques), WordPress le traite comme une dépendance manquante — `kiyose-main` se charge quand même, mais ça laisse des handles non résolus dans le tracking interne. **Il faut mettre à jour le tableau de dépendances de `kiyose-main`** pour ne lister que les CSS toujours chargés (le noyau) :
+**Nettoyage du tableau de dépendances `kiyose-main`** : Le style `kiyose-main` (ligne 224-229 de `enqueue.php`, tableau à la ligne 227) déclare tous les CSS composants comme dépendances. Quand un CSS devient conditionnel (ex: `kiyose-page` non enregistré hors pages génériques), WordPress le traite comme une dépendance manquante — `kiyose-main` se charge quand même, mais ça laisse des handles non résolus dans le tracking interne. **Il faut mettre à jour le tableau de dépendances de `kiyose-main`** pour ne lister que les CSS toujours chargés (le noyau) :
 
 ```php
-array( 'kiyose-fonts', 'kiyose-variables', 'kiyose-header', 'kiyose-navigation', 'kiyose-footer', 'kiyose-kintsugi', 'kiyose-animations', 'kiyose-gutenberg-blocks' )
+array( 'kiyose-fonts', 'kiyose-variables', 'kiyose-plugins-common', 'kiyose-header', 'kiyose-navigation', 'kiyose-footer', 'kiyose-kintsugi', 'kiyose-animations', 'kiyose-gutenberg-blocks' )
 ```
+
+> **Note** : `kiyose-plugins-common` est également chargé inconditionnellement et appartient au noyau — à conserver dans la liste de dépendances.
 
 **Résultat attendu** : La homepage passe de ~18 requêtes CSS inconditionnelles à ~11 + les conditionnelles pertinentes. Les pages intérieures sans hero/services/blog passent à ~11 fichiers CSS.
 
@@ -219,14 +239,15 @@ Processus de synchronisation :
 - Lors de la revue de code, tout changement à `variables.css`, `header.css`, `navigation.css`, ou `hero.css` doit vérifier si `critical.css` nécessite une mise à jour
 - Un commentaire en en-tête de `critical.css` listera les fichiers sources et leur date de dernière synchronisation
 
-### 5. Correction du fichier de police manquant
+### 5. Suppression du preload d'une police inexistante
 
-**Problème** : Lighthouse détecte une erreur 404 pour `caveat-v21-latin-regular.woff2`. Le fichier est référencé dans `inc/enqueue.php:449` via un `<link rel="preload">` dans la fonction `kiyose_preload_fonts()`, mais **absent du dossier `assets/fonts/`**. Le fichier `fonts.css` ne contient aucune référence à Caveat — il ne définit que les `@font-face` pour Nunito et Dancing Script.
+**Problème** : Lighthouse détecte une erreur 404 pour `caveat-v21-latin-regular.woff2`. Le fichier est référencé dans `kiyose_preload_fonts()` (`inc/enqueue.php` ligne 525) via un `<link rel="preload">`, mais **absent du dossier `assets/fonts/`**. Un grep confirme que la police Caveat n'est utilisée nulle part :
 
-**Solution** : Deux options possibles (choisir l'une ou l'autre) :
+- aucun fichier `caveat-*.woff2` dans `assets/fonts/`
+- aucune référence à `caveat` dans `assets/css/*`
+- aucune `@font-face` Caveat dans `fonts.css` (seuls Nunito et Dancing Script sont déclarés)
 
-1. **Si Caveat n'est plus utilisée** : Supprimer le `<link rel="preload">` de `kiyose_preload_fonts()` dans `enqueue.php:449`.
-2. **Si Caveat est nécessaire** : Télécharger le fichier WOFF2 depuis Google Fonts, le placer dans `assets/fonts/`, ET ajouter la déclaration `@font-face` correspondante dans `fonts.css`.
+**Solution** : Supprimer la ligne de preload Caveat dans `kiyose_preload_fonts()` (`inc/enqueue.php:525`). Conserver le preload de Nunito.
 
 ### 6. Preconnect pour ressources externes
 
@@ -243,17 +264,9 @@ function kiyose_resource_hints() {
 add_action( 'wp_head', 'kiyose_resource_hints', 2 );
 ```
 
-### 7. Correction de bugs pré-existants dans `enqueue.php`
+### 7. Bugs pré-existants — déjà corrigés
 
-Ces bugs ne sont pas causés par ce PRD mais doivent être corrigés lors de l'implémentation pour éviter des erreurs PHP :
-
-**7a. Variable `$suffix` non définie dans deux fonctions** :
-- `kiyose_enqueue_testimonials_styles()` (ligne 325) utilise `$suffix` sans le définir
-- `kiyose_enqueue_signets_styles()` (ligne 367) utilise `$suffix` sans le définir
-
-**Correction** : Ajouter `$suffix = kiyose_get_asset_suffix();` au début de chaque fonction.
-
-**7b. Preload de police inexistante** : Corrigé dans §5 ci-dessus.
+Les bugs `$suffix` non défini dans `kiyose_enqueue_testimonials_styles()` et `kiyose_enqueue_signets_styles()` ont été corrigés depuis la rédaction de ce PRD. Vérification à la date de mise à jour : `$suffix = kiyose_get_asset_suffix();` est défini ligne 319 (testimonials) et ligne 370 (signets) de `inc/enqueue.php`. Rien à faire dans le cadre de ce PRD.
 
 ## Fichiers impactés
 
@@ -261,7 +274,7 @@ Ces bugs ne sont pas causés par ce PRD mais doivent être corrigés lors de l'i
 
 | Fichier | Modification |
 |---------|-------------|
-| `inc/enqueue.php` | Conditions de chargement CSS, dépendances `kiyose-main`, jQuery footer, CSS critique inline, async stylesheets, preconnect conditionnel, correction `$suffix` manquant (§7), correction preload Caveat (§5) |
+| `inc/enqueue.php` | Conditions de chargement CSS, dépendances `kiyose-main`, jQuery footer, CSS critique inline, async stylesheets, preconnect conditionnel, suppression preload Caveat (§5) |
 
 ### Fichiers créés
 
@@ -314,7 +327,6 @@ add_action( 'wp_head', 'kiyose_noscript_styles', 99 );
 8. **Plugins** : Vérifier que Events Manager, CF7, Brevo fonctionnent toujours correctement
 9. **jQuery en footer** : Tester les fonctionnalités dépendantes de jQuery (formulaires, calendrier)
 10. **critical.css** : Vérifier que `critical.css` est cohérent avec ses fichiers sources (`variables.css`, `header.css`, `navigation.css`, `hero.css`)
-11. **Bugs corrigés** : Vérifier que `$suffix` est défini dans `kiyose_enqueue_testimonials_styles()` et `kiyose_enqueue_signets_styles()`
 
 ## Risques et rollback
 
