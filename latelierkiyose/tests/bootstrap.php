@@ -33,6 +33,21 @@ if ( ! function_exists( 'add_action' ) ) {
 	}
 }
 
+if ( ! function_exists( 'add_filter' ) ) {
+	/**
+	 * Mock add_filter function.
+	 *
+	 * @param string   $hook Hook name.
+	 * @param callable $callback Callback function.
+	 * @param int      $priority Priority.
+	 * @param int      $accepted_args Number of arguments.
+	 * @return bool
+	 */
+	function add_filter( $hook, $callback, $priority = 10, $accepted_args = 1 ) {
+		return true;
+	}
+}
+
 if ( ! function_exists( 'register_post_type' ) ) {
 	/**
 	 * Mock register_post_type function.

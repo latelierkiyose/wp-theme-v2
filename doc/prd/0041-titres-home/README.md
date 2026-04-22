@@ -1,6 +1,6 @@
 # PRD 0041 — Titres sur la home : orphelins de ponctuation
 
-- **Statut** : prêt à l'implémentation
+- **Statut** : terminé
 - **Version** : 1.0
 - **Date** : 2026-04-22
 
@@ -50,8 +50,8 @@ Aucune utilité d'équilibrage typographique n'existe aujourd'hui dans le thème
 
 | Sujet | Décision | Justification |
 |---|---|---|
-| Rééquilibrage des lignes | `text-wrap: balance` sur `h1`–`h6`, `.home-content1__question` et `.home-emphase` | Propriété CSS native conçue pour cet usage. Support Chrome 114+, Safari 17.5+, Firefox 121+ (universel en 2026). Dégradation gracieuse vers `normal` sur anciens navigateurs |
-| Portée CSS | Globale sur les `h*`, ciblée sur les classes home pour les éléments non-heading | Les éléments `.home-content1__question` et `.home-emphase` sont des `<p>` stylés comme titres — doivent bénéficier du même traitement |
+| Rééquilibrage des lignes | `text-wrap: balance` sur `h1`–`h6` et `.home-emphase` | Propriété CSS native conçue pour cet usage. Support Chrome 114+, Safari 17.5+, Firefox 121+ (universel en 2026). Dégradation gracieuse vers `normal` sur anciens navigateurs |
+| Portée CSS | Globale sur les `h*`, ciblée sur `.home-emphase` (slogans centrés, largeur 700px — rééquilibrage renforce l'équilibre visuel) | `.home-content1__question` n'est pas rééquilibré en CSS : le helper PHP `kiyose_fr_nbsp()` traite déjà le cas critique (`?` en fin de question) et le rééquilibrage global sur cet élément peut générer des coupures peu naturelles sur texte long |
 | Ponctuation française | Helper PHP `kiyose_fr_nbsp()` insérant `&#8239;` (U+202F, espace fine insécable) avant `?`, `!`, `:`, `;` précédés d'une espace | Règle typographique française standard. `wptexturize()` ne le fait pas de façon fiable. U+202F est préféré à `&nbsp;` (U+00A0) : largeur optique plus juste avant ponctuation forte |
 | Cible du helper | Uniquement les champs dynamiques de la home listés dans le tableau « éléments concernés » | Cible chirurgicale ; pas de risque de régression sur les paragraphes body où un retour de ponctuation est acceptable |
 | Échappement | `kiyose_fr_nbsp()` s'applique **après** `esc_html()` et retourne du HTML contenant une entité numérique. Sortie via `echo` direct sans ré-échappement | L'entité `&#8239;` est sûre. Le contenu source est déjà échappé en amont |
@@ -79,22 +79,7 @@ h6 {
 }
 ```
 
-### 2. CSS — `latelierkiyose/assets/css/components/home-content.css`
-
-Ajouter `text-wrap: balance` au sélecteur `.home-content1__question` (l. 39) :
-
-```css
-.home-content1__question {
-	color: var(--kiyose-color-burgundy);
-	font-family: var(--kiyose-font-heading);
-	font-size: var(--kiyose-font-size-2xl);
-	font-weight: 400;
-	margin-bottom: var(--kiyose-spacing-sm);
-	text-wrap: balance;
-}
-```
-
-### 3. CSS — `latelierkiyose/assets/css/components/home-sections.css`
+### 2. CSS — `latelierkiyose/assets/css/components/home-sections.css`
 
 Ajouter `text-wrap: balance` au sélecteur `.home-emphase` (l. 174) :
 
@@ -114,7 +99,7 @@ Ajouter `text-wrap: balance` au sélecteur `.home-emphase` (l. 174) :
 }
 ```
 
-### 4. PHP — `latelierkiyose/inc/content-filters.php`
+### 3. PHP — `latelierkiyose/inc/content-filters.php`
 
 Ajouter la fonction helper :
 
@@ -133,7 +118,7 @@ function kiyose_fr_nbsp( $text ) {
 }
 ```
 
-### 5. PHP — `latelierkiyose/templates/page-home.php`
+### 4. PHP — `latelierkiyose/templates/page-home.php`
 
 Wrapper des 6 sorties dynamiques à risque :
 
@@ -146,7 +131,7 @@ Wrapper des 6 sorties dynamiques à risque :
 | 185 | `<?php echo esc_html( $kiyose_content1_slogan ); ?>` | `<?php echo kiyose_fr_nbsp( esc_html( $kiyose_content1_slogan ) ); ?>` |
 | 217 | `<?php echo esc_html( $kiyose_content2_slogan ); ?>` | `<?php echo kiyose_fr_nbsp( esc_html( $kiyose_content2_slogan ) ); ?>` |
 
-### 6. Tests unitaires — `latelierkiyose/tests/Test_Content_Filters.php` (nouveau)
+### 5. Tests unitaires — `latelierkiyose/tests/Test_Content_Filters.php` (nouveau)
 
 Cas à couvrir pour `kiyose_fr_nbsp()` :
 
@@ -166,8 +151,6 @@ Cas à couvrir pour `kiyose_fr_nbsp()` :
 |---|---|
 | `latelierkiyose/assets/css/main.css` | Ajouter `text-wrap: balance` au bloc `h1..h6` |
 | `latelierkiyose/assets/css/main.min.css` | Régénérer |
-| `latelierkiyose/assets/css/components/home-content.css` | Ajouter `text-wrap: balance` à `.home-content1__question` |
-| `latelierkiyose/assets/css/components/home-content.min.css` | Régénérer |
 | `latelierkiyose/assets/css/components/home-sections.css` | Ajouter `text-wrap: balance` à `.home-emphase` |
 | `latelierkiyose/assets/css/components/home-sections.min.css` | Régénérer |
 | `latelierkiyose/inc/content-filters.php` | Ajouter `kiyose_fr_nbsp()` |
@@ -195,8 +178,8 @@ Cas à couvrir pour `kiyose_fr_nbsp()` :
 
 ### Fonctionnel
 - [ ] Sur la home, un titre dynamique finissant par `?` ne laisse plus ce caractère seul sur une ligne (test à 320px, 768px, 1024px, 1440px)
-- [ ] Les questions Q&A (`.home-content1__question`) ne présentent plus d'orphelin en mobile
-- [ ] Les 3 slogans `.home-emphase` sont rééquilibrés
+- [ ] Les questions Q&A (`.home-content1__question`) ne présentent plus de `?` orphelin (traité uniquement par `kiyose_fr_nbsp()`)
+- [ ] Les 3 slogans `.home-emphase` sont rééquilibrés visuellement et ne présentent plus de `?`, `!`, `:`, `;` isolés
 - [ ] Les titres longs (h1 welcome) sont rééquilibrés visuellement (lignes de largeur comparable)
 
 ### Typographie

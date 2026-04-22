@@ -79,3 +79,17 @@ function kiyose_auto_add_heading_ids( $content ) {
 	return $content;
 }
 add_filter( 'the_content', 'kiyose_auto_add_heading_ids', 10 );
+
+/**
+ * Inserts a French thin non-breaking space (U+202F) before high punctuation marks.
+ *
+ * Apply to dynamic title-like content only. Input MUST already be escaped
+ * via esc_html(); the returned string contains a numeric HTML entity and is
+ * safe to echo directly without further escaping.
+ *
+ * @param string $text Already-escaped title text.
+ * @return string Text with thin NBSP inserted before ?, !, :, ; when preceded by a space.
+ */
+function kiyose_fr_nbsp( $text ) {
+	return preg_replace( '/ ([?!:;])/u', '&#8239;$1', (string) $text );
+}

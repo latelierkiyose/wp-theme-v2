@@ -32,6 +32,15 @@
 		</properties>
 	</rule>
 
+	<!-- Custom output-safe wrappers recognised by WPCS as escaping functions. -->
+	<rule ref="WordPress.Security.EscapeOutput">
+		<properties>
+			<property name="customAutoEscapedFunctions" type="array">
+				<element value="kiyose_fr_nbsp"/>
+			</property>
+		</properties>
+	</rule>
+
 	<!-- PHP et WordPress minimums -->
 	<config name="minimum_supported_wp_version" value="6.7"/>
 	<config name="testVersion" value="8.3-"/>

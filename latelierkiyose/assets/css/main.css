@@ -67,6 +67,7 @@ h6 {
 	font-weight: 700;
 	line-height: var(--kiyose-line-height-tight);
 	margin-bottom: var(--kiyose-spacing-md);
+	text-wrap: balance;
 }
 
 h1 {
