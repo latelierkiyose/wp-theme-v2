@@ -49,6 +49,18 @@ Wrappers Docker (pas besoin de PHP local) : `./bin/phpcs.sh`, `./bin/phpcbf.sh`,
 Spécifications dans `doc/prd/NNNN-nom/`. Statuts : `brouillon` → `prêt à l'implémentation` → `terminé`.
 Quand l'implémentation est terminée, toujours passer le statut à `terminé`.
 
+## Documentation utilisateur
+
+La doc utilisateur vit dans `doc/user/` (public cible : rédacteurices non-techniques). Quand un shortcode, une classe CSS réutilisable, un template de page, un CPT ou un paramètre exposé au rédacteur est ajouté, modifié ou supprimé, mettre à jour `doc/user/` dans le même changement. Fichiers concernés selon le type de modification :
+
+- Shortcode → `doc/user/04-shortcodes.md` (+ recette dans `doc/user/recettes/` si nouveau cas d'usage)
+- Classe CSS rédacteur → `doc/user/03-mise-en-page-avec-des-classes.md`
+- Template de page → `doc/user/02-choisir-un-template.md`
+- CPT ou meta field rédacteur → fichier dédié (`05-temoignages.md`, etc.)
+- Fonctionnalité qui passe de "prêt" à "terminé" → retirer de `doc/user/a-venir.md` et ajouter dans la page de référence concernée
+
+Ton : tutoiement, français, sans jargon non introduit. Toujours donner un exemple copiable.
+
 ## Checklist post-fonctionnalité
 
 - [ ] Contraste WCAG 2.2 AA validé
@@ -57,11 +69,13 @@ Quand l'implémentation est terminée, toujours passer le statut à `terminé`.
 - [ ] Focus visible sur tous les éléments interactifs
 - [ ] `make test` passe
 - [ ] Images avec `alt` approprié
+- [ ] `doc/user/` mis à jour si l'évolution est visible côté rédaction
 
 ## Documentation détaillée
 
 Consulter à la demande avec l'outil Read (ne pas importer avec @) :
 
+- `doc/user/README.md` — Documentation pour les rédacteurices (public non-technique)
 - `doc/quick-reference.md` — Commandes, structure, standards critiques
 - `doc/architecture.md` — Structure technique détaillée
 - `doc/standards.md` — WPCS, accessibilité, sécurité, performance
