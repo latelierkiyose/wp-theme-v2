@@ -1,1 +1,2 @@
 .testimonials-grid{display:flex;flex-direction:column;gap:var(--kiyose-spacing-lg);margin-block:var(--kiyose-spacing-xl)}.testimonials-grid--masonry{align-items:flex-start;flex-direction:row}.testimonials-grid__column{display:flex;flex:1;flex-direction:column;gap:var(--kiyose-spacing-lg)}.testimonials-empty{color:var(--kiyose-color-text-light);font-style:italic;padding:var(--kiyose-spacing-xl);text-align:center}
+/*# sourceMappingURL=testimonials-grid.min.css.map */

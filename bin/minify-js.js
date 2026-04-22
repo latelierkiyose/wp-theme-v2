@@ -2,10 +2,10 @@
 
 /**
  * Minify JavaScript files using Terser.
- * 
+ *
  * This script finds all .js files in latelierkiyose/assets/js/ and generates
  * .min.js versions in the same directory.
- * 
+ *
  * Usage: node bin/minify-js.js
  */
 
@@ -17,7 +17,7 @@ const JS_DIR = path.join(__dirname, '../latelierkiyose/assets/js');
 
 /**
  * Recursively find all JS files in a directory.
- * 
+ *
  * @param {string} dir - Directory to search
  * @param {string[]} fileList - Accumulator for found files
  * @returns {string[]} Array of JS file paths
@@ -41,13 +41,15 @@ function findJsFiles(dir, fileList = []) {
 
 /**
  * Minify a single JavaScript file.
- * 
+ *
  * @param {string} inputPath - Path to source JS file
  * @returns {Promise<void>}
  */
 async function minifyJs(inputPath) {
 	const outputPath = inputPath.replace(/\.js$/, '.min.js');
 	const code = fs.readFileSync(inputPath, 'utf8');
+
+	const outputBasename = path.basename(outputPath);
 
 	try {
 		const result = await minify(code, {
@@ -60,16 +62,23 @@ async function minifyJs(inputPath) {
 			format: {
 				comments: false, // Remove all comments
 			},
+			sourceMap: {
+				filename: outputBasename,
+				url: outputBasename + '.map',
+			},
 		});
 
 		if (result.code) {
 			fs.writeFileSync(outputPath, result.code);
+			fs.writeFileSync(outputPath + '.map', result.map);
 
 			const inputSize = (fs.statSync(inputPath).size / 1024).toFixed(2);
 			const outputSize = (fs.statSync(outputPath).size / 1024).toFixed(2);
 			const savings = (((inputSize - outputSize) / inputSize) * 100).toFixed(1);
 
-			console.log(`✓ ${path.relative(process.cwd(), inputPath)} → ${path.relative(process.cwd(), outputPath)}`);
+			console.log(
+				`✓ ${path.relative(process.cwd(), inputPath)} → ${path.relative(process.cwd(), outputPath)}`
+			);
 			console.log(`  ${inputSize} KB → ${outputSize} KB (${savings}% reduction)`);
 		} else {
 			throw new Error('Minification produced no output');

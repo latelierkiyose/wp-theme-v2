@@ -13,7 +13,7 @@
 		"build:css": "node bin/minify-css.js",
 		"build:js": "node bin/minify-js.js",
 		"build": "npm run build:css && npm run build:js",
-		"build:clean": "find latelierkiyose/assets -name '*.min.css' -delete && find latelierkiyose/assets -name '*.min.js' -delete"
+		"build:clean": "find latelierkiyose/assets -name '*.min.css' -delete && find latelierkiyose/assets -name '*.min.js' -delete && find latelierkiyose/assets -name '*.map' -delete"
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.0",
