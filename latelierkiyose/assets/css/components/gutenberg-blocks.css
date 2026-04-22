@@ -178,3 +178,82 @@
 		width: 100%;
 	}
 }
+
+/* ============================================
+   IMAGES (wp-block-image)
+
+   Positionnement des images dans le contenu éditorial.
+   S'appuie sur les classes natives Gutenberg.
+
+   Comportement :
+   - Centré : max 720px, pas de flottant
+   - Gauche/Droite : flottant actif uniquement ≥1024px (320px)
+   - < 1024px : tous alignements → centré pleine largeur
+   ============================================ */
+
+.wp-block-image {
+	margin: var(--kiyose-spacing-2xl) auto;
+	max-width: 100%;
+}
+
+.wp-block-image img {
+	border-radius: 4px;
+	display: block;
+	height: auto;
+	max-width: 100%;
+}
+
+/* Centré — tous viewports */
+.wp-block-image.aligncenter,
+figure.aligncenter {
+	margin-inline: auto;
+	max-width: min(100%, 720px);
+}
+
+figure.aligncenter img,
+.wp-block-image.aligncenter img {
+	margin-inline: auto;
+}
+
+/* Mobile & tablet (< 1024px) : alignleft/alignright se comportent comme aligncenter */
+.wp-block-image.alignleft,
+.wp-block-image.alignright,
+figure.alignleft,
+figure.alignright {
+	margin-inline: auto;
+	max-width: 100%;
+}
+
+/* Desktop (≥ 1024px) — flottant activé */
+@media (width >= 1024px) {
+	.wp-block-image.alignleft,
+	figure.alignleft {
+		float: left;
+		margin: var(--kiyose-spacing-sm) var(--kiyose-spacing-xl) var(--kiyose-spacing-lg) 0;
+		max-width: 320px;
+	}
+
+	.wp-block-image.alignright,
+	figure.alignright {
+		float: right;
+		margin: var(--kiyose-spacing-sm) 0 var(--kiyose-spacing-lg) var(--kiyose-spacing-xl);
+		max-width: 320px;
+	}
+}
+
+/* Captions — figcaption (Gutenberg) + .wp-caption-text (Classic Editor) */
+.wp-block-image figcaption,
+.wp-element-caption,
+.wp-caption-text {
+	color: var(--kiyose-color-text-light);
+	font-size: var(--kiyose-font-size-sm);
+	font-style: italic;
+	margin-top: var(--kiyose-spacing-xs);
+	text-align: center;
+}
+
+/* Conteneurs de contenu — flow-root pour contenir les floats */
+.blog-single__content,
+.page__content {
+	display: flow-root;
+}

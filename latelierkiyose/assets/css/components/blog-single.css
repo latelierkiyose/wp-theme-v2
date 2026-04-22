@@ -111,13 +111,6 @@
 	margin-bottom: var(--kiyose-spacing-sm);
 }
 
-.blog-single__content img {
-	border-radius: 4px;
-	height: auto;
-	margin: var(--kiyose-spacing-2xl) 0;
-	max-width: 100%;
-}
-
 .blog-single__content blockquote {
 	background-color: rgb(230 165 40 / 10%);
 	border-left: 4px solid var(--kiyose-color-accent);

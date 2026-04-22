@@ -1,6 +1,6 @@
 # PRD 0040 — Positionnement des images dans le contenu éditorial
 
-- **Statut** : prêt à l'implémentation
+- **Statut** : terminé
 - **Version** : 1.0
 - **Date** : 2026-04-22
 
@@ -120,7 +120,7 @@ figure.alignright {
 .wp-block-image figcaption,
 .wp-element-caption,
 .wp-caption-text {
-	color: var(--kiyose-color-text-muted, currentColor);
+	color: var(--kiyose-color-text-light);
 	font-size: var(--kiyose-font-size-sm);
 	font-style: italic;
 	margin-top: var(--kiyose-spacing-xs);
@@ -168,7 +168,7 @@ Régénérer `gutenberg-blocks.min.css` et `blog-single.min.css`.
 
 | Critère | Validation |
 |---|---|
-| Contraste caption | Vérifier `--kiyose-color-text-muted` (fallback `currentColor`) — ratio ≥ 4.5:1 sur fond clair |
+| Contraste caption | `--kiyose-color-text-light` (#666666) — ratio 4.76:1 sur fond beige, WCAG AA ✅ |
 | Attribut `alt` | Géré par l'éditeur WordPress (champ dans le bloc Image) — hors périmètre CSS |
 | Navigation clavier | Non impactée (images non interactives) |
 | Touch targets | Non applicable |
