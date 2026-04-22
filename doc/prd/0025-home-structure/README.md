@@ -1,6 +1,6 @@
 # Changement de la présentation du hero
 
-**Statut** : prêt à l'implémentation
+**Statut** : terminé
 
 tl;dr :
 - Le bloc hero actuel reste valable mais sa présentation change.
