@@ -63,9 +63,43 @@ if ( ! function_exists( 'is_archive' ) ) {
 	}
 }
 
+if ( ! function_exists( 'is_post_type_archive' ) ) {
+	function is_post_type_archive( $post_types = '' ) {
+		if ( empty( $GLOBALS['kiyose_test_is_post_type_archive'] ) ) {
+			return false;
+		}
+
+		if ( empty( $post_types ) ) {
+			return true;
+		}
+
+		$current_post_type = $GLOBALS['kiyose_test_post_type_archive_type'] ?? 'post';
+		$post_types        = (array) $post_types;
+
+		return in_array( $current_post_type, $post_types, true );
+	}
+}
+
 if ( ! function_exists( 'is_home' ) ) {
 	function is_home() {
 		return ! empty( $GLOBALS['kiyose_test_is_home'] );
+	}
+}
+
+if ( ! function_exists( 'is_tax' ) ) {
+	function is_tax( $taxonomy = '' ) {
+		if ( empty( $GLOBALS['kiyose_test_is_tax'] ) ) {
+			return false;
+		}
+
+		if ( empty( $taxonomy ) ) {
+			return true;
+		}
+
+		$current_taxonomy = $GLOBALS['kiyose_test_taxonomy'] ?? 'category';
+		$taxonomies       = (array) $taxonomy;
+
+		return in_array( $current_taxonomy, $taxonomies, true );
 	}
 }
 
@@ -274,6 +308,221 @@ class Test_Enqueue extends TestCase {
 
 		// Then
 		$this->assertTrue( $result );
+	}
+
+	public function test_kiyose_should_load_events_manager_assets_whenStandardPageWithoutShortcode_returnsFalse() {
+		// Given
+		$GLOBALS['kiyose_test_is_page']        = true;
+		$GLOBALS['kiyose_test_page_templates'] = array( 'templates/page-services.php' );
+		$GLOBALS['post']                       = (object) array(
+			'post_content' => '<p>Une page de service sans événement.</p>',
+			'post_type'    => 'page',
+		);
+
+		// When
+		$this->assertTrue( function_exists( 'kiyose_should_load_events_manager_assets' ) );
+		$result = kiyose_should_load_events_manager_assets();
+
+		// Then
+		$this->assertFalse( $result );
+	}
+
+	public function test_kiyose_should_load_events_manager_assets_whenSingularEvent_returnsTrue() {
+		// Given
+		$GLOBALS['kiyose_test_is_singular']        = true;
+		$GLOBALS['kiyose_test_singular_post_type'] = 'event';
+
+		// When
+		$this->assertTrue( function_exists( 'kiyose_should_load_events_manager_assets' ) );
+		$result = kiyose_should_load_events_manager_assets();
+
+		// Then
+		$this->assertTrue( $result );
+	}
+
+	public function test_kiyose_should_load_contact_form_7_assets_whenContactTemplate_returnsTrue() {
+		// Given
+		$GLOBALS['kiyose_test_page_templates'] = array( 'templates/page-contact.php' );
+
+		// When
+		$this->assertTrue( function_exists( 'kiyose_should_load_contact_form_7_assets' ) );
+		$result = kiyose_should_load_contact_form_7_assets();
+
+		// Then
+		$this->assertTrue( $result );
+	}
+
+	public function test_kiyose_should_load_contact_form_7_assets_whenServiceTemplateWithoutShortcode_returnsFalse() {
+		// Given
+		$GLOBALS['kiyose_test_page_templates'] = array( 'templates/page-services.php' );
+		$GLOBALS['post']                       = (object) array(
+			'post_content' => '<p>Une page sans formulaire.</p>',
+			'post_type'    => 'page',
+		);
+
+		// When
+		$this->assertTrue( function_exists( 'kiyose_should_load_contact_form_7_assets' ) );
+		$result = kiyose_should_load_contact_form_7_assets();
+
+		// Then
+		$this->assertFalse( $result );
+	}
+
+	public function test_kiyose_should_load_contact_form_7_assets_whenContentHasShortcode_returnsTrue() {
+		// Given
+		$GLOBALS['post'] = (object) array(
+			'post_content' => '[contact-form-7 id="123" title="Contact"]',
+			'post_type'    => 'page',
+		);
+
+		// When
+		$this->assertTrue( function_exists( 'kiyose_should_load_contact_form_7_assets' ) );
+		$result = kiyose_should_load_contact_form_7_assets();
+
+		// Then
+		$this->assertTrue( $result );
+	}
+
+	public function test_kiyose_should_load_brevo_assets_whenHomeTemplateWithoutShortcode_returnsFalse() {
+		// Given
+		$GLOBALS['kiyose_test_page_templates'] = array( 'templates/page-home.php' );
+
+		// When
+		$this->assertTrue( function_exists( 'kiyose_should_load_brevo_assets' ) );
+		$result = kiyose_should_load_brevo_assets();
+
+		// Then
+		$this->assertFalse( $result );
+	}
+
+	public function test_kiyose_dequeue_unused_plugin_assets_whenStandardPageWithoutPluginShortcodes_dequeuesEventsAndCf7Handles() {
+		// Given
+		$GLOBALS['kiyose_test_is_page']        = true;
+		$GLOBALS['kiyose_test_page_templates'] = array( 'templates/page-services.php' );
+		$GLOBALS['post']                       = (object) array(
+			'post_content' => '<p>Une page sans formulaire ni événement.</p>',
+			'post_type'    => 'page',
+		);
+
+		// When
+		$this->assertTrue( function_exists( 'kiyose_dequeue_unused_plugin_assets' ) );
+		kiyose_dequeue_unused_plugin_assets();
+
+		// Then
+		$this->assertContains( 'events-manager', $GLOBALS['kiyose_test_dequeued_scripts'] );
+		$this->assertContains( 'events-manager', $GLOBALS['kiyose_test_dequeued_styles'] );
+		$this->assertContains( 'contact-form-7', $GLOBALS['kiyose_test_dequeued_scripts'] );
+		$this->assertContains( 'contact-form-7', $GLOBALS['kiyose_test_dequeued_styles'] );
+	}
+
+	public function test_kiyose_dequeue_unused_plugin_assets_whenContactTemplate_keepsContactForm7AndDequeuesEventsManager() {
+		// Given
+		$GLOBALS['kiyose_test_page_templates'] = array( 'templates/page-contact.php' );
+
+		// When
+		$this->assertTrue( function_exists( 'kiyose_dequeue_unused_plugin_assets' ) );
+		kiyose_dequeue_unused_plugin_assets();
+
+		// Then
+		$this->assertNotContains( 'contact-form-7', $GLOBALS['kiyose_test_dequeued_scripts'] );
+		$this->assertNotContains( 'contact-form-7', $GLOBALS['kiyose_test_dequeued_styles'] );
+		$this->assertContains( 'events-manager', $GLOBALS['kiyose_test_dequeued_scripts'] );
+		$this->assertContains( 'events-manager', $GLOBALS['kiyose_test_dequeued_styles'] );
+	}
+
+	public function test_kiyose_add_recaptcha_resource_hints_whenNoPublicFormIsActive_returnsHintsUnchanged() {
+		// Given
+		$hints = array( 'https://example.com' );
+
+		// When
+		$this->assertTrue( function_exists( 'kiyose_add_recaptcha_resource_hints' ) );
+		$result = kiyose_add_recaptcha_resource_hints( $hints, 'preconnect' );
+
+		// Then
+		$this->assertSame( $hints, $result );
+	}
+
+	public function test_kiyose_add_recaptcha_resource_hints_whenOnlyHomeEventsListIsActive_returnsHintsUnchanged() {
+		// Given
+		$hints                                   = array( 'https://example.com' );
+		$GLOBALS['kiyose_test_page_templates'] = array( 'templates/page-home.php' );
+
+		// When
+		$this->assertTrue( function_exists( 'kiyose_add_recaptcha_resource_hints' ) );
+		$result = kiyose_add_recaptcha_resource_hints( $hints, 'preconnect' );
+
+		// Then
+		$this->assertSame( $hints, $result );
+	}
+
+	public function test_kiyose_add_recaptcha_resource_hints_whenContactFormIsActive_addsGoogleOrigins() {
+		// Given
+		$GLOBALS['kiyose_test_page_templates'] = array( 'templates/page-contact.php' );
+
+		// When
+		$this->assertTrue( function_exists( 'kiyose_add_recaptcha_resource_hints' ) );
+		$result = kiyose_add_recaptcha_resource_hints( array(), 'preconnect' );
+
+		// Then
+		$this->assertContains( 'https://www.google.com', $result );
+		$this->assertContains(
+			array(
+				'href'        => 'https://www.gstatic.com',
+				'crossorigin' => 'anonymous',
+			),
+			$result
+		);
+	}
+
+	public function test_kiyose_dedupe_external_scripts_whenDuplicateRecaptchaUrls_dequeuesSecondHandle() {
+		// Given
+		$GLOBALS['wp_scripts'] = (object) array(
+			'queue'      => array( 'contact-form-7-recaptcha', 'brevo-recaptcha', 'kiyose-main' ),
+			'registered' => array(
+				'contact-form-7-recaptcha' => (object) array(
+					'src' => 'https://www.google.com/recaptcha/api.js?render=site-key',
+				),
+				'brevo-recaptcha'          => (object) array(
+					'src' => 'https://www.google.com/recaptcha/api.js?render=site-key',
+				),
+				'kiyose-main'              => (object) array(
+					'src' => 'https://example.com/wp-content/themes/latelierkiyose/assets/js/main.js',
+				),
+			),
+		);
+
+		// When
+		$this->assertTrue( function_exists( 'kiyose_dedupe_external_scripts' ) );
+		kiyose_dedupe_external_scripts();
+
+		// Then
+		$this->assertContains( 'brevo-recaptcha', $GLOBALS['kiyose_test_dequeued_scripts'] );
+		$this->assertNotContains( 'contact-form-7-recaptcha', $GLOBALS['kiyose_test_dequeued_scripts'] );
+		$this->assertSame( array( 'contact-form-7-recaptcha', 'kiyose-main' ), $GLOBALS['wp_scripts']->queue );
+	}
+
+	public function test_kiyose_dedupe_external_scripts_whenDuplicateBrevoSdkUrls_dequeuesSecondHandle() {
+		// Given
+		$GLOBALS['wp_scripts'] = (object) array(
+			'queue'      => array( 'sib-front-js', 'sibwp-form-js' ),
+			'registered' => array(
+				'sib-front-js'  => (object) array(
+					'src' => 'https://sibforms.com/forms/end-form/build/main.js',
+				),
+				'sibwp-form-js' => (object) array(
+					'src' => 'https://sibforms.com/forms/end-form/build/main.js',
+				),
+			),
+		);
+
+		// When
+		$this->assertTrue( function_exists( 'kiyose_dedupe_external_scripts' ) );
+		kiyose_dedupe_external_scripts();
+
+		// Then
+		$this->assertContains( 'sibwp-form-js', $GLOBALS['kiyose_test_dequeued_scripts'] );
+		$this->assertNotContains( 'sib-front-js', $GLOBALS['kiyose_test_dequeued_scripts'] );
+		$this->assertSame( array( 'sib-front-js' ), $GLOBALS['wp_scripts']->queue );
 	}
 
 	public function test_kiyose_get_asset_version_whenFileIsMissing_returnsThemeVersion() {

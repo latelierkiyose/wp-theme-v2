@@ -233,6 +233,24 @@ Les validations minimales à faire avant la bascule publique :
 
 ### Performance
 
+- [ ] **Comptage des assets front** sur staging avant/après activation du thème : ouvrir `/`, `/contact/`, `/calendrier-tarifs/`, un article de blog et une page service, puis exécuter dans la console navigateur :
+  ```js
+  const stylesheets = [...document.querySelectorAll('link[rel="stylesheet"]')].map((node) => node.href);
+  const scripts = [...document.querySelectorAll('script[src]')].map((node) => node.src);
+  const externalScripts = scripts.filter((src) => !src.startsWith(location.origin));
+  const duplicateScripts = scripts.filter((src, index) => scripts.indexOf(src) !== index);
+  console.table({
+    stylesheets: stylesheets.length,
+    scripts: scripts.length,
+    externalScripts: externalScripts.length,
+    duplicateScripts: duplicateScripts.length,
+  });
+  console.table(duplicateScripts);
+  ```
+- [ ] Homepage : aucun doublon d'URL de script externe, en particulier reCAPTCHA/Brevo.
+- [ ] Page Contact : Contact Form 7 fonctionne en AJAX si configuré, reCAPTCHA/Brevo ne sont pas dupliqués, aucune erreur console non connue.
+- [ ] Page Calendrier et page détail événement : Events Manager affiche les événements et les réservations/filtres éventuels fonctionnent.
+- [ ] Page service standard : pas d'assets Events Manager ou Contact Form 7 si aucun shortcode plugin n'est présent dans le contenu.
 - [ ] **Lighthouse** desktop : Performance ≥ 90, Accessibility ≥ 95, Best Practices ≥ 90, SEO ≥ 90
 - [ ] Core Web Vitals : LCP < 2.5 s, INP < 200 ms, CLS < 0.1
 

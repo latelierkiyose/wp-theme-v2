@@ -1,6 +1,6 @@
 # PRD 0059 — Chargement production des assets plugins et scripts externes
 
-- **Statut** : prêt à l'implémentation
+- **Statut** : terminé
 - **Criticité** : moyenne
 - **Version** : 1.0
 - **Date** : 2026-05-02

@@ -190,14 +190,14 @@ function kiyose_get_theme_assets(): array {
 			'handle'    => 'kiyose-cf7-override',
 			'path'      => '/assets/css/components/cf7-override.css',
 			'deps'      => array( 'kiyose-variables' ),
-			'condition' => 'kiyose_is_contact_template',
+			'condition' => 'kiyose_should_load_contact_form_7_assets',
 		),
 		array(
 			'type'      => 'style',
 			'handle'    => 'kiyose-brevo-override',
 			'path'      => '/assets/css/components/brevo-override.css',
 			'deps'      => array( 'kiyose-variables', 'kiyose-plugins-common' ),
-			'condition' => 'kiyose_should_load_brevo_styles',
+			'condition' => 'kiyose_should_load_brevo_assets',
 		),
 		array(
 			'type'   => 'style',
@@ -227,7 +227,7 @@ function kiyose_get_theme_assets(): array {
 			'handle'    => 'kiyose-events-manager',
 			'path'      => '/assets/css/components/events-manager.css',
 			'deps'      => array( 'kiyose-variables' ),
-			'condition' => 'kiyose_should_load_events_manager_styles',
+			'condition' => 'kiyose_should_load_events_manager_assets',
 			'priority'  => 100,
 		),
 		array(
@@ -458,6 +458,302 @@ function kiyose_enqueue_late_assets(): void {
 add_action( 'wp_enqueue_scripts', 'kiyose_enqueue_late_assets', 100 );
 
 /**
+ * Return native plugin handles controlled by the theme on production pages.
+ *
+ * Handles come from the supported plugins documented for the project. The filter
+ * keeps the list adjustable if a plugin changes a handle in a later release.
+ *
+ * @return array<string, array<string, mixed>> Plugin asset groups.
+ */
+function kiyose_get_plugin_asset_handles(): array {
+	$asset_handles = array(
+		'events_manager' => array(
+			'condition' => 'kiyose_should_load_events_manager_assets',
+			'styles'    => array(
+				'events-manager',
+				'events-manager-css',
+				'events-manager-dynamic',
+				'events-manager-pro',
+				'em-events-manager',
+				'em-bookings',
+				'em-calendar',
+				'em-fonts',
+			),
+			'scripts'   => array(
+				'events-manager',
+				'events-manager-js',
+				'em-events-manager',
+				'em-events',
+				'em-bookings',
+				'em-google-maps',
+				'em-maps',
+				'em-osm',
+			),
+		),
+		'contact_form_7' => array(
+			'condition' => 'kiyose_should_load_contact_form_7_assets',
+			'styles'    => array(
+				'contact-form-7',
+				'wpcf7-recaptcha',
+			),
+			'scripts'   => array(
+				'contact-form-7',
+				'wpcf7-recaptcha',
+			),
+		),
+		'brevo'          => array(
+			'condition' => 'kiyose_should_load_brevo_assets',
+			'styles'    => array(
+				'sib-front-css',
+				'sibwp-form',
+				'sibwp-form-css',
+				'sib-form-css',
+				'mailin-front-css',
+				'brevo-form-css',
+			),
+			'scripts'   => array(
+				'sib-front-js',
+				'sibwp-form',
+				'sibwp-form-js',
+				'sendinblue-js',
+				'mailin-front-js',
+				'mailin-tracking',
+				'brevo-conversations',
+				'brevo-widget',
+				'sib-conversations',
+			),
+		),
+		'recaptcha'      => array(
+			'condition' => 'kiyose_should_load_recaptcha_assets',
+			'styles'    => array(),
+			'scripts'   => array(
+				'google-recaptcha',
+				'recaptcha',
+				'grecaptcha',
+			),
+		),
+	);
+
+	if ( function_exists( 'apply_filters' ) ) {
+		return (array) apply_filters( 'kiyose_plugin_asset_handles', $asset_handles );
+	}
+
+	return $asset_handles;
+}
+
+/**
+ * Dequeue native plugin assets when the current request does not render them.
+ *
+ * @return void
+ */
+function kiyose_dequeue_unused_plugin_assets(): void {
+	foreach ( kiyose_get_plugin_asset_handles() as $asset_group ) {
+		$condition = $asset_group['condition'] ?? null;
+
+		if ( is_callable( $condition ) && (bool) call_user_func( $condition ) ) {
+			continue;
+		}
+
+		kiyose_dequeue_style_handles( (array) ( $asset_group['styles'] ?? array() ) );
+		kiyose_dequeue_script_handles( (array) ( $asset_group['scripts'] ?? array() ) );
+	}
+}
+add_action( 'wp_enqueue_scripts', 'kiyose_dequeue_unused_plugin_assets', 120 );
+add_action( 'wp_print_styles', 'kiyose_dequeue_unused_plugin_assets', 100 );
+add_action( 'wp_print_scripts', 'kiyose_dequeue_unused_plugin_assets', 90 );
+
+/**
+ * Dequeue and deregister style handles.
+ *
+ * @param array<int, string> $handles Style handles.
+ * @return void
+ */
+function kiyose_dequeue_style_handles( array $handles ): void {
+	foreach ( array_unique( $handles ) as $handle ) {
+		if ( function_exists( 'wp_dequeue_style' ) ) {
+			wp_dequeue_style( $handle );
+		}
+
+		if ( function_exists( 'wp_deregister_style' ) ) {
+			wp_deregister_style( $handle );
+		}
+	}
+}
+
+/**
+ * Dequeue and deregister script handles.
+ *
+ * @param array<int, string> $handles Script handles.
+ * @return void
+ */
+function kiyose_dequeue_script_handles( array $handles ): void {
+	foreach ( array_unique( $handles ) as $handle ) {
+		if ( function_exists( 'wp_dequeue_script' ) ) {
+			wp_dequeue_script( $handle );
+		}
+
+		if ( function_exists( 'wp_deregister_script' ) ) {
+			wp_deregister_script( $handle );
+		}
+	}
+}
+
+/**
+ * Add reCAPTCHA preconnect origins only when a public form can use reCAPTCHA.
+ *
+ * @param array<int, array<string, string>|string> $urls          Existing resource hints.
+ * @param string                                   $relation_type Resource hint relation type.
+ * @return array<int, array<string, string>|string> Filtered resource hints.
+ */
+function kiyose_add_recaptcha_resource_hints( array $urls, string $relation_type ): array {
+	if ( 'preconnect' !== $relation_type || ! kiyose_should_load_recaptcha_assets() ) {
+		return $urls;
+	}
+
+	$urls[] = 'https://www.google.com';
+	$urls[] = array(
+		'href'        => 'https://www.gstatic.com',
+		'crossorigin' => 'anonymous',
+	);
+
+	return kiyose_unique_resource_hints( $urls );
+}
+add_filter( 'wp_resource_hints', 'kiyose_add_recaptcha_resource_hints', 10, 2 );
+
+/**
+ * Remove duplicated resource hints while preserving first occurrence order.
+ *
+ * @param array<int, array<string, string>|string> $urls Resource hints.
+ * @return array<int, array<string, string>|string> Unique resource hints.
+ */
+function kiyose_unique_resource_hints( array $urls ): array {
+	$unique_urls = array();
+	$seen_urls   = array();
+
+	foreach ( $urls as $url ) {
+		$key = is_array( $url ) ? (string) ( $url['href'] ?? '' ) : (string) $url;
+
+		if ( '' === $key || isset( $seen_urls[ $key ] ) ) {
+			continue;
+		}
+
+		$seen_urls[ $key ] = true;
+		$unique_urls[]     = $url;
+	}
+
+	return $unique_urls;
+}
+
+/**
+ * Dequeue exact duplicate external reCAPTCHA and Brevo SDK script URLs.
+ *
+ * @return void
+ */
+function kiyose_dedupe_external_scripts(): void {
+	global $wp_scripts;
+
+	if ( ! is_object( $wp_scripts ) || empty( $wp_scripts->queue ) || empty( $wp_scripts->registered ) ) {
+		return;
+	}
+
+	$seen_urls = array();
+
+	foreach ( (array) $wp_scripts->queue as $handle ) {
+		$registered_script = $wp_scripts->registered[ $handle ] ?? null;
+
+		if ( ! is_object( $registered_script ) || empty( $registered_script->src ) ) {
+			continue;
+		}
+
+		$url = kiyose_normalize_dedupable_external_script_url( (string) $registered_script->src );
+
+		if ( '' === $url ) {
+			continue;
+		}
+
+		if ( isset( $seen_urls[ $url ] ) ) {
+			kiyose_dequeue_script_handles( array( (string) $handle ) );
+			continue;
+		}
+
+		$seen_urls[ $url ] = (string) $handle;
+	}
+}
+add_action( 'wp_print_scripts', 'kiyose_dedupe_external_scripts', 100 );
+
+/**
+ * Normalize external script URLs that the theme can safely dedupe.
+ *
+ * @param string $src Script source URL.
+ * @return string Normalized URL, or an empty string when the URL is not targeted.
+ */
+function kiyose_normalize_dedupable_external_script_url( string $src ): string {
+	if ( str_starts_with( $src, '//' ) ) {
+		$src = 'https:' . $src;
+	}
+
+	if ( 1 !== preg_match( '#^https?://#i', $src ) ) {
+		return '';
+	}
+
+	$parts = wp_parse_url( $src );
+
+	if ( false === $parts || empty( $parts['host'] ) || empty( $parts['path'] ) ) {
+		return '';
+	}
+
+	$host = strtolower( (string) $parts['host'] );
+	$path = (string) $parts['path'];
+
+	if ( ! kiyose_is_dedupable_external_script_url( $host, $path ) ) {
+		return '';
+	}
+
+	$scheme = strtolower( (string) ( $parts['scheme'] ?? 'https' ) );
+	$query  = isset( $parts['query'] ) ? '?' . $parts['query'] : '';
+
+	return $scheme . '://' . $host . $path . $query;
+}
+
+/**
+ * Check if an external script URL belongs to a dedupe-targeted provider.
+ *
+ * @param string $host URL host.
+ * @param string $path URL path.
+ * @return bool True when the URL can be deduped.
+ */
+function kiyose_is_dedupable_external_script_url( string $host, string $path ): bool {
+	return ( 'www.google.com' === $host && '/recaptcha/api.js' === $path )
+		|| ( 'www.gstatic.com' === $host && str_contains( $path, '/recaptcha/' ) )
+		|| kiyose_host_matches_any_domain(
+			$host,
+			array(
+				'brevo.com',
+				'sendinblue.com',
+				'sibautomation.com',
+				'sibforms.com',
+			)
+		);
+}
+
+/**
+ * Check if a host is exactly one of the domains or one of their subdomains.
+ *
+ * @param string             $host    Host to test.
+ * @param array<int, string> $domains Domains to match.
+ * @return bool True when the host matches.
+ */
+function kiyose_host_matches_any_domain( string $host, array $domains ): bool {
+	foreach ( $domains as $domain ) {
+		if ( $host === $domain || str_ends_with( $host, '.' . $domain ) ) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
  * Add the current suffix before the file extension.
  *
  * @param string $path   Relative asset path.
@@ -614,21 +910,75 @@ function kiyose_should_load_testimony_styles(): bool {
 }
 
 /**
- * Check if Events Manager styles are needed.
+ * Check if Events Manager assets are needed.
  *
  * @return bool
  */
-function kiyose_should_load_events_manager_styles(): bool {
+function kiyose_should_load_events_manager_assets(): bool {
 	return kiyose_is_calendar_template()
 		|| kiyose_is_home_template()
+		|| kiyose_is_events_manager_context()
 		|| kiyose_current_post_has_any_shortcode(
 			array(
 				'events_list',
 				'events_calendar',
 				'events_map',
 				'event',
+				'event_form',
+				'event_search_form',
+				'locations_list',
+				'location',
 			)
 		);
+}
+
+/**
+ * Check if Events Manager styles are needed.
+ *
+ * @return bool
+ */
+function kiyose_should_load_events_manager_styles(): bool {
+	return kiyose_should_load_events_manager_assets();
+}
+
+/**
+ * Check if the current request belongs to Events Manager content.
+ *
+ * @return bool
+ */
+function kiyose_is_events_manager_context(): bool {
+	$events_post_types = array( 'event', 'event-recurring', 'location' );
+	$events_taxonomies = array( 'event-categories', 'event-tags', 'event-category', 'event-tag', 'location-categories' );
+
+	if ( function_exists( 'is_singular' ) && is_singular( $events_post_types ) ) {
+		return true;
+	}
+
+	if ( function_exists( 'is_post_type_archive' ) && is_post_type_archive( $events_post_types ) ) {
+		return true;
+	}
+
+	return function_exists( 'is_tax' ) && is_tax( $events_taxonomies );
+}
+
+/**
+ * Check if Contact Form 7 assets are needed.
+ *
+ * @return bool
+ */
+function kiyose_should_load_contact_form_7_assets(): bool {
+	return kiyose_is_contact_template()
+		|| kiyose_current_post_has_shortcode( 'contact-form-7' );
+}
+
+/**
+ * Check if Brevo form assets are needed.
+ *
+ * @return bool
+ */
+function kiyose_should_load_brevo_assets(): bool {
+	return kiyose_should_render_brevo_newsletter()
+		|| kiyose_current_post_has_shortcode( 'sibwp_form' );
 }
 
 /**
@@ -637,7 +987,80 @@ function kiyose_should_load_events_manager_styles(): bool {
  * @return bool
  */
 function kiyose_should_load_brevo_styles(): bool {
+	return kiyose_should_load_brevo_assets();
+}
+
+/**
+ * Check if the theme can render the configured Brevo newsletter form.
+ *
+ * @return bool
+ */
+function kiyose_should_render_brevo_newsletter(): bool {
 	return function_exists( 'shortcode_exists' ) && shortcode_exists( 'sibwp_form' );
+}
+
+/**
+ * Check if a public form can load reCAPTCHA.
+ *
+ * @return bool
+ */
+function kiyose_should_load_recaptcha_assets(): bool {
+	return kiyose_should_load_contact_form_7_assets()
+		|| kiyose_should_load_events_manager_recaptcha_assets()
+		|| ( kiyose_should_load_brevo_assets() && kiyose_is_brevo_recaptcha_enabled() );
+}
+
+/**
+ * Check if the current Events Manager context can render a booking form.
+ *
+ * @return bool
+ */
+function kiyose_should_load_events_manager_recaptcha_assets(): bool {
+	return kiyose_is_events_manager_booking_context() && kiyose_is_events_manager_recaptcha_enabled();
+}
+
+/**
+ * Check whether the current request can include an Events Manager booking form.
+ *
+ * @return bool
+ */
+function kiyose_is_events_manager_booking_context(): bool {
+	if ( function_exists( 'is_singular' ) && is_singular( array( 'event', 'event-recurring' ) ) ) {
+		return true;
+	}
+
+	return kiyose_current_post_has_any_shortcode(
+		array(
+			'event',
+			'event_form',
+		)
+	);
+}
+
+/**
+ * Return whether Events Manager reCAPTCHA should be treated as active.
+ *
+ * @return bool True when Events Manager reCAPTCHA should be considered active.
+ */
+function kiyose_is_events_manager_recaptcha_enabled(): bool {
+	if ( function_exists( 'apply_filters' ) ) {
+		return (bool) apply_filters( 'kiyose_events_manager_recaptcha_enabled', true );
+	}
+
+	return true;
+}
+
+/**
+ * Return whether Brevo reCAPTCHA should be treated as active.
+ *
+ * @return bool True when Brevo reCAPTCHA should be considered active.
+ */
+function kiyose_is_brevo_recaptcha_enabled(): bool {
+	if ( function_exists( 'apply_filters' ) ) {
+		return (bool) apply_filters( 'kiyose_brevo_recaptcha_enabled', true );
+	}
+
+	return true;
 }
 
 /**
