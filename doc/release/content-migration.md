@@ -145,7 +145,7 @@ Le thème remplace l'ancien système de témoignages (peu importe lequel) par un
      - `structure` — témoignage d'institution (école, association…)
    - Publier
 3. **Où les témoignages s'affichent** :
-   - **Page d'accueil** : le template `templates/page-home.php:365-399` interroge directement le CPT `kiyose_testimony` et rend le carrousel automatiquement. Aucun shortcode à insérer.
+   - **Page d'accueil** : le partial `template-parts/home/testimonials.php` interroge directement le CPT `kiyose_testimony` et rend le carrousel automatiquement. Aucun shortcode à insérer.
    - **Autre page** : pour afficher des témoignages ailleurs, utiliser le shortcode `[kiyose_testimonials]` :
      - Carrousel : `[kiyose_testimonials display="carousel" limit="6"]`
      - Grille : `[kiyose_testimonials display="grid" columns="3" limit="9"]`
@@ -234,7 +234,7 @@ La page utilise `the_content()` ; insérer le shortcode Events Manager dans le c
 
 ### Homepage — le shortcode Events Manager est déjà inclus par le template
 
-Rien à faire sur la home, le shortcode `[events_list limit="4" scope="future"...]` est rendu automatiquement par `templates/page-home.php:291`.
+Rien à faire sur la home, le shortcode `[events_list limit="4" scope="future"...]` est rendu automatiquement par `template-parts/home/events.php`.
 
 ### Newsletter Brevo — automatique
 

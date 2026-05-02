@@ -17,7 +17,7 @@ Trois plugins sont consommés par le thème ou par le contenu existant. Leur abs
 | **Nom officiel** | Brevo (anciennement Sendinblue) |
 | **Slug** | `mailin` |
 | **Installation** | Extensions → Ajouter → rechercher « Brevo » → Installer → Activer |
-| **Utilisé par le thème** | `latelierkiyose/footer.php:46-47` (bloc newsletter du footer, présent sur chaque page) et `latelierkiyose/templates/page-home.php:845-846` (overlay newsletter de la home) |
+| **Utilisé par le thème** | `latelierkiyose/footer.php` (bloc newsletter du footer, présent sur chaque page) et `latelierkiyose/template-parts/home/overlays.php` (overlay newsletter de la home) |
 | **Shortcode utilisé** | `[sibwp_form id=1]` ⚠️ **pas** `[brevo_form]` |
 | **Comportement si absent** | Les blocs newsletter disparaissent silencieusement (le thème vérifie `shortcode_exists()` avant d'afficher). Pas de texte cassé visible, mais plus aucun moyen de s'inscrire. |
 
@@ -43,9 +43,9 @@ Trois plugins sont consommés par le thème ou par le contenu existant. Leur abs
 | **Nom officiel** | Events Manager |
 | **Slug** | `events-manager` |
 | **Installation** | Extensions → Ajouter → rechercher « Events Manager » → Installer → Activer |
-| **Utilisé par le thème** | `latelierkiyose/templates/page-home.php:291` — shortcode **hardcodé** dans la section « Prochains événements » |
+| **Utilisé par le thème** | `latelierkiyose/template-parts/home/events.php` — shortcode **hardcodé** dans la section « Prochains événements » |
 | **Shortcode utilisé** | `[events_list limit="4" scope="future" orderby="event_start_date" order="ASC"]` |
-| **Comportement si absent** | 🛑 **Le shortcode s'affiche en texte brut sur la homepage** (visible par tous les visiteurs). Pas de fallback dans le code. Plugin obligatoire avant activation du thème. |
+| **Comportement si absent** | La section homepage affiche un message temporaire au lieu des dates réelles. Pas de shortcode brut visible, mais le plugin reste requis pour la mise en production. |
 
 **Configuration minimale obligatoire** :
 

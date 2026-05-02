@@ -1,6 +1,6 @@
 # PRD 0044 — Découpage du template de page d'accueil
 
-- **Statut** : prêt à l'implémentation
+- **Statut** : terminé
 - **Version** : 1.0
 - **Date** : 2026-05-02
 
