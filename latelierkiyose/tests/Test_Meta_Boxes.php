@@ -125,6 +125,45 @@ class Test_Meta_Boxes extends TestCase {
 		$this->assertNotContains( 'kiyose_contact_photo', $this->registered_meta_box_ids() );
 	}
 
+	public function test_kiyose_add_service_event_categories_meta_box_whenTemplateMatches_registersMetaBox() {
+		// Given.
+		$post = (object) array( 'ID' => 43 );
+		$this->set_page_template( 43, 'templates/page-services.php' );
+
+		// When.
+		if ( function_exists( 'kiyose_add_service_event_categories_meta_box' ) ) {
+			kiyose_add_service_event_categories_meta_box( $post );
+		}
+
+		// Then.
+		$this->assertContains( 'kiyose_service_event_categories', $this->registered_meta_box_ids() );
+	}
+
+	public function test_kiyose_save_service_event_categories_meta_ofValidCategories_savesSanitizedSlugs() {
+		// Given.
+		$post_id = 43;
+		$this->set_page_template( $post_id, 'templates/page-services.php' );
+		$GLOBALS['kiyose_test_terms']['event-categories'] = array(
+			(object) array( 'slug' => 'art-therapie', 'name' => 'Art-thérapie' ),
+			(object) array( 'slug' => 'ados', 'name' => 'Ados' ),
+		);
+		$_POST = array(
+			'kiyose_service_event_categories_nonce' => 'nonce',
+			'kiyose_service_event_categories'       => array( 'art-therapie', '<script>alert(1)</script>', 'ados' ),
+		);
+
+		// When.
+		if ( function_exists( 'kiyose_save_service_event_categories_meta' ) ) {
+			kiyose_save_service_event_categories_meta( $post_id );
+		}
+
+		// Then.
+		$this->assertSame(
+			array( 'art-therapie', 'ados' ),
+			$GLOBALS['kiyose_test_post_meta'][ $post_id ]['kiyose_service_event_categories'] ?? array()
+		);
+	}
+
 	public function test_kiyose_sanitize_welcome_keyword_item_ofValidInputs_returnsArray() {
 		$result = kiyose_sanitize_welcome_keyword_item( 'Art-thérapie', 'https://example.com/art-therapie' );
 

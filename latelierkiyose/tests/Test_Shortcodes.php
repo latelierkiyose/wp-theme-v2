@@ -163,6 +163,38 @@ class Test_Shortcodes extends TestCase {
 		$this->assertSame( '', $html );
 	}
 
+	public function test_kiyose_events_list_shortcode_whenNoCategoryQuery_returnsEventsListWithoutCategory() {
+		// Given.
+		$_GET = array();
+
+		// When.
+		$html = function_exists( 'kiyose_events_list_shortcode' )
+			? kiyose_events_list_shortcode()
+			: '';
+
+		// Then.
+		$this->assertSame( '[events_list limit="20" scope="future" orderby="event_start_date" order="ASC"]', $html );
+	}
+
+	public function test_kiyose_events_list_shortcode_whenCategoryQueryIsValid_addsCategoryAttribute() {
+		// Given.
+		$GLOBALS['kiyose_test_terms']['event-categories'] = array(
+			(object) array( 'slug' => 'art-therapie', 'name' => 'Art-thérapie' ),
+			(object) array( 'slug' => 'ados', 'name' => 'Ados' ),
+		);
+		$_GET = array(
+			'kiyose_event_categories' => 'art-therapie,<script>alert(1)</script>,ados',
+		);
+
+		// When.
+		$html = function_exists( 'kiyose_events_list_shortcode' )
+			? kiyose_events_list_shortcode()
+			: '';
+
+		// Then.
+		$this->assertSame( '[events_list limit="20" scope="future" orderby="event_start_date" order="ASC" category="art-therapie,ados"]', $html );
+	}
+
 	public function test_kiyose_testimonials_shortcode_whenDisplayIsInvalid_fallsBackToGrid() {
 		// Given
 		$GLOBALS['kiyose_test_query_posts'] = array(

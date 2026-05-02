@@ -405,6 +405,20 @@ class Test_Enqueue extends TestCase {
 		$this->assertTrue( $result );
 	}
 
+	public function test_kiyose_should_load_events_manager_assets_whenContentHasKiyoseEventsListShortcode_returnsTrue() {
+		// Given
+		$GLOBALS['post'] = (object) array(
+			'post_content' => '[kiyose_events_list]',
+			'post_type'    => 'page',
+		);
+
+		// When
+		$result = kiyose_should_load_events_manager_assets();
+
+		// Then
+		$this->assertTrue( $result );
+	}
+
 	public function test_kiyose_should_load_contact_form_7_assets_whenContactTemplate_returnsTrue() {
 		// Given
 		$GLOBALS['kiyose_test_page_templates'] = array( 'templates/page-contact.php' );

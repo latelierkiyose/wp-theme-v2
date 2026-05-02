@@ -2,10 +2,11 @@
 
 Un *shortcode* est un **code court entre crochets** que tu colles dans l'éditeur et qui génère un contenu riche (témoignages, sommaire, encadré…).
 
-Le thème fournit **quatre shortcodes** :
+Le thème fournit **cinq shortcodes** :
 
 - [`[kiyose_testimonials]`](#kiyose_testimonials--témoignages-en-grille-ou-carrousel) — une grille ou un carrousel de témoignages
 - [`[kiyose_signets]`](#kiyose_signets--sommaire-de-navigation-dans-la-page) — un sommaire de navigation dans la page
+- [`[kiyose_events_list]`](#kiyose_events_list--liste-du-calendrier) — la liste principale du calendrier avec filtres de service
 - [`[kiyose_callout]`](#kiyose_callout--encadré-de-mise-en-évidence) — un encadré pour mettre en avant une information
 - [`[kiyose_cta]`](#kiyose_cta--bouton-dappel-à-laction) — un bouton doré centré avec texte et lien personnalisés
 
@@ -117,6 +118,36 @@ Pour que les liens fonctionnent en mode manuel, les sections cibles doivent avoi
 3. Ensuite, rédige tes sections avec des titres de niveau **Titre 2** dans Gutenberg.
 
 Voir la recette : [Ajouter un sommaire automatique](recettes/ajouter-un-sommaire-automatique.md).
+
+---
+
+## `[kiyose_events_list]` — liste du calendrier
+
+### Exemple
+
+```
+[kiyose_events_list]
+```
+
+Affiche les événements à venir sur la page **Calendrier et tarifs**.
+
+### À quoi ça sert
+
+Ce shortcode utilise Events Manager, mais il ajoute une passerelle avec les pages de service. Quand un visiteur clique sur **Voir le calendrier** depuis une page de service qui a des catégories sélectionnées, la liste est filtrée sur ces catégories.
+
+Si aucune catégorie n'est sélectionnée sur la page de service, ou si la personne arrive directement sur le calendrier, toutes les dates à venir sont affichées.
+
+### Paramètres
+
+**Aucun paramètre à saisir.** Le shortcode utilise automatiquement les réglages du thème et les catégories reçues depuis les pages de service.
+
+### Exemple courant
+
+Sur la page **Calendrier et tarifs**, ajoute un bloc **Code court** avec :
+
+```
+[kiyose_events_list]
+```
 
 ---
 
@@ -242,7 +273,7 @@ Si `texte` ou `lien` est vide, le bouton ne s'affiche pas.
 **Vers le calendrier :**
 
 ```
-[kiyose_cta texte="Voir les prochaines dates" lien="/calendrier-tarifs/"]
+[kiyose_cta texte="Voir les prochaines dates" lien="/calendrier/"]
 ```
 
 **Vers une page de service :**
@@ -267,7 +298,7 @@ Le site utilise trois plugins qui fournissent leurs propres shortcodes. Le thèm
 
 ### Events Manager (événements)
 - Shortcode typique : `[events_list limit="5"]`
-- Le plugin affiche automatiquement les événements sur la page **Calendrier et tarifs**.
+- Sur la page **Calendrier et tarifs**, utilise plutôt `[kiyose_events_list]` si les boutons des pages de service doivent filtrer les événements.
 - Créer un événement : menu **Événements**.
 - Documentation : <https://wp-events-plugin.com/documentation/>
 

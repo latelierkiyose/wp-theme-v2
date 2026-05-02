@@ -44,7 +44,9 @@ Le contenu que tu tapes dans l'éditeur s'insère **dans** le template. Changer 
 
 ### Page de service
 - Le contenu se rédige intégralement dans l'éditeur Gutenberg.
-- En bas de page, deux boutons sont ajoutés automatiquement : **Me contacter** (lien `/contact`) et **Voir le calendrier** (lien `/calendrier`).
+- En bas de page, deux boutons sont ajoutés automatiquement : **Me contacter** et **Voir le calendrier**.
+- Les pages cibles de ces boutons se règlent dans **Apparence → Personnaliser → Pages de service — boutons**. Si un bouton n'apparaît pas, vérifie que sa page cible est bien configurée et publiée.
+- Tu peux limiter le bouton **Voir le calendrier** à certaines catégories d'événements depuis le champ **Page de service — Calendrier** sous l'éditeur. Si tu ne sélectionnes rien, le calendrier affiche toutes les dates.
 - L'image mise en avant (*featured image*) apparaît en grand en haut de la page.
 - Recommandé d'ajouter un shortcode `[kiyose_signets]` en haut pour un sommaire automatique.
 - Voir la recette : [Créer une page de service](recettes/creer-une-page-de-service.md).
@@ -59,6 +61,7 @@ Le contenu que tu tapes dans l'éditeur s'insère **dans** le template. Changer 
 
 ### Calendrier et tarifs
 - Le plugin **Events Manager** affiche automatiquement les événements à venir.
+- Le shortcode recommandé sur cette page est `[kiyose_events_list]`, car il peut recevoir les filtres de catégories envoyés depuis les pages de service.
 - Tu peux ajouter du contenu libre (intro, règlement, modalités de paiement) dans l'éditeur Gutenberg — il s'insère au-dessus ou autour du calendrier.
 
 ### Modèle par défaut

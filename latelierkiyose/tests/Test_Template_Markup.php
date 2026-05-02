@@ -41,6 +41,19 @@ class Test_Template_Markup extends TestCase {
 		$this->assertStringContainsString( "array( 'alt' => esc_attr( \$kiyose_contact_photo_alt ) )", $result );
 	}
 
+	public function test_serviceTemplate_usesConfiguredCtaLinksInsteadOfHardcodedUrls() {
+		// Given
+		$template = file_get_contents( __DIR__ . '/../templates/page-services.php' );
+
+		// When
+		$result = $template;
+
+		// Then
+		$this->assertStringContainsString( 'kiyose_get_service_cta_links', $result );
+		$this->assertStringNotContainsString( "home_url( '/contact/' )", $result );
+		$this->assertStringNotContainsString( "home_url( '/calendrier-tarifs/' )", $result );
+	}
+
 	public function test_contentBlogTemplate_whenThumbnailLinkIsDecorative_hidesItFromAssistiveTech() {
 		// Given
 		$template = file_get_contents( __DIR__ . '/../template-parts/content-blog.php' );

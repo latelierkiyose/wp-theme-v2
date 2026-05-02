@@ -37,6 +37,7 @@ function kiyose_reset_test_state(): void {
 	$GLOBALS['kiyose_test_native_post_navigation_html'] = '';
 	$GLOBALS['kiyose_test_page_templates']     = array();
 	$GLOBALS['kiyose_test_permalinks']         = array();
+	$GLOBALS['kiyose_test_post_objects']       = array();
 	$GLOBALS['kiyose_test_post_meta']          = array();
 	$GLOBALS['kiyose_test_registered_post_types'] = array();
 	$GLOBALS['kiyose_test_post_types']         = array();
@@ -46,6 +47,7 @@ function kiyose_reset_test_state(): void {
 	$GLOBALS['kiyose_test_singular_post_type'] = 'post';
 	$GLOBALS['kiyose_test_theme_mods']         = array();
 	$GLOBALS['kiyose_test_titles']             = array();
+	$GLOBALS['kiyose_test_terms']              = array();
 	$GLOBALS['kiyose_test_is_404']             = false;
 	$GLOBALS['kiyose_test_is_archive']         = false;
 	$GLOBALS['kiyose_test_is_home']            = false;
@@ -351,6 +353,18 @@ if ( ! function_exists( 'get_post_meta' ) ) {
 	}
 }
 
+if ( ! function_exists( 'get_post' ) ) {
+	function get_post( $post = null ) {
+		$post_id = is_object( $post ) && isset( $post->ID ) ? (int) $post->ID : (int) $post;
+
+		if ( isset( $GLOBALS['kiyose_test_post_objects'][ $post_id ] ) ) {
+			return $GLOBALS['kiyose_test_post_objects'][ $post_id ];
+		}
+
+		return null;
+	}
+}
+
 if ( ! function_exists( 'get_posts' ) ) {
 	function get_posts( $args = array() ) {
 		$GLOBALS['kiyose_test_last_get_posts_args'] = $args;
@@ -387,6 +401,20 @@ if ( ! function_exists( 'get_posts' ) ) {
 		}
 
 		return array_values( $posts );
+	}
+}
+
+if ( ! function_exists( 'get_terms' ) ) {
+	function get_terms( $args = array() ) {
+		$taxonomy = is_array( $args ) ? (string) ( $args['taxonomy'] ?? '' ) : (string) $args;
+
+		return $GLOBALS['kiyose_test_terms'][ $taxonomy ] ?? array();
+	}
+}
+
+if ( ! function_exists( 'is_wp_error' ) ) {
+	function is_wp_error( $thing ) {
+		return false;
 	}
 }
 
@@ -447,6 +475,26 @@ if ( ! function_exists( 'get_the_post_navigation' ) ) {
 if ( ! function_exists( 'home_url' ) ) {
 	function home_url( $path = '' ) {
 		return 'http://example.com' . $path;
+	}
+}
+
+if ( ! function_exists( 'add_query_arg' ) ) {
+	function add_query_arg( $key, $value = null, $url = null ) {
+		if ( is_array( $key ) ) {
+			$args = $key;
+			$url  = (string) $value;
+		} else {
+			$args = array( $key => $value );
+			$url  = (string) $url;
+		}
+
+		$query = http_build_query( $args, '', '&' );
+
+		if ( '' === $query ) {
+			return $url;
+		}
+
+		return $url . ( false === strpos( $url, '?' ) ? '?' : '&' ) . $query;
 	}
 }
 
@@ -908,7 +956,9 @@ if ( ! function_exists( 'wp_editor' ) ) {
 // Load theme files needed for tests.
 require_once __DIR__ . '/../inc/accessibility.php';
 require_once __DIR__ . '/../inc/components.php';
+require_once __DIR__ . '/../inc/customizer.php';
 require_once __DIR__ . '/../inc/custom-post-types.php';
+require_once __DIR__ . '/../inc/service-ctas.php';
 require_once __DIR__ . '/../inc/shortcodes.php';
 require_once __DIR__ . '/../inc/meta-boxes.php';
 require_once __DIR__ . '/../inc/blog.php';

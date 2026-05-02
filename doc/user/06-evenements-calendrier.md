@@ -17,6 +17,18 @@ Les événements (ateliers, stages, journées, tarifs) sont gérés par le plugi
 
 L'événement apparaît automatiquement sur la page **Calendrier et tarifs** du site.
 
+## Afficher la liste principale du calendrier
+
+Sur la page **Calendrier et tarifs**, utilise ce shortcode :
+
+```
+[kiyose_events_list]
+```
+
+Il affiche les événements à venir avec Events Manager. Il est recommandé pour la page calendrier principale, car les boutons **Voir le calendrier** des pages de service peuvent lui envoyer un filtre de catégories.
+
+Exemple : si la page **Art-thérapie** filtre sur la catégorie `art-therapie`, le bouton envoie ce filtre au calendrier. Si aucune catégorie n'est choisie sur une page de service, le calendrier affiche toutes les dates.
+
 ## Modifier un lieu
 
 Menu **Événements** → **Lieux** (ou **Locations**). Tu peux créer un nouveau lieu ou modifier un existant.
@@ -34,7 +46,7 @@ Tu peux utiliser des shortcodes Events Manager dans n'importe quelle page. Les p
 - `[events_list limit="5"]` — liste des 5 prochains événements.
 - `[events_calendar]` — un calendrier mensuel interactif.
 
-Ces shortcodes ne sont pas maintenus par le thème. Consulte la documentation officielle pour la liste complète :
+Ces shortcodes ne reçoivent pas automatiquement les filtres envoyés par les pages de service. Pour le calendrier principal, préfère `[kiyose_events_list]`. Consulte la documentation officielle pour la liste complète :
 
 📖 <https://wp-events-plugin.com/documentation/>
 

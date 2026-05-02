@@ -53,7 +53,7 @@ Trois plugins sont consommés par le thème ou par le contenu existant. Leur abs
 2. Créer au moins **1 événement à venir** (sinon la section homepage est vide, mais pas cassée)
 3. Renseigner la date de début via Events Manager pour chaque événement publié : le thème l'utilise pour ordonner la navigation « Événement précédent / suivant » sur les pages détail.
 4. Vérifier le rendu de `[events_list]` dans un brouillon avant de publier
-5. La page « Calendrier & Tarifs » (template `page-calendar.php`) utilise `the_content()` : la personne qui migre le contenu doit insérer un shortcode Events Manager plus complet dans le corps de la page (ex. `[events_list limit="20" scope="future"]`).
+5. La page « Calendrier & Tarifs » (template `page-calendar.php`) utilise `the_content()` : la personne qui migre le contenu doit insérer `[kiyose_events_list]` pour afficher les événements futurs et permettre le filtrage depuis les pages de service.
 
 ---
 

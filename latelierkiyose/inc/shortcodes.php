@@ -216,6 +216,28 @@ function kiyose_signets_shortcode( $atts, $content = null ) {
 add_shortcode( 'kiyose_signets', 'kiyose_signets_shortcode' );
 
 /**
+ * Display the Events Manager list with optional service category filtering.
+ *
+ * Usage:
+ * - [kiyose_events_list]
+ *
+ * @return string HTML output from Events Manager.
+ */
+function kiyose_events_list_shortcode(): string {
+	$category_slugs = kiyose_get_requested_event_category_slugs();
+	$shortcode      = '[events_list limit="20" scope="future" orderby="event_start_date" order="ASC"';
+
+	if ( ! empty( $category_slugs ) ) {
+		$shortcode .= ' category="' . implode( ',', $category_slugs ) . '"';
+	}
+
+	$shortcode .= ']';
+
+	return do_shortcode( $shortcode );
+}
+add_shortcode( 'kiyose_events_list', 'kiyose_events_list_shortcode' );
+
+/**
  * Display a callout box to highlight important content.
  *
  * Usage:

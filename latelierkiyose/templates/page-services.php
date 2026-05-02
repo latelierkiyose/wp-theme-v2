@@ -30,16 +30,20 @@ get_header();
 				<?php the_content(); ?>
 			</div>
 
-			<footer class="service-page__footer">
-				<div class="service-page__cta">
-					<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="button button--primary">
-						Me contacter
-					</a>
-					<a href="<?php echo esc_url( home_url( '/calendrier-tarifs/' ) ); ?>" class="button button--secondary">
-						Voir le calendrier
-					</a>
-				</div>
-			</footer>
+			<?php
+			$kiyose_service_cta_links = kiyose_get_service_cta_links( get_the_ID() );
+			if ( ! empty( $kiyose_service_cta_links ) ) :
+				?>
+				<footer class="service-page__footer">
+					<div class="service-page__cta">
+						<?php foreach ( $kiyose_service_cta_links as $kiyose_service_cta_link ) : ?>
+							<a href="<?php echo esc_url( $kiyose_service_cta_link['url'] ); ?>" class="<?php echo esc_attr( $kiyose_service_cta_link['class'] ); ?>">
+								<?php echo esc_html( $kiyose_service_cta_link['label'] ); ?>
+							</a>
+						<?php endforeach; ?>
+					</div>
+				</footer>
+			<?php endif; ?>
 		</article>
 		<?php
 	endwhile;

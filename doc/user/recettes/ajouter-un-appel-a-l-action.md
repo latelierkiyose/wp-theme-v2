@@ -30,7 +30,7 @@ Un bouton **doré**, avec texte **bordeaux**, apparaît au centre de la page. Il
 ### Voir les prochaines dates
 
 ```
-[kiyose_cta texte="Voir les prochaines dates" lien="/calendrier-tarifs/"]
+[kiyose_cta texte="Voir les prochaines dates" lien="/calendrier/"]
 ```
 
 ### Découvrir une pratique

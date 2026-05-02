@@ -22,9 +22,10 @@ Ce document couvre les procédures de repli si la mise en production pose probl�
 | Footer sans newsletter | Brevo non installé ou formulaire d'ID 1 absent | Installer Brevo + créer le formulaire (voir [`plugins.md`](plugins.md#1-brevo-newsletter)) |
 | Page Contact affiche `[contact-form-7 id="..."]` en texte brut | CF7 non installé ou ID du formulaire incorrect | Installer CF7 + vérifier l'ID |
 | Menu invisible dans le header | Emplacement `primary` non assigné | Admin → Apparence → Menus → cocher « Menu Principal » |
-| Carrousel témoignages vide | Aucun témoignage publié en CPT `kiyose_testimony` | Créer au moins 1 témoignage (voir [`content-migration.md`](content-migration.md#4-témoignages-migration-vers-le-cpt-kiyose_testimony)) |
+| Carrousel témoignages vide | Aucun témoignage publié en CPT `kiyose_testimony` | Créer au moins 1 témoignage (voir [`content-migration.md`](content-migration.md#7-témoignages--migration-vers-le-cpt-kiyose_testimony)) |
 | Images coupées ou floues sur les pages de service | Tailles `kiyose-hero` non générées sur les médias existants | Lancer Regenerate Thumbnails |
-| Clic sur « Voir le calendrier » depuis une page de service → 404 | Slug de la page calendrier ≠ `calendrier-tarifs` | Renommer le slug en `calendrier-tarifs` + redirection 301 |
+| Bouton « Voir le calendrier » absent sur une page de service | Page calendrier non configurée ou non publiée | Apparence → Personnaliser → Pages de service — boutons : choisir une page calendrier publiée |
+| Le calendrier ne se filtre pas depuis une page de service | Page calendrier encore configurée avec un shortcode Events Manager brut | Remplacer le shortcode par `[kiyose_events_list]` sur la page Calendrier |
 
 ### Lire les logs PHP
 

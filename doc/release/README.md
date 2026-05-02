@@ -179,14 +179,16 @@ Résumé à cocher :
 Synthèse des actions à réaliser :
 
 - [ ] Assigner un template à chaque page (tableau dans [`content-migration.md § 1`](content-migration.md#1-assigner-un-template-à-chaque-page))
+- [ ] Configurer les pages cibles des boutons de service dans **Apparence → Personnaliser → Pages de service — boutons**
 - [ ] Remplir les meta fields de la homepage (titres, Q&R, contenu libre, citation/auteurice, overlay)
 - [ ] Remplir la photo de la page Contact (+ texte alt)
+- [ ] Vérifier les catégories calendrier optionnelles sur chaque page de service
 - [ ] Recréer les témoignages en CPT `kiyose_testimony` avec leur contexte
 - [ ] Remplacer les anciens blocs « signets » par `[kiyose_signets][/kiyose_signets]`
 - [ ] Insérer `[contact-form-7 id="..."]` dans la page Contact
-- [ ] Insérer `[events_list ...]` dans la page Calendrier
+- [ ] Insérer `[kiyose_events_list]` dans la page Calendrier
 - [ ] Régénérer les miniatures (Regenerate Thumbnails ou `wp media regenerate`)
-- [ ] Vérifier le slug de la page calendrier = `calendrier-tarifs` (sinon les CTA des pages de service 404)
+- [ ] Vérifier que les boutons des pages de service pointent vers les pages configurées
 
 ---
 
@@ -233,7 +235,7 @@ Les validations minimales à faire avant la bascule publique :
 
 ### Performance
 
-- [ ] **Comptage des assets front** sur staging avant/après activation du thème : ouvrir `/`, `/contact/`, `/calendrier-tarifs/`, un article de blog et une page service, puis exécuter dans la console navigateur :
+- [ ] **Comptage des assets front** sur staging avant/après activation du thème : ouvrir `/`, `/contact/`, la page calendrier configurée, un article de blog et une page service, puis exécuter dans la console navigateur :
   ```js
   const stylesheets = [...document.querySelectorAll('link[rel="stylesheet"]')].map((node) => node.href);
   const scripts = [...document.querySelectorAll('script[src]')].map((node) => node.src);
@@ -320,9 +322,11 @@ Une seule checklist synthétique pour signer le PV de recette :
 - [ ] Menu assigné, logo en place, page d'accueil statique, permaliens OK
 - [ ] Tous les templates assignés aux pages
 - [ ] Meta fields home + contact remplis
+- [ ] Pages cibles des boutons de service configurées dans le Customizer
+- [ ] Catégories calendrier des pages de service vérifiées
 - [ ] Témoignages migrés en CPT
 - [ ] Signets migrés vers `[kiyose_signets]`
-- [ ] Shortcodes CF7 + Events Manager insérés dans les pages correspondantes
+- [ ] Shortcode CF7 + `[kiyose_events_list]` insérés dans les pages correspondantes
 - [ ] Pages détail d'événements testées, avec navigation précédent/suivant par date quand plusieurs événements sont publiés
 - [ ] Miniatures régénérées
 - [ ] Formulaires testés (envoi réel confirmé)

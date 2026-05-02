@@ -874,6 +874,115 @@ function kiyose_save_home_hero_meta( $post_id ) {
 add_action( 'save_post_page', 'kiyose_save_home_hero_meta' );
 
 /**
+ * Add meta box for event categories on service page template.
+ *
+ * @param object|null $post Current post object.
+ * @return void
+ */
+function kiyose_add_service_event_categories_meta_box( $post = null ) {
+	if ( ! kiyose_page_uses_template( $post, 'templates/page-services.php' ) ) {
+		return;
+	}
+
+	add_meta_box(
+		'kiyose_service_event_categories',
+		__( 'Page de service — Calendrier', 'kiyose' ),
+		'kiyose_render_service_event_categories_meta_box',
+		'page',
+		'side',
+		'default'
+	);
+}
+add_action( 'add_meta_boxes_page', 'kiyose_add_service_event_categories_meta_box', 10, 1 );
+
+/**
+ * Render the service event categories meta box.
+ *
+ * @param WP_Post $post Current post object.
+ * @return void
+ */
+function kiyose_render_service_event_categories_meta_box( $post ) {
+	wp_nonce_field( 'kiyose_save_service_event_categories', 'kiyose_service_event_categories_nonce' );
+
+	$selected_slugs = kiyose_get_service_event_category_slugs( (int) $post->ID );
+	$terms          = kiyose_get_event_category_terms();
+	?>
+	<div class="kiyose-meta-box" data-template-required="templates/page-services.php">
+		<div class="kiyose-meta-box__fields">
+			<p class="kiyose-meta-box__description">
+				<?php esc_html_e( 'Sélectionne les catégories à afficher quand le bouton « Voir le calendrier » est utilisé. Laisse vide pour afficher toutes les dates.', 'kiyose' ); ?>
+			</p>
+
+			<?php if ( empty( $terms ) ) : ?>
+				<p class="kiyose-meta-box__description">
+					<?php esc_html_e( 'Aucune catégorie Events Manager disponible pour le moment.', 'kiyose' ); ?>
+				</p>
+			<?php else : ?>
+				<?php foreach ( $terms as $term ) : ?>
+					<?php $slug = sanitize_title( (string) $term->slug ); ?>
+					<label class="kiyose-meta-box__label">
+						<input
+							type="checkbox"
+							name="kiyose_service_event_categories[]"
+							value="<?php echo esc_attr( $slug ); ?>"
+							<?php checked( in_array( $slug, $selected_slugs, true ) ); ?>
+						>
+						<?php echo esc_html( $term->name ?? $slug ); ?>
+					</label>
+				<?php endforeach; ?>
+			<?php endif; ?>
+		</div><!-- .kiyose-meta-box__fields -->
+	</div><!-- .kiyose-meta-box -->
+	<?php
+}
+
+/**
+ * Save service event categories meta box data.
+ *
+ * @param int $post_id Post ID.
+ * @return void
+ */
+function kiyose_save_service_event_categories_meta( $post_id ) {
+	if ( ! isset( $_POST['kiyose_service_event_categories_nonce'] ) ) {
+		return;
+	}
+
+	if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['kiyose_service_event_categories_nonce'] ) ), 'kiyose_save_service_event_categories' ) ) {
+		return;
+	}
+
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+
+	$template = get_post_meta( $post_id, '_wp_page_template', true );
+	if ( 'templates/page-services.php' !== $template ) {
+		return;
+	}
+
+	$raw_categories = array();
+
+	if ( isset( $_POST['kiyose_service_event_categories'] ) && is_array( $_POST['kiyose_service_event_categories'] ) ) {
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized by kiyose_sanitize_event_category_slugs().
+		$raw_categories = wp_unslash( $_POST['kiyose_service_event_categories'] );
+	}
+
+	$categories = kiyose_sanitize_event_category_slugs( $raw_categories );
+
+	if ( empty( $categories ) ) {
+		delete_post_meta( $post_id, 'kiyose_service_event_categories' );
+		return;
+	}
+
+	update_post_meta( $post_id, 'kiyose_service_event_categories', $categories );
+}
+add_action( 'save_post_page', 'kiyose_save_service_event_categories_meta' );
+
+/**
  * Add meta box for contact photo on contact page template.
  *
  * @param object|null $post Current post object.

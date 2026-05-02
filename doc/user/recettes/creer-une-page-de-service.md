@@ -21,7 +21,15 @@
    80 € la séance de 2 heures. Règlement par chèque ou virement.
    [/kiyose_callout]
    ```
-9. Clique sur **Publier**.
+9. Clique sur **Publier**, puis recharge l'éditeur si le panneau **Page de service — Calendrier** n'apparaît pas encore.
+10. Optionnel : dans **Page de service — Calendrier**, sélectionne les catégories d'événements à afficher quand le visiteur clique sur **Voir le calendrier**. Ne sélectionne rien si cette page doit montrer toutes les dates.
+
+Exemple :
+
+```
+Service Art-thérapie → cocher la catégorie Art-thérapie
+Service général → ne rien cocher
+```
 
 ## Résultat attendu
 
@@ -31,7 +39,7 @@ La page affiche :
 - Un sommaire cliquable généré automatiquement.
 - Tes sections, chacune avec son titre.
 - L'encadré doré avec le tarif.
-- En bas : deux boutons **Me contacter** et **Voir le calendrier** (ajoutés automatiquement par le template).
+- En bas : deux boutons **Me contacter** et **Voir le calendrier** (ajoutés automatiquement par le template si les pages cibles sont configurées dans le Customizer).
 
 ## Pour aller plus loin
 

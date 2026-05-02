@@ -10,12 +10,14 @@ Ce document décrit toutes les actions à réaliser sur le contenu existant du s
 |---|---|---|---|
 | 1 | Assigner un template à chaque page | 10 min | ✅ oui (sinon rendu par défaut non stylé) |
 | 2 | Configurer Réglages → Lecture | 5 min | ✅ oui (home/blog peuvent utiliser le mauvais template) |
-| 3 | Remplir les métadonnées de la page Accueil | 20 min | ⚠️ partiellement (sections vides) |
-| 4 | Remplir les métadonnées de la page Contact | 5 min | non |
-| 5 | Recréer les témoignages en CPT `kiyose_testimony` | 15-30 min | ⚠️ sinon carrousel vide |
-| 6 | Remplacer les anciens blocs « signets » | 10 min/page | non (rendu dégradé) |
-| 7 | Insérer les shortcodes des plugins tiers | 10 min | ✅ oui (formulaires cassés) |
-| 8 | Régénérer les miniatures | 5 min (+ attente) | non (images coupées sinon) |
+| 3 | Configurer les boutons des pages de service | 5 min | ✅ oui (sinon CTAs masqués) |
+| 4 | Remplir les métadonnées de la page Accueil | 20 min | ⚠️ partiellement (sections vides) |
+| 5 | Remplir les métadonnées de la page Contact | 5 min | non |
+| 6 | Configurer les catégories calendrier des services | 5 min/page | non (vide = toutes les dates) |
+| 7 | Recréer les témoignages en CPT `kiyose_testimony` | 15-30 min | ⚠️ sinon carrousel vide |
+| 8 | Remplacer les anciens blocs « signets » | 10 min/page | non (rendu dégradé) |
+| 9 | Insérer les shortcodes des plugins tiers | 10 min | ✅ oui (formulaires cassés) |
+| 10 | Régénérer les miniatures | 5 min (+ attente) | non (images coupées sinon) |
 
 ---
 
@@ -28,15 +30,13 @@ Dans l'admin WordPress, pour chaque page ci-dessous : **Pages → (page) → sid
 | Accueil | `/` (page d'accueil statique) | **Page d'accueil** | `latelierkiyose/templates/page-home.php` |
 | À propos | `/a-propos/` | **À propos** | `latelierkiyose/templates/page-about.php` |
 | Contact | `/contact/` | **Page de contact** | `latelierkiyose/templates/page-contact.php` |
-| Calendrier & Tarifs | `/calendrier-tarifs/` ⚠️ | **Calendrier et tarifs** | `latelierkiyose/templates/page-calendar.php` |
+| Calendrier & Tarifs | `/calendrier/` ou slug existant | **Calendrier et tarifs** | `latelierkiyose/templates/page-calendar.php` |
 | Art-thérapie | `/art-therapie/` (ou équivalent) | **Page de service** | `latelierkiyose/templates/page-services.php` |
 | Rigologie / Yoga du rire | `/rigologie/` | **Page de service** | `latelierkiyose/templates/page-services.php` |
 | Bols tibétains | `/bols-tibetains/` | **Page de service** | `latelierkiyose/templates/page-services.php` |
 | Ateliers philosophie | `/ateliers-philo/` | **Page de service** | `latelierkiyose/templates/page-services.php` |
 
-⚠️ **Important — slug de la page calendrier** : le bouton « Voir le calendrier » des pages de service pointe vers `/calendrier-tarifs/` en dur (`page-services.php:38`). Le slug de la page WordPress doit donc être **exactement** `calendrier-tarifs`, sinon le lien retourne un 404. Si le slug actuel est différent (ex. `/calendrier/`), deux options :
-- Renommer le slug de la page existante en `calendrier-tarifs` et mettre en place une redirection 301 de l'ancienne URL.
-- Modifier le template `page-services.php:38` (nécessite une intervention développeur + mise à jour de ce document).
+Les boutons des pages de service ne dépendent plus d'un slug précis. Ils utilisent les pages choisies dans le Customizer (voir § 3).
 
 **Vérification** : après l'assignment, afficher chaque page sur le front et constater que la mise en page correspond au design attendu.
 
@@ -55,7 +55,22 @@ Dans l'admin WordPress, ouvrir **Réglages → Lecture** :
 
 ---
 
-## 3. Métadonnées de la page Accueil
+## 3. Configurer les boutons des pages de service
+
+Dans l'admin WordPress :
+
+1. Ouvrir **Apparence → Personnaliser → Pages de service — boutons**.
+2. **Page du bouton « Me contacter »** : choisir la page Contact publiée.
+3. **Page du bouton « Voir le calendrier »** : choisir la page Calendrier & Tarifs publiée.
+4. Publier les réglages du Customizer.
+
+Si une page cible n'est pas configurée ou n'est pas publiée, le bouton correspondant est masqué sur les pages de service. Il ne faut pas modifier le template pour changer ces liens.
+
+**Vérification** : ouvrir une page de service sur le front. Les boutons doivent pointer vers les pages publiées choisies, même si le slug de la page calendrier change.
+
+---
+
+## 4. Métadonnées de la page Accueil
 
 Le template `page-home.php` lit ses contenus éditoriaux depuis des **meta fields** gérés dans une meta box dédiée (« Page d'accueil — Bienvenue & Overlay À propos »). Cette meta box n'apparaît qu'après avoir sélectionné le template « Page d'accueil », enregistré, puis rechargé l'éditeur si nécessaire.
 
@@ -115,7 +130,7 @@ Exemple : `« Heureux soient les fêlés, car ils laissent passer la lumière »
 
 ---
 
-## 4. Métadonnées de la page Contact
+## 5. Métadonnées de la page Contact
 
 Source de vérité : `latelierkiyose/inc/meta-boxes.php`.
 
@@ -139,7 +154,31 @@ Les coordonnées (téléphone, email, adresse, réseaux sociaux) sont **hardcod�
 
 ---
 
-## 5. Témoignages — migration vers le CPT `kiyose_testimony`
+## 6. Catégories calendrier des pages de service
+
+Chaque page de service peut filtrer le calendrier sur une ou plusieurs catégories Events Manager.
+
+Pour chaque page utilisant le template **Page de service** :
+
+1. Ouvrir la page en édition.
+2. Vérifier que le template **Page de service** est bien sélectionné.
+3. Enregistrer puis recharger l'éditeur si la meta box **Page de service — Calendrier** n'apparaît pas.
+4. Cocher les catégories Events Manager à afficher après clic sur **Voir le calendrier**.
+5. Laisser toutes les cases décochées si cette page doit afficher toutes les dates.
+6. Mettre à jour.
+
+Exemples :
+
+| Page de service | Catégories à cocher |
+|---|---|
+| Art-thérapie | `art-therapie` |
+| Ateliers philosophie | `ateliers-philo`, ou aucune si toutes les dates doivent rester visibles |
+
+**Vérification** : depuis une page avec catégories cochées, le bouton calendrier ajoute un paramètre `kiyose_event_categories` dans l'URL. Depuis une page sans catégorie cochée, le bouton pointe vers le calendrier sans paramètre.
+
+---
+
+## 7. Témoignages — migration vers le CPT `kiyose_testimony`
 
 Source de vérité : `latelierkiyose/inc/custom-post-types.php:14-58`.
 
@@ -173,7 +212,7 @@ Documentation rédacteur complète : [`doc/user/05-temoignages.md`](../user/05-t
 
 ---
 
-## 6. Migration des signets de navigation intra-page
+## 8. Migration des signets de navigation intra-page
 
 Certaines pages actuelles (principalement les pages de service) utilisent un bloc « Colonnes » avec la classe `signets` pour créer un sommaire cliquable en haut de page :
 
@@ -225,7 +264,7 @@ Documentation rédacteur complète : [`doc/user/04-shortcodes.md`](../user/04-sh
 
 ---
 
-## 7. Insertion des shortcodes des plugins tiers
+## 9. Insertion des shortcodes des plugins tiers
 
 ### Page Contact — Contact Form 7
 
@@ -238,12 +277,14 @@ La page utilise `the_content()` ; insérer le shortcode CF7 dans le contenu prin
 
 ### Page Calendrier & Tarifs — Events Manager
 
-La page utilise `the_content()` ; insérer le shortcode Events Manager dans le contenu :
+La page utilise `the_content()` ; insérer le shortcode calendrier du thème dans le contenu :
 
-1. Éditer la page « Calendrier & Tarifs » → bloc « Shortcode » : `[events_list limit="20" scope="future" orderby="event_start_date" order="ASC"]` (ajuster `limit` selon le volume d'événements)
+1. Éditer la page « Calendrier & Tarifs » → bloc « Shortcode » : `[kiyose_events_list]`
 2. Ajouter au besoin du texte introductif, une grille de tarifs, un bloc FAQ — tout cela vit dans le contenu.
 3. Mettre à jour
 4. Vérifier sur le front : la liste d'événements doit s'afficher.
+
+Ce shortcode relaie vers Events Manager avec les événements futurs et applique automatiquement les catégories reçues depuis les boutons des pages de service. Si la page utilise encore un shortcode Events Manager brut (`[events_list ...]`), les événements s'affichent, mais le filtrage par service ne s'applique pas.
 
 ### Pages détail des événements — Events Manager
 
@@ -264,7 +305,7 @@ Rien à faire. Les blocs newsletter du footer (toute page) et de l'overlay homep
 
 ---
 
-## 8. Tailles d'images et régénération des miniatures
+## 10. Tailles d'images et régénération des miniatures
 
 Le thème déclare deux tailles personnalisées (source : `latelierkiyose/inc/setup.php:46-47`) :
 
@@ -300,13 +341,15 @@ Avant de considérer la migration comme terminée :
 
 - [ ] Toutes les pages ont leur template assigné (voir tableau § 1)
 - [ ] Réglages → Lecture : page d'accueil = `Accueil`, page des articles = `Actus / Blog` ou `Actualités`
+- [ ] Customizer : pages cibles « Me contacter » et « Voir le calendrier » configurées
 - [ ] Page Accueil : titre bienvenue, slogan, Q&R, textes contenu 2 remplis
 - [ ] Page Accueil : overlay avec photo (optionnelle) et URL À propos correcte
 - [ ] Page Contact : photo + alt remplis, formulaire CF7 inséré, envoi testé
-- [ ] Page Calendrier : shortcode `[events_list]` inséré et rend la liste sur le front
+- [ ] Page Calendrier : shortcode `[kiyose_events_list]` inséré et rend la liste sur le front
 - [ ] Au moins un témoignage publié en CPT `kiyose_testimony` (la home rend automatiquement le carrousel via `WP_Query` sur ce CPT — pas besoin d'insérer `[kiyose_testimonials]` sur la home)
 - [ ] Au moins 3 témoignages créés en CPT avec contexte
 - [ ] Chaque page de service a son image à la une (`kiyose-hero`)
+- [ ] Chaque page de service a ses catégories calendrier vérifiées (ou aucune catégorie si toutes les dates doivent s'afficher)
 - [ ] Anciens blocs `wp-block-columns signets` remplacés par `[kiyose_signets]`
 - [ ] Miniatures régénérées
-- [ ] Slug de la page calendrier = `calendrier-tarifs` (ou template modifié en conséquence)
+- [ ] Les boutons des pages de service pointent vers les pages configurées et ne retournent pas de 404

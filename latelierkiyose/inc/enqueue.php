@@ -930,6 +930,7 @@ function kiyose_should_load_events_manager_assets(): bool {
 				'events_list',
 				'events_calendar',
 				'events_map',
+				'kiyose_events_list',
 				'event',
 				'event_form',
 				'event_search_form',
