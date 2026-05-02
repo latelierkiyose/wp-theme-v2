@@ -1,6 +1,6 @@
 # PRD 0048 — Système décoratif SVG maintenable
 
-- **Statut** : prêt à l'implémentation
+- **Statut** : terminé
 - **Version** : 1.0
 - **Date** : 2026-05-02
 
@@ -118,13 +118,13 @@ Les attributs suivants doivent rester équivalents :
 
 ### Tests automatisés
 
-- [ ] Type inconnu → chaîne vide.
-- [ ] Opacité négative → `0`, opacité supérieure à `1` → `1`.
-- [ ] Taille inconnue large → fallback `md`.
-- [ ] Position inconnue → fallback sûr.
-- [ ] SVG rendu contient `aria-hidden="true"` et `role="presentation"`.
-- [ ] `./bin/phpunit.sh --testdox` passe.
-- [ ] `make phpcs` passe.
+- [x] Type inconnu → chaîne vide.
+- [x] Opacité négative → `0`, opacité supérieure à `1` → `1`.
+- [x] Taille inconnue large → fallback `md`.
+- [x] Position inconnue → fallback sûr.
+- [x] SVG rendu contient `aria-hidden="true"` et `role="presentation"`.
+- [x] `./bin/phpunit.sh --testdox` passe.
+- [x] `make phpcs` passe.
 
 ### Validation manuelle
 

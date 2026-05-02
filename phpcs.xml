@@ -37,6 +37,9 @@
 		<properties>
 			<property name="customAutoEscapedFunctions" type="array">
 				<element value="kiyose_fr_nbsp"/>
+				<element value="kiyose_render_decorative_shape_svg"/>
+				<element value="kiyose_render_decorative_scribble_svg"/>
+				<element value="kiyose_render_wave_separator_svg"/>
 			</property>
 		</properties>
 	</rule>

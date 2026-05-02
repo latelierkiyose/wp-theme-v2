@@ -42,5 +42,8 @@ require_once get_template_directory() . '/inc/home.php';
 // Blog helpers.
 require_once get_template_directory() . '/inc/blog.php';
 
+// Decorative SVG renderers.
+require_once get_template_directory() . '/inc/decorative-renderers.php';
+
 // Decorative shapes configuration.
 require_once get_template_directory() . '/inc/decorative-config.php';
