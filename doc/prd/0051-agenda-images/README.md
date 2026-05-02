@@ -1,6 +1,6 @@
 # PRD 0051 — Images à la une des articles et événements
 
-- **Statut** : prêt à l'implémentation
+- **Statut** : terminé
 - **Version** : 1.0
 - **Date** : 2026-05-02
 
