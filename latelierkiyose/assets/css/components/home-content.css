@@ -92,12 +92,35 @@
 }
 
 /* ============================================
-   SLOGAN CONTENU 2
+   CITATION CONTENU 2
    ============================================ */
 
-.home-content2__slogan {
-	margin-bottom: var(--kiyose-spacing-2xl);
-	margin-top: var(--kiyose-spacing-2xl);
+.home-content2__quote-block {
+	margin: var(--kiyose-spacing-2xl) auto;
+	max-width: 700px;
+	text-align: center;
+}
+
+.home-content2__quote {
+	margin-bottom: 0;
+	margin-top: 0;
+}
+
+.home-content2__quote p {
+	display: inline;
+	margin: 0;
+}
+
+.home-content2__quote-author {
+	color: var(--kiyose-color-burgundy);
+	font-family: var(--kiyose-font-body);
+	font-size: var(--kiyose-font-size-base);
+	font-weight: 600;
+	margin-top: var(--kiyose-spacing-sm);
+}
+
+.home-content2__quote-author cite {
+	font-style: normal;
 }
 
 /* ============================================

@@ -1,6 +1,6 @@
 # Recette · Modifier la page d'accueil
 
-**Objectif :** modifier le contenu éditorial de la page d'accueil (bloc bienvenue, mots-clés, slogans, sections Q&A).
+**Objectif :** modifier le contenu éditorial de la page d'accueil (bloc bienvenue, mots-clés, slogans, sections Q&A, citation).
 
 La page d'accueil est particulière : une grande partie de son contenu ne se saisit **pas** dans l'éditeur Gutenberg principal, mais dans des **champs personnalisés** (*meta fields*) situés à part.
 
@@ -11,7 +11,7 @@ La page d'accueil est particulière : une grande partie de son contenu ne se sai
 3. Repère la section **Page d'accueil — Bienvenue & Overlay À propos**, située sous l'éditeur Gutenberg principal. Elle contient notamment :
    - **Bloc bienvenue** (titre, sous-titre, texte court, mots-clés, slogan)
    - **Contenu Q&A** (une série de questions et réponses)
-   - **Contenu texte et slogan**
+   - **Contenu texte et citation**
    - **Overlay À propos**
 4. Modifie les champs voulus.
 5. Clique sur **Mettre à jour** (en haut à droite).
@@ -33,9 +33,20 @@ Le bloc bienvenue est la toute première zone visible de la page d'accueil. Il c
 La page d'accueil comporte plusieurs sections de contenu éditorial :
 
 - **Contenu 1 (Q&A)** : une série de questions et réponses (par exemple : « Qu'est-ce que l'art-thérapie ? » / « À qui s'adresse un atelier ? »).
-- **Contenu 2 (texte + slogan)** : un paragraphe de texte plus dense suivi d'un slogan.
+- **Contenu 2 (texte + citation)** : un paragraphe de texte plus dense suivi d'une citation et, si besoin, de son auteurice.
 
 Les champs exacts sont regroupés dans la section **Page d'accueil — Bienvenue & Overlay À propos**.
+
+### La citation du Contenu 2
+
+Pour la citation du bloc **Contenu 2**, utilise les champs séparés :
+
+| Champ | Exemple |
+|---|---|
+| **Citation** | `Heureux soient les fêlés, car ils laissent passer la lumière` |
+| **Auteurice de la citation** | `Michel Audiard` |
+
+Ne mets pas de guillemets dans le champ **Citation** : le thème les ajoute automatiquement au bon format. Si tu ne connais pas l'auteurice, laisse le champ **Auteurice de la citation** vide.
 
 ## Les sections automatiques (rien à faire)
 

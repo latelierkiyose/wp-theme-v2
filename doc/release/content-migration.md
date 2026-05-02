@@ -96,7 +96,20 @@ Si le repeater Q&R est vide, la section entière est masquée.
 | Champ admin | Clé meta | Type |
 |---|---|---|
 | Texte riche (gras, italique, listes, liens) | `kiyose_content2_text` | HTML limité (`wp_kses_post`) |
-| Citation / Slogan | `kiyose_content2_slogan` | Texte court |
+| Citation (sans guillemets) | `kiyose_content2_slogan` | Texte court |
+| Auteurice de la citation | `kiyose_content2_quote_author` | Texte court |
+
+Action de migration manuelle si une ancienne citation contient déjà les guillemets et l'auteurice dans `kiyose_content2_slogan` :
+
+1. Retirer les guillemets du champ **Citation (sans guillemets)**.
+2. Déplacer le nom de l'auteurice dans le champ **Auteurice de la citation**.
+
+Exemple : `« Heureux soient les fêlés, car ils laissent passer la lumière » Michel Audiard` devient :
+
+| Champ | Valeur |
+|---|---|
+| Citation (sans guillemets) | `Heureux soient les fêlés, car ils laissent passer la lumière` |
+| Auteurice de la citation | `Michel Audiard` |
 
 **Recommandation** : reprendre les textes de la homepage actuelle et les répartir entre les champs bienvenue / overlay / Q&R / contenu libre selon le design cible. Ne rien coller dans l'éditeur de contenu principal de la page — sur ce template il n'est pas rendu.
 

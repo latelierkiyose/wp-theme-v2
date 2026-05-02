@@ -9,6 +9,7 @@
 use PHPUnit\Framework\TestCase;
 
 require_once __DIR__ . '/../inc/home.php';
+require_once __DIR__ . '/../inc/content-filters.php';
 
 /**
  * Test class for home page helper functions.
@@ -84,7 +85,8 @@ class Test_Home extends TestCase {
 				'content1_qa'      => array(),
 				'content1_slogan'  => '',
 				'content2_text'    => '',
-				'content2_slogan'  => '',
+				'content2_quote'   => '',
+				'content2_quote_author' => '',
 			),
 			$result
 		);
@@ -107,6 +109,7 @@ class Test_Home extends TestCase {
 			'kiyose_content1_slogan'  => 'Slogan Q&R',
 			'kiyose_content2_text'    => '<p>Texte libre</p>',
 			'kiyose_content2_slogan'  => 'Slogan texte libre',
+			'kiyose_content2_quote_author' => 'Michel Audiard',
 		);
 
 		// When
@@ -137,7 +140,62 @@ class Test_Home extends TestCase {
 			$result['content1_qa']
 		);
 		$this->assertSame( '<p>Texte libre</p>', $result['content2_text'] );
-		$this->assertSame( 'Slogan texte libre', $result['content2_slogan'] );
+		$this->assertArrayHasKey( 'content2_quote', $result );
+		$this->assertArrayHasKey( 'content2_quote_author', $result );
+		$this->assertSame( 'Slogan texte libre', $result['content2_quote'] );
+		$this->assertSame( 'Michel Audiard', $result['content2_quote_author'] );
+	}
+
+	public function test_contentFreeTemplate_ofQuoteAndAuthor_rendersSemanticQuoteBlock() {
+		// Given
+		$args = array(
+			'content2_text'         => '<p>Texte libre</p>',
+			'content2_quote'        => 'Heureux soient les fêlés, car ils laissent passer la lumière',
+			'content2_quote_author' => 'Michel Audiard',
+		);
+
+		// When
+		$html = $this->render_content_free_template( $args );
+
+		// Then
+		$this->assertStringContainsString( '<figure class="home-content2__quote-block">', $html );
+		$this->assertStringContainsString( '<blockquote class="home-content2__quote home-emphase">', $html );
+		$this->assertStringContainsString( '<p>Heureux soient les fêlés, car ils laissent passer la lumière</p>', $html );
+		$this->assertStringContainsString( '<figcaption class="home-content2__quote-author">', $html );
+		$this->assertStringContainsString( '<cite>Michel Audiard</cite>', $html );
+		$this->assert_author_is_outside_blockquote( $html );
+	}
+
+	public function test_contentFreeTemplate_whenQuoteAuthorIsEmpty_omitsAttribution() {
+		// Given
+		$args = array(
+			'content2_text'         => '',
+			'content2_quote'        => 'Une citation sans auteurice',
+			'content2_quote_author' => '',
+		);
+
+		// When
+		$html = $this->render_content_free_template( $args );
+
+		// Then
+		$this->assertStringContainsString( '<blockquote class="home-content2__quote home-emphase">', $html );
+		$this->assertStringNotContainsString( '<figcaption', $html );
+		$this->assertStringNotContainsString( '<cite>', $html );
+	}
+
+	public function test_contentFreeTemplate_whenOnlyQuoteAuthorExists_omitsFreeContentSection() {
+		// Given
+		$args = array(
+			'content2_text'         => '',
+			'content2_quote'        => '',
+			'content2_quote_author' => 'Michel Audiard',
+		);
+
+		// When
+		$html = $this->render_content_free_template( $args );
+
+		// Then
+		$this->assertSame( '', trim( $html ) );
 	}
 
 	private function call_decode_json_meta_array( string $raw_value ): array {
@@ -154,5 +212,25 @@ class Test_Home extends TestCase {
 		}
 
 		return kiyose_get_home_page_data( $post_id );
+	}
+
+	private function render_content_free_template( array $args ): string {
+		if ( ! defined( 'KIYOSE_DISCOVERY_CALL_URL' ) ) {
+			define( 'KIYOSE_DISCOVERY_CALL_URL', '/contact/' );
+		}
+
+		ob_start();
+		require __DIR__ . '/../template-parts/home/content-free.php';
+
+		return (string) ob_get_clean();
+	}
+
+	private function assert_author_is_outside_blockquote( string $html ): void {
+		$blockquote_end_position = strpos( $html, '</blockquote>' );
+		$cite_position           = strpos( $html, '<cite>Michel Audiard</cite>' );
+
+		$this->assertNotFalse( $blockquote_end_position );
+		$this->assertNotFalse( $cite_position );
+		$this->assertGreaterThan( $blockquote_end_position, $cite_position );
 	}
 }

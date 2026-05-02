@@ -51,19 +51,20 @@ function kiyose_get_home_page_data( int $post_id ): array {
 	}
 
 	return array(
-		'welcome_title'    => $welcome_title,
-		'welcome_subtitle' => get_post_meta( $post_id, 'kiyose_welcome_subtitle', true ),
-		'welcome_text'     => get_post_meta( $post_id, 'kiyose_welcome_text', true ),
-		'welcome_keywords' => kiyose_decode_json_meta_array( (string) get_post_meta( $post_id, 'kiyose_welcome_keywords', true ) ),
-		'welcome_slogan'   => get_post_meta( $post_id, 'kiyose_welcome_slogan', true ),
-		'about_content'    => $about_content,
-		'about_cta_text'   => $about_cta_text,
-		'about_cta_url'    => $about_cta_url,
-		'about_image_id'   => get_post_meta( $post_id, 'kiyose_hero_image_id', true ),
-		'content1_qa'      => kiyose_decode_json_meta_array( (string) get_post_meta( $post_id, 'kiyose_content1_qa', true ) ),
-		'content1_slogan'  => get_post_meta( $post_id, 'kiyose_content1_slogan', true ),
-		'content2_text'    => get_post_meta( $post_id, 'kiyose_content2_text', true ),
-		'content2_slogan'  => get_post_meta( $post_id, 'kiyose_content2_slogan', true ),
+		'welcome_title'         => $welcome_title,
+		'welcome_subtitle'      => get_post_meta( $post_id, 'kiyose_welcome_subtitle', true ),
+		'welcome_text'          => get_post_meta( $post_id, 'kiyose_welcome_text', true ),
+		'welcome_keywords'      => kiyose_decode_json_meta_array( (string) get_post_meta( $post_id, 'kiyose_welcome_keywords', true ) ),
+		'welcome_slogan'        => get_post_meta( $post_id, 'kiyose_welcome_slogan', true ),
+		'about_content'         => $about_content,
+		'about_cta_text'        => $about_cta_text,
+		'about_cta_url'         => $about_cta_url,
+		'about_image_id'        => get_post_meta( $post_id, 'kiyose_hero_image_id', true ),
+		'content1_qa'           => kiyose_decode_json_meta_array( (string) get_post_meta( $post_id, 'kiyose_content1_qa', true ) ),
+		'content1_slogan'       => get_post_meta( $post_id, 'kiyose_content1_slogan', true ),
+		'content2_text'         => get_post_meta( $post_id, 'kiyose_content2_text', true ),
+		'content2_quote'        => get_post_meta( $post_id, 'kiyose_content2_slogan', true ),
+		'content2_quote_author' => get_post_meta( $post_id, 'kiyose_content2_quote_author', true ),
 	);
 }
 

@@ -197,6 +197,45 @@ class Test_Meta_Boxes extends TestCase {
 		$this->assertStringNotContainsString( '<strong>', $html );
 	}
 
+	public function test_kiyose_render_home_hero_meta_box_ofContent2QuoteFields_rendersQuoteAndAuthorInputs() {
+		// Given.
+		$post = (object) array( 'ID' => 43 );
+		$this->set_page_template( 43, 'templates/page-home.php' );
+		$GLOBALS['kiyose_test_post_meta'][43]['kiyose_content2_slogan']       = 'Heureux soient les fêlés';
+		$GLOBALS['kiyose_test_post_meta'][43]['kiyose_content2_quote_author'] = 'Michel Audiard';
+
+		// When.
+		ob_start();
+		kiyose_render_home_hero_meta_box( $post );
+		$html = ob_get_clean();
+
+		// Then.
+		$this->assertStringContainsString( 'Citation (sans guillemets)', $html );
+		$this->assertStringContainsString( 'Saisis uniquement le texte cité, sans guillemets et sans nom d&#039;auteurice.', $html );
+		$this->assertStringContainsString( 'name="kiyose_content2_slogan"', $html );
+		$this->assertStringContainsString( 'value="Heureux soient les fêlés"', $html );
+		$this->assertStringContainsString( 'Auteurice de la citation', $html );
+		$this->assertStringContainsString( 'name="kiyose_content2_quote_author"', $html );
+		$this->assertStringContainsString( 'value="Michel Audiard"', $html );
+	}
+
+	public function test_kiyose_save_home_hero_meta_ofQuoteAuthor_savesSanitizedAuthor() {
+		// Given.
+		$post_id = 43;
+		$this->set_page_template( $post_id, 'templates/page-home.php' );
+		$_POST = array(
+			'kiyose_home_hero_nonce'          => 'nonce',
+			'kiyose_content2_quote_author'   => '<strong>Michel Audiard</strong>',
+		);
+
+		// When.
+		kiyose_save_home_hero_meta( $post_id );
+
+		// Then.
+		$this->assertArrayHasKey( 'kiyose_content2_quote_author', $GLOBALS['kiyose_test_post_meta'][ $post_id ] );
+		$this->assertSame( 'Michel Audiard', $GLOBALS['kiyose_test_post_meta'][ $post_id ]['kiyose_content2_quote_author'] );
+	}
+
 	public function test_kiyose_enqueue_admin_meta_box_assets_whenEditingPage_enqueuesAssetsAndMedia() {
 		// Given.
 		$GLOBALS['kiyose_test_current_screen'] = (object) array( 'post_type' => 'page' );

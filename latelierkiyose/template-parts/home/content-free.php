@@ -8,11 +8,12 @@
  * @param array $args Home page data.
  */
 
-$kiyose_content2_text   = $args['content2_text'] ?? '';
-$kiyose_content2_slogan = $args['content2_slogan'] ?? '';
+$kiyose_content2_text         = $args['content2_text'] ?? '';
+$kiyose_content2_quote        = $args['content2_quote'] ?? '';
+$kiyose_content2_quote_author = $args['content2_quote_author'] ?? '';
 ?>
 
-<?php if ( ! empty( $kiyose_content2_text ) || ! empty( $kiyose_content2_slogan ) ) : ?>
+<?php if ( ! empty( $kiyose_content2_text ) || ! empty( $kiyose_content2_quote ) ) : ?>
 <section class="home-content2" aria-labelledby="content2-heading">
 	<h2 id="content2-heading" class="sr-only">
 		<?php esc_html_e( 'À propos de ma pratique', 'kiyose' ); ?>
@@ -23,8 +24,17 @@ $kiyose_content2_slogan = $args['content2_slogan'] ?? '';
 				<?php echo wp_kses_post( $kiyose_content2_text ); ?>
 			</div>
 		<?php endif; ?>
-		<?php if ( ! empty( $kiyose_content2_slogan ) ) : ?>
-			<p class="home-content2__slogan home-emphase"><?php echo kiyose_fr_nbsp( esc_html( $kiyose_content2_slogan ) ); ?></p>
+		<?php if ( ! empty( $kiyose_content2_quote ) ) : ?>
+			<figure class="home-content2__quote-block">
+				<blockquote class="home-content2__quote home-emphase">
+					<p><?php echo kiyose_fr_nbsp( esc_html( $kiyose_content2_quote ) ); ?></p>
+				</blockquote>
+				<?php if ( ! empty( $kiyose_content2_quote_author ) ) : ?>
+					<figcaption class="home-content2__quote-author">
+						<cite><?php echo esc_html( $kiyose_content2_quote_author ); ?></cite>
+					</figcaption>
+				<?php endif; ?>
+			</figure>
 		<?php endif; ?>
 		<div class="home-content2__cta-wrapper">
 			<a href="<?php echo esc_url( KIYOSE_DISCOVERY_CALL_URL ); ?>" class="home-content2__cta">

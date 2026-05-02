@@ -525,8 +525,9 @@ function kiyose_render_home_hero_meta_box( $post ) {
 	$content1_slogan = get_post_meta( $post->ID, 'kiyose_content1_slogan', true );
 
 	// Get current values — Bloc Contenu 2.
-	$content2_text   = get_post_meta( $post->ID, 'kiyose_content2_text', true );
-	$content2_slogan = get_post_meta( $post->ID, 'kiyose_content2_slogan', true );
+	$content2_text         = get_post_meta( $post->ID, 'kiyose_content2_text', true );
+	$content2_quote        = get_post_meta( $post->ID, 'kiyose_content2_slogan', true );
+	$content2_quote_author = get_post_meta( $post->ID, 'kiyose_content2_quote_author', true );
 
 	// Get current values — Overlay À propos (existing hero fields).
 	$hero_content  = get_post_meta( $post->ID, 'kiyose_hero_content', true );
@@ -735,9 +736,19 @@ function kiyose_render_home_hero_meta_box( $post ) {
 				array(
 					'id'          => 'kiyose_content2_slogan',
 					'name'        => 'kiyose_content2_slogan',
-					'label'       => __( 'Citation / Slogan (optionnel)', 'kiyose' ),
-					'value'       => $content2_slogan,
-					'description' => __( 'Affiché sous le texte, en typographie Dancing Script.', 'kiyose' ),
+					'label'       => __( 'Citation (sans guillemets)', 'kiyose' ),
+					'value'       => $content2_quote,
+					'description' => __( 'Saisis uniquement le texte cité, sans guillemets et sans nom d\'auteurice.', 'kiyose' ),
+				)
+			);
+
+			kiyose_render_text_field(
+				array(
+					'id'          => 'kiyose_content2_quote_author',
+					'name'        => 'kiyose_content2_quote_author',
+					'label'       => __( 'Auteurice de la citation', 'kiyose' ),
+					'value'       => $content2_quote_author,
+					'description' => __( 'Exemple : Michel Audiard. Laisse vide si la citation n\'a pas d\'attribution.', 'kiyose' ),
 				)
 			);
 			?>
@@ -853,6 +864,11 @@ function kiyose_save_home_hero_meta( $post_id ) {
 	// Save content2 slogan.
 	if ( isset( $_POST['kiyose_content2_slogan'] ) ) {
 		update_post_meta( $post_id, 'kiyose_content2_slogan', sanitize_text_field( wp_unslash( $_POST['kiyose_content2_slogan'] ) ) );
+	}
+
+	// Save content2 quote author.
+	if ( isset( $_POST['kiyose_content2_quote_author'] ) ) {
+		update_post_meta( $post_id, 'kiyose_content2_quote_author', sanitize_text_field( wp_unslash( $_POST['kiyose_content2_quote_author'] ) ) );
 	}
 }
 add_action( 'save_post_page', 'kiyose_save_home_hero_meta' );
