@@ -18,6 +18,11 @@ class Test_Meta_Boxes extends TestCase {
 
 		$GLOBALS['kiyose_test_added_meta_boxes'] = array();
 		$GLOBALS['kiyose_test_post_meta']        = array();
+		$GLOBALS['kiyose_test_current_screen']   = null;
+		$GLOBALS['kiyose_test_enqueued_styles']  = array();
+		$GLOBALS['kiyose_test_enqueued_scripts'] = array();
+		$GLOBALS['kiyose_test_localized_scripts'] = array();
+		$GLOBALS['kiyose_test_did_enqueue_media'] = false;
 	}
 
 	private function set_page_template( int $post_id, string $template ): void {
@@ -26,6 +31,14 @@ class Test_Meta_Boxes extends TestCase {
 
 	private function registered_meta_box_ids(): array {
 		return array_column( $GLOBALS['kiyose_test_added_meta_boxes'], 'id' );
+	}
+
+	private function enqueued_style_handles(): array {
+		return array_column( $GLOBALS['kiyose_test_enqueued_styles'], 'handle' );
+	}
+
+	private function enqueued_script_handles(): array {
+		return array_column( $GLOBALS['kiyose_test_enqueued_scripts'], 'handle' );
 	}
 
 	public function test_kiyose_page_uses_template_whenPostIsMissing_returnsFalse() {
@@ -150,6 +163,75 @@ class Test_Meta_Boxes extends TestCase {
 
 		$this->assertNotNull( $result );
 		$this->assertSame( 'Rigologie', $result['label'] );
+	}
+
+	public function test_kiyose_sanitize_welcome_keyword_items_whenJsonIsInvalid_returnsEmptyArray() {
+		// Given.
+		$raw_json = '{not-json';
+
+		// When.
+		$result = function_exists( 'kiyose_sanitize_welcome_keyword_items' )
+			? kiyose_sanitize_welcome_keyword_items( $raw_json )
+			: null;
+
+		// Then.
+		$this->assertSame( array(), $result );
+	}
+
+	public function test_kiyose_render_text_field_whenValueContainsHtml_escapesOutput() {
+		// Given.
+		$args = array(
+			'id'          => 'kiyose_test_field',
+			'name'        => 'kiyose_test_field',
+			'label'       => 'Champ <dangereux>',
+			'value'       => '"><script>alert(1)</script>',
+			'description' => 'Description <strong>éditoriale</strong>',
+		);
+
+		// When.
+		ob_start();
+		if ( function_exists( 'kiyose_render_text_field' ) ) {
+			kiyose_render_text_field( $args );
+		}
+		$html = ob_get_clean();
+
+		// Then.
+		$this->assertStringContainsString( 'Champ &lt;dangereux&gt;', $html );
+		$this->assertStringContainsString( '&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;', $html );
+		$this->assertStringContainsString( 'Description &lt;strong&gt;éditoriale&lt;/strong&gt;', $html );
+		$this->assertStringNotContainsString( '<script>', $html );
+		$this->assertStringNotContainsString( '<strong>', $html );
+	}
+
+	public function test_kiyose_enqueue_admin_meta_box_assets_whenEditingPage_enqueuesAssetsAndMedia() {
+		// Given.
+		$GLOBALS['kiyose_test_current_screen'] = (object) array( 'post_type' => 'page' );
+
+		// When.
+		if ( function_exists( 'kiyose_enqueue_admin_meta_box_assets' ) ) {
+			kiyose_enqueue_admin_meta_box_assets( 'post.php' );
+		}
+
+		// Then.
+		$this->assertContains( 'kiyose-admin-meta-boxes', $this->enqueued_style_handles() );
+		$this->assertContains( 'kiyose-admin-meta-boxes', $this->enqueued_script_handles() );
+		$this->assertTrue( $GLOBALS['kiyose_test_did_enqueue_media'] );
+		$this->assertSame( 'kiyoseMetaBoxes', $GLOBALS['kiyose_test_localized_scripts'][0]['object_name'] );
+	}
+
+	public function test_kiyose_enqueue_admin_meta_box_assets_whenHookIsNotEditor_doesNothing() {
+		// Given.
+		$GLOBALS['kiyose_test_current_screen'] = (object) array( 'post_type' => 'page' );
+
+		// When.
+		if ( function_exists( 'kiyose_enqueue_admin_meta_box_assets' ) ) {
+			kiyose_enqueue_admin_meta_box_assets( 'edit.php' );
+		}
+
+		// Then.
+		$this->assertSame( array(), $this->enqueued_style_handles() );
+		$this->assertSame( array(), $this->enqueued_script_handles() );
+		$this->assertFalse( $GLOBALS['kiyose_test_did_enqueue_media'] );
 	}
 
 	public function test_kiyose_sanitize_qa_items_ofValidJson_returnsSanitizedArray() {

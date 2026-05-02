@@ -90,6 +90,31 @@ if ( ! function_exists( 'esc_html__' ) ) {
 	}
 }
 
+if ( ! function_exists( 'esc_html' ) ) {
+	/**
+	 * Mock escaped HTML function.
+	 *
+	 * @param string $text Text to escape.
+	 * @return string
+	 */
+	function esc_html( $text ) {
+		return htmlspecialchars( (string) $text, ENT_QUOTES, 'UTF-8' );
+	}
+}
+
+if ( ! function_exists( 'esc_attr_e' ) ) {
+	/**
+	 * Mock escaped attribute translation echo function.
+	 *
+	 * @param string $text Text to translate.
+	 * @param string $domain Text domain.
+	 * @return void
+	 */
+	function esc_attr_e( $text, $domain = 'default' ) {
+		echo htmlspecialchars( (string) $text, ENT_QUOTES, 'UTF-8' );
+	}
+}
+
 if ( ! function_exists( 'add_shortcode' ) ) {
 	/**
 	 * Mock add_shortcode function.
@@ -193,6 +218,70 @@ if ( ! function_exists( 'home_url' ) ) {
 	}
 }
 
+if ( ! function_exists( 'get_template_directory' ) ) {
+	function get_template_directory() {
+		return dirname( __DIR__ );
+	}
+}
+
+if ( ! function_exists( 'get_template_directory_uri' ) ) {
+	function get_template_directory_uri() {
+		return 'https://example.com/wp-content/themes/latelierkiyose';
+	}
+}
+
+if ( ! function_exists( 'get_current_screen' ) ) {
+	function get_current_screen() {
+		return $GLOBALS['kiyose_test_current_screen'] ?? null;
+	}
+}
+
+if ( ! function_exists( 'wp_enqueue_style' ) ) {
+	function wp_enqueue_style( $handle, $src = '', $deps = array(), $ver = false, $media = 'all' ) {
+		$GLOBALS['kiyose_test_enqueued_styles'][ $handle ] = array(
+			'handle' => $handle,
+			'src'    => $src,
+			'deps'   => $deps,
+			'ver'    => $ver,
+			'media'  => $media,
+		);
+
+		return true;
+	}
+}
+
+if ( ! function_exists( 'wp_enqueue_script' ) ) {
+	function wp_enqueue_script( $handle, $src = '', $deps = array(), $ver = false, $args = array() ) {
+		$GLOBALS['kiyose_test_enqueued_scripts'][ $handle ] = array(
+			'handle' => $handle,
+			'src'    => $src,
+			'deps'   => $deps,
+			'ver'    => $ver,
+			'args'   => $args,
+		);
+
+		return true;
+	}
+}
+
+if ( ! function_exists( 'wp_enqueue_media' ) ) {
+	function wp_enqueue_media() {
+		$GLOBALS['kiyose_test_did_enqueue_media'] = true;
+	}
+}
+
+if ( ! function_exists( 'wp_localize_script' ) ) {
+	function wp_localize_script( $handle, $object_name, $l10n ) {
+		$GLOBALS['kiyose_test_localized_scripts'][] = array(
+			'handle'      => $handle,
+			'object_name' => $object_name,
+			'l10n'        => $l10n,
+		);
+
+		return true;
+	}
+}
+
 if ( ! function_exists( 'wp_nonce_field' ) ) {
 	function wp_nonce_field( $action, $name, $referer = true, $echo = true ) {
 		return '';
@@ -237,12 +326,16 @@ if ( ! function_exists( 'checked' ) ) {
 
 if ( ! function_exists( 'update_post_meta' ) ) {
 	function update_post_meta( $post_id, $meta_key, $meta_value ) {
+		$GLOBALS['kiyose_test_post_meta'][ $post_id ][ $meta_key ] = $meta_value;
+
 		return true;
 	}
 }
 
 if ( ! function_exists( 'delete_post_meta' ) ) {
 	function delete_post_meta( $post_id, $meta_key ) {
+		unset( $GLOBALS['kiyose_test_post_meta'][ $post_id ][ $meta_key ] );
+
 		return true;
 	}
 }

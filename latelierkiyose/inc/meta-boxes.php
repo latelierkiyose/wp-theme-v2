@@ -30,6 +30,36 @@ function kiyose_sanitize_welcome_keyword_item( string $label, string $url ): ?ar
 }
 
 /**
+ * Sanitize a list of welcome block keyword items from JSON input.
+ *
+ * @param string $raw_json Raw JSON string from form input.
+ * @return array<int, array{label:string,url:string}> Sanitized keyword items. Empty array if invalid.
+ */
+function kiyose_sanitize_welcome_keyword_items( string $raw_json ): array {
+	$decoded = json_decode( $raw_json, true );
+
+	if ( ! is_array( $decoded ) ) {
+		return array();
+	}
+
+	$sanitized = array();
+
+	foreach ( $decoded as $item ) {
+		if ( ! isset( $item['label'], $item['url'] ) ) {
+			continue;
+		}
+
+		$clean = kiyose_sanitize_welcome_keyword_item( (string) $item['label'], (string) $item['url'] );
+
+		if ( null !== $clean ) {
+			$sanitized[] = $clean;
+		}
+	}
+
+	return $sanitized;
+}
+
+/**
  * Sanitize a list of Q&A items from JSON input.
  *
  * Pure function — usable and testable outside WordPress context.
@@ -80,6 +110,371 @@ function kiyose_page_uses_template( $post, string $template ): bool {
 	}
 
 	return get_post_meta( (int) $post->ID, '_wp_page_template', true ) === $template;
+}
+
+/**
+ * Decode a JSON meta value into an array for admin rendering.
+ *
+ * @param mixed $raw_value Raw meta value.
+ * @return array<int, array<string, mixed>>
+ */
+function kiyose_decode_meta_box_json_items( $raw_value ): array {
+	$decoded = json_decode( (string) $raw_value, true );
+
+	return is_array( $decoded ) ? $decoded : array();
+}
+
+/**
+ * Encode meta box repeater items for hidden input values.
+ *
+ * @param array<int, array<string, mixed>> $items Items to encode.
+ * @return string JSON string.
+ */
+function kiyose_encode_meta_box_json_items( array $items ): string {
+	$encoded = wp_json_encode( $items );
+
+	return is_string( $encoded ) ? $encoded : '[]';
+}
+
+/**
+ * Return an admin asset path with the current environment suffix.
+ *
+ * @param string $path Asset path from the theme directory.
+ * @return string
+ */
+function kiyose_get_admin_meta_box_asset_path( string $path ): string {
+	$suffix = function_exists( 'kiyose_get_asset_suffix' ) ? kiyose_get_asset_suffix() : '';
+
+	if ( '' === $suffix ) {
+		return $path;
+	}
+
+	$path_with_suffix = preg_replace( '/\.(css|js)$/', $suffix . '.$1', $path );
+
+	return is_string( $path_with_suffix ) ? $path_with_suffix : $path;
+}
+
+/**
+ * Return an admin asset version.
+ *
+ * @param string $path Asset path from the theme directory.
+ * @return string|int
+ */
+function kiyose_get_admin_meta_box_asset_version( string $path ) {
+	if ( function_exists( 'kiyose_get_asset_version' ) ) {
+		return kiyose_get_asset_version( $path );
+	}
+
+	$full_path = get_template_directory() . $path;
+
+	return file_exists( $full_path ) ? filemtime( $full_path ) : KIYOSE_VERSION;
+}
+
+/**
+ * Enqueue admin assets needed by page template meta boxes.
+ *
+ * @param string $hook_suffix Current admin hook suffix.
+ * @return void
+ */
+function kiyose_enqueue_admin_meta_box_assets( string $hook_suffix ): void {
+	if ( ! in_array( $hook_suffix, array( 'post.php', 'post-new.php' ), true ) ) {
+		return;
+	}
+
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+
+	if ( ! is_object( $screen ) || ! isset( $screen->post_type ) || 'page' !== $screen->post_type ) {
+		return;
+	}
+
+	$style_path  = kiyose_get_admin_meta_box_asset_path( '/assets/css/admin/meta-boxes.css' );
+	$script_path = kiyose_get_admin_meta_box_asset_path( '/assets/js/admin/meta-boxes.js' );
+
+	wp_enqueue_style(
+		'kiyose-admin-meta-boxes',
+		get_template_directory_uri() . $style_path,
+		array(),
+		kiyose_get_admin_meta_box_asset_version( $style_path )
+	);
+
+	wp_enqueue_script(
+		'kiyose-admin-meta-boxes',
+		get_template_directory_uri() . $script_path,
+		array( 'jquery', 'media-editor' ),
+		kiyose_get_admin_meta_box_asset_version( $script_path ),
+		true
+	);
+
+	wp_enqueue_media();
+
+	wp_localize_script(
+		'kiyose-admin-meta-boxes',
+		'kiyoseMetaBoxes',
+		array(
+			'keywordLabelPlaceholder' => __( 'Label', 'kiyose' ),
+			'keywordUrlPlaceholder'   => __( 'URL (ex: /services/ ou #ancre)', 'kiyose' ),
+			'removeLabel'             => __( 'Supprimer', 'kiyose' ),
+			'qaQuestionLabel'         => __( 'Question', 'kiyose' ),
+			'qaAnswerLabel'           => __( 'Réponse', 'kiyose' ),
+			'heroMediaTitle'          => __( 'Choisir une image de fond', 'kiyose' ),
+			'contactMediaTitle'       => __( 'Choisir une photo de contact', 'kiyose' ),
+			'mediaButtonText'         => __( 'Utiliser cette image', 'kiyose' ),
+		)
+	);
+}
+add_action( 'admin_enqueue_scripts', 'kiyose_enqueue_admin_meta_box_assets', 10, 1 );
+
+/**
+ * Render a notice for template-specific meta boxes.
+ *
+ * @param bool   $is_visible     Whether the meta fields are visible.
+ * @param string $template_label Human-readable template label.
+ * @return void
+ */
+function kiyose_render_template_meta_notice( bool $is_visible, string $template_label ): void {
+	if ( $is_visible ) {
+		return;
+	}
+
+	?>
+	<div class="kiyose-meta-box__notice">
+		<p>
+			<?php
+			printf(
+				/* translators: %s: required page template label. */
+				esc_html__( 'Ces champs sont disponibles uniquement avec le template « %s ».', 'kiyose' ),
+				esc_html( $template_label )
+			);
+			?>
+		</p>
+	</div>
+	<?php
+}
+
+/**
+ * Render a meta box section title.
+ *
+ * @param string $title       Section title.
+ * @param string $description Optional section description.
+ * @return void
+ */
+function kiyose_render_meta_box_section_title( string $title, string $description = '' ): void {
+	?>
+	<h3 class="kiyose-meta-box__section-title">
+		<?php echo esc_html( $title ); ?>
+	</h3>
+	<?php if ( '' !== $description ) : ?>
+		<p class="kiyose-meta-box__description kiyose-meta-box__section-description">
+			<?php echo esc_html( $description ); ?>
+		</p>
+	<?php endif; ?>
+	<?php
+}
+
+/**
+ * Render a text-like input field.
+ *
+ * @param array<string, mixed> $args Field arguments.
+ * @return void
+ */
+function kiyose_render_text_field( array $args ): void {
+	$id          = (string) ( $args['id'] ?? '' );
+	$name        = (string) ( $args['name'] ?? $id );
+	$label       = (string) ( $args['label'] ?? '' );
+	$value       = (string) ( $args['value'] ?? '' );
+	$description = (string) ( $args['description'] ?? '' );
+	$placeholder = (string) ( $args['placeholder'] ?? '' );
+	$type        = sanitize_key( (string) ( $args['type'] ?? 'text' ) );
+	$type        = in_array( $type, array( 'text', 'url' ), true ) ? $type : 'text';
+	?>
+	<div class="kiyose-meta-box__field-group">
+		<?php if ( '' !== $label ) : ?>
+			<label class="kiyose-meta-box__label" for="<?php echo esc_attr( $id ); ?>">
+				<?php echo esc_html( $label ); ?>
+			</label>
+		<?php endif; ?>
+		<input
+			class="kiyose-meta-box__input"
+			type="<?php echo esc_attr( $type ); ?>"
+			name="<?php echo esc_attr( $name ); ?>"
+			id="<?php echo esc_attr( $id ); ?>"
+			value="<?php echo 'url' === $type ? esc_url( $value ) : esc_attr( $value ); ?>"
+			<?php if ( '' !== $placeholder ) : ?>
+				placeholder="<?php echo esc_attr( $placeholder ); ?>"
+			<?php endif; ?>
+		>
+		<?php if ( '' !== $description ) : ?>
+			<p class="kiyose-meta-box__description">
+				<?php echo esc_html( $description ); ?>
+			</p>
+		<?php endif; ?>
+	</div>
+	<?php
+}
+
+/**
+ * Render a textarea field.
+ *
+ * @param array<string, mixed> $args Field arguments.
+ * @return void
+ */
+function kiyose_render_textarea_field( array $args ): void {
+	$id          = (string) ( $args['id'] ?? '' );
+	$name        = (string) ( $args['name'] ?? $id );
+	$label       = (string) ( $args['label'] ?? '' );
+	$value       = (string) ( $args['value'] ?? '' );
+	$description = (string) ( $args['description'] ?? '' );
+	$rows        = absint( $args['rows'] ?? 4 );
+	?>
+	<div class="kiyose-meta-box__field-group">
+		<?php if ( '' !== $label ) : ?>
+			<label class="kiyose-meta-box__label" for="<?php echo esc_attr( $id ); ?>">
+				<?php echo esc_html( $label ); ?>
+			</label>
+		<?php endif; ?>
+		<textarea
+			class="kiyose-meta-box__textarea"
+			name="<?php echo esc_attr( $name ); ?>"
+			id="<?php echo esc_attr( $id ); ?>"
+			rows="<?php echo esc_attr( max( 1, $rows ) ); ?>"
+		><?php echo esc_textarea( $value ); ?></textarea>
+		<?php if ( '' !== $description ) : ?>
+			<p class="kiyose-meta-box__description">
+				<?php echo esc_html( $description ); ?>
+			</p>
+		<?php endif; ?>
+	</div>
+	<?php
+}
+
+/**
+ * Render a media selection field.
+ *
+ * @param array<string, mixed> $args Field arguments.
+ * @return void
+ */
+function kiyose_render_media_field( array $args ): void {
+	$id           = (string) ( $args['id'] ?? '' );
+	$name         = (string) ( $args['name'] ?? $id );
+	$label        = (string) ( $args['label'] ?? '' );
+	$value        = absint( $args['value'] ?? 0 );
+	$button_id    = (string) ( $args['button_id'] ?? $id . '_button' );
+	$remove_id    = (string) ( $args['remove_id'] ?? $id . '_remove' );
+	$preview_id   = (string) ( $args['preview_id'] ?? $id . '_preview' );
+	$button_label = (string) ( $args['button_label'] ?? __( 'Choisir une image', 'kiyose' ) );
+	$remove_label = (string) ( $args['remove_label'] ?? __( 'Supprimer l\'image', 'kiyose' ) );
+	$description  = (string) ( $args['description'] ?? '' );
+	$image_size   = (string) ( $args['image_size'] ?? 'medium' );
+	$preview_mod  = (string) ( $args['preview_modifier'] ?? '' );
+	?>
+	<div class="kiyose-meta-box__field-group">
+		<?php if ( '' !== $label ) : ?>
+			<label class="kiyose-meta-box__label" for="<?php echo esc_attr( $id ); ?>">
+				<?php echo esc_html( $label ); ?>
+			</label>
+		<?php endif; ?>
+		<input
+			type="hidden"
+			name="<?php echo esc_attr( $name ); ?>"
+			id="<?php echo esc_attr( $id ); ?>"
+			value="<?php echo esc_attr( $value ); ?>"
+		>
+		<div class="kiyose-meta-box__button-group">
+			<button type="button" class="button" id="<?php echo esc_attr( $button_id ); ?>">
+				<?php echo esc_html( $button_label ); ?>
+			</button>
+			<button
+				type="button"
+				class="button"
+				id="<?php echo esc_attr( $remove_id ); ?>"
+				<?php if ( 0 === $value ) : ?>
+					hidden
+				<?php endif; ?>
+			>
+				<?php echo esc_html( $remove_label ); ?>
+			</button>
+		</div>
+		<div
+			class="kiyose-meta-box__image-preview<?php echo '' !== $preview_mod ? ' ' . esc_attr( $preview_mod ) : ''; ?>"
+			id="<?php echo esc_attr( $preview_id ); ?>"
+		>
+			<?php
+			if ( $value > 0 ) {
+				echo wp_get_attachment_image( $value, $image_size );
+			}
+			?>
+		</div>
+		<?php if ( '' !== $description ) : ?>
+			<p class="kiyose-meta-box__description">
+				<?php echo esc_html( $description ); ?>
+			</p>
+		<?php endif; ?>
+	</div>
+	<?php
+}
+
+/**
+ * Render one welcome keyword repeater row.
+ *
+ * @param array<string, mixed> $keyword Keyword item.
+ * @return void
+ */
+function kiyose_render_welcome_keyword_row( array $keyword ): void {
+	$label = (string) ( $keyword['label'] ?? '' );
+	$url   = (string) ( $keyword['url'] ?? '' );
+	?>
+	<div class="kiyose-repeater-row kiyose-repeater-row--keyword keyword-row">
+		<input
+			type="text"
+			placeholder="<?php esc_attr_e( 'Label', 'kiyose' ); ?>"
+			class="kiyose-repeater-row__input kiyose-repeater-row__input--keyword-label kw-label"
+			value="<?php echo esc_attr( $label ); ?>"
+		>
+		<input
+			type="text"
+			placeholder="<?php esc_attr_e( 'URL (ex: /services/ ou #ancre)', 'kiyose' ); ?>"
+			class="kiyose-repeater-row__input kiyose-repeater-row__input--keyword-url kw-url"
+			value="<?php echo esc_attr( $url ); ?>"
+		>
+		<button type="button" class="button kw-remove">
+			<?php esc_html_e( 'Supprimer', 'kiyose' ); ?>
+		</button>
+	</div>
+	<?php
+}
+
+/**
+ * Render one Q&A repeater row.
+ *
+ * @param array<string, mixed> $item Q&A item.
+ * @return void
+ */
+function kiyose_render_qa_repeater_row( array $item ): void {
+	$question = (string) ( $item['question'] ?? '' );
+	$answer   = (string) ( $item['answer'] ?? '' );
+	?>
+	<div class="kiyose-repeater-row kiyose-repeater-row--qa qa-row">
+		<div class="kiyose-repeater-row__field">
+			<label class="kiyose-repeater-row__label">
+				<?php esc_html_e( 'Question', 'kiyose' ); ?>
+			</label>
+			<input
+				type="text"
+				class="kiyose-repeater-row__input qa-question"
+				value="<?php echo esc_attr( $question ); ?>"
+			>
+		</div>
+		<div class="kiyose-repeater-row__field">
+			<label class="kiyose-repeater-row__label">
+				<?php esc_html_e( 'Réponse', 'kiyose' ); ?>
+			</label>
+			<textarea class="kiyose-repeater-row__textarea qa-answer" rows="3"><?php echo esc_textarea( $answer ); ?></textarea>
+		</div>
+		<button type="button" class="button qa-remove">
+			<?php esc_html_e( 'Supprimer', 'kiyose' ); ?>
+		</button>
+	</div>
+	<?php
 }
 
 /**
@@ -150,423 +545,205 @@ function kiyose_render_home_hero_meta_box( $post ) {
 		$hero_cta_url = home_url( '/a-propos/' );
 	}
 
+	$content1_qa_items = kiyose_decode_meta_box_json_items( $content1_qa_raw );
+
 	?>
 	<div class="kiyose-meta-box" data-template-required="templates/page-home.php">
-		<style>
-			.kiyose-meta-box { padding: 10px 0; }
-			.kiyose-meta-box .field-group { margin-bottom: 20px; }
-			.kiyose-meta-box label { display: block; font-weight: 600; margin-bottom: 5px; }
-			.kiyose-meta-box input[type="text"],
-			.kiyose-meta-box input[type="url"],
-			.kiyose-meta-box textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
-			.kiyose-meta-box textarea { min-height: 100px; resize: vertical; }
-			.kiyose-meta-box .description { font-size: 13px; color: #666; margin-top: 5px; font-style: italic; }
-			.kiyose-meta-box .image-preview { margin-top: 10px; max-width: 400px; }
-			.kiyose-meta-box .image-preview img { max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 4px; }
-			.kiyose-meta-box .button-group { margin-top: 10px; }
-		</style>
-
 		<div class="kiyose-meta-box__fields">
-
-		<h3 style="margin: 0 0 15px; padding-bottom: 8px; border-bottom: 1px solid #ddd;">
-			<?php esc_html_e( 'Bloc Bienvenue', 'kiyose' ); ?>
-		</h3>
-
-		<!-- Titre bienvenue -->
-		<div class="field-group">
-			<label for="kiyose_welcome_title">
-				<?php esc_html_e( 'Titre (H1) du bloc bienvenue', 'kiyose' ); ?>
-			</label>
-			<input
-				type="text"
-				name="kiyose_welcome_title"
-				id="kiyose_welcome_title"
-				value="<?php echo esc_attr( $welcome_title ); ?>"
-			>
-			<p class="description">
-				<?php esc_html_e( 'Titre principal affiché en haut de la page, en typographie Dancing Script.', 'kiyose' ); ?>
-			</p>
-		</div>
-
-		<!-- Sous-titre -->
-		<div class="field-group">
-			<label for="kiyose_welcome_subtitle">
-				<?php esc_html_e( 'Sous-titre', 'kiyose' ); ?>
-			</label>
-			<input
-				type="text"
-				name="kiyose_welcome_subtitle"
-				id="kiyose_welcome_subtitle"
-				value="<?php echo esc_attr( $welcome_subtitle ); ?>"
-			>
-		</div>
-
-		<!-- Texte descriptif -->
-		<div class="field-group">
-			<label for="kiyose_welcome_text">
-				<?php esc_html_e( 'Texte descriptif', 'kiyose' ); ?>
-			</label>
-			<textarea
-				name="kiyose_welcome_text"
-				id="kiyose_welcome_text"
-				rows="4"
-			><?php echo esc_textarea( $welcome_text ); ?></textarea>
-		</div>
-
-		<!-- Mots-clefs (repeater) -->
-		<div class="field-group">
-			<label>
-				<?php esc_html_e( 'Mots-clefs (chips cliquables)', 'kiyose' ); ?>
-			</label>
-			<input
-				type="hidden"
-				name="kiyose_welcome_keywords"
-				id="kiyose_welcome_keywords"
-				value="<?php echo esc_attr( $welcome_keywords_raw ? $welcome_keywords_raw : '[]' ); ?>"
-			>
-			<div id="kiyose_welcome_keywords_list">
-				<?php foreach ( $welcome_keywords as $kw ) : ?>
-				<div class="keyword-row" style="display:flex;gap:8px;margin-bottom:8px;align-items:center;">
-					<input
-						type="text"
-						placeholder="<?php esc_attr_e( 'Label', 'kiyose' ); ?>"
-						class="kw-label"
-						value="<?php echo esc_attr( $kw['label'] ); ?>"
-						style="flex:1;"
-					>
-					<input
-						type="text"
-						placeholder="<?php esc_attr_e( 'URL (ex: /services/ ou #ancre)', 'kiyose' ); ?>"
-						class="kw-url"
-						value="<?php echo esc_attr( $kw['url'] ); ?>"
-						style="flex:2;"
-					>
-					<button type="button" class="button kw-remove">
-						<?php esc_html_e( 'Supprimer', 'kiyose' ); ?>
-					</button>
-				</div>
-				<?php endforeach; ?>
-			</div>
-			<button type="button" class="button" id="kiyose_keyword_add">
-				<?php esc_html_e( 'Ajouter un mot-clef', 'kiyose' ); ?>
-			</button>
-			<p class="description">
-				<?php esc_html_e( 'Chaque mot-clef est un lien cliquable. L\'URL peut pointer vers une ancre (#section) ou une autre page.', 'kiyose' ); ?>
-			</p>
-		</div>
-
-		<!-- Slogan -->
-		<div class="field-group">
-			<label for="kiyose_welcome_slogan">
-				<?php esc_html_e( 'Slogan', 'kiyose' ); ?>
-			</label>
-			<input
-				type="text"
-				name="kiyose_welcome_slogan"
-				id="kiyose_welcome_slogan"
-				value="<?php echo esc_attr( $welcome_slogan ); ?>"
-			>
-			<p class="description">
-				<?php esc_html_e( 'Affiché sous les mots-clefs, en typographie Dancing Script avec couleur accent.', 'kiyose' ); ?>
-			</p>
-		</div>
-
-		<h3 style="margin: 25px 0 15px; padding-bottom: 8px; border-bottom: 1px solid #ddd;">
-			<?php esc_html_e( 'Overlay « À propos »', 'kiyose' ); ?>
-		</h3>
-		<p class="description" style="margin-bottom:15px;">
-			<?php esc_html_e( 'Ces champs alimentent le panneau flottant qui s\'affiche au premier scroll (desktop) et la section À propos sur mobile.', 'kiyose' ); ?>
-		</p>
-
-		<!-- Texte de description (overlay / mobile) -->
-		<div class="field-group">
-			<label for="kiyose_hero_content">
-				<?php esc_html_e( 'Texte de description (overlay / mobile)', 'kiyose' ); ?>
-			</label>
-			<textarea
-				name="kiyose_hero_content"
-				id="kiyose_hero_content"
-				rows="4"
-			><?php echo esc_textarea( $hero_content ); ?></textarea>
-		</div>
-
-		<!-- Texte du lien En savoir plus -->
-		<div class="field-group">
-			<label for="kiyose_hero_cta_text">
-				<?php esc_html_e( 'Texte du lien « En savoir plus »', 'kiyose' ); ?>
-			</label>
-			<input
-				type="text"
-				name="kiyose_hero_cta_text"
-				id="kiyose_hero_cta_text"
-				value="<?php echo esc_attr( $hero_cta_text ); ?>"
-			>
-		</div>
-
-		<!-- URL de la page À propos -->
-		<div class="field-group">
-			<label for="kiyose_hero_cta_url">
-				<?php esc_html_e( 'URL de la page « À propos »', 'kiyose' ); ?>
-			</label>
-			<input
-				type="url"
-				name="kiyose_hero_cta_url"
-				id="kiyose_hero_cta_url"
-				value="<?php echo esc_url( $hero_cta_url ); ?>"
-				placeholder="<?php echo esc_attr( home_url( '/a-propos/' ) ); ?>"
-			>
-		</div>
-
-		<!-- Photo (overlay / mobile) -->
-		<div class="field-group">
-			<label for="kiyose_hero_image">
-				<?php esc_html_e( 'Photo (overlay / mobile)', 'kiyose' ); ?>
-			</label>
-			<input
-				type="hidden"
-				name="kiyose_hero_image_id"
-				id="kiyose_hero_image_id"
-				value="<?php echo esc_attr( $hero_image_id ); ?>"
-			>
-			<div class="button-group">
-				<button type="button" class="button" id="kiyose_hero_image_button">
-					<?php esc_html_e( 'Choisir une image', 'kiyose' ); ?>
-				</button>
-				<button type="button" class="button" id="kiyose_hero_image_remove" style="<?php echo empty( $hero_image_id ) ? 'display:none;' : ''; ?>">
-					<?php esc_html_e( 'Supprimer l\'image', 'kiyose' ); ?>
-				</button>
-			</div>
-			<div class="image-preview" id="kiyose_hero_image_preview">
-				<?php
-				if ( ! empty( $hero_image_id ) ) {
-					echo wp_get_attachment_image( $hero_image_id, 'medium_large' );
-				}
-				?>
-			</div>
-		</div>
-
-		<h3 style="margin: 25px 0 15px; padding-bottom: 8px; border-bottom: 1px solid #ddd;">
-			<?php esc_html_e( 'Bloc Contenu 1 — Questions & Réponses', 'kiyose' ); ?>
-		</h3>
-		<p class="description" style="margin-bottom:15px;">
-			<?php esc_html_e( 'Liste de questions/réponses. Si vide, la section est masquée.', 'kiyose' ); ?>
-		</p>
-
-		<!-- Repeater Q&A -->
-		<div class="field-group">
-			<input
-				type="hidden"
-				name="kiyose_content1_qa"
-				id="kiyose_content1_qa"
-				value="<?php echo esc_attr( $content1_qa_raw ? $content1_qa_raw : '[]' ); ?>"
-			>
-			<div id="kiyose_content1_qa_list">
-				<?php
-				$content1_qa_items = $content1_qa_raw ? json_decode( $content1_qa_raw, true ) : array();
-				if ( ! is_array( $content1_qa_items ) ) {
-					$content1_qa_items = array();
-				}
-				foreach ( $content1_qa_items as $kiyose_qa_item ) :
-					?>
-				<div class="qa-row" style="margin-bottom:16px;padding:12px;background:#f9f9f9;border:1px solid #ddd;border-radius:4px;">
-					<div style="margin-bottom:8px;">
-						<label style="display:block;font-weight:600;margin-bottom:4px;"><?php esc_html_e( 'Question', 'kiyose' ); ?></label>
-						<input
-							type="text"
-							class="qa-question"
-							value="<?php echo esc_attr( $kiyose_qa_item['question'] ); ?>"
-							style="width:100%;"
-						>
-					</div>
-					<div style="margin-bottom:8px;">
-						<label style="display:block;font-weight:600;margin-bottom:4px;"><?php esc_html_e( 'Réponse', 'kiyose' ); ?></label>
-						<textarea class="qa-answer" rows="3" style="width:100%;resize:vertical;"><?php echo esc_textarea( $kiyose_qa_item['answer'] ); ?></textarea>
-					</div>
-					<button type="button" class="button qa-remove"><?php esc_html_e( 'Supprimer', 'kiyose' ); ?></button>
-				</div>
-				<?php endforeach; ?>
-			</div>
-			<button type="button" class="button" id="kiyose_qa_add">
-				<?php esc_html_e( 'Ajouter une question', 'kiyose' ); ?>
-			</button>
-		</div>
-
-		<!-- Slogan Contenu 1 -->
-		<div class="field-group">
-			<label for="kiyose_content1_slogan">
-				<?php esc_html_e( 'Citation / Slogan (optionnel)', 'kiyose' ); ?>
-			</label>
-			<input
-				type="text"
-				name="kiyose_content1_slogan"
-				id="kiyose_content1_slogan"
-				value="<?php echo esc_attr( $content1_slogan ); ?>"
-			>
-			<p class="description">
-				<?php esc_html_e( 'Affiché sous les Q&R, en typographie Dancing Script.', 'kiyose' ); ?>
-			</p>
-		</div>
-
-		<h3 style="margin: 25px 0 15px; padding-bottom: 8px; border-bottom: 1px solid #ddd;">
-			<?php esc_html_e( 'Bloc Contenu 2 — Texte libre', 'kiyose' ); ?>
-		</h3>
-
-		<!-- Texte riche Contenu 2 -->
-		<div class="field-group">
-			<label for="kiyose_content2_text">
-				<?php esc_html_e( 'Texte (HTML limité : gras, italique, listes, liens)', 'kiyose' ); ?>
-			</label>
 			<?php
-			wp_editor(
-				wp_kses_post( $content2_text ),
-				'kiyose_content2_text',
+			kiyose_render_meta_box_section_title( __( 'Bloc Bienvenue', 'kiyose' ) );
+
+			kiyose_render_text_field(
 				array(
-					'textarea_name' => 'kiyose_content2_text',
-					'media_buttons' => false,
-					'teeny'         => true,
-					'tinymce'       => array(
-						'toolbar1' => 'bold,italic,bullist,numlist,link,unlink',
-					),
-					'quicktags'     => false,
-					'textarea_rows' => 8,
+					'id'          => 'kiyose_welcome_title',
+					'name'        => 'kiyose_welcome_title',
+					'label'       => __( 'Titre (H1) du bloc bienvenue', 'kiyose' ),
+					'value'       => $welcome_title,
+					'description' => __( 'Titre principal affiché en haut de la page, en typographie Dancing Script.', 'kiyose' ),
+				)
+			);
+
+			kiyose_render_text_field(
+				array(
+					'id'    => 'kiyose_welcome_subtitle',
+					'name'  => 'kiyose_welcome_subtitle',
+					'label' => __( 'Sous-titre', 'kiyose' ),
+					'value' => $welcome_subtitle,
+				)
+			);
+
+			kiyose_render_textarea_field(
+				array(
+					'id'    => 'kiyose_welcome_text',
+					'name'  => 'kiyose_welcome_text',
+					'label' => __( 'Texte descriptif', 'kiyose' ),
+					'value' => $welcome_text,
+					'rows'  => 4,
 				)
 			);
 			?>
-		</div>
 
-		<!-- Slogan Contenu 2 -->
-		<div class="field-group">
-			<label for="kiyose_content2_slogan">
-				<?php esc_html_e( 'Citation / Slogan (optionnel)', 'kiyose' ); ?>
-			</label>
-			<input
-				type="text"
-				name="kiyose_content2_slogan"
-				id="kiyose_content2_slogan"
-				value="<?php echo esc_attr( $content2_slogan ); ?>"
-			>
-			<p class="description">
-				<?php esc_html_e( 'Affiché sous le texte, en typographie Dancing Script.', 'kiyose' ); ?>
-			</p>
-		</div>
+			<div class="kiyose-meta-box__field-group">
+				<label class="kiyose-meta-box__label">
+					<?php esc_html_e( 'Mots-clefs (chips cliquables)', 'kiyose' ); ?>
+				</label>
+				<input
+					type="hidden"
+					name="kiyose_welcome_keywords"
+					id="kiyose_welcome_keywords"
+					value="<?php echo esc_attr( kiyose_encode_meta_box_json_items( $welcome_keywords ) ); ?>"
+				>
+				<div class="kiyose-repeater" id="kiyose_welcome_keywords_list">
+					<?php
+					foreach ( $welcome_keywords as $kw ) {
+						kiyose_render_welcome_keyword_row( $kw );
+					}
+					?>
+				</div>
+				<button type="button" class="button" id="kiyose_keyword_add">
+					<?php esc_html_e( 'Ajouter un mot-clef', 'kiyose' ); ?>
+				</button>
+				<p class="kiyose-meta-box__description">
+					<?php esc_html_e( 'Chaque mot-clef est un lien cliquable. L\'URL peut pointer vers une ancre (#section) ou une autre page.', 'kiyose' ); ?>
+				</p>
+			</div>
+
+			<?php
+			kiyose_render_text_field(
+				array(
+					'id'          => 'kiyose_welcome_slogan',
+					'name'        => 'kiyose_welcome_slogan',
+					'label'       => __( 'Slogan', 'kiyose' ),
+					'value'       => $welcome_slogan,
+					'description' => __( 'Affiché sous les mots-clefs, en typographie Dancing Script avec couleur accent.', 'kiyose' ),
+				)
+			);
+
+			kiyose_render_meta_box_section_title(
+				__( 'Overlay « À propos »', 'kiyose' ),
+				__( 'Ces champs alimentent le panneau flottant qui s\'affiche au premier scroll (desktop) et la section À propos sur mobile.', 'kiyose' )
+			);
+
+			kiyose_render_textarea_field(
+				array(
+					'id'    => 'kiyose_hero_content',
+					'name'  => 'kiyose_hero_content',
+					'label' => __( 'Texte de description (overlay / mobile)', 'kiyose' ),
+					'value' => $hero_content,
+					'rows'  => 4,
+				)
+			);
+
+			kiyose_render_text_field(
+				array(
+					'id'    => 'kiyose_hero_cta_text',
+					'name'  => 'kiyose_hero_cta_text',
+					'label' => __( 'Texte du lien « En savoir plus »', 'kiyose' ),
+					'value' => $hero_cta_text,
+				)
+			);
+
+			kiyose_render_text_field(
+				array(
+					'id'          => 'kiyose_hero_cta_url',
+					'name'        => 'kiyose_hero_cta_url',
+					'label'       => __( 'URL de la page « À propos »', 'kiyose' ),
+					'value'       => $hero_cta_url,
+					'type'        => 'url',
+					'placeholder' => home_url( '/a-propos/' ),
+				)
+			);
+
+			kiyose_render_media_field(
+				array(
+					'id'           => 'kiyose_hero_image_id',
+					'name'         => 'kiyose_hero_image_id',
+					'label'        => __( 'Photo (overlay / mobile)', 'kiyose' ),
+					'value'        => $hero_image_id,
+					'button_id'    => 'kiyose_hero_image_button',
+					'remove_id'    => 'kiyose_hero_image_remove',
+					'preview_id'   => 'kiyose_hero_image_preview',
+					'button_label' => __( 'Choisir une image', 'kiyose' ),
+					'remove_label' => __( 'Supprimer l\'image', 'kiyose' ),
+					'image_size'   => 'medium_large',
+				)
+			);
+
+			kiyose_render_meta_box_section_title(
+				__( 'Bloc Contenu 1 — Questions & Réponses', 'kiyose' ),
+				__( 'Liste de questions/réponses. Si vide, la section est masquée.', 'kiyose' )
+			);
+			?>
+
+			<div class="kiyose-meta-box__field-group">
+				<input
+					type="hidden"
+					name="kiyose_content1_qa"
+					id="kiyose_content1_qa"
+					value="<?php echo esc_attr( kiyose_encode_meta_box_json_items( $content1_qa_items ) ); ?>"
+				>
+				<div class="kiyose-repeater" id="kiyose_content1_qa_list">
+					<?php
+					foreach ( $content1_qa_items as $kiyose_qa_item ) {
+						kiyose_render_qa_repeater_row( $kiyose_qa_item );
+					}
+					?>
+				</div>
+				<button type="button" class="button" id="kiyose_qa_add">
+					<?php esc_html_e( 'Ajouter une question', 'kiyose' ); ?>
+				</button>
+			</div>
+
+			<?php
+			kiyose_render_text_field(
+				array(
+					'id'          => 'kiyose_content1_slogan',
+					'name'        => 'kiyose_content1_slogan',
+					'label'       => __( 'Citation / Slogan (optionnel)', 'kiyose' ),
+					'value'       => $content1_slogan,
+					'description' => __( 'Affiché sous les Q&R, en typographie Dancing Script.', 'kiyose' ),
+				)
+			);
+
+			kiyose_render_meta_box_section_title( __( 'Bloc Contenu 2 — Texte libre', 'kiyose' ) );
+			?>
+
+			<div class="kiyose-meta-box__field-group">
+				<label class="kiyose-meta-box__label" for="kiyose_content2_text">
+					<?php esc_html_e( 'Texte (HTML limité : gras, italique, listes, liens)', 'kiyose' ); ?>
+				</label>
+				<?php
+				wp_editor(
+					wp_kses_post( $content2_text ),
+					'kiyose_content2_text',
+					array(
+						'textarea_name' => 'kiyose_content2_text',
+						'media_buttons' => false,
+						'teeny'         => true,
+						'tinymce'       => array(
+							'toolbar1' => 'bold,italic,bullist,numlist,link,unlink',
+						),
+						'quicktags'     => false,
+						'textarea_rows' => 8,
+					)
+				);
+				?>
+			</div>
+
+			<?php
+			kiyose_render_text_field(
+				array(
+					'id'          => 'kiyose_content2_slogan',
+					'name'        => 'kiyose_content2_slogan',
+					'label'       => __( 'Citation / Slogan (optionnel)', 'kiyose' ),
+					'value'       => $content2_slogan,
+					'description' => __( 'Affiché sous le texte, en typographie Dancing Script.', 'kiyose' ),
+				)
+			);
+			?>
 
 		</div><!-- .kiyose-meta-box__fields -->
 	</div><!-- .kiyose-meta-box -->
-
-	<script>
-	jQuery(document).ready(function($) {
-		var mediaUploader;
-
-		// Keywords repeater
-		function serializeKeywords() {
-			var keywords = [];
-			$('#kiyose_welcome_keywords_list .keyword-row').each(function() {
-				var label = $(this).find('.kw-label').val().trim();
-				var url = $(this).find('.kw-url').val().trim();
-				if (label) {
-					keywords.push({ label: label, url: url });
-				}
-			});
-			$('#kiyose_welcome_keywords').val(JSON.stringify(keywords));
-		}
-
-		$('#kiyose_keyword_add').on('click', function() {
-			var row = '<div class="keyword-row" style="display:flex;gap:8px;margin-bottom:8px;align-items:center;">' +
-				'<input type="text" placeholder="Label" class="kw-label" style="flex:1;">' +
-				'<input type="text" placeholder="URL (ex: /services/ ou #ancre)" class="kw-url" style="flex:2;">' +
-				'<button type="button" class="button kw-remove">Supprimer</button>' +
-				'</div>';
-			$('#kiyose_welcome_keywords_list').append(row);
-		});
-
-		$(document).on('click', '.kw-remove', function() {
-			$(this).closest('.keyword-row').remove();
-			serializeKeywords();
-		});
-
-		// Serialize on any input change in keywords list
-		$(document).on('change input', '#kiyose_welcome_keywords_list input', function() {
-			serializeKeywords();
-		});
-
-		// Serialize before form submit
-		$('form#post').on('submit', function() {
-			serializeKeywords();
-		});
-
-		// Q&A repeater
-		function serializeQA() {
-			var items = [];
-			$('#kiyose_content1_qa_list .qa-row').each(function() {
-				var question = $(this).find('.qa-question').val().trim();
-				var answer = $(this).find('.qa-answer').val().trim();
-				if (question || answer) {
-					items.push({ question: question, answer: answer });
-				}
-			});
-			$('#kiyose_content1_qa').val(JSON.stringify(items));
-		}
-
-		$('#kiyose_qa_add').on('click', function() {
-			var row = '<div class="qa-row" style="margin-bottom:16px;padding:12px;background:#f9f9f9;border:1px solid #ddd;border-radius:4px;">' +
-				'<div style="margin-bottom:8px;"><label style="display:block;font-weight:600;margin-bottom:4px;"><?php echo esc_html__( 'Question', 'kiyose' ); ?></label>' +
-				'<input type="text" class="qa-question" style="width:100%;"></div>' +
-				'<div style="margin-bottom:8px;"><label style="display:block;font-weight:600;margin-bottom:4px;"><?php echo esc_html__( 'Réponse', 'kiyose' ); ?></label>' +
-				'<textarea class="qa-answer" rows="3" style="width:100%;resize:vertical;"></textarea></div>' +
-				'<button type="button" class="button qa-remove"><?php echo esc_html__( 'Supprimer', 'kiyose' ); ?></button>' +
-				'</div>';
-			$('#kiyose_content1_qa_list').append(row);
-		});
-
-		$(document).on('click', '.qa-remove', function() {
-			$(this).closest('.qa-row').remove();
-			serializeQA();
-		});
-
-		$(document).on('change input', '#kiyose_content1_qa_list input, #kiyose_content1_qa_list textarea', function() {
-			serializeQA();
-		});
-
-		// Serialize Q&A before form submit
-		$('form#post').on('submit', function() {
-			serializeQA();
-		});
-
-		// Media uploader
-		$('#kiyose_hero_image_button').on('click', function(e) {
-			e.preventDefault();
-
-			if (mediaUploader) {
-				mediaUploader.open();
-				return;
-			}
-
-			mediaUploader = wp.media({
-				title: '<?php esc_html_e( 'Choisir une image de fond', 'kiyose' ); ?>',
-				button: {
-					text: '<?php esc_html_e( 'Utiliser cette image', 'kiyose' ); ?>'
-				},
-				multiple: false
-			});
-
-			mediaUploader.on('select', function() {
-				var attachment = mediaUploader.state().get('selection').first().toJSON();
-				$('#kiyose_hero_image_id').val(attachment.id);
-				$('#kiyose_hero_image_preview').html('<img src="' + attachment.url + '" style="max-width:100%;height:auto;">');
-				$('#kiyose_hero_image_remove').show();
-			});
-
-			mediaUploader.open();
-		});
-
-		$('#kiyose_hero_image_remove').on('click', function(e) {
-			e.preventDefault();
-			$('#kiyose_hero_image_id').val('');
-			$('#kiyose_hero_image_preview').html('');
-			$(this).hide();
-		});
-	});
-	</script>
 	<?php
 }
 
@@ -619,22 +796,11 @@ function kiyose_save_home_hero_meta( $post_id ) {
 
 	// Save welcome keywords.
 	if ( isset( $_POST['kiyose_welcome_keywords'] ) ) {
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitization happens inside kiyose_sanitize_welcome_keyword_item() after json_decode(); applying sanitize_text_field() here would corrupt \uXXXX Unicode escapes.
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitization happens inside kiyose_sanitize_welcome_keyword_items() after json_decode(); applying sanitize_text_field() here would corrupt \uXXXX Unicode escapes.
 		$raw_json = wp_unslash( $_POST['kiyose_welcome_keywords'] );
-		$decoded  = json_decode( $raw_json, true );
+		$keywords = kiyose_sanitize_welcome_keyword_items( $raw_json );
 
-		if ( is_array( $decoded ) ) {
-			$sanitized = array();
-			foreach ( $decoded as $item ) {
-				if ( isset( $item['label'], $item['url'] ) ) {
-					$clean = kiyose_sanitize_welcome_keyword_item( $item['label'], $item['url'] );
-					if ( null !== $clean ) {
-						$sanitized[] = $clean;
-					}
-				}
-			}
-			update_post_meta( $post_id, 'kiyose_welcome_keywords', wp_slash( wp_json_encode( $sanitized ) ) );
-		}
+		update_post_meta( $post_id, 'kiyose_welcome_keywords', wp_slash( wp_json_encode( $keywords ) ) );
 	}
 
 	// Save welcome slogan.
@@ -727,94 +893,37 @@ function kiyose_render_contact_photo_meta_box( $post ) {
 	?>
 	<div class="kiyose-meta-box" data-template-required="templates/page-contact.php">
 		<div class="kiyose-meta-box__fields">
-			<fieldset style="border: none; margin: 0; padding: 0;">
-				<legend style="font-weight: 600; margin-bottom: 15px; font-size: 14px;">
-					<?php esc_html_e( 'Photo de contact', 'kiyose' ); ?>
-				</legend>
+			<?php
+			kiyose_render_meta_box_section_title( __( 'Photo de contact', 'kiyose' ) );
 
-				<!-- Champ image -->
-				<div class="field-group">
-					<input
-						type="hidden"
-						name="kiyose_contact_photo_id"
-						id="kiyose_contact_photo_id"
-						value="<?php echo esc_attr( $photo_id ); ?>"
-					>
-					<div class="button-group">
-						<button type="button" class="button" id="kiyose_contact_photo_button">
-							<?php esc_html_e( 'Choisir une image', 'kiyose' ); ?>
-						</button>
-						<button type="button" class="button" id="kiyose_contact_photo_remove" style="<?php echo empty( $photo_id ) ? 'display:none;' : ''; ?>">
-							<?php esc_html_e( 'Supprimer l\'image', 'kiyose' ); ?>
-						</button>
-					</div>
-					<div class="image-preview" id="kiyose_contact_photo_preview">
-						<?php
-						if ( ! empty( $photo_id ) ) {
-							echo wp_get_attachment_image( $photo_id, 'medium' );
-						}
-						?>
-					</div>
-				</div>
+			kiyose_render_media_field(
+				array(
+					'id'               => 'kiyose_contact_photo_id',
+					'name'             => 'kiyose_contact_photo_id',
+					'label'            => __( 'Image', 'kiyose' ),
+					'value'            => $photo_id,
+					'button_id'        => 'kiyose_contact_photo_button',
+					'remove_id'        => 'kiyose_contact_photo_remove',
+					'preview_id'       => 'kiyose_contact_photo_preview',
+					'button_label'     => __( 'Choisir une image', 'kiyose' ),
+					'remove_label'     => __( 'Supprimer l\'image', 'kiyose' ),
+					'image_size'       => 'medium',
+					'preview_modifier' => 'kiyose-meta-box__image-preview--contact',
+				)
+			);
 
-				<!-- Champ alt text -->
-				<div class="field-group">
-					<label for="kiyose_contact_photo_alt">
-						<?php esc_html_e( 'Texte alternatif (accessibilité)', 'kiyose' ); ?>
-					</label>
-					<input
-						type="text"
-						name="kiyose_contact_photo_alt"
-						id="kiyose_contact_photo_alt"
-						value="<?php echo esc_attr( $photo_alt ); ?>"
-						style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; margin-top: 5px;"
-					>
-					<p class="description" style="font-size: 13px; color: #666; margin-top: 5px; font-style: italic;">
-						<?php esc_html_e( 'Recommandé : renseigner le nom de la personne (ex : « Sandrine Delmas »). Laisser vide pour marquer l\'image comme décorative.', 'kiyose' ); ?>
-					</p>
-				</div>
-			</fieldset>
+			kiyose_render_text_field(
+				array(
+					'id'          => 'kiyose_contact_photo_alt',
+					'name'        => 'kiyose_contact_photo_alt',
+					'label'       => __( 'Texte alternatif (accessibilité)', 'kiyose' ),
+					'value'       => $photo_alt,
+					'description' => __( 'Recommandé : renseigner le nom de la personne (ex : « Sandrine Delmas »). Laisser vide pour marquer l\'image comme décorative.', 'kiyose' ),
+				)
+			);
+			?>
 		</div><!-- .kiyose-meta-box__fields -->
 	</div><!-- .kiyose-meta-box -->
-
-	<script>
-	jQuery(document).ready(function($) {
-		var contactPhotoUploader;
-
-		$('#kiyose_contact_photo_button').on('click', function(e) {
-			e.preventDefault();
-
-			if (contactPhotoUploader) {
-				contactPhotoUploader.open();
-				return;
-			}
-
-			contactPhotoUploader = wp.media({
-				title: '<?php esc_html_e( 'Choisir une photo de contact', 'kiyose' ); ?>',
-				button: {
-					text: '<?php esc_html_e( 'Utiliser cette image', 'kiyose' ); ?>'
-				},
-				multiple: false
-			});
-
-			contactPhotoUploader.on('select', function() {
-				var attachment = contactPhotoUploader.state().get('selection').first().toJSON();
-				$('#kiyose_contact_photo_id').val(attachment.id);
-				$('#kiyose_contact_photo_preview').html('<img src="' + attachment.url + '" style="max-width:200px;height:auto;border-radius:50%;margin-top:10px;">');
-				$('#kiyose_contact_photo_remove').show();
-			});
-
-			contactPhotoUploader.open();
-		});
-
-		$('#kiyose_contact_photo_remove').on('click', function(e) {
-			e.preventDefault();
-			$('#kiyose_contact_photo_id').val('');
-			$('#kiyose_contact_photo_preview').html('');
-			$(this).hide();
-		});
-	});
-	</script>
 	<?php
 }
 
