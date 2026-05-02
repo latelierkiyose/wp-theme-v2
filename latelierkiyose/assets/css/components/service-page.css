@@ -137,6 +137,14 @@
 	max-width: 100%;
 }
 
+.service-page__content .is-style-rounded img {
+	border-radius: 9999px;
+}
+
+.service-page__content .is-style-kiyose-round img {
+	border-radius: 50%;
+}
+
 .service-page__content figure {
 	margin: var(--kiyose-spacing-xl) 0;
 }

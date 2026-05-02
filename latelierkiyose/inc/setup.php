@@ -51,3 +51,21 @@ function kiyose_setup() {
 	remove_post_type_support( 'post', 'trackbacks' );
 }
 add_action( 'after_setup_theme', 'kiyose_setup' );
+
+/**
+ * Register custom block styles exposed in the Gutenberg editor.
+ */
+function kiyose_register_block_styles() {
+	if ( ! function_exists( 'register_block_style' ) ) {
+		return;
+	}
+
+	register_block_style(
+		'core/image',
+		array(
+			'name'  => 'kiyose-round',
+			'label' => __( 'Ronde', 'kiyose' ),
+		)
+	);
+}
+add_action( 'init', 'kiyose_register_block_styles' );

@@ -203,6 +203,13 @@
 	max-width: 100%;
 }
 
+:where(.wp-block-image, figure).is-style-kiyose-round img {
+	aspect-ratio: 1;
+	border-radius: 50%;
+	object-fit: cover;
+	width: 100%;
+}
+
 /* Centré — tous viewports */
 .wp-block-image.aligncenter,
 figure.aligncenter {
@@ -224,6 +231,12 @@ figure.alignright {
 	max-width: 100%;
 }
 
+/* Style d'image ronde — médaillon éditorial avec cadrage carré */
+.wp-block-image.is-style-kiyose-round,
+figure.is-style-kiyose-round {
+	max-width: min(100%, 320px);
+}
+
 /* Desktop (≥ 1024px) — flottant activé */
 @media (width >= 1024px) {
 	.wp-block-image.alignleft,
@@ -238,6 +251,16 @@ figure.alignright {
 		float: right;
 		margin: var(--kiyose-spacing-sm) 0 var(--kiyose-spacing-lg) var(--kiyose-spacing-xl);
 		max-width: 320px;
+	}
+
+	@supports (shape-outside: circle(50%)) {
+		.wp-block-image.is-style-kiyose-round.alignleft,
+		figure.is-style-kiyose-round.alignleft,
+		.wp-block-image.is-style-kiyose-round.alignright,
+		figure.is-style-kiyose-round.alignright {
+			shape-margin: var(--kiyose-spacing-md);
+			shape-outside: circle(50%);
+		}
 	}
 }
 

@@ -1,6 +1,6 @@
 # PRD 0057 — Style d'image ronde avec habillage circulaire
 
-- **Statut** : prêt à l'implémentation
+- **Statut** : terminé
 - **Criticité** : moyenne
 - **Version** : 1.0
 - **Date** : 2026-05-02
@@ -251,14 +251,14 @@ Exemple à inclure :
 
 ### Validation automatisée
 
-- [ ] Test : `kiyose_register_block_styles()` enregistre `kiyose-round` sur `core/image`.
-- [ ] Test : absence de fatal error si `register_block_style()` n'existe pas.
-- [ ] Test CSS : `.is-style-kiyose-round` existe dans `gutenberg-blocks.css`.
-- [ ] Test CSS : l'image ronde utilise `aspect-ratio: 1`, `border-radius: 50%`, `object-fit: cover`.
-- [ ] Test CSS : l'habillage desktop utilise `shape-outside: circle(50%)` et `shape-margin`.
-- [ ] `./bin/phpunit.sh --testdox` passe.
-- [ ] `./bin/phpcs.sh` passe.
-- [ ] `make test` passe.
+- [x] Test : `kiyose_register_block_styles()` enregistre `kiyose-round` sur `core/image`.
+- [x] Test : absence de fatal error si `register_block_style()` n'existe pas.
+- [x] Test CSS : `.is-style-kiyose-round` existe dans `gutenberg-blocks.css`.
+- [x] Test CSS : l'image ronde utilise `aspect-ratio: 1`, `border-radius: 50%`, `object-fit: cover`.
+- [x] Test CSS : l'habillage desktop utilise `shape-outside: circle(50%)` et `shape-margin`.
+- [x] `./bin/phpunit.sh --testdox` passe.
+- [x] `./bin/phpcs.sh` passe.
+- [x] `make test` passe.
 
 ### Validation manuelle
 

@@ -90,6 +90,34 @@ Le bouton passe en style contour.
 
 > **Évite** de taper `button--primary` ou `button--secondary` dans **Classes CSS supplémentaires** : ces classes ne fonctionnent que dans certains contextes très précis du thème (pied de page des services, page 404). Le bloc Bouton natif est ce qu'il te faut.
 
+## Les images rondes
+
+Pour créer une image ronde dans un article ou une page, **utilise le style `Ronde` du bloc Image**. Tu n'as pas besoin de taper une classe CSS.
+
+1. Ajoute ou sélectionne un bloc **Image**.
+2. Dans le panneau de droite, onglet **Bloc**, ouvre la section **Styles**.
+3. Choisis le style **Ronde**.
+4. Choisis l'alignement :
+   - **Gauche** ou **Droite** si tu veux que le texte passe autour de l'image sur ordinateur.
+   - **Centre** si tu veux une image ronde centrée, sans habillage du texte.
+
+Sur tablette et mobile, l'image ronde revient automatiquement dans la colonne du texte : le texte ne passe pas autour, pour garder une lecture confortable.
+
+**Exemple copiable :**
+
+| Réglage | Valeur |
+|---|---|
+| Bloc | Image |
+| Style | `Ronde` |
+| Alignement | `Gauche` ou `Droite` |
+| Texte alternatif | `Portrait de Sandrine Delmas` si l'image présente une personne |
+
+**Conseils :**
+
+- Choisis une photo déjà bien centrée, surtout pour un portrait : le style rond recadre l'image en carré.
+- Renseigne un **texte alternatif** utile si l'image apporte une information. Si elle est seulement décorative, laisse le champ vide.
+- Garde la légende courte, ou supprime-la, si tu veux un habillage du texte bien régulier autour du cercle.
+
 ## Règle importante
 
 Si tu as besoin d'un style qui n'existe pas dans cette liste, **ne crée pas de style en ligne dans l'éditeur** (tu pourrais le faire mais ce n'est pas une bonne idée — le style sera perdu ou incohérent). Demande plutôt à ton développeur d'ajouter une nouvelle classe réutilisable. Elle sera documentée ici.
