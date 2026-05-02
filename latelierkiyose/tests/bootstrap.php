@@ -21,6 +21,7 @@ function kiyose_reset_test_state(): void {
 
 	$GLOBALS['kiyose_test_added_meta_boxes']    = array();
 	$GLOBALS['kiyose_test_current_screen']      = null;
+	$GLOBALS['kiyose_test_current_user_can']    = true;
 	$GLOBALS['kiyose_test_did_enqueue_media']  = false;
 	$GLOBALS['kiyose_test_dequeued_scripts']   = array();
 	$GLOBALS['kiyose_test_dequeued_styles']    = array();
@@ -28,6 +29,7 @@ function kiyose_reset_test_state(): void {
 	$GLOBALS['kiyose_test_deregistered_styles'] = array();
 	$GLOBALS['kiyose_test_enqueued_scripts']   = array();
 	$GLOBALS['kiyose_test_enqueued_styles']    = array();
+	$GLOBALS['kiyose_test_filters']            = array();
 	$GLOBALS['kiyose_test_last_get_posts_args'] = array();
 	$GLOBALS['kiyose_test_last_query_args']    = array();
 	$GLOBALS['kiyose_test_last_post_navigation_args'] = array();
@@ -36,6 +38,7 @@ function kiyose_reset_test_state(): void {
 	$GLOBALS['kiyose_test_page_templates']     = array();
 	$GLOBALS['kiyose_test_permalinks']         = array();
 	$GLOBALS['kiyose_test_post_meta']          = array();
+	$GLOBALS['kiyose_test_registered_post_types'] = array();
 	$GLOBALS['kiyose_test_post_types']         = array();
 	$GLOBALS['kiyose_test_posts']              = array();
 	$GLOBALS['kiyose_test_query_posts']        = array();
@@ -94,6 +97,23 @@ if ( ! function_exists( 'add_filter' ) ) {
 	}
 }
 
+if ( ! function_exists( 'apply_filters' ) ) {
+	/**
+	 * Mock apply_filters function.
+	 *
+	 * @param string $hook  Hook name.
+	 * @param mixed  $value Default value.
+	 * @return mixed Filtered value.
+	 */
+	function apply_filters( $hook, $value ) {
+		if ( array_key_exists( $hook, $GLOBALS['kiyose_test_filters'] ?? array() ) ) {
+			return $GLOBALS['kiyose_test_filters'][ $hook ];
+		}
+
+		return $value;
+	}
+}
+
 if ( ! function_exists( 'register_post_type' ) ) {
 	/**
 	 * Mock register_post_type function.
@@ -103,6 +123,8 @@ if ( ! function_exists( 'register_post_type' ) ) {
 	 * @return object
 	 */
 	function register_post_type( $post_type, $args = array() ) {
+		$GLOBALS['kiyose_test_registered_post_types'][ $post_type ] = $args;
+
 		return (object) array(
 			'name'   => $post_type,
 			'labels' => $args['labels'] ?? array(),
@@ -559,6 +581,16 @@ if ( ! function_exists( 'sanitize_title' ) ) {
 	}
 }
 
+if ( ! function_exists( 'wp_rand' ) ) {
+	function wp_rand( $min = 0, $max = 0 ) {
+		if ( 0 === $max ) {
+			return $min;
+		}
+
+		return random_int( (int) $min, (int) $max );
+	}
+}
+
 if ( ! function_exists( 'remove_accents' ) ) {
 	function remove_accents( $text ) {
 		return strtr(
@@ -747,6 +779,18 @@ if ( ! function_exists( 'checked' ) ) {
 	}
 }
 
+if ( ! function_exists( 'selected' ) ) {
+	function selected( $selected, $current = true, $echo = true ) {
+		$result = $selected === $current ? ' selected="selected"' : '';
+
+		if ( $echo ) {
+			echo $result;
+		}
+
+		return $result;
+	}
+}
+
 if ( ! function_exists( 'update_post_meta' ) ) {
 	function update_post_meta( $post_id, $meta_key, $meta_value ) {
 		$GLOBALS['kiyose_test_post_meta'][ $post_id ][ $meta_key ] = $meta_value;
@@ -792,7 +836,7 @@ if ( ! function_exists( 'absint' ) ) {
 
 if ( ! function_exists( 'current_user_can' ) ) {
 	function current_user_can( $capability ) {
-		return true;
+		return (bool) ( $GLOBALS['kiyose_test_current_user_can'] ?? true );
 	}
 }
 

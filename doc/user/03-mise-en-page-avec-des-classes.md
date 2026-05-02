@@ -103,6 +103,8 @@ Pour créer une image ronde dans un article ou une page, **utilise le style `Ron
 
 Le thème applique ensuite la mise en page grâce aux classes techniques `alignleft`, `alignright` et `aligncenter`. **Tu n'as pas besoin de les taper** dans **Classes CSS supplémentaires** : Gutenberg les ajoute automatiquement quand tu choisis l'alignement dans la barre d'outils.
 
+Tu n'as pas besoin de créer un bloc **Colonnes** pour placer du texte à côté d'une image alignée à gauche ou à droite : sur ordinateur, le texte passe automatiquement autour de l'image.
+
 Sur tablette et mobile, l'image ronde revient automatiquement dans la colonne du texte : le texte ne passe pas autour, pour garder une lecture confortable.
 
 **Exemple copiable :**

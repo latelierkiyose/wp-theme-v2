@@ -62,6 +62,34 @@ class Test_Shortcodes extends TestCase {
 		$this->assertStringContainsString( 'Pratiques &amp; soins', $html );
 	}
 
+	public function test_kiyose_signets_shortcode_whenPostHasPlainH2_generatesNavigation() {
+		// Given
+		$GLOBALS['post'] = (object) array(
+			'post_content' => '<p>Intro</p><h2>Art-thérapie créative</h2><p>Texte</p>',
+		);
+
+		// When
+		$html = kiyose_signets_shortcode( array(), '' );
+
+		// Then
+		$this->assertStringContainsString( '<a href="#art-therapie-creative" class="kiyose-signets__link">', $html );
+		$this->assertStringContainsString( 'Art-thérapie créative', $html );
+	}
+
+	public function test_kiyose_signets_shortcode_whenPostHeadingHasId_usesExistingAnchor() {
+		// Given
+		$GLOBALS['post'] = (object) array(
+			'post_content' => '<h2 id="ancre-existante">Pratiques & soins</h2>',
+		);
+
+		// When
+		$html = kiyose_signets_shortcode( array(), '' );
+
+		// Then
+		$this->assertStringContainsString( '<a href="#ancre-existante" class="kiyose-signets__link">', $html );
+		$this->assertStringContainsString( 'Pratiques &amp; soins', $html );
+	}
+
 	public function test_kiyose_signets_shortcode_whenNoLinksFound_returnsEmptyString() {
 		// Given
 		$GLOBALS['post'] = (object) array(

@@ -310,6 +310,56 @@ class Test_Enqueue extends TestCase {
 		$this->assertTrue( $result );
 	}
 
+	public function test_kiyose_should_load_page_styles_whenGenericPage_returnsTrue() {
+		// Given
+		$GLOBALS['kiyose_test_is_page']        = true;
+		$GLOBALS['kiyose_test_page_templates'] = array( 'default' );
+
+		// When
+		$result = kiyose_should_load_page_styles();
+
+		// Then
+		$this->assertTrue( $result );
+	}
+
+	public function test_kiyose_should_load_page_styles_whenDedicatedTemplate_returnsFalse() {
+		// Given
+		$GLOBALS['kiyose_test_is_page']        = true;
+		$GLOBALS['kiyose_test_page_templates'] = array( 'templates/page-contact.php' );
+
+		// When
+		$result = kiyose_should_load_page_styles();
+
+		// Then
+		$this->assertFalse( $result );
+	}
+
+	public function test_kiyose_should_load_testimony_styles_whenTestimonialsShortcodeIsPresent_returnsTrue() {
+		// Given
+		$GLOBALS['post'] = (object) array(
+			'post_content' => '[kiyose_testimonials]',
+			'post_type'    => 'page',
+		);
+
+		// When
+		$result = kiyose_should_load_testimony_styles();
+
+		// Then
+		$this->assertTrue( $result );
+	}
+
+	public function test_kiyose_should_load_testimony_styles_whenSingularTestimony_returnsTrue() {
+		// Given
+		$GLOBALS['kiyose_test_is_singular']        = true;
+		$GLOBALS['kiyose_test_singular_post_type'] = 'kiyose_testimony';
+
+		// When
+		$result = kiyose_should_load_testimony_styles();
+
+		// Then
+		$this->assertTrue( $result );
+	}
+
 	public function test_kiyose_should_load_events_manager_assets_whenStandardPageWithoutShortcode_returnsFalse() {
 		// Given
 		$GLOBALS['kiyose_test_is_page']        = true;
@@ -334,6 +384,20 @@ class Test_Enqueue extends TestCase {
 
 		// When
 		$this->assertTrue( function_exists( 'kiyose_should_load_events_manager_assets' ) );
+		$result = kiyose_should_load_events_manager_assets();
+
+		// Then
+		$this->assertTrue( $result );
+	}
+
+	public function test_kiyose_should_load_events_manager_assets_whenContentHasEventShortcode_returnsTrue() {
+		// Given
+		$GLOBALS['post'] = (object) array(
+			'post_content' => '[events_calendar]',
+			'post_type'    => 'page',
+		);
+
+		// When
 		$result = kiyose_should_load_events_manager_assets();
 
 		// Then
@@ -393,6 +457,108 @@ class Test_Enqueue extends TestCase {
 
 		// Then
 		$this->assertFalse( $result );
+	}
+
+	public function test_kiyose_should_load_brevo_assets_whenBrevoShortcodeExists_returnsTrue() {
+		// Given
+		add_shortcode(
+			'sibwp_form',
+			static function () {
+				return '';
+			}
+		);
+
+		// When
+		$result = kiyose_should_load_brevo_assets();
+
+		// Then
+		$this->assertTrue( $result );
+	}
+
+	public function test_kiyose_should_load_recaptcha_assets_whenBrevoRecaptchaIsDisabled_returnsFalse() {
+		// Given
+		add_shortcode(
+			'sibwp_form',
+			static function () {
+				return '';
+			}
+		);
+		$GLOBALS['kiyose_test_filters']['kiyose_brevo_recaptcha_enabled'] = false;
+
+		// When
+		$result = kiyose_should_load_recaptcha_assets();
+
+		// Then
+		$this->assertFalse( $result );
+	}
+
+	public function test_kiyose_should_load_events_manager_recaptcha_assets_whenEventsRecaptchaIsDisabled_returnsFalse() {
+		// Given
+		$GLOBALS['kiyose_test_is_singular']        = true;
+		$GLOBALS['kiyose_test_singular_post_type'] = 'event';
+		$GLOBALS['kiyose_test_filters']['kiyose_events_manager_recaptcha_enabled'] = false;
+
+		// When
+		$result = kiyose_should_load_events_manager_recaptcha_assets();
+
+		// Then
+		$this->assertFalse( $result );
+	}
+
+	public function test_kiyose_should_load_carousel_styles_whenTestimonialsShortcodeRequestsCarousel_returnsTrue() {
+		// Given
+		$GLOBALS['post'] = (object) array(
+			'post_content' => '[kiyose_testimonials display="carousel"]',
+			'post_type'    => 'page',
+		);
+
+		// When
+		$result = kiyose_should_load_carousel_styles();
+
+		// Then
+		$this->assertTrue( $result );
+	}
+
+	public function test_kiyose_should_load_carousel_styles_whenTestimonialsShortcodeUsesSingleQuotes_returnsTrue() {
+		// Given
+		$GLOBALS['post'] = (object) array(
+			'post_content' => "[kiyose_testimonials display='carousel']",
+			'post_type'    => 'page',
+		);
+
+		// When
+		$result = kiyose_should_load_carousel_styles();
+
+		// Then
+		$this->assertTrue( $result );
+	}
+
+	public function test_kiyose_should_load_signets_styles_whenSignetsShortcodeIsPresent_returnsTrue() {
+		// Given
+		$GLOBALS['post'] = (object) array(
+			'post_content' => '[kiyose_signets][/kiyose_signets]',
+			'post_type'    => 'page',
+		);
+
+		// When
+		$result = kiyose_should_load_signets_styles();
+
+		// Then
+		$this->assertTrue( $result );
+	}
+
+	public function test_kiyose_should_load_callout_styles_whenCalloutShortcodeIsPresent_returnsTrue() {
+		// Given
+		$GLOBALS['post'] = (object) array(
+			'post_content' => '[kiyose_callout]Important[/kiyose_callout]',
+			'post_type'    => 'page',
+		);
+
+		// When
+		$result = kiyose_should_load_callout_styles();
+
+		// Then
+		$this->assertTrue( $result );
 	}
 
 	public function test_kiyose_dequeue_unused_plugin_assets_whenStandardPageWithoutPluginShortcodes_dequeuesEventsAndCf7Handles() {
@@ -627,6 +793,28 @@ class Test_Enqueue extends TestCase {
 		$this->assertStringContainsString( 'dancing-script-v29-latin-regular.woff2', $output );
 		$this->assertStringContainsString( 'nunito-v32-latin-regular.woff2', $output );
 		$this->assertStringNotContainsString( 'caveat-v21-latin-regular.woff2', $output );
+	}
+
+	public function test_kiyose_load_main_as_module_whenHandleIsMain_addsModuleType() {
+		// Given
+		$tag = '<script type="text/javascript" src="https://example.com/main.js"></script>';
+
+		// When
+		$result = kiyose_load_main_as_module( $tag, 'kiyose-main' );
+
+		// Then
+		$this->assertSame( '<script type="module" src="https://example.com/main.js"></script>', $result );
+	}
+
+	public function test_kiyose_load_main_as_module_whenHandleDiffers_returnsOriginalTag() {
+		// Given
+		$tag = '<script type="text/javascript" src="https://example.com/other.js"></script>';
+
+		// When
+		$result = kiyose_load_main_as_module( $tag, 'kiyose-carousel' );
+
+		// Then
+		$this->assertSame( $tag, $result );
 	}
 
 	private function load_enqueue_file(): void {

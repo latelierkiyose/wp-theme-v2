@@ -130,7 +130,7 @@ function kiyose_signets_shortcode( $atts, $content = null ) {
 		if ( $post && ! empty( $post->post_content ) ) {
 			// Extract H2 headings with optional IDs.
 			// Match H2 tags and capture ID attribute if present.
-			preg_match_all( '/<h2\s+([^>]*)>(.*?)<\/h2>/i', $post->post_content, $matches, PREG_SET_ORDER );
+			preg_match_all( '/<h2\b([^>]*)>(.*?)<\/h2>/i', $post->post_content, $matches, PREG_SET_ORDER );
 
 			foreach ( $matches as $match ) {
 				$attributes   = $match[1];

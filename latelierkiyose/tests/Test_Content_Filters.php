@@ -17,6 +17,61 @@ class Test_Content_Filters extends TestCase {
 
 	private const NBSP = '&#8239;';
 
+	public function test_kiyose_auto_add_heading_ids_ofPlainH2_addsSlugId() {
+		// Given
+		$content = '<p>Avant</p><h2>Art-thérapie créative</h2><p>Après</p>';
+
+		// When
+		$result = kiyose_auto_add_heading_ids( $content );
+
+		// Then
+		$this->assertSame( '<p>Avant</p><h2 id="art-therapie-creative">Art-thérapie créative</h2><p>Après</p>', $result );
+	}
+
+	public function test_kiyose_auto_add_heading_ids_whenHeadingAlreadyHasId_preservesExistingId() {
+		// Given
+		$content = '<h2 id="ancre-existante">Une section</h2>';
+
+		// When
+		$result = kiyose_auto_add_heading_ids( $content );
+
+		// Then
+		$this->assertSame( $content, $result );
+	}
+
+	public function test_kiyose_auto_add_heading_ids_whenHeadingsHaveSameText_addsIncrementalSuffix() {
+		// Given
+		$content = '<h2>Atelier</h2><h2>Atelier</h2>';
+
+		// When
+		$result = kiyose_auto_add_heading_ids( $content );
+
+		// Then
+		$this->assertSame( '<h2 id="atelier">Atelier</h2><h2 id="atelier-2">Atelier</h2>', $result );
+	}
+
+	public function test_kiyose_auto_add_heading_ids_whenHeadingHasAttributes_preservesAttributes() {
+		// Given
+		$content = '<h2 class="wp-block-heading">Questions fréquentes</h2>';
+
+		// When
+		$result = kiyose_auto_add_heading_ids( $content );
+
+		// Then
+		$this->assertSame( '<h2 class="wp-block-heading" id="questions-frequentes">Questions fréquentes</h2>', $result );
+	}
+
+	public function test_kiyose_auto_add_heading_ids_whenHeadingTextHasNoSlug_usesFallbackId() {
+		// Given
+		$content = '<h2><span aria-hidden="true">***</span></h2>';
+
+		// When
+		$result = kiyose_auto_add_heading_ids( $content );
+
+		// Then
+		$this->assertMatchesRegularExpression( '/^<h2 id="heading-\d{4}"><span aria-hidden="true">\*\*\*<\/span><\/h2>$/', $result );
+	}
+
 	public function test_kiyose_fr_nbsp_ofEmptyString_returnsEmptyString() {
 		// Given
 		$input = '';

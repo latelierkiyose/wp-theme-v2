@@ -17,6 +17,7 @@ class Test_Meta_Boxes extends TestCase {
 		parent::setUp();
 
 		kiyose_reset_test_state();
+		$_POST = array();
 	}
 
 	private function set_page_template( int $post_id, string $template ): void {
@@ -234,6 +235,112 @@ class Test_Meta_Boxes extends TestCase {
 		// Then.
 		$this->assertArrayHasKey( 'kiyose_content2_quote_author', $GLOBALS['kiyose_test_post_meta'][ $post_id ] );
 		$this->assertSame( 'Michel Audiard', $GLOBALS['kiyose_test_post_meta'][ $post_id ]['kiyose_content2_quote_author'] );
+	}
+
+	public function test_kiyose_save_home_hero_meta_ofTextFields_savesSanitizedValues() {
+		// Given.
+		$post_id = 43;
+		$this->set_page_template( $post_id, 'templates/page-home.php' );
+		$_POST = array(
+			'kiyose_home_hero_nonce' => 'nonce',
+			'kiyose_welcome_title'   => '<strong>Bienvenue</strong>',
+			'kiyose_hero_cta_url'    => 'https://example.com/contact/',
+			'kiyose_content2_text'   => '<p>Texte <strong>important</strong></p><script>alert(1)</script>',
+		);
+
+		// When.
+		kiyose_save_home_hero_meta( $post_id );
+
+		// Then.
+		$this->assertSame( 'Bienvenue', $GLOBALS['kiyose_test_post_meta'][ $post_id ]['kiyose_welcome_title'] );
+		$this->assertSame( 'https://example.com/contact/', $GLOBALS['kiyose_test_post_meta'][ $post_id ]['kiyose_hero_cta_url'] );
+		$this->assertSame( '<p>Texte <strong>important</strong></p>', $GLOBALS['kiyose_test_post_meta'][ $post_id ]['kiyose_content2_text'] );
+	}
+
+	public function test_kiyose_save_home_hero_meta_whenHeroImageIdIsEmpty_deletesImageMeta() {
+		// Given.
+		$post_id = 43;
+		$this->set_page_template( $post_id, 'templates/page-home.php' );
+		$GLOBALS['kiyose_test_post_meta'][ $post_id ]['kiyose_hero_image_id'] = 27;
+		$_POST = array(
+			'kiyose_home_hero_nonce' => 'nonce',
+			'kiyose_hero_image_id'   => '0',
+		);
+
+		// When.
+		kiyose_save_home_hero_meta( $post_id );
+
+		// Then.
+		$this->assertArrayNotHasKey( 'kiyose_hero_image_id', $GLOBALS['kiyose_test_post_meta'][ $post_id ] );
+	}
+
+	public function test_kiyose_save_home_hero_meta_whenTemplateDiffers_doesNotSave() {
+		// Given.
+		$post_id = 43;
+		$this->set_page_template( $post_id, 'templates/page-contact.php' );
+		$_POST = array(
+			'kiyose_home_hero_nonce' => 'nonce',
+			'kiyose_welcome_title'   => 'Bienvenue',
+		);
+
+		// When.
+		kiyose_save_home_hero_meta( $post_id );
+
+		// Then.
+		$this->assertArrayNotHasKey( 'kiyose_welcome_title', $GLOBALS['kiyose_test_post_meta'][ $post_id ] );
+	}
+
+	public function test_kiyose_save_contact_photo_meta_ofValidPhoto_savesSanitizedAltAndPhotoId() {
+		// Given.
+		$post_id = 43;
+		$this->set_page_template( $post_id, 'templates/page-contact.php' );
+		$_POST = array(
+			'kiyose_contact_photo_nonce' => 'nonce',
+			'kiyose_contact_photo_id'    => '42',
+			'kiyose_contact_photo_alt'   => '<strong>Sandrine Delmas</strong>',
+		);
+
+		// When.
+		kiyose_save_contact_photo_meta( $post_id );
+
+		// Then.
+		$this->assertSame( 42, $GLOBALS['kiyose_test_post_meta'][ $post_id ]['kiyose_contact_photo_id'] );
+		$this->assertSame( 'Sandrine Delmas', $GLOBALS['kiyose_test_post_meta'][ $post_id ]['kiyose_contact_photo_alt'] );
+	}
+
+	public function test_kiyose_save_contact_photo_meta_whenPhotoIdIsEmpty_deletesPhotoId() {
+		// Given.
+		$post_id = 43;
+		$this->set_page_template( $post_id, 'templates/page-contact.php' );
+		$GLOBALS['kiyose_test_post_meta'][ $post_id ]['kiyose_contact_photo_id'] = 42;
+		$_POST = array(
+			'kiyose_contact_photo_nonce' => 'nonce',
+			'kiyose_contact_photo_id'    => '',
+		);
+
+		// When.
+		kiyose_save_contact_photo_meta( $post_id );
+
+		// Then.
+		$this->assertArrayNotHasKey( 'kiyose_contact_photo_id', $GLOBALS['kiyose_test_post_meta'][ $post_id ] );
+	}
+
+	public function test_kiyose_save_contact_photo_meta_whenTemplateDiffers_doesNotSave() {
+		// Given.
+		$post_id = 43;
+		$this->set_page_template( $post_id, 'templates/page-home.php' );
+		$_POST = array(
+			'kiyose_contact_photo_nonce' => 'nonce',
+			'kiyose_contact_photo_id'    => '42',
+			'kiyose_contact_photo_alt'   => 'Sandrine Delmas',
+		);
+
+		// When.
+		kiyose_save_contact_photo_meta( $post_id );
+
+		// Then.
+		$this->assertArrayNotHasKey( 'kiyose_contact_photo_id', $GLOBALS['kiyose_test_post_meta'][ $post_id ] );
+		$this->assertArrayNotHasKey( 'kiyose_contact_photo_alt', $GLOBALS['kiyose_test_post_meta'][ $post_id ] );
 	}
 
 	public function test_kiyose_enqueue_admin_meta_box_assets_whenEditingPage_enqueuesAssetsAndMedia() {
