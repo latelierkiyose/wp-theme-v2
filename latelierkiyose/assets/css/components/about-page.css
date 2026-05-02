@@ -79,6 +79,7 @@
 	line-height: var(--kiyose-line-height-tight);
 	margin-bottom: var(--kiyose-spacing-lg);
 	margin-top: var(--kiyose-spacing-3xl);
+	text-align: left;
 }
 
 .about-page__content h3 {
@@ -89,6 +90,7 @@
 	line-height: var(--kiyose-line-height-tight);
 	margin-bottom: var(--kiyose-spacing-md);
 	margin-top: var(--kiyose-spacing-2xl);
+	text-align: left;
 }
 
 .about-page__content h4 {
@@ -99,6 +101,12 @@
 	line-height: var(--kiyose-line-height-normal);
 	margin-bottom: var(--kiyose-spacing-md);
 	margin-top: var(--kiyose-spacing-xl);
+	text-align: left;
+}
+
+.about-page__content h5,
+.about-page__content h6 {
+	text-align: left;
 }
 
 /* Listes (qualifications, certifications, etc.) */

@@ -1,6 +1,6 @@
 # PRD 0053 — Alignement à gauche des titres dans les contenus justifiés
 
-- **Statut** : prêt à l'implémentation
+- **Statut** : terminé
 - **Version** : 1.0
 - **Date** : 2026-05-02
 

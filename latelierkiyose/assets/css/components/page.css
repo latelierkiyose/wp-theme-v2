@@ -58,11 +58,13 @@ article.page {
 .page__content h2 {
 	margin-bottom: var(--kiyose-spacing-md);
 	margin-top: var(--kiyose-spacing-2xl);
+	text-align: left;
 }
 
 .page__content h3 {
 	margin-bottom: var(--kiyose-spacing-md);
 	margin-top: var(--kiyose-spacing-xl);
+	text-align: left;
 }
 
 .page__content h4,
@@ -70,6 +72,7 @@ article.page {
 .page__content h6 {
 	margin-bottom: var(--kiyose-spacing-sm);
 	margin-top: var(--kiyose-spacing-lg);
+	text-align: left;
 }
 
 .page__content ul,
