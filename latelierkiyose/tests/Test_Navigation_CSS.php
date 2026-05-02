@@ -27,6 +27,51 @@ class Test_Navigation_CSS extends TestCase {
 		$this->assert_css_rules_do_not_contain( $submenu_rules, 'margin: var(--kiyose-spacing-xs) 0 0 0;' );
 	}
 
+	public function test_navigationCss_whenNavigationItemIsInteractive_usesGoldenSelectionState() {
+		// Given
+		$css = $this->get_navigation_css();
+
+		// When
+		$selectors = array(
+			'.main-nav__list a:hover',
+			'.main-nav__list .current-menu-item > a',
+			'.main-nav__list .current-menu-ancestor > a',
+			'.main-nav__list .sub-menu a:hover',
+			'.mobile-menu__list a:hover',
+			'.mobile-menu__list a:focus',
+			'.mobile-menu__list .current-menu-item > a',
+			'.mobile-menu__list .current-menu-ancestor > a',
+		);
+
+		// Then
+		foreach ( $selectors as $selector ) {
+			$rules = $this->get_css_rules_for_selector( $css, $selector );
+
+			$this->assertNotSame( array(), $rules, sprintf( 'Missing CSS rule for selector "%s".', $selector ) );
+			$this->assert_css_rule_contains( $rules, 'background-color: var(--kiyose-color-gold-light);' );
+			$this->assert_css_rule_contains( $rules, 'color: var(--kiyose-color-burgundy);' );
+		}
+	}
+
+	public function test_navigationCss_whenMobileMenuCloseIsInteractive_usesGoldenTint() {
+		// Given
+		$css = $this->get_navigation_css();
+
+		// When
+		$selectors = array(
+			'.mobile-menu__close:hover',
+			'.mobile-menu__close:focus',
+		);
+
+		// Then
+		foreach ( $selectors as $selector ) {
+			$rules = $this->get_css_rules_for_selector( $css, $selector );
+
+			$this->assertNotSame( array(), $rules, sprintf( 'Missing CSS rule for selector "%s".', $selector ) );
+			$this->assert_css_rule_contains( $rules, 'background-color: var(--kiyose-color-gold-light);' );
+		}
+	}
+
 	private function get_navigation_css() {
 		$css = file_get_contents( __DIR__ . '/../assets/css/components/navigation.css' );
 
@@ -78,7 +123,7 @@ class Test_Navigation_CSS extends TestCase {
 			}
 		}
 
-		$this->fail( sprintf( 'Missing declaration "%s" in submenu CSS rule.', $expected_declaration ) );
+		$this->fail( sprintf( 'Missing declaration "%s" in CSS rule.', $expected_declaration ) );
 	}
 
 	/**
