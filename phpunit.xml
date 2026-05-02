@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <phpunit
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/12.5/phpunit.xsd"
+	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
 	bootstrap="latelierkiyose/tests/bootstrap.php"
 	colors="true"
 	beStrictAboutOutputDuringTests="true"
@@ -14,7 +14,7 @@
 		</testsuite>
 	</testsuites>
 
-	<source>
+	<coverage>
 		<include>
 			<directory suffix=".php">latelierkiyose</directory>
 		</include>
@@ -22,5 +22,5 @@
 			<directory>latelierkiyose/tests</directory>
 			<directory>latelierkiyose/vendor</directory>
 		</exclude>
-	</source>
+	</coverage>
 </phpunit>
