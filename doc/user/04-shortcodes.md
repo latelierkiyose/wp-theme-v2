@@ -2,11 +2,12 @@
 
 Un *shortcode* est un **code court entre crochets** que tu colles dans l'éditeur et qui génère un contenu riche (témoignages, sommaire, encadré…).
 
-Le thème fournit **trois shortcodes** :
+Le thème fournit **quatre shortcodes** :
 
 - [`[kiyose_testimonials]`](#kiyose_testimonials--témoignages-en-grille-ou-carrousel) — une grille ou un carrousel de témoignages
 - [`[kiyose_signets]`](#kiyose_signets--sommaire-de-navigation-dans-la-page) — un sommaire de navigation dans la page
 - [`[kiyose_callout]`](#kiyose_callout--encadré-de-mise-en-évidence) — un encadré pour mettre en avant une information
+- [`[kiyose_cta]`](#kiyose_cta--bouton-dappel-à-laction) — un bouton doré centré avec texte et lien personnalisés
 
 À la fin de cette page, une mention des [shortcodes fournis par les plugins](#shortcodes-fournis-par-les-plugins) (Contact Form 7, Events Manager, Brevo).
 
@@ -174,6 +175,55 @@ Si tu préfères un échange en amont, [contacte-moi](/contact).
 ```
 
 Voir la recette : [Mettre en avant une information](recettes/mettre-en-avant-une-information.md).
+
+---
+
+## `[kiyose_cta]` — bouton d'appel à l'action
+
+### Exemple
+
+```
+[kiyose_cta texte="Réserver votre appel découverte" lien="/contact/"]
+```
+
+Affiche un bouton doré centré, avec le même rendu que les appels à l'action de la page d'accueil.
+
+### À quoi ça sert
+
+Ajouter un appel à l'action clair dans une page ou un article : réserver un appel découverte, aller vers la page contact, consulter le calendrier, etc.
+
+Le bouton est **toujours centré**. Tu n'as pas besoin d'ajouter de classe CSS ou de régler l'alignement dans Gutenberg.
+
+### Paramètres
+
+| Paramètre | Valeur attendue | Obligatoire | Rôle |
+|---|---|---:|---|
+| `texte` | Texte court | oui | Libellé affiché dans le bouton. |
+| `lien` | URL relative ou complète | oui | Destination du bouton. |
+
+Si `texte` ou `lien` est vide, le bouton ne s'affiche pas.
+
+### Exemples courants
+
+**Vers la page contact :**
+
+```
+[kiyose_cta texte="Réserver votre appel découverte" lien="/contact/"]
+```
+
+**Vers le calendrier :**
+
+```
+[kiyose_cta texte="Voir les prochaines dates" lien="/calendrier-tarifs/"]
+```
+
+**Vers une page de service :**
+
+```
+[kiyose_cta texte="Découvrir l'art-thérapie" lien="/art-therapie/"]
+```
+
+Voir la recette : [Ajouter un appel à l'action](recettes/ajouter-un-appel-a-l-action.md).
 
 ---
 

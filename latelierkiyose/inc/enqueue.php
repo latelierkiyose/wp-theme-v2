@@ -268,6 +268,13 @@ function kiyose_get_theme_assets(): array {
 		),
 		array(
 			'type'      => 'style',
+			'handle'    => 'kiyose-cta',
+			'path'      => '/assets/css/components/cta.css',
+			'deps'      => array( 'kiyose-variables' ),
+			'condition' => 'kiyose_should_load_cta_styles',
+		),
+		array(
+			'type'      => 'style',
 			'handle'    => 'kiyose-home-animations',
 			'path'      => '/assets/css/components/home-animations.css',
 			'deps'      => array( 'kiyose-hero', 'kiyose-home-sections' ),
@@ -1098,6 +1105,16 @@ function kiyose_should_load_signets_styles(): bool {
  */
 function kiyose_should_load_callout_styles(): bool {
 	return kiyose_current_post_has_shortcode( 'kiyose_callout' );
+}
+
+/**
+ * Check if CTA styles are needed.
+ *
+ * @return bool
+ */
+function kiyose_should_load_cta_styles(): bool {
+	return kiyose_is_home_template()
+		|| kiyose_current_post_has_shortcode( 'kiyose_cta' );
 }
 
 /**

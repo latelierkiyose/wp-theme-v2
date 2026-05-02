@@ -99,7 +99,7 @@ Résumé à cocher :
 - [ ] **Events Manager** installé + activé + au moins 1 événement à venir créé
 - [ ] **Contact Form 7** installé + activé + formulaire de contact conservé ou recréé (avec consentement RGPD)
 
-> ⚠️ Le shortcode Brevo attendu est `[sibwp_form id=1]` — **pas** `[brevo_form]` (erreur historique dans la doc). Si l'ID n'est pas 1, voir [`plugins.md § Que faire si l'ID n'est pas 1`](plugins.md#1-brevo-newsletter).
+> ⚠️ Le plugin Brevo expose le shortcode `[sibwp_form id=1]`. Si l'ID n'est pas 1, voir [`plugins.md § Que faire si l'ID n'est pas 1`](plugins.md#1-brevo-newsletter).
 
 ---
 

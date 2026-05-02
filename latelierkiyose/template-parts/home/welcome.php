@@ -77,8 +77,8 @@ $kiyose_welcome_slogan   = $args['welcome_slogan'] ?? '';
 		<?php if ( ! empty( $kiyose_welcome_slogan ) ) : ?>
 			<p class="welcome-block__slogan home-emphase"><?php echo kiyose_fr_nbsp( esc_html( $kiyose_welcome_slogan ) ); ?></p>
 		<?php endif; ?>
-		<div class="welcome-block__cta-wrapper" style="margin-top: var(--kiyose-spacing-xl);">
-			<a href="<?php echo esc_url( KIYOSE_DISCOVERY_CALL_URL ); ?>" class="welcome-block__cta">
+		<div class="welcome-block__cta-wrapper kiyose-cta-wrapper">
+			<a href="<?php echo esc_url( KIYOSE_DISCOVERY_CALL_URL ); ?>" class="welcome-block__cta kiyose-cta">
 				<?php esc_html_e( 'Réserver votre appel découverte', 'kiyose' ); ?>
 			</a>
 		</div>

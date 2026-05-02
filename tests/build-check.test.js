@@ -8,6 +8,9 @@ const vm = require('node:vm');
 
 const rootDir = path.resolve(__dirname, '..');
 const aboutOverlayJs = path.join(rootDir, 'latelierkiyose/assets/js/modules/about-overlay.js');
+const brevoShortcodeSearchRoots = ['README.md', 'doc', 'latelierkiyose'].map((entry) =>
+	path.join(rootDir, entry)
+);
 const cssScript = path.join(rootDir, 'bin/minify-css.js');
 const jsScript = path.join(rootDir, 'bin/minify-js.js');
 const brevoOverrideCss = path.join(
@@ -493,11 +496,37 @@ function loadOverlayScript(scriptPath, document, window) {
 		}
 	}
 
-	vm.runInNewContext(fs.readFileSync(scriptPath, 'utf8'), {
-		CustomEvent: FakeCustomEvent,
-		document,
-		window,
-	}, { filename: scriptPath });
+	vm.runInNewContext(
+		fs.readFileSync(scriptPath, 'utf8'),
+		{
+			CustomEvent: FakeCustomEvent,
+			document,
+			window,
+		},
+		{ filename: scriptPath }
+	);
+}
+
+function listFilesRecursively(entryPath) {
+	const stats = fs.statSync(entryPath);
+
+	if (stats.isFile()) {
+		return [entryPath];
+	}
+
+	return fs.readdirSync(entryPath, { withFileTypes: true }).flatMap((entry) => {
+		const childPath = path.join(entryPath, entry.name);
+
+		if (entry.isDirectory()) {
+			return listFilesRecursively(childPath);
+		}
+
+		return entry.isFile() ? [childPath] : [];
+	});
+}
+
+function isGeneratedAsset(filePath) {
+	return /\.min\.(?:css|js)$/u.test(filePath) || filePath.endsWith('.map');
 }
 
 function createMobileMenuFixture() {
@@ -728,7 +757,7 @@ test('jsCheck_whenMinifiedFileIsMissing_failsWithoutWritingAssets', (t) => {
 	const minifiedPath = path.join(fixtureDir, 'sample.min.js');
 	fs.writeFileSync(
 		sourcePath,
-		"function greet(name) {\n\treturn `Bonjour ${name}`;\n}\nwindow.greet = greet;\n"
+		'function greet(name) {\n\treturn `Bonjour ${name}`;\n}\nwindow.greet = greet;\n'
 	);
 
 	// When
@@ -751,7 +780,7 @@ test('jsCheck_whenMinifiedFileDiffers_fails', (t) => {
 	const mapPath = `${minifiedPath}.map`;
 	fs.writeFileSync(
 		sourcePath,
-		"function greet(name) {\n\treturn `Bonjour ${name}`;\n}\nwindow.greet = greet;\n"
+		'function greet(name) {\n\treturn `Bonjour ${name}`;\n}\nwindow.greet = greet;\n'
 	);
 	fs.writeFileSync(minifiedPath, 'window.greet=function(){return "stale"};');
 	fs.writeFileSync(mapPath, '{}');
@@ -790,7 +819,7 @@ test('jsCheck_whenGeneratedAssetIsCurrent_passes', (t) => {
 	const fixtureDir = makeFixtureDir(t, 'kiyose-js-current-');
 	fs.writeFileSync(
 		path.join(fixtureDir, 'sample.js'),
-		"function greet(name) {\n\treturn `Bonjour ${name}`;\n}\nwindow.greet = greet;\n"
+		'function greet(name) {\n\treturn `Bonjour ${name}`;\n}\nwindow.greet = greet;\n'
 	);
 	const env = { KIYOSE_JS_DIR: fixtureDir };
 
@@ -1000,7 +1029,10 @@ test('Carousel_startAutoplay_setsLiveRegionAndPauseState', () => {
 	// Then
 	assert.equal(carousel.isPlaying, true);
 	assert.equal(fixture.track.getAttribute('aria-live'), 'off');
-	assert.equal(fixture.pauseButton.getAttribute('aria-label'), 'Mettre en pause le défilement automatique');
+	assert.equal(
+		fixture.pauseButton.getAttribute('aria-label'),
+		'Mettre en pause le défilement automatique'
+	);
 	assert.equal(fixture.pauseIcon.hidden, false);
 	assert.equal(fixture.playIcon.hidden, true);
 	assert.equal(timers.created[0].delay, 5000);
@@ -1105,10 +1137,7 @@ test('AboutOverlay_whenPageLoadsAboveEventsAndScrolled_showsOverlay', () => {
 
 	// Then
 	assert.equal(fixture.overlay.hidden, false);
-	assert.equal(
-		fixture.announcement.textContent,
-		'Le panneau À propos est maintenant visible.'
-	);
+	assert.equal(fixture.announcement.textContent, 'Le panneau À propos est maintenant visible.');
 });
 
 test('AboutOverlay_whenEscapeIsPressed_closesOverlayAndRestoresFocus', () => {
@@ -1137,10 +1166,7 @@ test('NewsletterOverlay_whenZoneChangesBelow_showsOverlay', () => {
 
 	// Then
 	assert.equal(fixture.overlay.hidden, false);
-	assert.equal(
-		fixture.announcement.textContent,
-		'Le panneau Newsletter est maintenant visible.'
-	);
+	assert.equal(fixture.announcement.textContent, 'Le panneau Newsletter est maintenant visible.');
 });
 
 test('NewsletterOverlay_whenManuallyClosed_staysClosedUntilZoneChangesAgain', () => {
@@ -1238,6 +1264,24 @@ test('packageScripts_includeReadOnlyBuildCheckCommands', () => {
 	assert.equal(scripts['build:css:check'], 'node bin/minify-css.js --check');
 	assert.equal(scripts['build:js:check'], 'node bin/minify-js.js --check');
 	assert.equal(scripts['build:check'], 'npm run build:css:check && npm run build:js:check');
+});
+
+test('BrevoDocs_whenReferencingPluginShortcode_useOfficialSibwpShortcodeOnly', () => {
+	// Given
+	const scannedFiles = brevoShortcodeSearchRoots
+		.flatMap(listFilesRecursively)
+		.filter((filePath) => !isGeneratedAsset(filePath));
+
+	// When
+	const filesWithLegacyShortcode = scannedFiles.filter((filePath) =>
+		fs.readFileSync(filePath, 'utf8').includes('brevo_form')
+	);
+
+	// Then
+	assert.deepEqual(
+		filesWithLegacyShortcode.map((filePath) => path.relative(rootDir, filePath)),
+		[]
+	);
 });
 
 test('brevoOverrideCss_whenPluginOutputsLegacySignupForm_overridesInlineFieldStyles', () => {

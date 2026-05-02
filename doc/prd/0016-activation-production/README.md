@@ -228,4 +228,4 @@ Les templates suivants doivent être assignés manuellement :
 - `[kiyose_testimonials display="carousel"]` : Sur la homepage
 - `[events_list]` ou autre shortcode Events Manager : Sur page calendrier
 - `[contact-form-7 id="XXX"]` : Sur page contact
-- `[brevo_form id="X"]` : Dans footer et homepage (section newsletter)
+- `[sibwp_form id="1"]` : Dans footer et homepage (section newsletter)

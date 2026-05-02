@@ -18,7 +18,7 @@ Trois plugins sont consommés par le thème ou par le contenu existant. Leur abs
 | **Slug** | `mailin` |
 | **Installation** | Extensions → Ajouter → rechercher « Brevo » → Installer → Activer |
 | **Utilisé par le thème** | `latelierkiyose/footer.php` (bloc newsletter du footer, présent sur chaque page) et `latelierkiyose/template-parts/home/overlays.php` (overlay newsletter de la home) |
-| **Shortcode utilisé** | `[sibwp_form id=1]` ⚠️ **pas** `[brevo_form]` |
+| **Shortcode utilisé** | `[sibwp_form id=1]` |
 | **Comportement si absent** | Les blocs newsletter disparaissent silencieusement (le thème vérifie `shortcode_exists()` avant d'afficher). Pas de texte cassé visible, mais plus aucun moyen de s'inscrire. |
 
 **Configuration minimale obligatoire** :

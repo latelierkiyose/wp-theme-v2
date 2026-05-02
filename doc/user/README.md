@@ -18,6 +18,7 @@ Tu veux accomplir une tâche précise. Va dans le dossier **[recettes](recettes/
 - [Créer une page de service](recettes/creer-une-page-de-service.md)
 - [Créer une section en colonnes](recettes/creer-une-section-en-colonnes.md)
 - [Ajouter un sommaire automatique](recettes/ajouter-un-sommaire-automatique.md)
+- [Ajouter un appel à l'action](recettes/ajouter-un-appel-a-l-action.md)
 - [Mettre en avant une information](recettes/mettre-en-avant-une-information.md)
 - [Modifier la page d'accueil](recettes/modifier-la-page-d-accueil.md)
 
@@ -25,7 +26,7 @@ Tu veux accomplir une tâche précise. Va dans le dossier **[recettes](recettes/
 Tu veux la liste exhaustive d'un élément :
 - [Templates de page](02-choisir-un-template.md) — quel modèle pour quelle page
 - [Classes de mise en page](03-mise-en-page-avec-des-classes.md) — conteneurs, colonnes, sections
-- [Shortcodes](04-shortcodes.md) — `[kiyose_testimonials]`, `[kiyose_signets]`, `[kiyose_callout]`
+- [Shortcodes](04-shortcodes.md) — `[kiyose_testimonials]`, `[kiyose_signets]`, `[kiyose_callout]`, `[kiyose_cta]`
 - [Témoignages](05-temoignages.md) — gérer le carnet de témoignages
 - [Événements et calendrier](06-evenements-calendrier.md) — Events Manager
 - [Formulaires et newsletter](07-formulaires-et-newsletter.md) — Contact Form 7 + Brevo

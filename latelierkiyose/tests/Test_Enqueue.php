@@ -235,6 +235,7 @@ class Test_Enqueue extends TestCase {
 			'kiyose-carousel',
 			'kiyose-signets',
 			'kiyose-callout-box',
+			'kiyose-cta',
 			'kiyose-home-animations',
 			'kiyose-welcome-block',
 			'kiyose-home-content',
@@ -556,6 +557,33 @@ class Test_Enqueue extends TestCase {
 
 		// When
 		$result = kiyose_should_load_callout_styles();
+
+		// Then
+		$this->assertTrue( $result );
+	}
+
+	public function test_kiyose_should_load_cta_styles_whenCtaShortcodeIsPresent_returnsTrue() {
+		// Given
+		$GLOBALS['post'] = (object) array(
+			'post_content' => '[kiyose_cta texte="Réserver votre appel découverte" lien="/contact/"]',
+			'post_type'    => 'page',
+		);
+
+		// When
+		$this->assertTrue( function_exists( 'kiyose_should_load_cta_styles' ), 'Missing kiyose_should_load_cta_styles().' );
+		$result = kiyose_should_load_cta_styles();
+
+		// Then
+		$this->assertTrue( $result );
+	}
+
+	public function test_kiyose_should_load_cta_styles_whenHomeTemplate_returnsTrue() {
+		// Given
+		$GLOBALS['kiyose_test_page_templates'] = array( 'templates/page-home.php' );
+
+		// When
+		$this->assertTrue( function_exists( 'kiyose_should_load_cta_styles' ), 'Missing kiyose_should_load_cta_styles().' );
+		$result = kiyose_should_load_cta_styles();
 
 		// Then
 		$this->assertTrue( $result );

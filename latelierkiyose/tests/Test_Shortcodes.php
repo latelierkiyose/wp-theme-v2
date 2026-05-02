@@ -47,6 +47,66 @@ class Test_Shortcodes extends TestCase {
 		$this->assertStringNotContainsString( '<script>', $html );
 	}
 
+	public function test_kiyose_cta_shortcode_ofTextAndLink_returnsCenteredCta() {
+		// Given
+		$atts = array(
+			'texte' => 'Réserver votre appel découverte',
+			'lien'  => '/contact/',
+		);
+
+		// When
+		$html = $this->render_cta_shortcode( $atts );
+
+		// Then
+		$this->assertStringContainsString( '<div class="kiyose-cta-wrapper">', $html );
+		$this->assertStringContainsString( '<a href="/contact/" class="kiyose-cta">', $html );
+		$this->assertStringContainsString( 'Réserver votre appel découverte', $html );
+	}
+
+	public function test_kiyose_cta_shortcode_whenTextContainsMarkup_escapesOutput() {
+		// Given
+		$atts = array(
+			'texte' => 'Réserver <script>alert("xss")</script>',
+			'lien'  => '/contact/',
+		);
+
+		// When
+		$html = $this->render_cta_shortcode( $atts );
+
+		// Then
+		$this->assertStringContainsString( '>Réserver</a>', $html );
+		$this->assertStringNotContainsString( '<script>', $html );
+		$this->assertStringNotContainsString( 'alert', $html );
+	}
+
+	public function test_kiyose_cta_shortcode_whenLinkIsEmpty_returnsEmptyString() {
+		// Given
+		$atts = array(
+			'texte' => 'Réserver votre appel découverte',
+			'lien'  => '',
+		);
+
+		// When
+		$html = $this->render_cta_shortcode( $atts );
+
+		// Then
+		$this->assertSame( '', $html );
+	}
+
+	public function test_kiyose_cta_shortcode_whenTextIsEmpty_returnsEmptyString() {
+		// Given
+		$atts = array(
+			'texte' => '',
+			'lien'  => '/contact/',
+		);
+
+		// When
+		$html = $this->render_cta_shortcode( $atts );
+
+		// Then
+		$this->assertSame( '', $html );
+	}
+
 	public function test_kiyose_signets_shortcode_ofManualLinks_returnsNavigation() {
 		// Given
 		$content = "Introduction | #introduction\nPratiques & soins | #pratiques";
@@ -126,5 +186,17 @@ class Test_Shortcodes extends TestCase {
 		$this->assertStringNotContainsString( 'aria-roledescription="carousel"', $html );
 		$this->assertSame( 'kiyose_testimony', $GLOBALS['kiyose_test_last_query_args']['post_type'] );
 		$this->assertSame( 1, $GLOBALS['kiyose_test_last_query_args']['posts_per_page'] );
+	}
+
+	/**
+	 * Render the CTA shortcode after asserting its callback exists.
+	 *
+	 * @param array<string, string> $atts Shortcode attributes.
+	 * @return string
+	 */
+	private function render_cta_shortcode( array $atts ): string {
+		$this->assertTrue( function_exists( 'kiyose_cta_shortcode' ), 'Missing kiyose_cta_shortcode().' );
+
+		return kiyose_cta_shortcode( $atts );
 	}
 }

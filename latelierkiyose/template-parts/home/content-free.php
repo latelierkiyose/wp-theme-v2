@@ -36,8 +36,8 @@ $kiyose_content2_quote_author = $args['content2_quote_author'] ?? '';
 				<?php endif; ?>
 			</figure>
 		<?php endif; ?>
-		<div class="home-content2__cta-wrapper">
-			<a href="<?php echo esc_url( KIYOSE_DISCOVERY_CALL_URL ); ?>" class="home-content2__cta">
+		<div class="home-content2__cta-wrapper kiyose-cta-wrapper">
+			<a href="<?php echo esc_url( KIYOSE_DISCOVERY_CALL_URL ); ?>" class="home-content2__cta kiyose-cta">
 				<?php esc_html_e( 'Réserver votre appel découverte', 'kiyose' ); ?>
 			</a>
 		</div>

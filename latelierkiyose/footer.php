@@ -18,8 +18,7 @@
 			/**
 			 * Formulaire newsletter Brevo.
 			 *
-			 * Le shortcode [brevo_form id="X"] sera fourni par le plugin Brevo après configuration.
-			 * Remplacer le placeholder ci-dessous par le shortcode réel en production.
+			 * Le plugin Brevo expose le shortcode [sibwp_form].
 			 *
 			 * @since 0.1.13
 			 */

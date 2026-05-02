@@ -89,6 +89,40 @@ function kiyose_testimonials_shortcode( $atts ) {
 add_shortcode( 'kiyose_testimonials', 'kiyose_testimonials_shortcode' );
 
 /**
+ * Display a centered golden call-to-action button.
+ *
+ * Usage:
+ * - [kiyose_cta texte="Réserver votre appel découverte" lien="/contact/"]
+ *
+ * @param array $atts Shortcode attributes.
+ * @return string HTML output.
+ */
+function kiyose_cta_shortcode( $atts ) {
+	$args = shortcode_atts(
+		array(
+			'texte' => '',
+			'lien'  => '',
+		),
+		$atts,
+		'kiyose_cta'
+	);
+
+	$texte = sanitize_text_field( $args['texte'] );
+	$lien  = esc_url_raw( $args['lien'] );
+
+	if ( '' === $texte || '' === $lien ) {
+		return '';
+	}
+
+	return sprintf(
+		'<div class="kiyose-cta-wrapper"><a href="%s" class="kiyose-cta">%s</a></div>',
+		esc_url( $lien ),
+		esc_html( $texte )
+	);
+}
+add_shortcode( 'kiyose_cta', 'kiyose_cta_shortcode' );
+
+/**
  * Display page navigation signets (anchor links).
  *
  * Usage:

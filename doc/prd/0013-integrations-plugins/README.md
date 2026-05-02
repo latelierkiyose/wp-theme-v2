@@ -49,16 +49,16 @@ Le formulaire Brevo est intégré via son shortcode WordPress (fourni par le plu
 
 **Shortcode à utiliser** :
 ```php
-// Le shortcode exact sera fourni par le plugin Brevo après configuration
-// Format typique : [brevo_form id="1"]
-// Le shortcode sera placé dans :
+// Shortcode officiel du plugin Brevo :
+// [sibwp_form id="1"]
+// Le shortcode est placé dans :
 // 1. footer.php — Section .site-footer__newsletter
 // 2. templates/page-home.php — Section .home-newsletter__content
 ```
 
 **Note importante** : Le shortcode Brevo n'existe pas tant que le plugin n'est pas installé et configuré. Pour l'implémentation :
-- Si le plugin n'est pas disponible en local, utiliser un commentaire PHP avec le shortcode en placeholder
-- Le shortcode sera ajouté manuellement en production après configuration du plugin
+- Si le plugin n'est pas disponible en local, garder le placeholder prévu par le thème
+- Le thème affiche le formulaire automatiquement dès que le plugin expose `sibwp_form`
 
 **Champs du formulaire (configuration Brevo)** :
 - Email (requis)

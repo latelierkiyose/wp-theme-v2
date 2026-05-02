@@ -80,6 +80,8 @@ Ces classes ajoutent un **séparateur horizontal doré** avec transition de coul
 
 Pour créer un bouton, **utilise le bloc Bouton de Gutenberg** — il est stylé automatiquement aux couleurs du thème (rose poudré + bordeaux). Pas besoin de classe CSS supplémentaire.
 
+Pour créer un bouton doré centré comme sur la page d'accueil, utilise plutôt le shortcode [`[kiyose_cta]`](04-shortcodes.md#kiyose_cta--bouton-dappel-à-laction).
+
 **Pour obtenir un bouton « secondaire » (contour seulement, sans fond)** :
 
 1. Sélectionne le bloc **Bouton** dans l'éditeur.
