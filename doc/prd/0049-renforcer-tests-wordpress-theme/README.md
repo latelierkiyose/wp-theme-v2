@@ -1,6 +1,6 @@
 # PRD 0049 — Renforcement des tests du thème WordPress
 
-- **Statut** : prêt à l'implémentation
+- **Statut** : terminé
 - **Version** : 1.0
 - **Date** : 2026-05-02
 

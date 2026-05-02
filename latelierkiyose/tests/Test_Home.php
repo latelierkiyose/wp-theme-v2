@@ -18,17 +18,17 @@ class Test_Home extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$GLOBALS['kiyose_test_post_meta'] = array();
+		kiyose_reset_test_state();
 	}
 
 	public function test_kiyose_decode_json_meta_array_ofValidJson_returnsArray() {
-		// Given.
+		// Given
 		$raw_value = '[{"label":"Art-thérapie","url":"/art-therapie/"}]';
 
-		// When.
+		// When
 		$result = $this->call_decode_json_meta_array( $raw_value );
 
-		// Then.
+		// Then
 		$this->assertSame(
 			array(
 				array(
@@ -41,35 +41,35 @@ class Test_Home extends TestCase {
 	}
 
 	public function test_kiyose_decode_json_meta_array_whenJsonIsInvalid_returnsEmptyArray() {
-		// Given.
+		// Given
 		$raw_value = 'not-json';
 
-		// When.
+		// When
 		$result = $this->call_decode_json_meta_array( $raw_value );
 
-		// Then.
+		// Then
 		$this->assertSame( array(), $result );
 	}
 
 	public function test_kiyose_decode_json_meta_array_ofEmptyString_returnsEmptyArray() {
-		// Given.
+		// Given
 		$raw_value = '';
 
-		// When.
+		// When
 		$result = $this->call_decode_json_meta_array( $raw_value );
 
-		// Then.
+		// Then
 		$this->assertSame( array(), $result );
 	}
 
 	public function test_kiyose_get_home_page_data_whenMetaFieldsAreEmpty_returnsDefaults() {
-		// Given.
+		// Given
 		$post_id = 43;
 
-		// When.
+		// When
 		$result = $this->call_get_home_page_data( $post_id );
 
-		// Then.
+		// Then
 		$this->assertSame(
 			array(
 				'welcome_title'    => 'L\'être humain est un vitrail, révélons ensemble sa lumière',
@@ -91,7 +91,7 @@ class Test_Home extends TestCase {
 	}
 
 	public function test_kiyose_get_home_page_data_ofSavedMetaFields_returnsStructuredData() {
-		// Given.
+		// Given
 		$post_id = 43;
 		$GLOBALS['kiyose_test_post_meta'][43] = array(
 			'kiyose_welcome_title'    => 'Bienvenue',
@@ -109,10 +109,10 @@ class Test_Home extends TestCase {
 			'kiyose_content2_slogan'  => 'Slogan texte libre',
 		);
 
-		// When.
+		// When
 		$result = $this->call_get_home_page_data( $post_id );
 
-		// Then.
+		// Then
 		$this->assertSame( 'Bienvenue', $result['welcome_title'] );
 		$this->assertSame( 'Un sous-titre', $result['welcome_subtitle'] );
 		$this->assertSame(

@@ -16,13 +16,7 @@ class Test_Meta_Boxes extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$GLOBALS['kiyose_test_added_meta_boxes'] = array();
-		$GLOBALS['kiyose_test_post_meta']        = array();
-		$GLOBALS['kiyose_test_current_screen']   = null;
-		$GLOBALS['kiyose_test_enqueued_styles']  = array();
-		$GLOBALS['kiyose_test_enqueued_scripts'] = array();
-		$GLOBALS['kiyose_test_localized_scripts'] = array();
-		$GLOBALS['kiyose_test_did_enqueue_media'] = false;
+		kiyose_reset_test_state();
 	}
 
 	private function set_page_template( int $post_id, string $template ): void {

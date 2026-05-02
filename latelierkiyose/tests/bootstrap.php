@@ -12,6 +12,40 @@ define( 'KIYOSE_TESTS', true );
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 /**
+ * Reset observable WordPress mock state between tests.
+ *
+ * @return void
+ */
+function kiyose_reset_test_state(): void {
+	$default_shortcodes = $GLOBALS['kiyose_test_default_shortcodes'] ?? array();
+
+	$GLOBALS['kiyose_test_added_meta_boxes']    = array();
+	$GLOBALS['kiyose_test_current_screen']      = null;
+	$GLOBALS['kiyose_test_did_enqueue_media']  = false;
+	$GLOBALS['kiyose_test_enqueued_scripts']   = array();
+	$GLOBALS['kiyose_test_enqueued_styles']    = array();
+	$GLOBALS['kiyose_test_last_query_args']    = array();
+	$GLOBALS['kiyose_test_localized_scripts']  = array();
+	$GLOBALS['kiyose_test_page_templates']     = array();
+	$GLOBALS['kiyose_test_permalinks']         = array();
+	$GLOBALS['kiyose_test_post_meta']          = array();
+	$GLOBALS['kiyose_test_query_posts']        = array();
+	$GLOBALS['kiyose_test_shortcodes']         = $default_shortcodes;
+	$GLOBALS['kiyose_test_singular_post_type'] = 'post';
+	$GLOBALS['kiyose_test_theme_mods']         = array();
+	$GLOBALS['kiyose_test_titles']             = array();
+	$GLOBALS['kiyose_test_is_404']             = false;
+	$GLOBALS['kiyose_test_is_archive']         = false;
+	$GLOBALS['kiyose_test_is_home']            = false;
+	$GLOBALS['kiyose_test_is_page']            = false;
+	$GLOBALS['kiyose_test_is_search']          = false;
+	$GLOBALS['kiyose_test_is_singular']        = false;
+	$GLOBALS['post']                           = null;
+}
+
+kiyose_reset_test_state();
+
+/**
  * Mock WordPress functions for testing.
  *
  * Since we're running tests without a full WordPress installation,
@@ -124,7 +158,78 @@ if ( ! function_exists( 'add_shortcode' ) ) {
 	 * @return bool
 	 */
 	function add_shortcode( $tag, $callback ) {
+		$GLOBALS['kiyose_test_shortcodes'][ $tag ] = $callback;
+
 		return true;
+	}
+}
+
+if ( ! function_exists( 'shortcode_exists' ) ) {
+	/**
+	 * Mock shortcode_exists function.
+	 *
+	 * @param string $tag Shortcode tag.
+	 * @return bool
+	 */
+	function shortcode_exists( $tag ) {
+		return array_key_exists( $tag, $GLOBALS['kiyose_test_shortcodes'] ?? array() );
+	}
+}
+
+if ( ! function_exists( 'kiyose_test_parse_shortcode_atts' ) ) {
+	/**
+	 * Parse simple shortcode attributes for tests.
+	 *
+	 * @param string $raw_atts Raw shortcode attributes.
+	 * @return array<string, string>
+	 */
+	function kiyose_test_parse_shortcode_atts( string $raw_atts ): array {
+		$atts = array();
+
+		$match_count = preg_match_all( '/([a-zA-Z0-9_-]+)\s*=\s*(["\'])(.*?)\2/', $raw_atts, $matches, PREG_SET_ORDER );
+
+		if ( false === $match_count || 0 === $match_count ) {
+			return $atts;
+		}
+
+		foreach ( $matches as $match ) {
+			$atts[ $match[1] ] = $match[3];
+		}
+
+		return $atts;
+	}
+}
+
+if ( ! function_exists( 'do_shortcode' ) ) {
+	/**
+	 * Mock do_shortcode function for registered shortcode callbacks.
+	 *
+	 * @param string $content Content to parse.
+	 * @return string Parsed content.
+	 */
+	function do_shortcode( $content ) {
+		$content = (string) $content;
+
+		return preg_replace_callback(
+			'/\[([a-zA-Z0-9_-]+)([^\]]*)\](.*?)\[\/\1\]/s',
+			static function ( array $matches ) {
+				$tag       = $matches[1];
+				$callback  = $GLOBALS['kiyose_test_shortcodes'][ $tag ] ?? null;
+				$shortcode = $matches[3];
+
+				if ( ! is_callable( $callback ) ) {
+					return $matches[0];
+				}
+
+				return (string) call_user_func(
+					$callback,
+					kiyose_test_parse_shortcode_atts( $matches[2] ),
+					$shortcode,
+					$tag
+				);
+			},
+			$content
+		);
 	}
 }
 
@@ -236,6 +341,143 @@ if ( ! function_exists( 'get_current_screen' ) ) {
 	}
 }
 
+if ( ! class_exists( 'WP_Query' ) ) {
+	/**
+	 * Minimal WP_Query test double.
+	 */
+	class WP_Query {
+		/**
+		 * Number of posts returned by the query.
+		 *
+		 * @var int
+		 */
+		public $post_count = 0;
+
+		/**
+		 * Test posts.
+		 *
+		 * @var array<int, object>
+		 */
+		private $posts = array();
+
+		/**
+		 * Current post index.
+		 *
+		 * @var int
+		 */
+		private $current_index = 0;
+
+		/**
+		 * Constructor.
+		 *
+		 * @param array<string|int, mixed> $args Query arguments, or direct test posts.
+		 */
+		public function __construct( $args = array() ) {
+			$is_posts_list = isset( $args[0] ) && is_object( $args[0] );
+
+			if ( $is_posts_list ) {
+				$this->posts = $args;
+			} else {
+				$GLOBALS['kiyose_test_last_query_args'] = $args;
+				$this->posts                            = $GLOBALS['kiyose_test_query_posts'] ?? array();
+			}
+
+			$this->post_count = count( $this->posts );
+		}
+
+		/**
+		 * Whether the query still has posts.
+		 *
+		 * @return bool
+		 */
+		public function have_posts() {
+			return $this->current_index < $this->post_count;
+		}
+
+		/**
+		 * Advance the query and expose the current post globally.
+		 *
+		 * @return void
+		 */
+		public function the_post() {
+			$GLOBALS['post'] = $this->posts[ $this->current_index ];
+			++$this->current_index;
+		}
+	}
+}
+
+if ( ! function_exists( 'get_template_part' ) ) {
+	function get_template_part( $slug, $name = null, $args = array() ) {
+		$post = $GLOBALS['post'] ?? null;
+		echo '<article class="testimony-card">' . esc_html( $post->post_title ?? 'Témoignage' ) . '</article>';
+	}
+}
+
+if ( ! function_exists( 'wp_reset_postdata' ) ) {
+	function wp_reset_postdata() {
+		$GLOBALS['post'] = null;
+	}
+}
+
+if ( ! function_exists( 'get_theme_mod' ) ) {
+	function get_theme_mod( $name, $default = false ) {
+		$theme_mods = $GLOBALS['kiyose_test_theme_mods'] ?? array();
+
+		if ( array_key_exists( $name, $theme_mods ) ) {
+			return $theme_mods[ $name ];
+		}
+
+		return $default;
+	}
+}
+
+if ( ! function_exists( 'wp_strip_all_tags' ) ) {
+	function wp_strip_all_tags( $text ) {
+		$text = preg_replace( '@<(script|style)[^>]*?>.*?</\\1>@si', '', (string) $text );
+		return strip_tags( $text );
+	}
+}
+
+if ( ! function_exists( 'sanitize_title' ) ) {
+	function sanitize_title( $title ) {
+		$title = strtolower( remove_accents( wp_strip_all_tags( (string) $title ) ) );
+		$title = preg_replace( '/[^a-z0-9]+/', '-', $title );
+
+		return trim( $title, '-' );
+	}
+}
+
+if ( ! function_exists( 'remove_accents' ) ) {
+	function remove_accents( $text ) {
+		return strtr(
+			(string) $text,
+			array(
+				'à' => 'a',
+				'â' => 'a',
+				'ä' => 'a',
+				'ç' => 'c',
+				'é' => 'e',
+				'è' => 'e',
+				'ê' => 'e',
+				'ë' => 'e',
+				'î' => 'i',
+				'ï' => 'i',
+				'ô' => 'o',
+				'ö' => 'o',
+				'ù' => 'u',
+				'û' => 'u',
+				'ü' => 'u',
+			)
+		);
+	}
+}
+
+if ( ! function_exists( 'has_shortcode' ) ) {
+	function has_shortcode( $content, $tag ) {
+		return 1 === preg_match( '/\[' . preg_quote( $tag, '/' ) . '(\s|\]|\s[^\]]*\])/', (string) $content );
+	}
+}
+
 if ( ! function_exists( 'wp_enqueue_style' ) ) {
 	function wp_enqueue_style( $handle, $src = '', $deps = array(), $ver = false, $media = 'all' ) {
 		$GLOBALS['kiyose_test_enqueued_styles'][ $handle ] = array(
@@ -303,6 +545,30 @@ if ( ! function_exists( 'esc_textarea' ) ) {
 if ( ! function_exists( 'esc_url' ) ) {
 	function esc_url( $url ) {
 		return htmlspecialchars( (string) $url, ENT_QUOTES, 'UTF-8' );
+	}
+}
+
+if ( ! function_exists( 'wpautop' ) ) {
+	function wpautop( $text ) {
+		$text = trim( (string) $text );
+
+		if ( '' === $text ) {
+			return '';
+		}
+
+		if ( 1 === preg_match( '/^<(p|ul|ol|div|blockquote|h[1-6])\b/i', $text ) ) {
+			return $text;
+		}
+
+		$paragraphs = preg_split( "/\n\s*\n/", $text );
+		$paragraphs = array_map(
+			static function ( $paragraph ) {
+				return '<p>' . str_replace( "\n", "<br />\n", trim( $paragraph ) ) . '</p>';
+			},
+			$paragraphs
+		);
+
+		return implode( "\n\n", $paragraphs );
 	}
 }
 
@@ -395,7 +661,9 @@ if ( ! function_exists( 'wp_kses_post' ) ) {
 	 * @return string Filtered content.
 	 */
 	function wp_kses_post( $data ) {
-		return wp_kses( $data, array() );
+		$data = preg_replace( '@<(script|style)[^>]*?>.*?</\\1>@si', '', (string) $data );
+
+		return strip_tags( $data, '<p><br><strong><em><a><ul><ol><li>' );
 	}
 }
 
@@ -408,7 +676,17 @@ if ( ! function_exists( 'wp_kses' ) ) {
 	 * @return string Filtered content.
 	 */
 	function wp_kses( $data, $allowed_html ) {
-		return strip_tags( (string) $data );
+		if ( empty( $allowed_html ) ) {
+			return strip_tags( (string) $data );
+		}
+
+		$allowed_tags = '';
+
+		foreach ( array_keys( $allowed_html ) as $tag ) {
+			$allowed_tags .= '<' . $tag . '>';
+		}
+
+		return strip_tags( (string) $data, $allowed_tags );
 	}
 }
 
@@ -427,7 +705,12 @@ if ( ! function_exists( 'wp_editor' ) ) {
 }
 
 // Load theme files needed for tests.
+require_once __DIR__ . '/../inc/accessibility.php';
+require_once __DIR__ . '/../inc/components.php';
 require_once __DIR__ . '/../inc/custom-post-types.php';
 require_once __DIR__ . '/../inc/shortcodes.php';
 require_once __DIR__ . '/../inc/meta-boxes.php';
 require_once __DIR__ . '/../inc/blog.php';
+
+$GLOBALS['kiyose_test_default_shortcodes'] = $GLOBALS['kiyose_test_shortcodes'];
+kiyose_reset_test_state();

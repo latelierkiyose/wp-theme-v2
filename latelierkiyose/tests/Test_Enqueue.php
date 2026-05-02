@@ -33,40 +33,6 @@ if ( ! class_exists( 'WP_Post' ) ) {
 	}
 }
 
-if ( ! function_exists( 'get_template_directory' ) ) {
-	function get_template_directory() {
-		return dirname( __DIR__ );
-	}
-}
-
-if ( ! function_exists( 'get_template_directory_uri' ) ) {
-	function get_template_directory_uri() {
-		return 'https://example.com/wp-content/themes/latelierkiyose';
-	}
-}
-
-if ( ! function_exists( 'wp_enqueue_style' ) ) {
-	function wp_enqueue_style( $handle, $src = '', $deps = array(), $ver = false, $media = 'all' ) {
-		$GLOBALS['kiyose_test_enqueued_styles'][ $handle ] = array(
-			'src'    => $src,
-			'deps'   => $deps,
-			'ver'    => $ver,
-			'media'  => $media,
-		);
-	}
-}
-
-if ( ! function_exists( 'wp_enqueue_script' ) ) {
-	function wp_enqueue_script( $handle, $src = '', $deps = array(), $ver = false, $args = array() ) {
-		$GLOBALS['kiyose_test_enqueued_scripts'][ $handle ] = array(
-			'src'  => $src,
-			'deps' => $deps,
-			'ver'  => $ver,
-			'args' => $args,
-		);
-	}
-}
-
 if ( ! function_exists( 'is_page' ) ) {
 	function is_page() {
 		return ! empty( $GLOBALS['kiyose_test_is_page'] );
@@ -120,18 +86,6 @@ if ( ! function_exists( 'is_singular' ) ) {
 	}
 }
 
-if ( ! function_exists( 'has_shortcode' ) ) {
-	function has_shortcode( $content, $tag ) {
-		return 1 === preg_match( '/\[' . preg_quote( $tag, '/' ) . '(\s|\]|\s[^\]]*\])/', (string) $content );
-	}
-}
-
-if ( ! function_exists( 'shortcode_exists' ) ) {
-	function shortcode_exists( $tag ) {
-		return in_array( $tag, $GLOBALS['kiyose_test_existing_shortcodes'] ?? array(), true );
-	}
-}
-
 /**
  * Test class for enqueue helpers.
  */
@@ -140,17 +94,7 @@ class Test_Enqueue extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$GLOBALS['kiyose_test_enqueued_styles']    = array();
-		$GLOBALS['kiyose_test_enqueued_scripts']   = array();
-		$GLOBALS['kiyose_test_existing_shortcodes'] = array();
-		$GLOBALS['kiyose_test_is_404']             = false;
-		$GLOBALS['kiyose_test_is_archive']         = false;
-		$GLOBALS['kiyose_test_is_home']            = false;
-		$GLOBALS['kiyose_test_is_page']            = false;
-		$GLOBALS['kiyose_test_is_search']          = false;
-		$GLOBALS['kiyose_test_is_singular']        = false;
-		$GLOBALS['kiyose_test_page_templates']     = array();
-		$GLOBALS['post']                           = null;
+		kiyose_reset_test_state();
 
 		$this->load_enqueue_file();
 	}
@@ -182,7 +126,7 @@ class Test_Enqueue extends TestCase {
 		$this->assertSame( '', $result );
 	}
 
-	public function test_kiyose_get_theme_assets_containsRequiredGlobalHandles() {
+	public function test_kiyose_get_theme_assets_returnsExpectedGlobalHandles() {
 		// Given
 		$required_handles = array(
 			'kiyose-fonts',
@@ -214,7 +158,7 @@ class Test_Enqueue extends TestCase {
 		}
 	}
 
-	public function test_kiyose_get_theme_assets_whenAssetIsConditional_exposesCondition() {
+	public function test_kiyose_get_theme_assets_ofConditionalAssets_declaresConditions() {
 		// Given
 		$conditional_handles = array(
 			'kiyose-page',
@@ -253,7 +197,7 @@ class Test_Enqueue extends TestCase {
 		}
 	}
 
-	public function test_kiyose_get_asset_version_whenFileIsAbsent_returnsThemeVersion() {
+	public function test_kiyose_get_asset_version_whenFileIsMissing_returnsThemeVersion() {
 		// Given
 		$missing_asset_path = '/assets/css/components/not-found.css';
 

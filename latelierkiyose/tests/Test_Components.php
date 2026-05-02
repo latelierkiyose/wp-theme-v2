@@ -8,100 +8,6 @@
 
 use PHPUnit\Framework\TestCase;
 
-if ( ! class_exists( 'WP_Query' ) ) {
-	/**
-	 * Minimal WP_Query test double for component rendering tests.
-	 */
-	class WP_Query {
-		/**
-		 * Number of posts returned by the query.
-		 *
-		 * @var int
-		 */
-		public $post_count = 0;
-
-		/**
-		 * Test posts.
-		 *
-		 * @var array<int, object>
-		 */
-		private $posts = array();
-
-		/**
-		 * Current post index.
-		 *
-		 * @var int
-		 */
-		private $current_index = 0;
-
-		/**
-		 * Constructor.
-		 *
-		 * @param array<int, object> $posts Test posts.
-		 */
-		public function __construct( $posts = array() ) {
-			$this->posts      = $posts;
-			$this->post_count = count( $posts );
-		}
-
-		/**
-		 * Whether the query still has posts.
-		 *
-		 * @return bool
-		 */
-		public function have_posts() {
-			return $this->current_index < $this->post_count;
-		}
-
-		/**
-		 * Advance the query and expose the current post globally.
-		 *
-		 * @return void
-		 */
-		public function the_post() {
-			$GLOBALS['post'] = $this->posts[ $this->current_index ];
-			++$this->current_index;
-		}
-	}
-}
-
-if ( ! function_exists( 'esc_html' ) ) {
-	function esc_html( $text ) {
-		return htmlspecialchars( (string) $text, ENT_QUOTES, 'UTF-8' );
-	}
-}
-
-if ( ! function_exists( 'esc_attr_e' ) ) {
-	function esc_attr_e( $text, $domain = 'default' ) {
-		echo esc_attr( $text );
-	}
-}
-
-if ( ! function_exists( 'get_template_part' ) ) {
-	function get_template_part( $slug, $name = null, $args = array() ) {
-		$post = $GLOBALS['post'] ?? null;
-		echo '<article class="testimony-card">' . esc_html( $post->post_title ?? 'Témoignage' ) . '</article>';
-	}
-}
-
-if ( ! function_exists( 'wp_reset_postdata' ) ) {
-	function wp_reset_postdata() {
-		$GLOBALS['post'] = null;
-	}
-}
-
-if ( ! function_exists( 'get_theme_mod' ) ) {
-	function get_theme_mod( $name, $default = false ) {
-		$theme_mods = $GLOBALS['kiyose_test_theme_mods'] ?? array();
-
-		if ( array_key_exists( $name, $theme_mods ) ) {
-			return $theme_mods[ $name ];
-		}
-
-		return $default;
-	}
-}
-
 if ( ! function_exists( 'get_permalink' ) ) {
 	function get_permalink( $post_id = 0 ) {
 		$permalinks = $GLOBALS['kiyose_test_permalinks'] ?? array();
@@ -132,14 +38,11 @@ class Test_Components extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$GLOBALS['kiyose_test_theme_mods'] = array();
-		$GLOBALS['kiyose_test_permalinks'] = array();
-		$GLOBALS['kiyose_test_titles']     = array();
-		$GLOBALS['post']                   = null;
+		kiyose_reset_test_state();
 	}
 
-	public function test_kiyose_get_testimonials_carousel_html_ofTwoPosts_returnsAccessibleSlides() {
-		// Given.
+	public function test_kiyose_get_testimonials_carousel_html_ofQuery_returnsAccessibleCarousel() {
+		// Given
 		$query = new WP_Query(
 			array(
 				(object) array(
@@ -153,10 +56,10 @@ class Test_Components extends TestCase {
 			)
 		);
 
-		// When.
+		// When
 		$html = $this->call_testimonials_carousel_html( $query, 'Témoignages de participantes' );
 
-		// Then.
+		// Then
 		$this->assertStringContainsString( 'class="carousel"', $html );
 		$this->assertStringContainsString( 'role="region"', $html );
 		$this->assertStringContainsString( 'aria-roledescription="carousel"', $html );
@@ -169,33 +72,50 @@ class Test_Components extends TestCase {
 		$this->assertStringContainsString( 'aria-hidden="true"', $html );
 	}
 
+	public function test_kiyose_get_social_profiles_whenThemeModsAreEmpty_returnsDefaults() {
+		// Given
+		$GLOBALS['kiyose_test_theme_mods'] = array();
+
+		// When
+		$profiles = $this->call_social_profiles();
+
+		// Then
+		$this->assertCount( 3, $profiles );
+		$this->assertSame( 'facebook', $profiles[0]['key'] );
+		$this->assertSame( 'https://www.facebook.com/latelierkiyose', $profiles[0]['url'] );
+		$this->assertSame( 'instagram', $profiles[1]['key'] );
+		$this->assertSame( 'https://www.instagram.com/latelierkiyose', $profiles[1]['url'] );
+		$this->assertSame( 'linkedin', $profiles[2]['key'] );
+		$this->assertSame( 'https://www.linkedin.com/company/latelierkiyose', $profiles[2]['url'] );
+	}
+
 	public function test_kiyose_get_social_profiles_whenUrlsAreEmpty_returnsEmptyArray() {
-		// Given.
+		// Given
 		$GLOBALS['kiyose_test_theme_mods'] = array(
 			'kiyose_social_facebook'  => '',
 			'kiyose_social_instagram' => '',
 			'kiyose_social_linkedin'  => '',
 		);
 
-		// When.
+		// When
 		$profiles = $this->call_social_profiles();
 
-		// Then.
+		// Then
 		$this->assertSame( array(), $profiles );
 	}
 
-	public function test_kiyose_get_social_links_html_ofContact_returnsSocialLinksList() {
-		// Given.
+	public function test_kiyose_get_social_links_html_ofContactContext_returnsSocialLinksList() {
+		// Given
 		$GLOBALS['kiyose_test_theme_mods'] = array(
 			'kiyose_social_facebook'  => 'https://facebook.example/kiyose',
 			'kiyose_social_instagram' => '',
 			'kiyose_social_linkedin'  => '',
 		);
 
-		// When.
+		// When
 		$html = $this->call_social_links_html( 'contact' );
 
-		// Then.
+		// Then
 		$this->assertStringContainsString( '<ul class="social-links">', $html );
 		$this->assertStringContainsString( 'href="https://facebook.example/kiyose"', $html );
 		$this->assertStringContainsString( 'aria-label="Facebook (ouverture dans un nouvel onglet)"', $html );
@@ -204,30 +124,30 @@ class Test_Components extends TestCase {
 	}
 
 	public function test_kiyose_get_social_links_html_whenFooterProfilesAreEmpty_returnsEmptyString() {
-		// Given.
+		// Given
 		$GLOBALS['kiyose_test_theme_mods'] = array(
 			'kiyose_social_facebook'  => '',
 			'kiyose_social_instagram' => '',
 			'kiyose_social_linkedin'  => '',
 		);
 
-		// When.
+		// When
 		$html = $this->call_social_links_html( 'footer' );
 
-		// Then.
+		// Then
 		$this->assertSame( '', $html );
 	}
 
-	public function test_kiyose_get_post_share_links_html_ofPost_returnsShareActions() {
-		// Given.
+	public function test_kiyose_get_post_share_links_html_ofPostId_returnsShareButtons() {
+		// Given
 		$post_id = 57;
 		$GLOBALS['kiyose_test_permalinks'][ $post_id ] = 'https://example.com/un-article/';
 		$GLOBALS['kiyose_test_titles'][ $post_id ]     = 'Un article utile';
 
-		// When.
+		// When
 		$html = $this->call_post_share_links_html( $post_id );
 
-		// Then.
+		// Then
 		$this->assertStringContainsString( '<ul class="blog-single__share-links">', $html );
 		$this->assertStringContainsString( 'blog-single__share-link blog-single__share-link--facebook', $html );
 		$this->assertStringContainsString( 'blog-single__share-link blog-single__share-link--linkedin', $html );
