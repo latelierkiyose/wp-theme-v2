@@ -591,6 +591,10 @@ function kiyose_should_load_blog_archive_styles(): bool {
  * @return bool
  */
 function kiyose_should_load_blog_single_styles(): bool {
+	if ( function_exists( 'is_single' ) ) {
+		return is_single();
+	}
+
 	return function_exists( 'is_singular' ) && is_singular( 'post' );
 }
 

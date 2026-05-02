@@ -86,6 +86,28 @@ if ( ! function_exists( 'is_singular' ) ) {
 	}
 }
 
+if ( ! function_exists( 'is_single' ) ) {
+	function is_single( $post = '' ) {
+		if ( empty( $GLOBALS['kiyose_test_is_singular'] ) ) {
+			return false;
+		}
+
+		$current_post_type = $GLOBALS['kiyose_test_singular_post_type'] ?? 'post';
+
+		if ( 'page' === $current_post_type ) {
+			return false;
+		}
+
+		if ( empty( $post ) ) {
+			return true;
+		}
+
+		$post_types = (array) $post;
+
+		return in_array( $current_post_type, $post_types, true );
+	}
+}
+
 /**
  * Test class for enqueue helpers.
  */
@@ -195,6 +217,30 @@ class Test_Enqueue extends TestCase {
 			$this->assertArrayHasKey( 'condition', $assets_by_handle[ $handle ] );
 			$this->assertIsCallable( $assets_by_handle[ $handle ]['condition'] );
 		}
+	}
+
+	public function test_kiyose_should_load_blog_single_styles_whenSingularEvent_returnsTrue() {
+		// Given
+		$GLOBALS['kiyose_test_is_singular']        = true;
+		$GLOBALS['kiyose_test_singular_post_type'] = 'event';
+
+		// When
+		$result = kiyose_should_load_blog_single_styles();
+
+		// Then
+		$this->assertTrue( $result );
+	}
+
+	public function test_kiyose_should_load_blog_single_styles_whenSingularPage_returnsFalse() {
+		// Given
+		$GLOBALS['kiyose_test_is_singular']        = true;
+		$GLOBALS['kiyose_test_singular_post_type'] = 'page';
+
+		// When
+		$result = kiyose_should_load_blog_single_styles();
+
+		// Then
+		$this->assertFalse( $result );
 	}
 
 	public function test_kiyose_get_asset_version_whenFileIsMissing_returnsThemeVersion() {
