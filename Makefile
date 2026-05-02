@@ -1,7 +1,7 @@
 # L'Atelier Kiyose - WordPress Theme v2
 # Makefile pour simplifier les commandes de développement
 
-.PHONY: help install install-hooks phpcs phpcs-fix phpunit lint-js lint-css lint lint-fix format-js format-check build-css build-js build build-clean start stop clean test
+.PHONY: help install install-hooks phpcs phpcs-fix phpunit lint-js lint-css lint lint-fix format-js format-check build-css build-js build build-check build-clean test-build-check start stop clean test
 
 # Couleurs pour l'aide
 BLUE := \033[0;34m
@@ -45,7 +45,7 @@ lint-js: ## Valider le code JavaScript avec ESLint
 lint-css: ## Valider le code CSS avec Stylelint
 	@./bin/stylelint.sh 'latelierkiyose/**/*.css'
 
-lint: build lint-js lint-css ## Valider tout le code (JS + CSS)
+lint: lint-js lint-css ## Valider tout le code (JS + CSS)
 	@echo "$(GREEN)✓ Validation JS et CSS terminée$(NC)"
 
 lint-fix: ## Corriger automatiquement les violations JS et CSS
@@ -74,6 +74,12 @@ build-js: ## Minifier les fichiers JavaScript
 build: build-css build-js ## Minifier tous les assets (CSS + JS)
 	@echo "$(GREEN)✓ Tous les assets sont minifiés$(NC)"
 
+build-check: ## Vérifier que les assets minifiés sont à jour sans les modifier
+	@npm run build:check
+
+test-build-check: ## Exécuter les tests unitaires des scripts de build
+	@npm run test:build-check
+
 build-clean: ## Supprimer tous les fichiers minifiés
 	@echo "$(BLUE)🧹 Suppression des fichiers minifiés...$(NC)"
 	@npm run build:clean
@@ -99,7 +105,7 @@ clean: ## Nettoyer les fichiers générés (vendor/, cache)
 	@rm -rf node_modules/
 	@echo "$(GREEN)✓ Nettoyage terminé$(NC)"
 
-test: phpcs phpunit lint ## Exécuter tous les tests (PHPCS + PHPUnit + linters)
+test: phpcs phpunit lint test-build-check build-check ## Exécuter tous les tests (PHPCS + PHPUnit + linters + assets)
 	@echo "$(GREEN)✓ Tous les tests sont passés$(NC)"
 
 .DEFAULT_GOAL := help

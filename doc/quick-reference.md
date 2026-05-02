@@ -53,7 +53,13 @@ npm run lint:css
 # ou via Docker
 ./bin/stylelint.sh 'latelierkiyose/**/*.css'
 
-# Valider tout (PHP + JS + CSS)
+# Vérifier que les fichiers minifiés trackés sont à jour sans écrire dans le dépôt
+npm run build:check
+
+# Générer explicitement les fichiers minifiés CSS/JS
+npm run build
+
+# Valider tout (PHP + JS + CSS + tests scripts + assets read-only)
 make test
 
 # Corriger automatiquement JS et CSS
@@ -66,7 +72,9 @@ make lint-fix
 ### CI/CD
 ```bash
 # Les commits/PR déclenchent automatiquement la CI (GitHub Actions)
-# La CI exécute : PHPCS, ESLint, Stylelint, PHPUnit, build de l'artefact ZIP
+# La CI exécute : PHPCS, ESLint, Stylelint, PHPUnit,
+# tests des scripts de build, vérification read-only des assets,
+# puis build explicite de l'artefact ZIP sur main/tags
 
 # Télécharger un artefact de build (nécessite gh CLI)
 gh run download {run-id} -n theme-build
@@ -183,7 +191,7 @@ Auto-hébergées dans `assets/fonts/` (conformité RGPD).
    - Vérifier la conformité WPCS
 
 3. **Avant de commiter**:
-   - Exécuter tous les tests
+   - Exécuter tous les tests (`make test`, read-only vis-à-vis des assets trackés)
    - Valider l'accessibilité (axe)
    - Vérifier la performance (Lighthouse)
 

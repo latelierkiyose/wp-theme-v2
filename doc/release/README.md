@@ -43,7 +43,7 @@ Ne pas entamer la procédure tant que l'un des prérequis suivants n'est pas pr�
 
 - [ ] **Accès SFTP/SSH** au serveur de production (vérifier la connexion avec un `ls` dans `/wp-content/themes/`)
 - [ ] **Accès admin WordPress** avec un rôle Administrateur
-- [ ] **Artefact ZIP du thème** téléchargé depuis [Releases GitHub](https://github.com/latelierkiyose/wp-theme-v2/releases) : fichier nommé `latelierkiyose-theme-*.zip` ⚠️ **pas** « Source code (zip) »
+- [ ] **Artefact ZIP du thème** téléchargé depuis [Releases GitHub](https://github.com/latelierkiyose/wp-theme-v2/releases) : fichier nommé `latelierkiyose-theme-*.zip` ⚠️ **pas** « Source code (zip) ». Cet artefact est généré par la CI après un build explicite des assets CSS/JS.
 - [ ] **Fenêtre de maintenance** (2-3 h en heures creuses) communiquée au commanditaire
 - [ ] **Logins Brevo, Events Manager, Contact Form 7** disponibles (pour récupérer les formulaires/événements existants ou en créer de nouveaux)
 - [ ] **Plan de rollback lu** : [`rollback.md`](rollback.md)
@@ -118,6 +118,8 @@ Résumé à cocher :
    cd .. && rm -rf temp-upload
    ```
 5. Ajuster permissions si besoin : `chmod -R 755 latelierkiyose/` et `chown -R www-data:www-data latelierkiyose/` (adapter l'utilisateur au serveur).
+
+> Préparation développeur : si un ZIP doit exceptionnellement être préparé hors CI, lancer `npm run build`, puis `npm run build:check` avant de créer l'archive. Ne jamais générer les assets directement sur le serveur de production.
 
 ### Via admin WordPress (alternative)
 

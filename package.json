@@ -7,12 +7,16 @@
 		"lint:js": "eslint 'latelierkiyose/assets/js/**/*.js'",
 		"lint:css": "stylelint 'latelierkiyose/**/*.css'",
 		"lint": "npm run lint:js && npm run lint:css",
+		"test:build-check": "node --test tests/build-check.test.js",
 		"lint:fix": "npm run lint:js -- --fix && npm run lint:css -- --fix",
 		"format:js": "prettier --write 'latelierkiyose/assets/js/**/*.js'",
 		"format:check": "prettier --check 'latelierkiyose/assets/js/**/*.js'",
 		"build:css": "node bin/minify-css.js",
+		"build:css:check": "node bin/minify-css.js --check",
 		"build:js": "node bin/minify-js.js",
+		"build:js:check": "node bin/minify-js.js --check",
 		"build": "npm run build:css && npm run build:js",
+		"build:check": "npm run build:css:check && npm run build:js:check",
 		"build:clean": "find latelierkiyose/assets -name '*.min.css' -delete && find latelierkiyose/assets -name '*.min.js' -delete && find latelierkiyose/assets -name '*.map' -delete"
 	},
 	"devDependencies": {
