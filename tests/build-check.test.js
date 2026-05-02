@@ -199,3 +199,43 @@ test('brevoOverrideCss_whenPluginOutputsLegacySignupForm_overridesInlineButtonSt
 	assert.equal(hasThemeBackground, true);
 	assert.equal(hasThemeButtonBorder, true);
 });
+
+test('brevoOverrideCss_whenLegacySignupFormIsInFooter_usesCompactNewsletterLayout', () => {
+	// Given
+	const css = fs.readFileSync(brevoOverrideCss, 'utf8');
+
+	// When
+	const hasFooterFormSelector = css.includes(
+		'.site-footer__newsletter form[id^="sib_signup_form_"]'
+	);
+	const hasCompactMaxWidth = css.includes('max-width: 30rem;');
+	const hasCompactControlSize = css.includes('font-size: var(--kiyose-font-size-sm) !important;');
+	const preservesTapTarget = css.includes('min-height: 44px !important;');
+
+	// Then
+	assert.equal(hasFooterFormSelector, true);
+	assert.equal(hasCompactMaxWidth, true);
+	assert.equal(hasCompactControlSize, true);
+	assert.equal(preservesTapTarget, true);
+});
+
+test('brevoOverrideCss_whenLegacySignupFormIsInNewsletterOverlay_usesCompactNewsletterLayout', () => {
+	// Given
+	const css = fs.readFileSync(brevoOverrideCss, 'utf8');
+
+	// When
+	const hasOverlayFormSelector = css.includes(
+		'.newsletter-overlay__form form[id^="sib_signup_form_"]'
+	);
+	const hasOverlayCompactMaxWidth = css.includes(
+		'.newsletter-overlay__form form[id^="sib_signup_form_"] {\n\tmax-width: 18rem;'
+	);
+	const hasCompactControlSize = css.includes('font-size: var(--kiyose-font-size-sm) !important;');
+	const preservesTapTarget = css.includes('min-height: 44px !important;');
+
+	// Then
+	assert.equal(hasOverlayFormSelector, true);
+	assert.equal(hasOverlayCompactMaxWidth, true);
+	assert.equal(hasCompactControlSize, true);
+	assert.equal(preservesTapTarget, true);
+});
