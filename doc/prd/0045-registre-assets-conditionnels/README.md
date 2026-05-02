@@ -1,6 +1,6 @@
 # PRD 0045 — Registre d'assets conditionnels
 
-- **Statut** : prêt à l'implémentation
+- **Statut** : terminé
 - **Version** : 1.0
 - **Date** : 2026-05-02
 
