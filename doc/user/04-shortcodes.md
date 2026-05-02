@@ -144,7 +144,21 @@ Mettre en valeur une information cruciale : tarif, horaire, matériel requis, mi
 
 ### Contenu
 
-Le texte entre `[kiyose_callout]` et `[/kiyose_callout]` est **obligatoire**. Tu peux y mettre plusieurs paragraphes, des liens, d'autres shortcodes.
+Le texte entre `[kiyose_callout]` et `[/kiyose_callout]` est **obligatoire**. Tu peux y mettre plusieurs paragraphes, des liens, des listes, d'autres shortcodes.
+
+### Mettre en forme le texte
+
+Dans le contenu de l'encadré, utilise du HTML simple :
+
+| Ce que tu veux faire | Exemple à copier |
+|---|---|
+| Mettre un passage en gras | `<strong>Information importante</strong>` |
+| Mettre un passage en italique | `<em>à prévoir</em>` |
+| Ajouter un lien | `<a href="/contact/">contacte-moi</a>` |
+| Ajouter une liste à puces | `<ul><li>Premier point</li><li>Deuxième point</li></ul>` |
+| Ajouter une liste numérotée | `<ol><li>Première étape</li><li>Deuxième étape</li></ol>` |
+
+Le titre `titre="..."` reste du texte simple. Si tu veux du gras, un lien ou une liste, mets-les dans le contenu entre les deux balises du shortcode.
 
 ### Exemples courants
 
@@ -168,9 +182,23 @@ Les places sont limitées à 8 personnes par atelier. Pense à réserver.
 
 ```
 [kiyose_callout titre="Pour aller plus loin"]
-Tu trouveras toutes les dates à venir sur la [page du calendrier](/calendrier).
+Tu trouveras toutes les dates à venir sur la <a href="/calendrier/">page du calendrier</a>.
 
-Si tu préfères un échange en amont, [contacte-moi](/contact).
+Si tu préfères un échange en amont, <a href="/contact/">contacte-moi</a>.
+[/kiyose_callout]
+```
+
+**Avec une liste :**
+
+```
+[kiyose_callout titre="À prévoir"]
+<strong>Pour l'atelier, pense à apporter :</strong>
+
+<ul>
+<li>des vêtements confortables ;</li>
+<li>une petite bouteille d'eau ;</li>
+<li>de quoi prendre des notes si tu le souhaites.</li>
+</ul>
 [/kiyose_callout]
 ```
 
