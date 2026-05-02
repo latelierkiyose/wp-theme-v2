@@ -13,6 +13,110 @@ use PHPUnit\Framework\TestCase;
  */
 class Test_Meta_Boxes extends TestCase {
 
+	protected function setUp(): void {
+		parent::setUp();
+
+		$GLOBALS['kiyose_test_added_meta_boxes'] = array();
+		$GLOBALS['kiyose_test_post_meta']        = array();
+	}
+
+	private function set_page_template( int $post_id, string $template ): void {
+		$GLOBALS['kiyose_test_post_meta'][ $post_id ]['_wp_page_template'] = $template;
+	}
+
+	private function registered_meta_box_ids(): array {
+		return array_column( $GLOBALS['kiyose_test_added_meta_boxes'], 'id' );
+	}
+
+	public function test_kiyose_page_uses_template_whenPostIsMissing_returnsFalse() {
+		// Given.
+		$post = null;
+
+		// When.
+		$result = function_exists( 'kiyose_page_uses_template' )
+			? kiyose_page_uses_template( $post, 'templates/page-home.php' )
+			: null;
+
+		// Then.
+		$this->assertFalse( $result );
+	}
+
+	public function test_kiyose_page_uses_template_whenTemplateMatches_returnsTrue() {
+		// Given.
+		$post = (object) array( 'ID' => 43 );
+		$this->set_page_template( 43, 'templates/page-home.php' );
+
+		// When.
+		$result = function_exists( 'kiyose_page_uses_template' )
+			? kiyose_page_uses_template( $post, 'templates/page-home.php' )
+			: null;
+
+		// Then.
+		$this->assertTrue( $result );
+	}
+
+	public function test_kiyose_page_uses_template_whenTemplateDiffers_returnsFalse() {
+		// Given.
+		$post = (object) array( 'ID' => 43 );
+		$this->set_page_template( 43, 'templates/page-contact.php' );
+
+		// When.
+		$result = function_exists( 'kiyose_page_uses_template' )
+			? kiyose_page_uses_template( $post, 'templates/page-home.php' )
+			: null;
+
+		// Then.
+		$this->assertFalse( $result );
+	}
+
+	public function test_kiyose_add_home_hero_meta_box_whenTemplateMatches_registersMetaBox() {
+		// Given.
+		$post = (object) array( 'ID' => 43 );
+		$this->set_page_template( 43, 'templates/page-home.php' );
+
+		// When.
+		kiyose_add_home_hero_meta_box( $post );
+
+		// Then.
+		$this->assertContains( 'kiyose_home_hero', $this->registered_meta_box_ids() );
+	}
+
+	public function test_kiyose_add_home_hero_meta_box_whenTemplateDiffers_doesNotRegisterMetaBox() {
+		// Given.
+		$post = (object) array( 'ID' => 43 );
+		$this->set_page_template( 43, 'templates/page-contact.php' );
+
+		// When.
+		kiyose_add_home_hero_meta_box( $post );
+
+		// Then.
+		$this->assertNotContains( 'kiyose_home_hero', $this->registered_meta_box_ids() );
+	}
+
+	public function test_kiyose_add_contact_photo_meta_box_whenTemplateMatches_registersMetaBox() {
+		// Given.
+		$post = (object) array( 'ID' => 43 );
+		$this->set_page_template( 43, 'templates/page-contact.php' );
+
+		// When.
+		kiyose_add_contact_photo_meta_box( $post );
+
+		// Then.
+		$this->assertContains( 'kiyose_contact_photo', $this->registered_meta_box_ids() );
+	}
+
+	public function test_kiyose_add_contact_photo_meta_box_whenTemplateDiffers_doesNotRegisterMetaBox() {
+		// Given.
+		$post = (object) array( 'ID' => 43 );
+		$this->set_page_template( 43, 'templates/page-home.php' );
+
+		// When.
+		kiyose_add_contact_photo_meta_box( $post );
+
+		// Then.
+		$this->assertNotContains( 'kiyose_contact_photo', $this->registered_meta_box_ids() );
+	}
+
 	public function test_kiyose_sanitize_welcome_keyword_item_ofValidInputs_returnsArray() {
 		$result = kiyose_sanitize_welcome_keyword_item( 'Art-thérapie', 'https://example.com/art-therapie' );
 

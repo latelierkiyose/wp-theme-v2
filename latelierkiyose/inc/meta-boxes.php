@@ -68,11 +68,31 @@ function kiyose_sanitize_qa_items( string $raw_json ): array {
 }
 
 /**
+ * Check whether a page uses a specific template.
+ *
+ * @param object|null $post     Current post object.
+ * @param string      $template Template path to match.
+ * @return bool True when the post uses the given template.
+ */
+function kiyose_page_uses_template( $post, string $template ): bool {
+	if ( ! is_object( $post ) || ! isset( $post->ID ) ) {
+		return false;
+	}
+
+	return get_post_meta( (int) $post->ID, '_wp_page_template', true ) === $template;
+}
+
+/**
  * Add meta box for hero section on home page template.
  *
+ * @param object|null $post Current post object.
  * @return void
  */
-function kiyose_add_home_hero_meta_box() {
+function kiyose_add_home_hero_meta_box( $post = null ) {
+	if ( ! kiyose_page_uses_template( $post, 'templates/page-home.php' ) ) {
+		return;
+	}
+
 	add_meta_box(
 		'kiyose_home_hero',
 		__( 'Page d\'accueil — Bienvenue &amp; Overlay À propos', 'kiyose' ),
@@ -82,7 +102,7 @@ function kiyose_add_home_hero_meta_box() {
 		'high'
 	);
 }
-add_action( 'add_meta_boxes', 'kiyose_add_home_hero_meta_box' );
+add_action( 'add_meta_boxes_page', 'kiyose_add_home_hero_meta_box', 10, 1 );
 
 /**
  * Render the home hero meta box.
@@ -91,10 +111,6 @@ add_action( 'add_meta_boxes', 'kiyose_add_home_hero_meta_box' );
  * @return void
  */
 function kiyose_render_home_hero_meta_box( $post ) {
-	// Check current template.
-	$template   = get_post_meta( $post->ID, '_wp_page_template', true );
-	$is_visible = ( 'templates/page-home.php' === $template );
-
 	// Add nonce for security.
 	wp_nonce_field( 'kiyose_home_hero_nonce_action', 'kiyose_home_hero_nonce' );
 
@@ -148,25 +164,8 @@ function kiyose_render_home_hero_meta_box( $post ) {
 			.kiyose-meta-box .image-preview { margin-top: 10px; max-width: 400px; }
 			.kiyose-meta-box .image-preview img { max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 4px; }
 			.kiyose-meta-box .button-group { margin-top: 10px; }
-			.kiyose-meta-box__notice { 
-				background: #fff8e5; 
-				border-left: 4px solid #f0b849; 
-				padding: 12px; 
-				margin-bottom: 15px;
-			}
-			.kiyose-meta-box__notice p { margin: 0; }
-			.kiyose-meta-box__fields { display: <?php echo $is_visible ? 'block' : 'none'; ?>; }
 		</style>
 
-		<!-- Notice -->
-		<div class="kiyose-meta-box__notice" style="display: <?php echo $is_visible ? 'none' : 'block'; ?>;">
-			<p>
-				<strong><?php esc_html_e( 'Information :', 'kiyose' ); ?></strong>
-				<?php esc_html_e( 'Cette section sera active une fois que vous aurez sélectionné le template "Page d\'accueil" dans l\'encadré "Attributs de page" ci-dessous.', 'kiyose' ); ?>
-			</p>
-		</div>
-
-		<!-- Champs (masqués si template pas sélectionné) -->
 		<div class="kiyose-meta-box__fields">
 
 		<h3 style="margin: 0 0 15px; padding-bottom: 8px; border-bottom: 1px solid #ddd;">
@@ -458,30 +457,6 @@ function kiyose_render_home_hero_meta_box( $post ) {
 	jQuery(document).ready(function($) {
 		var mediaUploader;
 
-		// Show/hide fields based on template selection (classic editor only).
-		// In the block editor #page_template does not exist — trust PHP rendering.
-		function toggleHeroFields() {
-			var $tmpl = $('#page_template');
-			if (!$tmpl.length) {
-				return;
-			}
-			if ($tmpl.val() === 'templates/page-home.php') {
-				$('#kiyose_home_hero .kiyose-meta-box__notice').hide();
-				$('#kiyose_home_hero .kiyose-meta-box__fields').show();
-			} else {
-				$('#kiyose_home_hero .kiyose-meta-box__notice').show();
-				$('#kiyose_home_hero .kiyose-meta-box__fields').hide();
-			}
-		}
-
-		// Run on page load
-		toggleHeroFields();
-
-		// Run when template changes
-		$('#page_template').on('change', function() {
-			toggleHeroFields();
-		});
-
 		// Keywords repeater
 		function serializeKeywords() {
 			var keywords = [];
@@ -719,9 +694,14 @@ add_action( 'save_post_page', 'kiyose_save_home_hero_meta' );
 /**
  * Add meta box for contact photo on contact page template.
  *
+ * @param object|null $post Current post object.
  * @return void
  */
-function kiyose_add_contact_photo_meta_box() {
+function kiyose_add_contact_photo_meta_box( $post = null ) {
+	if ( ! kiyose_page_uses_template( $post, 'templates/page-contact.php' ) ) {
+		return;
+	}
+
 	add_meta_box(
 		'kiyose_contact_photo',
 		__( 'Page de contact — Photo', 'kiyose' ),
@@ -731,7 +711,7 @@ function kiyose_add_contact_photo_meta_box() {
 		'high'
 	);
 }
-add_action( 'add_meta_boxes', 'kiyose_add_contact_photo_meta_box' );
+add_action( 'add_meta_boxes_page', 'kiyose_add_contact_photo_meta_box', 10, 1 );
 
 /**
  * Render the contact photo meta box.
@@ -740,25 +720,13 @@ add_action( 'add_meta_boxes', 'kiyose_add_contact_photo_meta_box' );
  * @return void
  */
 function kiyose_render_contact_photo_meta_box( $post ) {
-	$template   = get_post_meta( $post->ID, '_wp_page_template', true );
-	$is_visible = ( 'templates/page-contact.php' === $template );
-
 	wp_nonce_field( 'kiyose_save_contact_photo', 'kiyose_contact_photo_nonce' );
 
 	$photo_id  = get_post_meta( $post->ID, 'kiyose_contact_photo_id', true );
 	$photo_alt = get_post_meta( $post->ID, 'kiyose_contact_photo_alt', true );
 	?>
 	<div class="kiyose-meta-box" data-template-required="templates/page-contact.php">
-		<!-- Notice -->
-		<div class="kiyose-meta-box__notice" style="display: <?php echo $is_visible ? 'none' : 'block'; ?>;">
-			<p>
-				<strong><?php esc_html_e( 'Information :', 'kiyose' ); ?></strong>
-				<?php esc_html_e( 'Cette section sera active une fois que vous aurez sélectionné le template "Page de contact" dans l\'encadré "Attributs de page" ci-dessous.', 'kiyose' ); ?>
-			</p>
-		</div>
-
-		<!-- Champs (masqués si template pas sélectionné) -->
-		<div class="kiyose-meta-box__fields" style="display: <?php echo $is_visible ? 'block' : 'none'; ?>;">
+		<div class="kiyose-meta-box__fields">
 			<fieldset style="border: none; margin: 0; padding: 0;">
 				<legend style="font-weight: 600; margin-bottom: 15px; font-size: 14px;">
 					<?php esc_html_e( 'Photo de contact', 'kiyose' ); ?>
@@ -812,25 +780,6 @@ function kiyose_render_contact_photo_meta_box( $post ) {
 	<script>
 	jQuery(document).ready(function($) {
 		var contactPhotoUploader;
-
-		function toggleContactPhotoFields() {
-			var $tmpl = $('#page_template');
-			if (!$tmpl.length) {
-				return;
-			}
-			if ($tmpl.val() === 'templates/page-contact.php') {
-				$('#kiyose_contact_photo .kiyose-meta-box__notice').hide();
-				$('#kiyose_contact_photo .kiyose-meta-box__fields').show();
-			} else {
-				$('#kiyose_contact_photo .kiyose-meta-box__notice').show();
-				$('#kiyose_contact_photo .kiyose-meta-box__fields').hide();
-			}
-		}
-
-		toggleContactPhotoFields();
-		$('#page_template').on('change', function() {
-			toggleContactPhotoFields();
-		});
 
 		$('#kiyose_contact_photo_button').on('click', function(e) {
 			e.preventDefault();
@@ -911,4 +860,3 @@ function kiyose_save_contact_photo_meta( $post_id ) {
 	}
 }
 add_action( 'save_post_page', 'kiyose_save_contact_photo_meta' );
-

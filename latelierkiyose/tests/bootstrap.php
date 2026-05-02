@@ -159,12 +159,30 @@ if ( ! function_exists( 'esc_url_raw' ) ) {
 
 if ( ! function_exists( 'add_meta_box' ) ) {
 	function add_meta_box( $id, $title, $callback, $screen = null, $context = 'advanced', $priority = 'default' ) {
+		$GLOBALS['kiyose_test_added_meta_boxes'][] = array(
+			'id'       => $id,
+			'title'    => $title,
+			'callback' => $callback,
+			'screen'   => $screen,
+			'context'  => $context,
+			'priority' => $priority,
+		);
+
 		return true;
 	}
 }
 
 if ( ! function_exists( 'get_post_meta' ) ) {
 	function get_post_meta( $post_id, $key = '', $single = false ) {
+		if (
+			isset( $GLOBALS['kiyose_test_post_meta'] )
+			&& isset( $GLOBALS['kiyose_test_post_meta'][ $post_id ] )
+			&& '' !== $key
+			&& array_key_exists( $key, $GLOBALS['kiyose_test_post_meta'][ $post_id ] )
+		) {
+			return $GLOBALS['kiyose_test_post_meta'][ $post_id ][ $key ];
+		}
+
 		return $single ? '' : array();
 	}
 }

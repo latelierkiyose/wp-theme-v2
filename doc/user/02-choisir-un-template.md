@@ -19,6 +19,7 @@ Le contenu que tu tapes dans l'éditeur s'insère **dans** le template. Changer 
 4. Clique sur le nom du modèle actuel — une liste déroulante s'ouvre.
 5. Sélectionne le template adapté.
 6. **Enregistre** ou **Publie** la page.
+7. Si le template ajoute des champs spécifiques, **recharge l'éditeur** pour les faire apparaître.
 
 > **Astuce :** si tu ne vois pas la section **Modèle**, c'est que tu es sur l'onglet **Bloc**. Clique sur un espace vide de la page pour désélectionner le bloc en cours, puis bascule sur l'onglet **Page**.
 
@@ -38,7 +39,7 @@ Le contenu que tu tapes dans l'éditeur s'insère **dans** le template. Changer 
 ### Page d'accueil
 - Contient un **bloc bienvenue** éditable (titre, sous-titre, texte court, mots-clés, slogan).
 - Affiche automatiquement : le carrousel de témoignages, les prochains événements, la newsletter, les derniers articles.
-- Les champs spécifiques se remplissent dans des panneaux (*meta boxes*) sous l'éditeur principal.
+- Les champs spécifiques se remplissent dans un panneau (*meta box*) sous l'éditeur principal. Si tu viens de choisir ce template, enregistre puis recharge la page pour voir ce panneau.
 - Voir la recette : [Modifier la page d'accueil](recettes/modifier-la-page-d-accueil.md).
 
 ### Page de service
@@ -53,7 +54,7 @@ Le contenu que tu tapes dans l'éditeur s'insère **dans** le template. Changer 
 - Aucune fonctionnalité supplémentaire — c'est une page « texte long » bien présentée.
 
 ### Page de contact
-- Un champ optionnel **Photo de contact** (dans le panneau latéral) permet d'afficher un portrait au-dessus des coordonnées.
+- Un champ optionnel **Photo de contact** permet d'afficher un portrait au-dessus des coordonnées. Si tu viens de choisir ce template, enregistre puis recharge la page pour voir ce champ.
 - Le formulaire est géré par le plugin **Contact Form 7** : son shortcode est déjà placé dans le template, tu n'as rien à faire côté formulaire.
 
 ### Calendrier et tarifs

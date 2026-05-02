@@ -7,13 +7,14 @@ La page d'accueil est particulière : une grande partie de son contenu ne se sai
 ## Étapes
 
 1. Menu **Pages** → ouvre la page d'accueil (généralement intitulée **Accueil**, avec le template **Page d'accueil**).
-2. Repère les sections particulières, situées **sous l'éditeur Gutenberg principal** ou dans le **panneau latéral droit** (selon la configuration). Elles s'appellent par exemple :
+2. Si tu viens seulement de choisir le template **Page d'accueil**, clique sur **Mettre à jour**, puis recharge l'éditeur.
+3. Repère la section **Page d'accueil — Bienvenue & Overlay À propos**, située sous l'éditeur Gutenberg principal. Elle contient notamment :
    - **Bloc bienvenue** (titre, sous-titre, texte court, mots-clés, slogan)
    - **Contenu Q&A** (une série de questions et réponses)
    - **Contenu texte et slogan**
-   - **Hero** (ancien — à vérifier selon la version)
-3. Modifie les champs voulus.
-4. Clique sur **Mettre à jour** (en haut à droite).
+   - **Overlay À propos**
+4. Modifie les champs voulus.
+5. Clique sur **Mettre à jour** (en haut à droite).
 
 ## Le bloc bienvenue en détail
 
@@ -34,7 +35,7 @@ La page d'accueil comporte plusieurs sections de contenu éditorial :
 - **Contenu 1 (Q&A)** : une série de questions et réponses (par exemple : « Qu'est-ce que l'art-thérapie ? » / « À qui s'adresse un atelier ? »).
 - **Contenu 2 (texte + slogan)** : un paragraphe de texte plus dense suivi d'un slogan.
 
-Les champs exacts dépendent de la configuration ACF. Repère-les dans l'éditeur de la page d'accueil et modifie les valeurs.
+Les champs exacts sont regroupés dans la section **Page d'accueil — Bienvenue & Overlay À propos**.
 
 ## Les sections automatiques (rien à faire)
 

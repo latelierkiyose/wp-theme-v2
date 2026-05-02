@@ -43,9 +43,9 @@ Dans l'admin WordPress, pour chaque page ci-dessous : **Pages → (page) → sid
 
 ## 2. Métadonnées de la page Accueil
 
-Le template `page-home.php` lit ses contenus éditoriaux depuis des **meta fields** gérés dans une meta box dédiée (« Page d'accueil — Bienvenue & Overlay À propos »). Cette meta box n'apparaît qu'après avoir sélectionné le template « Page d'accueil » (étape 1).
+Le template `page-home.php` lit ses contenus éditoriaux depuis des **meta fields** gérés dans une meta box dédiée (« Page d'accueil — Bienvenue & Overlay À propos »). Cette meta box n'apparaît qu'après avoir sélectionné le template « Page d'accueil », enregistré, puis rechargé l'éditeur si nécessaire.
 
-Source de vérité : `latelierkiyose/inc/meta-boxes.php:75-596`.
+Source de vérité : `latelierkiyose/inc/meta-boxes.php`.
 
 Ouvrir la page Accueil en édition. Après sauvegarde du template, la meta box apparaît **sous l'éditeur de contenu principal**. Remplir les champs suivants :
 
@@ -90,9 +90,9 @@ Si le repeater Q&R est vide, la section entière est masquée.
 
 ## 3. Métadonnées de la page Contact
 
-Source de vérité : `latelierkiyose/inc/meta-boxes.php:719-912`.
+Source de vérité : `latelierkiyose/inc/meta-boxes.php`.
 
-Une fois le template « Page de contact » assigné, la meta box « Page de contact — Photo » devient active :
+Une fois le template « Page de contact » assigné, enregistré, puis l'éditeur rechargé si nécessaire, la meta box « Page de contact — Photo » devient active :
 
 | Champ admin | Clé meta | Obligatoire |
 |---|---|---|
