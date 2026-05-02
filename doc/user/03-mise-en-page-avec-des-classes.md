@@ -97,9 +97,11 @@ Pour créer une image ronde dans un article ou une page, **utilise le style `Ron
 1. Ajoute ou sélectionne un bloc **Image**.
 2. Dans le panneau de droite, onglet **Bloc**, ouvre la section **Styles**.
 3. Choisis le style **Ronde**.
-4. Choisis l'alignement :
+4. Dans la **barre d'outils du bloc sélectionné** (au-dessus de l'image, pas dans le panneau de droite), choisis l'alignement :
    - **Gauche** ou **Droite** si tu veux que le texte passe autour de l'image sur ordinateur.
    - **Centre** si tu veux une image ronde centrée, sans habillage du texte.
+
+Le thème applique ensuite la mise en page grâce aux classes techniques `alignleft`, `alignright` et `aligncenter`. **Tu n'as pas besoin de les taper** dans **Classes CSS supplémentaires** : Gutenberg les ajoute automatiquement quand tu choisis l'alignement dans la barre d'outils.
 
 Sur tablette et mobile, l'image ronde revient automatiquement dans la colonne du texte : le texte ne passe pas autour, pour garder une lecture confortable.
 
@@ -109,7 +111,7 @@ Sur tablette et mobile, l'image ronde revient automatiquement dans la colonne du
 |---|---|
 | Bloc | Image |
 | Style | `Ronde` |
-| Alignement | `Gauche` ou `Droite` |
+| Alignement | `Gauche` ou `Droite` dans la barre d'outils du bloc |
 | Texte alternatif | `Portrait de Sandrine Delmas` si l'image présente une personne |
 
 **Conseils :**
