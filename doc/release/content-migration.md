@@ -245,6 +245,15 @@ La page utilise `the_content()` ; insérer le shortcode Events Manager dans le c
 3. Mettre à jour
 4. Vérifier sur le front : la liste d'événements doit s'afficher.
 
+### Pages détail des événements — Events Manager
+
+Le template `single.php` est aussi utilisé pour les événements. Le thème remplace la navigation WordPress native par une navigation basée sur la date de début Events Manager.
+
+1. Ouvrir au moins deux événements publiés avec des dates de début différentes.
+2. Vérifier que les pages détail d'événement s'affichent sans erreur.
+3. Vérifier que les liens « Événement précédent » et « Événement suivant », quand ils sont présents, suivent l'ordre chronologique des dates d'événement.
+4. Si la navigation est absente sur un événement, vérifier que sa date de début est bien renseignée dans Events Manager.
+
 ### Homepage — le shortcode Events Manager est déjà inclus par le template
 
 Rien à faire sur la home, le shortcode `[events_list limit="4" scope="future"...]` est rendu automatiquement par `template-parts/home/events.php`.

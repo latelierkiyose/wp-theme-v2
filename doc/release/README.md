@@ -179,7 +179,7 @@ Résumé à cocher :
 Synthèse des actions à réaliser :
 
 - [ ] Assigner un template à chaque page (tableau dans [`content-migration.md § 1`](content-migration.md#1-assigner-un-template-à-chaque-page))
-- [ ] Remplir les meta fields de la homepage (titres, slogans, Q&R, overlay)
+- [ ] Remplir les meta fields de la homepage (titres, Q&R, contenu libre, citation/auteurice, overlay)
 - [ ] Remplir la photo de la page Contact (+ texte alt)
 - [ ] Recréer les témoignages en CPT `kiyose_testimony` avec leur contexte
 - [ ] Remplacer les anciens blocs « signets » par `[kiyose_signets][/kiyose_signets]`
@@ -219,12 +219,14 @@ Les validations minimales à faire avant la bascule publique :
 - [ ] Chaque page de service (4 pages) : header hero + contenu + CTAs « Me contacter » et « Voir le calendrier »
 - [ ] Page Contact : formulaire présent et fonctionnel (test d'envoi réel → vérifier réception email)
 - [ ] Page Calendrier : liste d'événements affichée
+- [ ] Page détail d'événement : contenu affiché et navigation « Événement précédent / suivant » cohérente avec les dates Events Manager
 - [ ] Page À propos : contenu migré correctement
 
 ### Accessibilité
 
 - [ ] **axe DevTools** : scanner toutes les pages principales → **0 violation**
 - [ ] Navigation clavier complète (Tab, Entrée, Échap, flèches) sur menu, dropdown, carrousel témoignages, formulaires
+- [ ] Navigation clavier sur une page détail d'événement : liens précédent/suivant atteignables, focus visible, activation avec Entrée
 - [ ] Focus visible partout
 - [ ] Skip link fonctionnel (premier Tab sur la homepage)
 - [ ] Contrastes : vérifier au WebAIM Contrast Checker les combinaisons critiques
@@ -303,6 +305,7 @@ Une seule checklist synthétique pour signer le PV de recette :
 - [ ] Témoignages migrés en CPT
 - [ ] Signets migrés vers `[kiyose_signets]`
 - [ ] Shortcodes CF7 + Events Manager insérés dans les pages correspondantes
+- [ ] Pages détail d'événements testées, avec navigation précédent/suivant par date quand plusieurs événements sont publiés
 - [ ] Miniatures régénérées
 - [ ] Formulaires testés (envoi réel confirmé)
 - [ ] Plugins recommandés installés (au minimum : sécurité, cache, SEO, cookies, sauvegardes)
