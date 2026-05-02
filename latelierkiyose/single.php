@@ -58,16 +58,14 @@ get_header();
 					<?php echo kiyose_get_post_share_links_html( get_the_ID() ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				</div>
 
-				<nav class="blog-single__navigation" aria-label="<?php esc_attr_e( 'Navigation entre articles', 'kiyose' ); ?>">
-					<?php
-					the_post_navigation(
-						array(
-							'prev_text' => '<span class="nav-subtitle">' . esc_html__( 'Article précédent', 'kiyose' ) . '</span><span class="nav-title">%title</span>',
-							'next_text' => '<span class="nav-subtitle">' . esc_html__( 'Article suivant', 'kiyose' ) . '</span><span class="nav-title">%title</span>',
-						)
-					);
+				<?php
+				$kiyose_navigation_html = kiyose_get_single_post_navigation_html( get_the_ID() );
+				if ( '' !== $kiyose_navigation_html ) :
 					?>
-				</nav>
+					<div class="blog-single__navigation">
+						<?php echo $kiyose_navigation_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					</div>
+				<?php endif; ?>
 			</footer>
 		</article>
 

@@ -24,11 +24,16 @@ function kiyose_reset_test_state(): void {
 	$GLOBALS['kiyose_test_did_enqueue_media']  = false;
 	$GLOBALS['kiyose_test_enqueued_scripts']   = array();
 	$GLOBALS['kiyose_test_enqueued_styles']    = array();
+	$GLOBALS['kiyose_test_last_get_posts_args'] = array();
 	$GLOBALS['kiyose_test_last_query_args']    = array();
+	$GLOBALS['kiyose_test_last_post_navigation_args'] = array();
 	$GLOBALS['kiyose_test_localized_scripts']  = array();
+	$GLOBALS['kiyose_test_native_post_navigation_html'] = '';
 	$GLOBALS['kiyose_test_page_templates']     = array();
 	$GLOBALS['kiyose_test_permalinks']         = array();
 	$GLOBALS['kiyose_test_post_meta']          = array();
+	$GLOBALS['kiyose_test_post_types']         = array();
+	$GLOBALS['kiyose_test_posts']              = array();
 	$GLOBALS['kiyose_test_query_posts']        = array();
 	$GLOBALS['kiyose_test_shortcodes']         = $default_shortcodes;
 	$GLOBALS['kiyose_test_singular_post_type'] = 'post';
@@ -314,6 +319,99 @@ if ( ! function_exists( 'get_post_meta' ) ) {
 		}
 
 		return $single ? '' : array();
+	}
+}
+
+if ( ! function_exists( 'get_posts' ) ) {
+	function get_posts( $args = array() ) {
+		$GLOBALS['kiyose_test_last_get_posts_args'] = $args;
+
+		$posts = $GLOBALS['kiyose_test_posts'] ?? array();
+
+		if ( isset( $args['post_type'] ) ) {
+			$expected_post_types = (array) $args['post_type'];
+			$posts               = array_filter(
+				$posts,
+				static function ( $post ) use ( $expected_post_types ) {
+					return in_array( $post->post_type ?? 'post', $expected_post_types, true );
+				}
+			);
+		}
+
+		if ( isset( $args['post_status'] ) ) {
+			$expected_post_statuses = (array) $args['post_status'];
+			$posts                  = array_filter(
+				$posts,
+				static function ( $post ) use ( $expected_post_statuses ) {
+					return in_array( $post->post_status ?? 'publish', $expected_post_statuses, true );
+				}
+			);
+		}
+
+		if ( isset( $args['fields'] ) && 'ids' === $args['fields'] ) {
+			return array_map(
+				static function ( $post ) {
+					return (int) $post->ID;
+				},
+				$posts
+			);
+		}
+
+		return array_values( $posts );
+	}
+}
+
+if ( ! function_exists( 'get_post_type' ) ) {
+	function get_post_type( $post = null ) {
+		if ( is_object( $post ) && isset( $post->post_type ) ) {
+			return $post->post_type;
+		}
+
+		if ( is_numeric( $post ) && isset( $GLOBALS['kiyose_test_post_types'][ (int) $post ] ) ) {
+			return $GLOBALS['kiyose_test_post_types'][ (int) $post ];
+		}
+
+		$current_post = $GLOBALS['post'] ?? null;
+
+		if ( is_object( $current_post ) && isset( $current_post->post_type ) ) {
+			return $current_post->post_type;
+		}
+
+		return $GLOBALS['kiyose_test_singular_post_type'] ?? 'post';
+	}
+}
+
+if ( ! function_exists( 'get_the_ID' ) ) {
+	function get_the_ID() {
+		$post = $GLOBALS['post'] ?? null;
+
+		return is_object( $post ) && isset( $post->ID ) ? (int) $post->ID : 0;
+	}
+}
+
+if ( ! function_exists( 'get_permalink' ) ) {
+	function get_permalink( $post_id = 0 ) {
+		$permalinks = $GLOBALS['kiyose_test_permalinks'] ?? array();
+		$post_id    = is_object( $post_id ) && isset( $post_id->ID ) ? (int) $post_id->ID : (int) $post_id;
+
+		return $permalinks[ $post_id ] ?? 'https://example.com/article/';
+	}
+}
+
+if ( ! function_exists( 'get_the_title' ) ) {
+	function get_the_title( $post_id = 0 ) {
+		$titles  = $GLOBALS['kiyose_test_titles'] ?? array();
+		$post_id = is_object( $post_id ) && isset( $post_id->ID ) ? (int) $post_id->ID : (int) $post_id;
+
+		return $titles[ $post_id ] ?? 'Titre article';
+	}
+}
+
+if ( ! function_exists( 'get_the_post_navigation' ) ) {
+	function get_the_post_navigation( $args = array() ) {
+		$GLOBALS['kiyose_test_last_post_navigation_args'] = $args;
+
+		return $GLOBALS['kiyose_test_native_post_navigation_html'] ?? '';
 	}
 }
 
