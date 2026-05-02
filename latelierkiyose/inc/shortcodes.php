@@ -65,49 +65,10 @@ function kiyose_testimonials_shortcode( $atts ) {
 
 	if ( $testimonials_query->have_posts() ) {
 		if ( 'carousel' === $display ) {
-			// Affichage carousel accessible.
-			$total_slides = $testimonials_query->post_count;
-			?>
-			<div
-				class="carousel"
-				role="region"
-				aria-roledescription="carousel"
-				aria-label="<?php esc_attr_e( 'Témoignages de participants', 'kiyose' ); ?>"
-			>
-			<div class="carousel__controls">
-				<button class="carousel__prev" aria-label="<?php esc_attr_e( 'Témoignage précédent', 'kiyose' ); ?>">
-					<?php echo kiyose_carousel_icon_svg( 'prev' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-				</button>
-				<button class="carousel__pause" aria-label="<?php esc_attr_e( 'Mettre en pause le défilement', 'kiyose' ); ?>">
-					<span class="carousel__icon carousel__icon--pause"><?php echo kiyose_carousel_icon_svg( 'pause' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
-					<span class="carousel__icon carousel__icon--play" hidden><?php echo kiyose_carousel_icon_svg( 'play' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
-				</button>
-				<button class="carousel__next" aria-label="<?php esc_attr_e( 'Témoignage suivant', 'kiyose' ); ?>">
-					<?php echo kiyose_carousel_icon_svg( 'next' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-				</button>
-			</div>
-				<div class="carousel__track" aria-live="polite">
-					<?php
-					$slide_index = 0;
-					while ( $testimonials_query->have_posts() ) {
-						$testimonials_query->the_post();
-						++$slide_index;
-						?>
-						<div
-							class="carousel__slide <?php echo 0 === ( $slide_index - 1 ) ? 'carousel__slide--active' : ''; ?>"
-							role="group"
-							aria-roledescription="slide"
-							aria-label="<?php echo esc_attr( sprintf( /* translators: 1: current slide number, 2: total number of slides */ __( '%1$d sur %2$d', 'kiyose' ), $slide_index, $total_slides ) ); ?>"
-							aria-hidden="<?php echo 0 === ( $slide_index - 1 ) ? 'false' : 'true'; ?>"
-						>
-							<?php get_template_part( 'template-parts/content', 'testimony' ); ?>
-						</div>
-						<?php
-					}
-					?>
-				</div>
-			</div>
-			<?php
+			echo kiyose_get_testimonials_carousel_html( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				$testimonials_query,
+				__( 'Témoignages de participants', 'kiyose' )
+			);
 		} else {
 			// Affichage grille.
 			echo '<div class="testimonials-grid testimonials-grid--columns-' . esc_attr( $columns ) . '">';

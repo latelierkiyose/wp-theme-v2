@@ -10,27 +10,7 @@
 	<footer class="site-footer" role="contentinfo">
 		<div class="site-footer__container">
 			
-			<?php if ( ! empty( get_theme_mod( 'kiyose_social_facebook' ) ) || ! empty( get_theme_mod( 'kiyose_social_instagram' ) ) || ! empty( get_theme_mod( 'kiyose_social_linkedin' ) ) ) : ?>
-				<div class="site-footer__social">
-					<?php if ( ! empty( get_theme_mod( 'kiyose_social_facebook' ) ) ) : ?>
-						<a href="<?php echo esc_url( get_theme_mod( 'kiyose_social_facebook', 'https://www.facebook.com/latelierkiyose' ) ); ?>" aria-label="<?php esc_attr_e( 'Facebook', 'kiyose' ); ?>" target="_blank" rel="noopener noreferrer">
-							<?php echo kiyose_social_icon_svg( 'facebook' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-						</a>
-					<?php endif; ?>
-
-					<?php if ( ! empty( get_theme_mod( 'kiyose_social_instagram' ) ) ) : ?>
-						<a href="<?php echo esc_url( get_theme_mod( 'kiyose_social_instagram', 'https://www.instagram.com/latelierkiyose' ) ); ?>" aria-label="<?php esc_attr_e( 'Instagram', 'kiyose' ); ?>" target="_blank" rel="noopener noreferrer">
-							<?php echo kiyose_social_icon_svg( 'instagram' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-						</a>
-					<?php endif; ?>
-
-					<?php if ( ! empty( get_theme_mod( 'kiyose_social_linkedin' ) ) ) : ?>
-						<a href="<?php echo esc_url( get_theme_mod( 'kiyose_social_linkedin', 'https://www.linkedin.com/company/latelierkiyose' ) ); ?>" aria-label="<?php esc_attr_e( 'LinkedIn', 'kiyose' ); ?>" target="_blank" rel="noopener noreferrer">
-							<?php echo kiyose_social_icon_svg( 'linkedin' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-						</a>
-					<?php endif; ?>
-				</div>
-			<?php endif; ?>
+			<?php echo kiyose_get_social_links_html( 'footer' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
 		<div class="site-footer__newsletter">
 			<h3 class="site-footer__newsletter-title"><?php esc_html_e( 'Newsletter', 'kiyose' ); ?></h3>
