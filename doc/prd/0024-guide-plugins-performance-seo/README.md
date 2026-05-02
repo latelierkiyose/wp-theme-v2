@@ -25,7 +25,7 @@ Le document `doc/integrations.md` mentionne WP Rocket (payant) et Autoptimize (g
 ## Dépendances
 
 - **PRD 0019** : Minification des assets (le thème minifie ses propres assets ; le plugin gère les assets tiers et la combinaison)
-- **PRD 0021** : Chemin critique de rendu (optimisations thème complémentaires aux plugins)
+- **PRD 0059** : Chargement production des assets plugins et scripts externes (optimisations thème complémentaires aux plugins)
 
 ## Sélection des plugins
 
@@ -83,7 +83,7 @@ Le document `doc/integrations.md` mentionne WP Rocket (payant) et Autoptimize (g
 **CSS** :
 - Optimize CSS Code : activé
 - Aggregate CSS Files : activé
-- Inline and Defer CSS : **désactivé** (le thème gère sa propre stratégie de CSS critique via PRD 0021)
+- Inline and Defer CSS : **désactivé** (le thème garde la maîtrise des micro-optimisations CSS via PRD 0059)
 - Inline all CSS : désactivé
 
 **JavaScript** :
@@ -232,9 +232,9 @@ WP Super Cache ajoute automatiquement des headers de cache. Pour les assets stat
    - [ ] "Improve image delivery" — résolu
 ```
 
-## Performance attendue (cumul avec PRD 0021-0023)
+## Performance attendue (cumul avec PRD 0059 et PRD 0022-0023)
 
-| Métrique | Avant (tout) | Après thème (0021-0023) | Après plugins (0024) |
+| Métrique | Avant (tout) | Après thème (0059 + 0022-0023) | Après plugins (0024) |
 |----------|-------------|------------------------|---------------------|
 | Performance | 56 | ~70-75 | **85-95** |
 | Accessibility | 93 | ~100 | 100 |

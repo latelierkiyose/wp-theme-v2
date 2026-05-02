@@ -2,7 +2,9 @@
 
 ## Statut
 
-**prêt à l'implémentation**
+**Annulé**
+
+> Annulé le 2026-05-02 : le PRD 0059 remplace ce PRD comme source active pour l'optimisation du chargement front. Les points utiles ont été backportés dans PRD 0059, tandis que les éléments déjà réalisés ou mieux cadrés restent tracés dans PRD 0045, notamment le registre d'assets conditionnels, les dépendances `kiyose-main` et la correction du preload Caveat.
 
 > Mis à jour 2026-04-22 : inventaire aligné sur l'état actuel du code après les PRDs 0019 (minification), 0029 (restructuration homepage), et les évolutions suivantes (callout-box, overlays, home-content). Les bugs §7 du PRD d'origine sont déjà corrigés ; la baseline performance doit être re-mesurée avant validation des gains.
 

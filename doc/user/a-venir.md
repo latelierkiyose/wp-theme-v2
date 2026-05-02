@@ -14,7 +14,7 @@ Sur ordinateur, un encart d'inscription à la newsletter apparaîtra sur le côt
 **Côté rédaction :** rien à faire. Le formulaire Brevo est déjà configuré — l'encart sera une nouvelle manière de l'afficher.
 
 ### 🔄 Optimisation de la vitesse de chargement
-**Statut :** prêt à l'implémentation · **Référence interne :** [PRD 0021](../prd/0021-chemin-critique-rendu/)
+**Statut :** prêt à l'implémentation · **Référence interne :** [PRD 0059](../prd/0059-chargement-assets-plugins-production/)
 
 Améliorations techniques invisibles pour la rédaction, mais qui rendront le site plus rapide à charger (en particulier le premier affichage de la page d'accueil).
 

@@ -179,7 +179,7 @@ if ( document.readyState === 'loading' ) {
 
 **Problème** : `caveat-v21-latin-regular.woff2` retourne une 404.
 
-**Ce correctif est traité dans PRD 0021** (section 5 — correction du fichier de police manquant). Inclus ici pour référence.
+**Ce correctif est traité dans PRD 0045** (registre d'assets conditionnels et preload des polices réelles). Inclus ici pour référence.
 
 ## Fichiers impactés
 
