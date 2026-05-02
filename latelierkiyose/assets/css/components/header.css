@@ -156,8 +156,8 @@
    RESPONSIVE
    ============================================ */
 
-/* Mobile: Show hamburger, hide main nav */
-@media (width <= 1023px) {
+/* Mobile and tablet: keep hamburger until desktop nav has enough room */
+@media (width <= 1179px) {
 	.hamburger-button {
 		display: flex;
 		margin-left: auto; /* Push to right edge, accounting for absolute logo */
@@ -173,7 +173,7 @@
 }
 
 /* Desktop */
-@media (width >= 1024px) {
+@media (width >= 1180px) {
 	.hamburger-button {
 		display: none;
 	}
@@ -185,5 +185,19 @@
 	/* Push navigation to the right to avoid overlapping with absolute logo */
 	.main-nav {
 		margin-left: calc(clamp(80px, 18vw, 280px) + var(--kiyose-spacing-lg));
+	}
+}
+
+@media (width >= 1180px) and (width <= 1439px) {
+	.site-header__logo-bubble {
+		width: clamp(80px, 14vw, 190px);
+	}
+
+	.site-header__logo img {
+		height: clamp(60px, 12vw, 170px);
+	}
+
+	.main-nav {
+		margin-left: calc(clamp(80px, 14vw, 190px) + var(--kiyose-spacing-md));
 	}
 }

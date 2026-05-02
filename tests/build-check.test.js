@@ -4,6 +4,7 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const test = require('node:test');
+const vm = require('node:vm');
 
 const rootDir = path.resolve(__dirname, '..');
 const cssScript = path.join(rootDir, 'bin/minify-css.js');
@@ -12,6 +13,124 @@ const brevoOverrideCss = path.join(
 	rootDir,
 	'latelierkiyose/assets/css/components/brevo-override.css'
 );
+const dropdownJs = path.join(rootDir, 'latelierkiyose/assets/js/modules/dropdown.js');
+const headerCss = path.join(rootDir, 'latelierkiyose/assets/css/components/header.css');
+const navigationCss = path.join(rootDir, 'latelierkiyose/assets/css/components/navigation.css');
+
+class FakeClassList {
+	constructor(classes = []) {
+		this.classes = new Set(classes);
+	}
+
+	add(className) {
+		this.classes.add(className);
+	}
+
+	remove(className) {
+		this.classes.delete(className);
+	}
+
+	contains(className) {
+		return this.classes.has(className);
+	}
+}
+
+class FakeElement {
+	constructor({ tagName = 'div', classes = [], children = [] } = {}) {
+		this.attributes = new Map();
+		this.children = [];
+		this.classList = new FakeClassList(classes);
+		this.eventListeners = new Map();
+		this.hasFocus = false;
+		this.parentElement = null;
+		this.tagName = tagName.toLowerCase();
+
+		children.forEach((child) => this.appendChild(child));
+	}
+
+	appendChild(child) {
+		child.parentElement = this;
+		this.children.push(child);
+	}
+
+	addEventListener(eventName, handler) {
+		const handlers = this.eventListeners.get(eventName) || [];
+		handlers.push(handler);
+		this.eventListeners.set(eventName, handlers);
+	}
+
+	contains(element) {
+		if (!element) {
+			return false;
+		}
+
+		let currentElement = element;
+		while (currentElement) {
+			if (currentElement === this) {
+				return true;
+			}
+			currentElement = currentElement.parentElement;
+		}
+
+		return false;
+	}
+
+	dispatch(eventName, event) {
+		const handlers = this.eventListeners.get(eventName) || [];
+		handlers.forEach((handler) => handler(event));
+	}
+
+	focus() {
+		this.hasFocus = true;
+
+		let currentElement = this;
+		while (currentElement) {
+			currentElement.dispatch('focusin', { target: this });
+			currentElement = currentElement.parentElement;
+		}
+	}
+
+	getAttribute(attributeName) {
+		return this.attributes.get(attributeName) || null;
+	}
+
+	querySelector(selector) {
+		return this.querySelectorAll(selector)[0] || null;
+	}
+
+	querySelectorAll(selector) {
+		const matches = [];
+
+		this.walk((element) => {
+			if (element !== this && element.matches(selector)) {
+				matches.push(element);
+			}
+		});
+
+		return matches;
+	}
+
+	matches(selector) {
+		if (selector === 'a') {
+			return this.tagName === 'a';
+		}
+
+		if (selector === '.sub-menu') {
+			return this.classList.contains('sub-menu');
+		}
+
+		return false;
+	}
+
+	setAttribute(attributeName, value) {
+		this.attributes.set(attributeName, value);
+	}
+
+	walk(callback) {
+		callback(this);
+		this.children.forEach((child) => child.walk(callback));
+	}
+}
 
 function makeFixtureDir(t, prefix) {
 	const fixtureDir = fs.mkdtempSync(path.join(os.tmpdir(), prefix));
@@ -28,6 +147,81 @@ function runNodeScript(scriptPath, args, env) {
 		},
 		encoding: 'utf8',
 	});
+}
+
+function createDropdownEvent(overrides = {}) {
+	let isDefaultPrevented = false;
+
+	return {
+		...overrides,
+		get defaultPrevented() {
+			return isDefaultPrevented;
+		},
+		preventDefault() {
+			isDefaultPrevented = true;
+		},
+	};
+}
+
+function createDropdownFixture() {
+	const parentLink = new FakeElement({ tagName: 'a' });
+	const firstChildLink = new FakeElement({ tagName: 'a' });
+	const secondChildLink = new FakeElement({ tagName: 'a' });
+	const submenu = new FakeElement({
+		tagName: 'ul',
+		classes: ['sub-menu'],
+		children: [firstChildLink, secondChildLink],
+	});
+	const menuItem = new FakeElement({
+		tagName: 'li',
+		classes: ['menu-item-has-children'],
+		children: [parentLink, submenu],
+	});
+	const document = {
+		querySelectorAll(selector) {
+			if (selector === '.main-nav__list .menu-item-has-children') {
+				return [menuItem];
+			}
+
+			return [];
+		},
+	};
+
+	return {
+		document,
+		firstChildLink,
+		menuItem,
+		parentLink,
+		secondChildLink,
+		submenu,
+	};
+}
+
+function loadDropdown(document) {
+	const source = fs
+		.readFileSync(dropdownJs, 'utf8')
+		.replace('export default class Dropdown', 'module.exports = class Dropdown');
+	const sandbox = {
+		document,
+		module: { exports: {} },
+		window: { innerWidth: 1280 },
+	};
+
+	vm.runInNewContext(source, sandbox, { filename: dropdownJs });
+
+	return sandbox.module.exports;
+}
+
+function extractBreakpoint(css, selector, direction) {
+	const pattern = new RegExp(
+		`@media \\(width ${direction} (\\d+)px\\) \\{[\\s\\S]*?${selector.replace('.', '\\.')}`,
+		'u'
+	);
+	const match = css.match(pattern);
+
+	assert.notEqual(match, null, `${selector} has no ${direction} responsive rule`);
+
+	return Number(match[1]);
 }
 
 test('cssCheck_whenMinifiedFileIsMissing_failsWithoutWritingAssets', (t) => {
@@ -150,6 +344,143 @@ test('jsCheck_whenGeneratedAssetIsCurrent_passes', (t) => {
 	// Then
 	assert.equal(buildResult.status, 0, buildResult.stderr);
 	assert.equal(checkResult.status, 0, checkResult.stderr);
+});
+
+test('Dropdown_whenParentLinkIsClicked_doesNotPreventNavigation', () => {
+	// Given
+	const fixture = createDropdownFixture();
+	const Dropdown = loadDropdown(fixture.document);
+	new Dropdown();
+	const clickEvent = createDropdownEvent();
+
+	// When
+	fixture.parentLink.dispatch('click', clickEvent);
+
+	// Then
+	assert.equal(clickEvent.defaultPrevented, false);
+});
+
+test('Dropdown_whenArrowDownIsPressed_opensSubmenuAndFocusesFirstChild', () => {
+	// Given
+	const fixture = createDropdownFixture();
+	const Dropdown = loadDropdown(fixture.document);
+	new Dropdown();
+	const keydownEvent = createDropdownEvent({ key: 'ArrowDown' });
+
+	// When
+	fixture.parentLink.dispatch('keydown', keydownEvent);
+
+	// Then
+	assert.equal(keydownEvent.defaultPrevented, true);
+	assert.equal(fixture.parentLink.getAttribute('aria-expanded'), 'true');
+	assert.equal(fixture.submenu.classList.contains('is-open'), true);
+	assert.equal(fixture.firstChildLink.hasFocus, true);
+});
+
+test('Dropdown_whenParentIsHovered_opensSubmenu', () => {
+	// Given
+	const fixture = createDropdownFixture();
+	const Dropdown = loadDropdown(fixture.document);
+	new Dropdown();
+
+	// When
+	fixture.menuItem.dispatch('mouseenter', createDropdownEvent());
+
+	// Then
+	assert.equal(fixture.parentLink.getAttribute('aria-expanded'), 'true');
+	assert.equal(fixture.submenu.classList.contains('is-open'), true);
+});
+
+test('Dropdown_whenFocusEntersParent_opensSubmenu', () => {
+	// Given
+	const fixture = createDropdownFixture();
+	const Dropdown = loadDropdown(fixture.document);
+	new Dropdown();
+
+	// When
+	fixture.menuItem.dispatch('focusin', createDropdownEvent());
+
+	// Then
+	assert.equal(fixture.parentLink.getAttribute('aria-expanded'), 'true');
+	assert.equal(fixture.submenu.classList.contains('is-open'), true);
+});
+
+test('Dropdown_whenEscapeIsPressed_closesSubmenu', () => {
+	// Given
+	const fixture = createDropdownFixture();
+	const Dropdown = loadDropdown(fixture.document);
+	new Dropdown();
+	fixture.parentLink.dispatch('keydown', createDropdownEvent({ key: 'ArrowDown' }));
+	const escapeEvent = createDropdownEvent({ key: 'Escape' });
+
+	// When
+	fixture.submenu.dispatch('keydown', escapeEvent);
+
+	// Then
+	assert.equal(fixture.parentLink.getAttribute('aria-expanded'), 'false');
+	assert.equal(fixture.submenu.classList.contains('is-open'), false);
+	assert.equal(fixture.parentLink.hasFocus, true);
+});
+
+test('NavigationCss_whenResponsiveBreakpointsChange_keepsHeaderAndNavigationAligned', () => {
+	// Given
+	const expectedMobileBreakpoint = 1179;
+	const expectedDesktopBreakpoint = 1180;
+	const headerSource = fs.readFileSync(headerCss, 'utf8');
+	const navigationSource = fs.readFileSync(navigationCss, 'utf8');
+
+	// When
+	const headerMobileBreakpoint = extractBreakpoint(headerSource, '.hamburger-button', '<=');
+	const headerDesktopBreakpoint = extractBreakpoint(headerSource, '.hamburger-button', '>=');
+	const navigationMobileBreakpoint = extractBreakpoint(navigationSource, '.main-nav', '<=');
+	const navigationDesktopBreakpoint = extractBreakpoint(navigationSource, '.mobile-menu', '>=');
+
+	// Then
+	assert.equal(headerMobileBreakpoint, expectedMobileBreakpoint);
+	assert.equal(navigationMobileBreakpoint, expectedMobileBreakpoint);
+	assert.equal(headerDesktopBreakpoint, expectedDesktopBreakpoint);
+	assert.equal(navigationDesktopBreakpoint, expectedDesktopBreakpoint);
+});
+
+test('NavigationCss_whenDesktopStartsBeforeLargeDesktop_usesCompactIntermediateLayout', () => {
+	// Given
+	const headerSource = fs.readFileSync(headerCss, 'utf8');
+	const navigationSource = fs.readFileSync(navigationCss, 'utf8');
+
+	// When
+	const hasHeaderIntermediateRule = headerSource.includes(
+		'@media (width >= 1180px) and (width <= 1439px)'
+	);
+	const hasCompactLogoWidth = headerSource.includes('width: clamp(80px, 14vw, 190px);');
+	const hasCompactNavigationMargin = headerSource.includes(
+		'margin-left: calc(clamp(80px, 14vw, 190px) + var(--kiyose-spacing-md));'
+	);
+	const hasNavigationIntermediateRule = navigationSource.includes(
+		'@media (width >= 1180px) and (width <= 1439px)'
+	);
+	const hasCompactNavigationGap = navigationSource.includes('gap: var(--kiyose-spacing-sm);');
+	const hasCompactNavigationFontSize = navigationSource.includes(
+		'font-size: var(--kiyose-font-size-sm);'
+	);
+
+	// Then
+	assert.equal(hasHeaderIntermediateRule, true);
+	assert.equal(hasCompactLogoWidth, true);
+	assert.equal(hasCompactNavigationMargin, true);
+	assert.equal(hasNavigationIntermediateRule, true);
+	assert.equal(hasCompactNavigationGap, true);
+	assert.equal(hasCompactNavigationFontSize, true);
+});
+
+test('NavigationCss_whenDropdownIsOpened_doesNotDelayVisibilityForKeyboardFocus', () => {
+	// Given
+	const navigationSource = fs.readFileSync(navigationCss, 'utf8');
+
+	// When
+	const transitionsVisibility = navigationSource.includes('visibility 0.2s ease');
+
+	// Then
+	assert.equal(transitionsVisibility, false);
 });
 
 test('packageScripts_includeReadOnlyBuildCheckCommands', () => {

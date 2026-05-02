@@ -8,6 +8,7 @@
 export default class Dropdown {
 	constructor() {
 		this.menuItems = document.querySelectorAll('.main-nav__list .menu-item-has-children');
+		this.skipNextFocusOpen = new WeakSet();
 		this.init();
 	}
 
@@ -28,17 +29,28 @@ export default class Dropdown {
 			link.setAttribute('aria-haspopup', 'true');
 			link.setAttribute('aria-expanded', 'false');
 
-			// Handle click on parent link (toggle dropdown)
-			link.addEventListener('click', (e) => {
-				if (window.innerWidth >= 1024) {
-					e.preventDefault();
-					this.toggleDropdown(link, submenu);
-				}
-			});
-
 			// Handle keyboard navigation
 			link.addEventListener('keydown', (e) => {
 				this.handleKeyDown(e, link, submenu);
+			});
+
+			menuItem.addEventListener('mouseenter', () => {
+				this.openDropdown(link, submenu);
+			});
+
+			menuItem.addEventListener('mouseleave', () => {
+				if (!menuItem.contains(document.activeElement)) {
+					this.closeDropdown(link, submenu);
+				}
+			});
+
+			menuItem.addEventListener('focusin', () => {
+				if (this.skipNextFocusOpen.has(link)) {
+					this.skipNextFocusOpen.delete(link);
+					return;
+				}
+
+				this.openDropdown(link, submenu);
 			});
 
 			// Close dropdown when focus leaves the menu item
@@ -53,20 +65,11 @@ export default class Dropdown {
 			submenu.addEventListener('keydown', (e) => {
 				if (e.key === 'Escape') {
 					this.closeDropdown(link, submenu);
+					this.skipNextFocusOpen.add(link);
 					link.focus();
 				}
 			});
 		});
-	}
-
-	toggleDropdown(link, submenu) {
-		const isExpanded = link.getAttribute('aria-expanded') === 'true';
-
-		if (isExpanded) {
-			this.closeDropdown(link, submenu);
-		} else {
-			this.openDropdown(link, submenu);
-		}
 	}
 
 	openDropdown(link, submenu) {
@@ -79,54 +82,49 @@ export default class Dropdown {
 		submenu.classList.remove('is-open');
 	}
 
+	focusFirstSubmenuLink(submenu) {
+		const firstLink = submenu.querySelector('a');
+		if (firstLink) {
+			firstLink.focus();
+		}
+	}
+
+	focusLastSubmenuLink(submenu) {
+		const submenuLinks = submenu.querySelectorAll('a');
+		if (submenuLinks.length) {
+			submenuLinks[submenuLinks.length - 1].focus();
+		}
+	}
+
 	handleKeyDown(e, link, submenu) {
 		const isExpanded = link.getAttribute('aria-expanded') === 'true';
 
 		switch (e.key) {
-			case 'Enter':
 			case ' ':
 				e.preventDefault();
-				this.toggleDropdown(link, submenu);
-				if (!isExpanded) {
-					// Focus first item in submenu
-					const firstLink = submenu.querySelector('a');
-					if (firstLink) {
-						firstLink.focus();
-					}
-				}
+				this.openDropdown(link, submenu);
+				this.focusFirstSubmenuLink(submenu);
 				break;
 
 			case 'Escape':
 				if (isExpanded) {
 					e.preventDefault();
 					this.closeDropdown(link, submenu);
+					this.skipNextFocusOpen.add(link);
+					link.focus();
 				}
 				break;
 
 			case 'ArrowDown':
-				if (isExpanded) {
-					e.preventDefault();
-					const firstLink = submenu.querySelector('a');
-					if (firstLink) {
-						firstLink.focus();
-					}
-				} else {
-					e.preventDefault();
-					this.openDropdown(link, submenu);
-					const firstLink = submenu.querySelector('a');
-					if (firstLink) {
-						firstLink.focus();
-					}
-				}
+				e.preventDefault();
+				this.openDropdown(link, submenu);
+				this.focusFirstSubmenuLink(submenu);
 				break;
 
 			case 'ArrowUp':
 				if (isExpanded) {
 					e.preventDefault();
-					const lastLink = submenu.querySelectorAll('a');
-					if (lastLink.length) {
-						lastLink[lastLink.length - 1].focus();
-					}
+					this.focusLastSubmenuLink(submenu);
 				}
 				break;
 		}

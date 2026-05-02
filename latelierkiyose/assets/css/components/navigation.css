@@ -87,11 +87,12 @@
 
 @media (prefers-reduced-motion: no-preference) {
 	.main-nav__list .sub-menu {
-		transition: opacity 0.2s ease, visibility 0.2s ease;
+		transition: opacity 0.2s ease;
 	}
 }
 
-/* Show dropdown on hover and focus-within */
+/* Show dropdown on hover, focus-within, and JS-opened state */
+.main-nav__list .sub-menu.is-open,
 .main-nav__list li:hover > .sub-menu,
 .main-nav__list li:focus-within > .sub-menu {
 	opacity: 1;
@@ -349,8 +350,8 @@
    RESPONSIVE
    ============================================ */
 
-/* Mobile (<1024px) */
-@media (width <= 1023px) {
+/* Mobile and tablet (<1180px) */
+@media (width <= 1179px) {
 	.main-nav {
 		display: none;
 	}
@@ -360,11 +361,22 @@
 	}
 }
 
-/* Desktop (≥1024px) */
-@media (width >= 1024px) {
+/* Desktop (≥1180px) */
+@media (width >= 1180px) {
 	.mobile-menu,
 	.mobile-menu-overlay,
 	.hamburger-button {
 		display: none !important;
+	}
+}
+
+@media (width >= 1180px) and (width <= 1439px) {
+	.main-nav__list {
+		gap: var(--kiyose-spacing-sm);
+	}
+
+	.main-nav__list a {
+		font-size: var(--kiyose-font-size-sm);
+		padding: var(--kiyose-spacing-sm) var(--kiyose-spacing-xs);
 	}
 }
