@@ -10,25 +10,25 @@ get_header();
 ?>
 
 <main id="main" class="site-main" tabindex="-1">
-	<section class="search-results">
-		<header class="search-results__header">
+	<section class="search-page">
+		<header class="search-page__header">
 			<h1>
 				<?php
 				printf(
 					/* translators: %s: search query */
 					esc_html__( 'Résultats de recherche pour « %s »', 'kiyose' ),
-					'<span class="search-results__query">' . esc_html( get_search_query() ) . '</span>'
+					'<span class="search-page__query">' . esc_html( get_search_query() ) . '</span>'
 				);
 				?>
 			</h1>
 		</header>
 
-		<div class="search-results__form">
+		<div class="search-page__form">
 			<?php get_search_form(); ?>
 		</div>
 
 		<?php if ( have_posts() ) : ?>
-			<div class="search-results__list">
+			<div class="search-page__list">
 				<?php
 				while ( have_posts() ) :
 					the_post();
@@ -63,7 +63,7 @@ get_header();
 			?>
 
 		<?php else : ?>
-			<div class="search-results__empty">
+			<div class="search-page__empty">
 				<p><?php esc_html_e( 'Aucun résultat trouvé pour votre recherche.', 'kiyose' ); ?></p>
 				<p><strong><?php esc_html_e( 'Suggestions :', 'kiyose' ); ?></strong></p>
 				<ul>
