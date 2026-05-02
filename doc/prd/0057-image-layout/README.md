@@ -1,4 +1,4 @@
-# PRD 0057 — Style d'image ronde avec habillage circulaire
+# PRD 0057 — Style d'image ronde avec habillage rectangulaire
 
 - **Statut** : terminé
 - **Criticité** : moyenne
@@ -15,15 +15,15 @@ Le PRD 0040 a défini le comportement global des images éditoriales insérées 
 - captions harmonisées ;
 - styles portés par `gutenberg-blocks.css`.
 
-Ce comportement couvre le positionnement de base, mais il ne permet pas de créer une image ronde intégrée dans un paragraphe avec un texte qui suit le contour du cercle. Le besoin éditorial est de pouvoir utiliser une image plus organique, proche d'un portrait ou d'un médaillon, sans que le texte s'arrête sur un rectangle invisible.
+Ce comportement couvre le positionnement de base, mais il ne permet pas de créer une image ronde cohérente, proche d'un portrait ou d'un médaillon. Le besoin éditorial est de pouvoir sélectionner un style clair dans Gutenberg tout en gardant le comportement de flottement rectangulaire du PRD 0040, plus robuste entre navigateurs.
 
 ## Problème à résoudre
 
-Aujourd'hui, même si une image reçoit un `border-radius: 50%`, le texte continue de s'habiller autour de la boîte rectangulaire de l'image flottante. Le rendu visuel devient incohérent :
+Aujourd'hui, le style natif WordPress `Arrondie` ne garantit pas un médaillon circulaire cohérent avec le thème. Le rendu visuel peut devenir incohérent :
 
 - l'image semble ronde ;
-- l'espace réservé dans le texte reste rectangulaire ;
-- la distance entre le texte et le bord visible de l'image varie selon la ligne ;
+- l'image peut devenir ovale si la source n'est pas carrée ;
+- l'espace réservé dans le texte doit rester rectangulaire pour garantir un rendu stable ;
 - les rédacteurices n'ont pas de style clair à sélectionner dans l'éditeur.
 
 Le besoin n'est pas seulement esthétique. Il faut définir un contrat stable entre l'éditeur Gutenberg, le CSS front et la documentation utilisateur.
@@ -34,10 +34,10 @@ Ajouter un style d'image éditoriale `Ronde` qui :
 
 1. rend l'image visuellement circulaire ;
 2. force un cadrage carré avec `object-fit: cover` pour éviter les ovales ;
-3. permet, sur desktop, au texte de s'habiller autour du cercle visible ;
+3. conserve, sur desktop, l'habillage rectangulaire standard des images flottantes ;
 4. conserve le comportement responsive du PRD 0040 sur tablet et mobile ;
 5. reste utilisable par les rédacteurices depuis l'interface native Gutenberg ;
-6. dégrade proprement si `shape-outside` n'est pas disponible.
+6. reste stable sur Chrome, Firefox et Safari sans dépendre de CSS Shapes.
 
 ## Décisions de conception
 
@@ -47,11 +47,11 @@ Ajouter un style d'image éditoriale `Ronde` qui :
 | Nom technique | Utiliser le style `kiyose-round`, rendu en classe `is-style-kiyose-round` | Préfixe cohérent avec le thème et pas de conflit avec le style core `is-style-rounded` |
 | Bloc ciblé | `core/image` uniquement | Le besoin concerne les images éditoriales simples, pas les galeries ni les médias custom |
 | Alignements compatibles | `alignleft`, `alignright`, `aligncenter` | Réutilise le contrat du PRD 0040 |
-| Habillage circulaire | Activer `shape-outside: circle(50%)` seulement sur les images flottantes desktop | `shape-outside` ne fonctionne que sur les éléments flottants |
-| Mobile et tablet | Aucun habillage circulaire sous `1024px` | Le texte autour d'un cercle devient trop étroit et moins lisible |
+| Habillage du texte | Garder l'habillage rectangulaire standard du PRD 0040 | Plus prévisible et compatible entre navigateurs que CSS Shapes |
+| Mobile et tablet | Aucun flottement sous `1024px` | Le texte autour d'une image devient trop étroit et moins lisible |
 | Dimensions | Limiter les images rondes à `320px` maximum | Cohérent avec la largeur flottante du PRD 0040 et évite les médaillons disproportionnés |
 | Source image | Recadrer côté CSS avec `aspect-ratio: 1` et `object-fit: cover` | Garantit un cercle même avec une image source rectangulaire |
-| Captions | Les conserver, mais ne pas promettre un habillage circulaire parfait autour d'une caption longue | Une caption fait partie du `figure` flottant et complique le calcul de forme CSS |
+| Captions | Les conserver avec le comportement du PRD 0040 | Une caption fait partie du `figure` flottant et reste compatible avec l'habillage rectangulaire |
 | Style core WordPress | Ne pas surcharger `is-style-rounded` | Évite de modifier par surprise des contenus qui utilisent déjà le style WordPress natif |
 | JavaScript | Aucun JS | Le besoin est purement CSS + enregistrement de style Gutenberg |
 
@@ -59,7 +59,7 @@ Ajouter un style d'image éditoriale `Ronde` qui :
 
 - **PRD 0040** : règles globales des images éditoriales et flottement desktop.
 - **WordPress 6.7+** : API `register_block_style()` pour exposer le style dans Gutenberg.
-- **CSS moderne** : `aspect-ratio`, `object-fit`, `shape-outside`, `shape-margin`.
+- **CSS moderne** : `aspect-ratio`, `object-fit`.
 
 ## Spécifications
 
@@ -106,22 +106,11 @@ figure.is-style-kiyose-round {
 	max-width: min(100%, 320px);
 }
 
-.wp-block-image.is-style-kiyose-round img,
-figure.is-style-kiyose-round img {
+:where(.wp-block-image, figure).is-style-kiyose-round img {
 	aspect-ratio: 1;
 	border-radius: 50%;
 	object-fit: cover;
 	width: 100%;
-}
-
-@media (width >= 1024px) {
-	.wp-block-image.is-style-kiyose-round.alignleft,
-	figure.is-style-kiyose-round.alignleft,
-	.wp-block-image.is-style-kiyose-round.alignright,
-	figure.is-style-kiyose-round.alignright {
-		shape-margin: var(--kiyose-spacing-md);
-		shape-outside: circle(50%);
-	}
 }
 ```
 
@@ -129,11 +118,11 @@ Les valeurs exactes peuvent être ajustées pendant l'implémentation, mais le c
 
 - image ronde, jamais ovale ;
 - largeur maximale `320px` ;
-- texte habillé autour du cercle sur desktop avec alignement gauche ou droit ;
+- texte habillé autour de la boîte rectangulaire sur desktop avec alignement gauche ou droit ;
 - image centrée sans texte flottant avec alignement centre ;
 - repli centré sans flottement sous `1024px`.
 
-Si nécessaire, utiliser `@supports (shape-outside: circle(50%))` pour isoler l'habillage circulaire. Le fallback sans `shape-outside` doit rester acceptable : image ronde visible, texte autour de la boîte flottante rectangulaire.
+Ne pas utiliser `shape-outside` pour ce style : le rendu est trop fragile selon les navigateurs. Le comportement attendu est une image ronde visible avec texte autour de la boîte flottante rectangulaire.
 
 ### 3. Préserver le comportement des captions
 
@@ -143,10 +132,7 @@ Règles attendues :
 
 - la caption reste lisible sous l'image ;
 - la caption conserve le style défini par le PRD 0040 ;
-- aucune caption ne doit chevaucher le texte adjacent ;
-- une caption longue peut forcer un habillage moins précis : ce cas doit être documenté comme une limite éditoriale, pas corrigé par un hack CSS fragile.
-
-Consigne documentation : recommander des captions courtes, ou l'absence de caption, quand l'effet recherché est un habillage circulaire précis dans un paragraphe.
+- aucune caption ne doit chevaucher le texte adjacent.
 
 ### 4. Régénérer les assets minifiés
 
@@ -167,7 +153,7 @@ Tests attendus :
 - la fonction ne produit pas d'erreur si `register_block_style()` n'existe pas ;
 - `gutenberg-blocks.css` contient le sélecteur `.is-style-kiyose-round` ;
 - le CSS du style rond contient `border-radius: 50%`, `aspect-ratio: 1`, `object-fit: cover` ;
-- le CSS desktop contient `shape-outside: circle(50%)` et `shape-margin`.
+- le CSS ne contient pas `shape-outside` ni `shape-margin` pour le style rond.
 
 Fichiers de test possibles :
 
@@ -189,10 +175,9 @@ La documentation doit expliquer :
 - comment sélectionner un bloc Image ;
 - où choisir le style `Ronde` dans Gutenberg ;
 - que l'image doit idéalement être un portrait ou une image déjà bien centrée ;
-- que l'alignement gauche/droite active l'habillage du texte seulement sur ordinateur ;
+- que l'alignement gauche/droite active l'habillage rectangulaire du texte seulement sur ordinateur ;
 - que l'alignement centre affiche une image ronde centrée sans habillage ;
-- qu'il faut renseigner un texte alternatif pertinent si l'image porte une information ;
-- qu'une caption longue réduit la qualité de l'habillage circulaire.
+- qu'il faut renseigner un texte alternatif pertinent si l'image porte une information.
 
 Exemple à inclure :
 
@@ -233,8 +218,8 @@ Exemple à inclure :
 - Bloc média + texte (`core/media-text`).
 - Réglage fin du point focal dans l'éditeur.
 - Contrôles personnalisés de taille, marge ou forme.
-- Habillage circulaire sur mobile et tablet.
-- Garantie d'un habillage circulaire parfait avec captions longues.
+- Habillage circulaire autour du contour visible de l'image.
+- Habillage du texte sur mobile et tablet.
 - Lightbox ou zoom au clic.
 
 ## Risques et points d'attention
@@ -243,8 +228,8 @@ Exemple à inclure :
 |---|---|
 | Les rédacteurices confondent `Ronde` avec le style natif `Arrondie` | Documentation explicite et label clair dans Gutenberg |
 | Une image rectangulaire coupe un visage | Recommander des portraits centrés et tester le rendu avant publication |
-| `shape-outside` n'est pas supporté par un navigateur ancien | Fallback acceptable : image ronde, habillage rectangulaire |
-| Une caption longue crée un contour de texte moins élégant | Documenter la limite et recommander une caption courte |
+| Les rendus CSS Shapes sont différents selon les navigateurs | Ne pas utiliser `shape-outside` ; garder l'habillage rectangulaire |
+| Une caption longue augmente la hauteur du bloc flottant | Conserver l'habillage rectangulaire standard du PRD 0040 |
 | Les styles `alignleft` / `alignright` existants entrent en conflit | Ajouter les règles dans la section PRD 0040 et couvrir par tests CSS |
 
 ## Tests et validation
@@ -255,7 +240,7 @@ Exemple à inclure :
 - [x] Test : absence de fatal error si `register_block_style()` n'existe pas.
 - [x] Test CSS : `.is-style-kiyose-round` existe dans `gutenberg-blocks.css`.
 - [x] Test CSS : l'image ronde utilise `aspect-ratio: 1`, `border-radius: 50%`, `object-fit: cover`.
-- [x] Test CSS : l'habillage desktop utilise `shape-outside: circle(50%)` et `shape-margin`.
+- [x] Test CSS : le style rond n'utilise pas `shape-outside` ni `shape-margin`.
 - [x] `./bin/phpunit.sh --testdox` passe.
 - [x] `./bin/phpcs.sh` passe.
 - [x] `make test` passe.
@@ -271,7 +256,7 @@ Créer un article ou une page de test avec :
 
 Vérifier :
 
-- [ ] Desktop `>= 1024px` : le texte suit le contour du cercle avec un écart régulier.
+- [ ] Desktop `>= 1024px` : le texte suit une limite verticale rectangulaire stable.
 - [ ] Desktop `>= 1024px` : `alignleft` et `alignright` restent limités à `320px`.
 - [ ] Desktop `>= 1024px` : `aligncenter` reste centré, sans texte flottant.
 - [ ] Tablet `768-1023px` : aucune image ne flotte.

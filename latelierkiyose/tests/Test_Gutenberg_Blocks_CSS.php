@@ -24,16 +24,27 @@ class Test_Gutenberg_Blocks_CSS extends TestCase {
 		$this->assertStringContainsString( 'object-fit: cover;', $css );
 	}
 
-	public function test_gutenbergBlocksCss_whenRoundImageFloatsOnDesktop_declaresCircularTextWrap() {
+	public function test_gutenbergBlocksCss_whenRoundImageFloatsOnDesktop_keepsRectangularTextWrap() {
 		// Given
 		$css = $this->get_gutenberg_blocks_css();
 
 		// When / Then
 		$this->assertStringContainsString( '@media (width >= 1024px)', $css );
-		$this->assertStringContainsString( '.wp-block-image.is-style-kiyose-round.alignleft', $css );
-		$this->assertStringContainsString( '.wp-block-image.is-style-kiyose-round.alignright', $css );
-		$this->assertStringContainsString( 'shape-margin:', $css );
-		$this->assertStringContainsString( 'shape-outside: circle(50%);', $css );
+		$this->assertStringContainsString( '.wp-block-image .alignleft', $css );
+		$this->assertStringContainsString( '.wp-block-image .alignright', $css );
+		$this->assertStringContainsString( 'figure.alignleft', $css );
+		$this->assertStringContainsString( 'figure.alignright', $css );
+		$this->assertStringNotContainsString( 'shape-margin:', $css );
+		$this->assertStringNotContainsString( 'shape-outside:', $css );
+	}
+
+	public function test_gutenbergBlocksCss_whenRoundImageIsInsideTemplateContent_removesImageMarginsFromShapeBox() {
+		// Given
+		$css = $this->get_gutenberg_blocks_css();
+
+		// When / Then
+		$this->assertStringContainsString( ':is(figure.is-style-kiyose-round, .wp-block-image.is-style-kiyose-round) img', $css );
+		$this->assertStringContainsString( 'margin: 0;', $css );
 	}
 
 	public function test_gutenbergBlocksCss_whenRoundImageStyleWrapsAlignedFigure_declaresNestedGutenbergContract() {
@@ -47,8 +58,6 @@ class Test_Gutenberg_Blocks_CSS extends TestCase {
 		$this->assertStringContainsString( '.wp-block-image.is-style-kiyose-round > img', $css );
 		$this->assertStringContainsString( '.wp-block-image .alignleft', $css );
 		$this->assertStringContainsString( '.wp-block-image .alignright', $css );
-		$this->assertStringContainsString( '.wp-block-image.is-style-kiyose-round > figure.alignleft', $css );
-		$this->assertStringContainsString( '.wp-block-image.is-style-kiyose-round > figure.alignright', $css );
 	}
 
 	private function get_gutenberg_blocks_css() {

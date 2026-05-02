@@ -98,12 +98,12 @@ Pour créer une image ronde dans un article ou une page, **utilise le style `Ron
 2. Dans le panneau de droite, onglet **Bloc**, ouvre la section **Styles**.
 3. Choisis le style **Ronde**.
 4. Dans la **barre d'outils du bloc sélectionné** (au-dessus de l'image, pas dans le panneau de droite), choisis l'alignement :
-   - **Gauche** ou **Droite** si tu veux que le texte passe autour de l'image sur ordinateur.
+   - **Gauche** ou **Droite** si tu veux que le texte passe autour de la boîte de l'image sur ordinateur.
    - **Centre** si tu veux une image ronde centrée, sans habillage du texte.
 
 Le thème applique ensuite la mise en page grâce aux classes techniques `alignleft`, `alignright` et `aligncenter`. **Tu n'as pas besoin de les taper** dans **Classes CSS supplémentaires** : Gutenberg les ajoute automatiquement quand tu choisis l'alignement dans la barre d'outils.
 
-Tu n'as pas besoin de créer un bloc **Colonnes** pour placer du texte à côté d'une image alignée à gauche ou à droite : sur ordinateur, le texte passe automatiquement autour de l'image.
+Tu n'as pas besoin de créer un bloc **Colonnes** pour placer du texte à côté d'une image alignée à gauche ou à droite : sur ordinateur, le texte passe automatiquement autour de la boîte rectangulaire de l'image. C'est volontaire, pour garder un rendu stable dans tous les navigateurs.
 
 Sur tablette et mobile, l'image ronde revient automatiquement dans la colonne du texte : le texte ne passe pas autour, pour garder une lecture confortable.
 
@@ -120,7 +120,7 @@ Sur tablette et mobile, l'image ronde revient automatiquement dans la colonne du
 
 - Choisis une photo déjà bien centrée, surtout pour un portrait : le style rond recadre l'image en carré.
 - Renseigne un **texte alternatif** utile si l'image apporte une information. Si elle est seulement décorative, laisse le champ vide.
-- Garde la légende courte, ou supprime-la, si tu veux un habillage du texte bien régulier autour du cercle.
+- Garde la légende courte si l'image est alignée à gauche ou à droite : une légende longue agrandit la boîte autour de laquelle le texte passe.
 
 ## Règle importante
 
