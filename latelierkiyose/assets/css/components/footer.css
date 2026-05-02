@@ -38,7 +38,7 @@
 
 .site-footer__social a {
 	align-items: center;
-	background-color: var(--kiyose-color-background);
+	background-color: var(--kiyose-color-primary);
 	border-radius: 50%;
 	color: var(--kiyose-color-burgundy);
 	display: inline-flex;
@@ -51,16 +51,13 @@
 
 @media (prefers-reduced-motion: no-preference) {
 	.site-footer__social a {
-		transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
-	}
-
-	.site-footer__social a:hover {
-		transform: translateY(-2px);
+		transition: background-color 0.2s ease, color 0.2s ease;
 	}
 }
 
-.site-footer__social a:hover {
-	background-color: var(--kiyose-color-primary);
+.site-footer__social a:hover,
+.site-footer__social a:focus-visible {
+	background-color: var(--kiyose-color-burgundy);
 	color: #ffffff;
 }
 
