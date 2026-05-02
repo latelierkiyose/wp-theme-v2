@@ -225,8 +225,11 @@ figure.aligncenter img,
 /* Mobile & tablet (< 1024px) : alignleft/alignright se comportent comme aligncenter */
 .wp-block-image.alignleft,
 .wp-block-image.alignright,
+.wp-block-image .alignleft,
+.wp-block-image .alignright,
 figure.alignleft,
 figure.alignright {
+	float: none;
 	margin-inline: auto;
 	max-width: 100%;
 }
@@ -237,9 +240,24 @@ figure.is-style-kiyose-round {
 	max-width: min(100%, 320px);
 }
 
+.wp-block-image.is-style-kiyose-round > figure,
+.wp-block-image.is-style-kiyose-round > img {
+	max-width: min(100%, 320px);
+}
+
+.wp-block-image.is-style-kiyose-round > figure:not(.alignleft, .alignright),
+.wp-block-image.is-style-kiyose-round > img {
+	margin-inline: auto;
+}
+
 /* Desktop (≥ 1024px) — flottant activé */
 @media (width >= 1024px) {
+	div.wp-block-image.is-style-kiyose-round {
+		max-width: 100%;
+	}
+
 	.wp-block-image.alignleft,
+	.wp-block-image .alignleft,
 	figure.alignleft {
 		float: left;
 		margin: var(--kiyose-spacing-sm) var(--kiyose-spacing-xl) var(--kiyose-spacing-lg) 0;
@@ -247,6 +265,7 @@ figure.is-style-kiyose-round {
 	}
 
 	.wp-block-image.alignright,
+	.wp-block-image .alignright,
 	figure.alignright {
 		float: right;
 		margin: var(--kiyose-spacing-sm) 0 var(--kiyose-spacing-lg) var(--kiyose-spacing-xl);
@@ -256,8 +275,10 @@ figure.is-style-kiyose-round {
 	@supports (shape-outside: circle(50%)) {
 		.wp-block-image.is-style-kiyose-round.alignleft,
 		figure.is-style-kiyose-round.alignleft,
+		.wp-block-image.is-style-kiyose-round > figure.alignleft,
 		.wp-block-image.is-style-kiyose-round.alignright,
-		figure.is-style-kiyose-round.alignright {
+		figure.is-style-kiyose-round.alignright,
+		.wp-block-image.is-style-kiyose-round > figure.alignright {
 			shape-margin: var(--kiyose-spacing-md);
 			shape-outside: circle(50%);
 		}

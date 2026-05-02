@@ -36,6 +36,21 @@ class Test_Gutenberg_Blocks_CSS extends TestCase {
 		$this->assertStringContainsString( 'shape-outside: circle(50%);', $css );
 	}
 
+	public function test_gutenbergBlocksCss_whenRoundImageStyleWrapsAlignedFigure_declaresNestedGutenbergContract() {
+		// Given
+		$css = $this->get_gutenberg_blocks_css();
+
+		// When / Then
+		$this->assertStringContainsString( 'float: none;', $css );
+		$this->assertStringContainsString( 'div.wp-block-image.is-style-kiyose-round', $css );
+		$this->assertStringContainsString( '.wp-block-image.is-style-kiyose-round > figure', $css );
+		$this->assertStringContainsString( '.wp-block-image.is-style-kiyose-round > img', $css );
+		$this->assertStringContainsString( '.wp-block-image .alignleft', $css );
+		$this->assertStringContainsString( '.wp-block-image .alignright', $css );
+		$this->assertStringContainsString( '.wp-block-image.is-style-kiyose-round > figure.alignleft', $css );
+		$this->assertStringContainsString( '.wp-block-image.is-style-kiyose-round > figure.alignright', $css );
+	}
+
 	private function get_gutenberg_blocks_css() {
 		$css = file_get_contents( __DIR__ . '/../assets/css/components/gutenberg-blocks.css' );
 
