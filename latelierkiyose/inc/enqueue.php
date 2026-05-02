@@ -551,7 +551,10 @@ function kiyose_should_load_page_styles(): bool {
  * @return bool
  */
 function kiyose_should_load_search_styles(): bool {
-	return function_exists( 'is_search' ) && is_search();
+	return ( function_exists( 'is_search' ) && is_search() )
+		|| ( function_exists( 'is_home' ) && is_home() )
+		|| ( function_exists( 'is_archive' ) && is_archive() )
+		|| ( function_exists( 'is_404' ) && is_404() );
 }
 
 /**

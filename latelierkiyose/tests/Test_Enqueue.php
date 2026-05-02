@@ -243,6 +243,39 @@ class Test_Enqueue extends TestCase {
 		$this->assertFalse( $result );
 	}
 
+	public function test_kiyose_should_load_search_styles_whenBlogIndexDisplaysSearchForm_returnsTrue() {
+		// Given
+		$GLOBALS['kiyose_test_is_home'] = true;
+
+		// When
+		$result = kiyose_should_load_search_styles();
+
+		// Then
+		$this->assertTrue( $result );
+	}
+
+	public function test_kiyose_should_load_search_styles_whenArchiveDisplaysSearchForm_returnsTrue() {
+		// Given
+		$GLOBALS['kiyose_test_is_archive'] = true;
+
+		// When
+		$result = kiyose_should_load_search_styles();
+
+		// Then
+		$this->assertTrue( $result );
+	}
+
+	public function test_kiyose_should_load_search_styles_when404DisplaysSearchForm_returnsTrue() {
+		// Given
+		$GLOBALS['kiyose_test_is_404'] = true;
+
+		// When
+		$result = kiyose_should_load_search_styles();
+
+		// Then
+		$this->assertTrue( $result );
+	}
+
 	public function test_kiyose_get_asset_version_whenFileIsMissing_returnsThemeVersion() {
 		// Given
 		$missing_asset_path = '/assets/css/components/not-found.css';
