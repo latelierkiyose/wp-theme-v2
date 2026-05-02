@@ -8,6 +8,10 @@ const test = require('node:test');
 const rootDir = path.resolve(__dirname, '..');
 const cssScript = path.join(rootDir, 'bin/minify-css.js');
 const jsScript = path.join(rootDir, 'bin/minify-js.js');
+const brevoOverrideCss = path.join(
+	rootDir,
+	'latelierkiyose/assets/css/components/brevo-override.css'
+);
 
 function makeFixtureDir(t, prefix) {
 	const fixtureDir = fs.mkdtempSync(path.join(os.tmpdir(), prefix));
@@ -160,4 +164,38 @@ test('packageScripts_includeReadOnlyBuildCheckCommands', () => {
 	assert.equal(scripts['build:css:check'], 'node bin/minify-css.js --check');
 	assert.equal(scripts['build:js:check'], 'node bin/minify-js.js --check');
 	assert.equal(scripts['build:check'], 'npm run build:css:check && npm run build:js:check');
+});
+
+test('brevoOverrideCss_whenPluginOutputsLegacySignupForm_overridesInlineFieldStyles', () => {
+	// Given
+	const css = fs.readFileSync(brevoOverrideCss, 'utf8');
+
+	// When
+	const hasLegacyFormSelector = css.includes('form[id^="sib_signup_form_"] input[type="email"]');
+	const hasThemeBorder = css.includes('border: 2px solid var(--kiyose-color-border) !important;');
+	const hasThemeRadius = css.includes('border-radius: 6px !important;');
+
+	// Then
+	assert.equal(hasLegacyFormSelector, true);
+	assert.equal(hasThemeBorder, true);
+	assert.equal(hasThemeRadius, true);
+});
+
+test('brevoOverrideCss_whenPluginOutputsLegacySignupForm_overridesInlineButtonStyles', () => {
+	// Given
+	const css = fs.readFileSync(brevoOverrideCss, 'utf8');
+
+	// When
+	const hasLegacyButtonSelector = css.includes('form[id^="sib_signup_form_"] .sib-default-btn');
+	const hasThemeBackground = css.includes(
+		'background-color: var(--kiyose-color-primary) !important;'
+	);
+	const hasThemeButtonBorder = css.includes(
+		'border: 2px solid var(--kiyose-color-primary) !important;'
+	);
+
+	// Then
+	assert.equal(hasLegacyButtonSelector, true);
+	assert.equal(hasThemeBackground, true);
+	assert.equal(hasThemeButtonBorder, true);
 });

@@ -19,6 +19,111 @@
 	width: 100%;
 }
 
+/**
+ * Le plugin Brevo peut générer l'ancien markup `sib_signup_form`
+ * et injecter un bloc `\3c style>` après le shortcode. Les déclarations
+ * importantes ci-dessous sont limitées à ce markup pour reprendre la main
+ * sur les styles inline du plugin.
+ */
+/* stylelint-disable declaration-no-important -- Brevo injecte une feuille de style après le shortcode. */
+form[id^="sib_signup_form_"] {
+	box-sizing: border-box;
+	max-width: 100%;
+	padding: 0 !important;
+	width: 100%;
+}
+
+form[id^="sib_signup_form_"] label {
+	color: var(--kiyose-color-text);
+	display: block;
+	font-family: var(--kiyose-font-body);
+	font-size: var(--kiyose-font-size-base);
+	font-weight: 600;
+	margin-bottom: var(--kiyose-spacing-sm);
+}
+
+form[id^="sib_signup_form_"] input[type="text"],
+form[id^="sib_signup_form_"] input[type="email"],
+form[id^="sib_signup_form_"] input[type="tel"],
+form[id^="sib_signup_form_"] input[type="url"],
+form[id^="sib_signup_form_"] select,
+form[id^="sib_signup_form_"] textarea {
+	background-color: #ffffff !important;
+	border: 2px solid var(--kiyose-color-border) !important;
+	border-radius: 6px !important;
+	box-sizing: border-box !important;
+	color: var(--kiyose-color-text) !important;
+	font-family: var(--kiyose-font-body) !important;
+	font-size: var(--kiyose-font-size-base) !important;
+	line-height: var(--kiyose-line-height-normal) !important;
+	margin: 0 !important;
+	min-height: 44px !important;
+	padding: var(--kiyose-spacing-md) !important;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+	width: 100% !important;
+}
+
+form[id^="sib_signup_form_"] input[type="text"]:focus,
+form[id^="sib_signup_form_"] input[type="email"]:focus,
+form[id^="sib_signup_form_"] input[type="tel"]:focus,
+form[id^="sib_signup_form_"] input[type="url"]:focus,
+form[id^="sib_signup_form_"] select:focus,
+form[id^="sib_signup_form_"] textarea:focus {
+	border-color: var(--kiyose-color-primary) !important;
+	box-shadow: 0 0 0 3px rgb(215 164 164 / 20%);
+	outline: none;
+}
+
+form[id^="sib_signup_form_"] .sib-default-btn,
+form[id^="sib_signup_form_"] input[type="submit"] {
+	align-items: center !important;
+	background-color: var(--kiyose-color-primary) !important;
+	border: 2px solid var(--kiyose-color-primary) !important;
+	border-radius: 8px !important;
+	color: var(--kiyose-color-burgundy) !important;
+	cursor: pointer;
+	display: inline-flex !important;
+	font-family: var(--kiyose-font-body) !important;
+	font-size: var(--kiyose-font-size-base) !important;
+	font-weight: 600 !important;
+	justify-content: center !important;
+	line-height: var(--kiyose-line-height-normal) !important;
+	margin: var(--kiyose-spacing-sm) 0 0 !important;
+	min-height: 44px !important;
+	min-width: 44px !important;
+	padding: var(--kiyose-spacing-md) var(--kiyose-spacing-xl) !important;
+	text-align: center;
+	text-decoration: none;
+	transition: background-color 0.2s ease, transform 0.2s ease;
+	white-space: normal;
+	width: 100%;
+}
+
+form[id^="sib_signup_form_"] .sib-default-btn:hover,
+form[id^="sib_signup_form_"] input[type="submit"]:hover {
+	background-color: #c89494 !important;
+	border-color: #c89494 !important;
+}
+
+form[id^="sib_signup_form_"] .sib-default-btn:focus,
+form[id^="sib_signup_form_"] input[type="submit"]:focus {
+	outline: 2px solid var(--kiyose-color-burgundy);
+	outline-offset: 2px;
+}
+
+form[id^="sib_signup_form_"] .sib-default-btn:active,
+form[id^="sib_signup_form_"] input[type="submit"]:active {
+	transform: translateY(0);
+}
+/* stylelint-enable declaration-no-important */
+
+@media (prefers-reduced-motion: no-preference) {
+	form[id^="sib_signup_form_"] .sib-default-btn:hover,
+	form[id^="sib_signup_form_"] input[type="submit"]:hover {
+		transform: translateY(-2px);
+	}
+}
+
 /* ==========================================================================
    Layout footer — Formulaire compact
    ========================================================================== */
@@ -281,7 +386,11 @@
 	.sib-form input,
 	.sib-form button,
 	.sib-form textarea,
-	.sib-form select {
+	.sib-form select,
+	form[id^="sib_signup_form_"] input,
+	form[id^="sib_signup_form_"] button,
+	form[id^="sib_signup_form_"] textarea,
+	form[id^="sib_signup_form_"] select {
 		transition: none;
 	}
 }
