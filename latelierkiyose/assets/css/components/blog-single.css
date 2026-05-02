@@ -27,25 +27,37 @@
 
 .blog-single__header {
 	margin-bottom: var(--kiyose-spacing-3xl);
+	text-align: center;
 }
 
 .blog-single__date {
 	color: var(--kiyose-color-text-light);
 	display: block;
 	font-size: var(--kiyose-font-size-sm);
-	margin-bottom: var(--kiyose-spacing-md);
+	margin-bottom: var(--kiyose-spacing-xl);
+	text-align: center;
 }
 
 .blog-single__title {
 	color: var(--kiyose-color-burgundy);
 	font-size: var(--kiyose-font-size-4xl);
 	line-height: var(--kiyose-line-height-tight);
-	margin-bottom: var(--kiyose-spacing-xl);
+	margin-bottom: var(--kiyose-spacing-sm);
+	max-width: 100%;
+	overflow-wrap: break-word;
+	text-align: center;
 }
 
 @media (width <= 767px) {
 	.blog-single__title {
 		font-size: var(--kiyose-font-size-3xl);
+	}
+}
+
+@media (width <= 480px) {
+	.blog-single__title {
+		display: block;
+		font-size: var(--kiyose-font-size-2xl);
 	}
 }
 

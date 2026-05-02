@@ -1,6 +1,6 @@
 # PRD 0052 — Alignement du header des articles de blog
 
-- **Statut** : prêt à l'implémentation
+- **Statut** : terminé
 - **Version** : 1.0
 - **Date** : 2026-05-02
 

@@ -17,10 +17,10 @@ get_header();
 
 		<article id="post-<?php the_ID(); ?>" <?php post_class( 'blog-single' ); ?>>
 			<header class="blog-single__header">
+				<h1 class="blog-single__title"><?php the_title(); ?></h1>
 				<time class="blog-single__date" datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>">
 					<?php echo esc_html( get_the_date() ); ?>
 				</time>
-				<h1 class="blog-single__title"><?php the_title(); ?></h1>
 				<?php if ( has_post_thumbnail() ) : ?>
 					<div class="blog-single__featured-image">
 						<?php

@@ -115,6 +115,20 @@ class Test_Blog extends TestCase {
 		$this->assertTrue( $result );
 	}
 
+	public function test_singleTemplate_ordersTitleBeforeDate() {
+		// Given
+		$template = file_get_contents( __DIR__ . '/../single.php' );
+
+		// When
+		$title_position = strpos( $template, 'blog-single__title' );
+		$date_position  = strpos( $template, 'blog-single__date' );
+
+		// Then
+		$this->assertNotFalse( $title_position );
+		$this->assertNotFalse( $date_position );
+		$this->assertLessThan( $date_position, $title_position );
+	}
+
 	private function call_blog_card_variant( $args ) {
 		if ( ! function_exists( 'kiyose_get_blog_card_variant' ) ) {
 			$this->fail( 'Expected kiyose_get_blog_card_variant() to exist.' );
