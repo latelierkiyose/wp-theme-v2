@@ -70,7 +70,8 @@ Le contenu que tu tapes dans l'éditeur s'insère **dans** le template. Changer 
 Certaines pages utilisent des templates **automatiques** — tu n'as rien à sélectionner :
 
 - **Articles de blog** (pages individuelles) → template `single.php`
-- **Liste d'articles** (par catégorie, date…) → template `archive.php`
+- **Page principale des articles** (ex. `/actus-blog/`) → template automatique `home.php`, configuré dans **Réglages → Lecture**
+- **Liste d'articles** (par catégorie, date, tag…) → template `archive.php`
 - **Résultats de recherche** → template `search.php`
 - **Page 404** (URL inexistante) → template `404.php`
 

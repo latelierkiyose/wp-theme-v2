@@ -337,3 +337,4 @@ if ( ! function_exists( 'wp_editor' ) ) {
 require_once __DIR__ . '/../inc/custom-post-types.php';
 require_once __DIR__ . '/../inc/shortcodes.php';
 require_once __DIR__ . '/../inc/meta-boxes.php';
+require_once __DIR__ . '/../inc/blog.php';

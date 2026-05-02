@@ -33,5 +33,8 @@ require_once get_template_directory() . '/inc/shortcodes.php';
 // Content filters.
 require_once get_template_directory() . '/inc/content-filters.php';
 
+// Blog helpers.
+require_once get_template_directory() . '/inc/blog.php';
+
 // Decorative shapes configuration.
 require_once get_template_directory() . '/inc/decorative-config.php';
