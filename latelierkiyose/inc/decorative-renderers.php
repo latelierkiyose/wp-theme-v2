@@ -9,6 +9,8 @@
  * @since   2.6.0
  */
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Returns available large decorative shape variants.
  *

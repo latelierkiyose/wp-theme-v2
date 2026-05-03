@@ -296,6 +296,63 @@ class Test_Meta_Boxes extends TestCase {
 		$this->assertSame( '<p>Texte <strong>important</strong></p>', $GLOBALS['kiyose_test_post_meta'][ $post_id ]['kiyose_content2_text'] );
 	}
 
+	public function test_kiyose_save_home_hero_meta_whenWelcomeKeywordsIsArray_savesEmptyJsonWithoutFatalError() {
+		// Given.
+		$post_id = 43;
+		$this->set_page_template( $post_id, 'templates/page-home.php' );
+		$_POST = array(
+			'kiyose_home_hero_nonce' => 'nonce',
+			'kiyose_welcome_keywords' => array( 'unexpected' ),
+		);
+
+		// When.
+		kiyose_save_home_hero_meta( $post_id );
+
+		// Then.
+		$this->assertSame( '[]', $GLOBALS['kiyose_test_post_meta'][ $post_id ]['kiyose_welcome_keywords'] );
+	}
+
+	public function test_kiyose_save_home_hero_meta_whenContent1QaIsArray_savesEmptyJsonWithoutFatalError() {
+		// Given.
+		$post_id = 43;
+		$this->set_page_template( $post_id, 'templates/page-home.php' );
+		$_POST = array(
+			'kiyose_home_hero_nonce' => 'nonce',
+			'kiyose_content1_qa'     => array( 'unexpected' ),
+		);
+
+		// When.
+		kiyose_save_home_hero_meta( $post_id );
+
+		// Then.
+		$this->assertSame( '[]', $GLOBALS['kiyose_test_post_meta'][ $post_id ]['kiyose_content1_qa'] );
+	}
+
+	public function test_kiyose_save_home_hero_meta_ofJsonFields_preservesAccentsAfterSave() {
+		// Given.
+		$post_id = 43;
+		$this->set_page_template( $post_id, 'templates/page-home.php' );
+		$_POST = array(
+			'kiyose_home_hero_nonce' => 'nonce',
+			'kiyose_welcome_keywords' => wp_slash( '[{"label":"Art-th\u00e9rapie","url":"/art-therapie/"}]' ),
+			'kiyose_content1_qa'     => wp_slash( '[{"question":"Vous vous sentez \u00e0 contre-courant ?","answer":"R\u00e9ponse."}]' ),
+		);
+
+		// When.
+		kiyose_save_home_hero_meta( $post_id );
+		$keywords = kiyose_sanitize_welcome_keyword_items(
+			wp_unslash( $GLOBALS['kiyose_test_post_meta'][ $post_id ]['kiyose_welcome_keywords'] )
+		);
+		$qa_items = kiyose_sanitize_qa_items(
+			wp_unslash( $GLOBALS['kiyose_test_post_meta'][ $post_id ]['kiyose_content1_qa'] )
+		);
+
+		// Then.
+		$this->assertSame( 'Art-thérapie', $keywords[0]['label'] );
+		$this->assertSame( 'Vous vous sentez à contre-courant ?', $qa_items[0]['question'] );
+		$this->assertSame( 'Réponse.', $qa_items[0]['answer'] );
+	}
+
 	public function test_kiyose_save_home_hero_meta_whenHeroImageIdIsEmpty_deletesImageMeta() {
 		// Given.
 		$post_id = 43;

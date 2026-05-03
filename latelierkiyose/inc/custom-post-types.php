@@ -6,6 +6,8 @@
  * @since   0.1.6
  */
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Register kiyose_testimony custom post type.
  *

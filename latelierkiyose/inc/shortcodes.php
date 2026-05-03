@@ -6,6 +6,49 @@
  * @since   0.1.7
  */
 
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Return the default testimonial shortcode limit.
+ *
+ * @return int
+ */
+function kiyose_get_testimonials_shortcode_default_limit(): int {
+	return 6;
+}
+
+/**
+ * Return the maximum testimonial shortcode limit.
+ *
+ * @return int
+ */
+function kiyose_get_testimonials_shortcode_max_limit(): int {
+	return 12;
+}
+
+/**
+ * Normalize the testimonial shortcode limit to a positive bounded integer.
+ *
+ * @param mixed $raw_limit Raw shortcode limit attribute.
+ * @return int
+ */
+function kiyose_normalize_testimonials_shortcode_limit( $raw_limit ): int {
+	$default_limit = kiyose_get_testimonials_shortcode_default_limit();
+	$max_limit     = kiyose_get_testimonials_shortcode_max_limit();
+
+	if ( ! is_scalar( $raw_limit ) || ! is_numeric( $raw_limit ) ) {
+		return $default_limit;
+	}
+
+	$limit = (int) $raw_limit;
+
+	if ( $limit <= 0 ) {
+		return $default_limit;
+	}
+
+	return min( $limit, $max_limit );
+}
+
 /**
  * Display testimonials grid or carousel.
  *
@@ -17,9 +60,10 @@ function kiyose_testimonials_shortcode( $atts ) {
 	$args = shortcode_atts(
 		array(
 			'display' => 'grid',
-			'limit'   => -1,
+			'limit'   => kiyose_get_testimonials_shortcode_default_limit(),
 			'context' => '',
 			'columns' => 2,
+			'ordre'   => 'date',
 		),
 		$atts,
 		'kiyose_testimonials'
@@ -27,9 +71,10 @@ function kiyose_testimonials_shortcode( $atts ) {
 
 	// Sanitization.
 	$display = sanitize_key( $args['display'] );
-	$limit   = intval( $args['limit'] );
+	$limit   = kiyose_normalize_testimonials_shortcode_limit( $args['limit'] );
 	$context = sanitize_key( $args['context'] );
 	$columns = intval( $args['columns'] );
+	$order   = sanitize_key( $args['ordre'] );
 
 	// Validation.
 	if ( ! in_array( $display, array( 'grid', 'carousel' ), true ) ) {
@@ -43,9 +88,15 @@ function kiyose_testimonials_shortcode( $atts ) {
 	$query_args = array(
 		'post_type'      => 'kiyose_testimony',
 		'posts_per_page' => $limit,
-		'orderby'        => 'rand',
+		'orderby'        => 'date',
+		'order'          => 'DESC',
 		'post_status'    => 'publish',
 	);
+
+	if ( 'aleatoire' === $order ) {
+		$query_args['orderby'] = 'rand';
+		unset( $query_args['order'] );
+	}
 
 	// Filtrer par contexte si spécifié.
 	if ( ! empty( $context ) ) {

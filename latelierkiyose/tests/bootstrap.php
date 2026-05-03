@@ -7,6 +7,7 @@
 
 // Define constants used in tests.
 define( 'KIYOSE_TESTS', true );
+define( 'ABSPATH', dirname( __DIR__, 2 ) . '/' );
 
 // Load Composer autoloader.
 require_once __DIR__ . '/../../vendor/autoload.php';

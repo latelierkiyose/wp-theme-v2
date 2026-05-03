@@ -31,7 +31,7 @@ Le thème fournit **cinq shortcodes** :
 [kiyose_testimonials display="carousel" limit="5"]
 ```
 
-Affiche un carrousel de 5 témoignages tirés au hasard.
+Affiche un carrousel de 5 témoignages, du plus récent au plus ancien.
 
 ### À quoi ça sert
 
@@ -42,9 +42,12 @@ Récupère automatiquement les témoignages saisis dans le menu **Témoignages**
 | Paramètre | Valeurs possibles | Par défaut | Rôle |
 |---|---|---|---|
 | `display` | `grid` ou `carousel` | `grid` | Mode d'affichage : grille fixe ou carrousel défilant. |
-| `limit` | Un nombre (ou `-1` pour tous) | `-1` | Nombre maximum de témoignages à afficher. |
+| `limit` | Un nombre de `1` à `12` | `6` | Nombre maximum de témoignages à afficher. Une valeur plus grande est ramenée à `12`. |
 | `context` | `individual`, `enterprise`, `structure` ou vide | (vide) | Filtre par type de témoignage. Vide = tous types mélangés. |
 | `columns` | `1`, `2`, `3` ou `4` | `2` | Nombre de colonnes (grille uniquement ; ignoré en carrousel). |
+| `ordre` | `date` ou `aleatoire` | `date` | Ordre d'affichage. `date` affiche les témoignages du plus récent au plus ancien. `aleatoire` mélange les témoignages, toujours dans la limite indiquée. |
+
+Sans paramètre `limit`, le shortcode affiche **6 témoignages maximum**. Pour protéger les performances du site, il ne peut jamais en afficher plus de **12** d'un coup.
 
 ### Exemples courants
 
@@ -58,6 +61,12 @@ Récupère automatiquement les témoignages saisis dans le menu **Témoignages**
 
 ```
 [kiyose_testimonials display="carousel" limit="10"]
+```
+
+**Carrousel de 6 témoignages mélangés au hasard :**
+
+```
+[kiyose_testimonials display="carousel" ordre="aleatoire"]
 ```
 
 **Grille de 3 colonnes, 6 témoignages entreprise maximum :**

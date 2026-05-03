@@ -6,6 +6,8 @@
  * @since   0.2.0
  */
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Sanitize a single welcome block keyword item.
  *
@@ -134,6 +136,22 @@ function kiyose_encode_meta_box_json_items( array $items ): string {
 	$encoded = wp_json_encode( $items );
 
 	return is_string( $encoded ) ? $encoded : '[]';
+}
+
+/**
+ * Return an unslashed POST field only when it is a string.
+ *
+ * @param string $field_name POST field name.
+ * @return string Empty string when the field is missing or not string-like.
+ */
+function kiyose_get_unslashed_string_post_field( string $field_name ): string {
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Called only from save handlers after their nonce verification.
+	if ( ! isset( $_POST[ $field_name ] ) || ! is_string( $_POST[ $field_name ] ) ) {
+		return '';
+	}
+
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Caller applies field-specific sanitization after unslashing.
+	return wp_unslash( $_POST[ $field_name ] );
 }
 
 /**
@@ -807,8 +825,7 @@ function kiyose_save_home_hero_meta( $post_id ) {
 
 	// Save welcome keywords.
 	if ( isset( $_POST['kiyose_welcome_keywords'] ) ) {
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitization happens inside kiyose_sanitize_welcome_keyword_items() after json_decode(); applying sanitize_text_field() here would corrupt \uXXXX Unicode escapes.
-		$raw_json = wp_unslash( $_POST['kiyose_welcome_keywords'] );
+		$raw_json = kiyose_get_unslashed_string_post_field( 'kiyose_welcome_keywords' );
 		$keywords = kiyose_sanitize_welcome_keyword_items( $raw_json );
 
 		update_post_meta( $post_id, 'kiyose_welcome_keywords', wp_slash( wp_json_encode( $keywords ) ) );
@@ -846,8 +863,7 @@ function kiyose_save_home_hero_meta( $post_id ) {
 
 	// Save content1 Q&A items.
 	if ( isset( $_POST['kiyose_content1_qa'] ) ) {
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitization happens inside kiyose_sanitize_qa_items() after json_decode(); applying sanitize_text_field() here would corrupt \uXXXX Unicode escapes.
-		$qa_items = kiyose_sanitize_qa_items( wp_unslash( $_POST['kiyose_content1_qa'] ) );
+		$qa_items = kiyose_sanitize_qa_items( kiyose_get_unslashed_string_post_field( 'kiyose_content1_qa' ) );
 		update_post_meta( $post_id, 'kiyose_content1_qa', wp_slash( wp_json_encode( $qa_items ) ) );
 	}
 

@@ -6,6 +6,8 @@
  * @since   0.2.7
  */
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Returns the blog card variant requested by a template part.
  *

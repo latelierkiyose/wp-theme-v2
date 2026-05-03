@@ -6,6 +6,8 @@
  * @since   0.2.7
  */
 
+defined( 'ABSPATH' ) || exit;
+
 ?>
 
 <section class="home-blog" aria-labelledby="blog-title">

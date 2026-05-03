@@ -6,6 +6,8 @@
  * @since   0.2.7
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $kiyose_blog_categories = get_categories( kiyose_get_blog_sidebar_categories_args() );
 ?>
 

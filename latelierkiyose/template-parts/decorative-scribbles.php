@@ -20,6 +20,8 @@
  * }
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $kiyose_args = isset( $args ) && is_array( $args ) ? $args : array();
 
 echo kiyose_render_decorative_scribble_svg( $kiyose_args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

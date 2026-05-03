@@ -6,6 +6,8 @@
  * @since   0.1.0
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $kiyose_variant       = kiyose_get_blog_card_variant( $args ?? array() );
 $kiyose_card_classes  = kiyose_get_blog_card_classes( $kiyose_variant );
 $kiyose_has_thumbnail = has_post_thumbnail();

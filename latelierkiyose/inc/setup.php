@@ -6,6 +6,8 @@
  * @since   0.1.0
  */
 
+defined( 'ABSPATH' ) || exit;
+
 if ( ! isset( $content_width ) ) {
 	$content_width = 1200;
 }

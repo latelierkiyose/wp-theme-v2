@@ -1,6 +1,6 @@
 # PRD 0063 — Durcissement sécurité des shortcodes et meta boxes
 
-- **Statut** : prêt à l'implémentation
+- **Statut** : terminé
 - **Criticité** : moyenne
 - **Version** : 1.1
 - **Date** : 2026-05-03

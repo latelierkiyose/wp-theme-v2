@@ -6,6 +6,8 @@
  * @since   0.1.6
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $kiyose_context_key = get_post_meta( get_the_ID(), 'kiyose_testimony_context', true );
 if ( empty( $kiyose_context_key ) ) {
 	$kiyose_context_key = 'individual';

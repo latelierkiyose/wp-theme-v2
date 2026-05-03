@@ -10,6 +10,8 @@
  * @since   2.5.0
  */
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Returns the pool of decorative shapes for the current page.
  *

@@ -6,6 +6,8 @@
  * @since   0.2.7
  */
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Decode a JSON meta value expected to contain an array.
  *

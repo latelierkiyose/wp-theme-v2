@@ -6,6 +6,8 @@
  * @since   0.1.0
  */
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Get asset version based on file modification time.
  *

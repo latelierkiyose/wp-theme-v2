@@ -6,6 +6,8 @@
  * @since   0.2.5
  */
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Return the Events Manager category taxonomy used by the theme.
  *

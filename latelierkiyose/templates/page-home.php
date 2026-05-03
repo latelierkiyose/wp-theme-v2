@@ -6,6 +6,8 @@
  * @since   0.1.9
  */
 
+defined( 'ABSPATH' ) || exit;
+
 get_header();
 
 $kiyose_home_data = kiyose_get_home_page_data( get_the_ID() );

@@ -8,6 +8,8 @@
  * @package Kiyose
  */
 
+defined( 'ABSPATH' ) || exit;
+
 get_header();
 ?>
 

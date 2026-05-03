@@ -9,6 +9,8 @@
  * @since   0.2.4
  */
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Auto-generate IDs for H2 headings without IDs.
  *

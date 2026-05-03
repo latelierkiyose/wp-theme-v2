@@ -20,6 +20,8 @@
  * }
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $kiyose_args = isset( $args ) && is_array( $args ) ? $args : array();
 $kiyose_mode = isset( $kiyose_args['mode'] ) ? $kiyose_args['mode'] : 'shape';
 

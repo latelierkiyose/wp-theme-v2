@@ -6,6 +6,8 @@
  * @since   0.1.0
  */
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Generate SVG icon for social networks.
  *

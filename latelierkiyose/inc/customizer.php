@@ -6,6 +6,8 @@
  * @since   0.2.5
  */
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Register theme Customizer settings.
  *

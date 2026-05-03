@@ -6,6 +6,8 @@
  * @since   2.1.0
  */
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Returns testimonials carousel markup for an existing query.
  *

@@ -220,6 +220,74 @@ class Test_Shortcodes extends TestCase {
 		$this->assertSame( 1, $GLOBALS['kiyose_test_last_query_args']['posts_per_page'] );
 	}
 
+	public function test_kiyose_testimonials_shortcode_usesBoundedDefaultLimitAndStableOrder() {
+		// Given
+		$atts = array();
+
+		// When
+		kiyose_testimonials_shortcode( $atts );
+
+		// Then
+		$this->assertSame( 6, $GLOBALS['kiyose_test_last_query_args']['posts_per_page'] );
+		$this->assertSame( 'date', $GLOBALS['kiyose_test_last_query_args']['orderby'] );
+		$this->assertSame( 'DESC', $GLOBALS['kiyose_test_last_query_args']['order'] );
+	}
+
+	public function test_kiyose_testimonials_shortcode_whenLimitIsNegative_usesDefaultLimit() {
+		// Given
+		$atts = array(
+			'limit' => '-1',
+		);
+
+		// When
+		kiyose_testimonials_shortcode( $atts );
+
+		// Then
+		$this->assertSame( 6, $GLOBALS['kiyose_test_last_query_args']['posts_per_page'] );
+	}
+
+	public function test_kiyose_testimonials_shortcode_whenLimitIsTooHigh_capsToMaximumLimit() {
+		// Given
+		$atts = array(
+			'limit' => '999',
+		);
+
+		// When
+		kiyose_testimonials_shortcode( $atts );
+
+		// Then
+		$this->assertSame( 12, $GLOBALS['kiyose_test_last_query_args']['posts_per_page'] );
+	}
+
+	public function test_kiyose_testimonials_shortcode_whenLimitIsNotNumeric_usesDefaultLimit() {
+		// Given
+		$atts = array(
+			'limit' => 'abc',
+		);
+
+		// When
+		kiyose_testimonials_shortcode( $atts );
+
+		// Then
+		$this->assertSame( 6, $GLOBALS['kiyose_test_last_query_args']['posts_per_page'] );
+	}
+
+	public function test_kiyose_testimonials_shortcode_whenOrderIsRandom_usesOptInRandomOrderAndCapsLimit() {
+		// Given
+		$atts = array(
+			'limit' => '999',
+			'ordre' => 'aleatoire',
+		);
+
+		// When
+		kiyose_testimonials_shortcode( $atts );
+
+		// Then
+		$this->assertSame( 12, $GLOBALS['kiyose_test_last_query_args']['posts_per_page'] );
+		$this->assertSame( 'rand', $GLOBALS['kiyose_test_last_query_args']['orderby'] );
+		$this->assertArrayNotHasKey( 'order', $GLOBALS['kiyose_test_last_query_args'] );
+	}
+
 	/**
 	 * Render the CTA shortcode after asserting its callback exists.
 	 *

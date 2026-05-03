@@ -8,6 +8,8 @@
  * @param array $args Home page data.
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $kiyose_content1_qa     = $args['content1_qa'] ?? array();
 $kiyose_content1_slogan = $args['content1_slogan'] ?? '';
 ?>

@@ -12,6 +12,8 @@
  * }
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $kiyose_home_shapes = $args['shapes'] ?? kiyose_get_home_page_shapes();
 ?>
 

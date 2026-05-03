@@ -130,6 +130,7 @@ export class TestimonyExpand {
 		// Update toggle to close button
 		toggle.setAttribute('aria-expanded', 'true');
 		toggle.setAttribute('aria-label', FERMER_LABEL);
+		// INVARIANT: CLOSE_ICON_SVG must remain a literal constant. Do not feed dynamic data into this assignment.
 		toggle.innerHTML = CLOSE_ICON_SVG;
 
 		// Stop carousel autoplay and disable navigation

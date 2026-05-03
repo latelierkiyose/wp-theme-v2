@@ -7,6 +7,8 @@
  * @since   2.5.0
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $kiyose_shapes = kiyose_get_page_shapes();
 
 if ( empty( $kiyose_shapes ) ) {
