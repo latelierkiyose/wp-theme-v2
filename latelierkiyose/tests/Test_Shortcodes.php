@@ -256,7 +256,7 @@ class Test_Shortcodes extends TestCase {
 		kiyose_testimonials_shortcode( $atts );
 
 		// Then
-		$this->assertSame( 12, $GLOBALS['kiyose_test_last_query_args']['posts_per_page'] );
+		$this->assertSame( 50, $GLOBALS['kiyose_test_last_query_args']['posts_per_page'] );
 	}
 
 	public function test_kiyose_testimonials_shortcode_whenLimitIsNotNumeric_usesDefaultLimit() {
@@ -283,7 +283,7 @@ class Test_Shortcodes extends TestCase {
 		kiyose_testimonials_shortcode( $atts );
 
 		// Then
-		$this->assertSame( 12, $GLOBALS['kiyose_test_last_query_args']['posts_per_page'] );
+		$this->assertSame( 50, $GLOBALS['kiyose_test_last_query_args']['posts_per_page'] );
 		$this->assertSame( 'rand', $GLOBALS['kiyose_test_last_query_args']['orderby'] );
 		$this->assertArrayNotHasKey( 'order', $GLOBALS['kiyose_test_last_query_args'] );
 	}

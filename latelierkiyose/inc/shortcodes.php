@@ -23,7 +23,7 @@ function kiyose_get_testimonials_shortcode_default_limit(): int {
  * @return int
  */
 function kiyose_get_testimonials_shortcode_max_limit(): int {
-	return 12;
+	return 50;
 }
 
 /**

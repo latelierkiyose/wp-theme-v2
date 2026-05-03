@@ -42,12 +42,12 @@ Récupère automatiquement les témoignages saisis dans le menu **Témoignages**
 | Paramètre | Valeurs possibles | Par défaut | Rôle |
 |---|---|---|---|
 | `display` | `grid` ou `carousel` | `grid` | Mode d'affichage : grille fixe ou carrousel défilant. |
-| `limit` | Un nombre de `1` à `12` | `6` | Nombre maximum de témoignages à afficher. Une valeur plus grande est ramenée à `12`. |
+| `limit` | Un nombre de `1` à `50` | `6` | Nombre maximum de témoignages à afficher. Une valeur plus grande est ramenée à `50`. |
 | `context` | `individual`, `enterprise`, `structure` ou vide | (vide) | Filtre par type de témoignage. Vide = tous types mélangés. |
 | `columns` | `1`, `2`, `3` ou `4` | `2` | Nombre de colonnes (grille uniquement ; ignoré en carrousel). |
 | `ordre` | `date` ou `aleatoire` | `date` | Ordre d'affichage. `date` affiche les témoignages du plus récent au plus ancien. `aleatoire` mélange les témoignages, toujours dans la limite indiquée. |
 
-Sans paramètre `limit`, le shortcode affiche **6 témoignages maximum**. Pour protéger les performances du site, il ne peut jamais en afficher plus de **12** d'un coup.
+Sans paramètre `limit`, le shortcode affiche **6 témoignages maximum**. Pour protéger les performances du site, il ne peut jamais en afficher plus de **50** d'un coup.
 
 ### Exemples courants
 
