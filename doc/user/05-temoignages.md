@@ -12,7 +12,7 @@ Les témoignages sont un type de contenu à part (*Custom Post Type* en jargon t
    - **Contexte** (panneau latéral ou *meta box* dédiée) : choisis entre **Particulier**, **Entreprise**, **Structure**.
 4. Clique sur **Publier**.
 
-Le témoignage est immédiatement disponible pour être affiché via le shortcode `[kiyose_testimonials]`.
+Le témoignage est immédiatement disponible pour être affiché via le shortcode `[kiyose_testimonials]`. Sur la page d'accueil, le carrousel affiche automatiquement jusqu'à 50 témoignages publiés.
 
 ## Les trois contextes
 

@@ -57,7 +57,7 @@ defined( 'ABSPATH' ) || exit;
 	$kiyose_testimonials_query = new WP_Query(
 		array(
 			'post_type'      => 'kiyose_testimony',
-			'posts_per_page' => 5,
+			'posts_per_page' => 50,
 			'orderby'        => 'rand',
 		)
 	);

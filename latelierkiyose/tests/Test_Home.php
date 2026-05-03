@@ -198,6 +198,17 @@ class Test_Home extends TestCase {
 		$this->assertSame( '', trim( $html ) );
 	}
 
+	public function test_homeTestimonialsTemplate_usesFiftyItemLimit() {
+		// Given
+		$GLOBALS['kiyose_test_query_posts'] = array();
+
+		// When
+		$this->render_home_testimonials_template();
+
+		// Then
+		$this->assertSame( 50, $GLOBALS['kiyose_test_last_query_args']['posts_per_page'] );
+	}
+
 	private function call_decode_json_meta_array( string $raw_value ): array {
 		if ( ! function_exists( 'kiyose_decode_json_meta_array' ) ) {
 			$this->fail( 'Expected kiyose_decode_json_meta_array() to exist.' );
@@ -221,6 +232,13 @@ class Test_Home extends TestCase {
 
 		ob_start();
 		require __DIR__ . '/../template-parts/home/content-free.php';
+
+		return (string) ob_get_clean();
+	}
+
+	private function render_home_testimonials_template(): string {
+		ob_start();
+		require __DIR__ . '/../template-parts/home/testimonials.php';
 
 		return (string) ob_get_clean();
 	}
