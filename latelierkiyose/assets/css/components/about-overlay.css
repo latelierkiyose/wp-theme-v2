@@ -21,7 +21,7 @@
 	right: var(--kiyose-spacing-lg);
 	top: 90px;
 
-	/* En dessous du header sticky (200), au dessus des dropdowns (100) */
+	/* Au dessus des dropdowns du menu (z-index 100) */
 	width: 360px;
 	z-index: 150;
 }
