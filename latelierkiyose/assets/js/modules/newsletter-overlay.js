@@ -24,10 +24,10 @@
 
 	const DESKTOP_BREAKPOINT = 768;
 
-	const overlay = document.getElementById('newsletter-overlay');
-	const closeBtn = document.getElementById('newsletter-overlay-close');
+	const overlay = document.getElementById('signup-panel');
+	const closeBtn = document.getElementById('signup-panel-close');
 	const announcement = document.getElementById('overlay-announcement');
-	const overlayFormSlot = overlay ? overlay.querySelector('[data-newsletter-overlay-form]') : null;
+	const overlayFormSlot = overlay ? overlay.querySelector('[data-signup-panel-form]') : null;
 	const footerFormSlot = document.querySelector('[data-footer-signup-form]');
 
 	if (!overlay || !closeBtn) {
@@ -59,27 +59,48 @@
 	}
 
 	/**
+	 * Check whether the floating panel can paint in the current browser context.
+	 *
+	 * @return {boolean} True when the panel is not hidden by CSS.
+	 */
+	function canRenderOverlay() {
+		if (!window.getComputedStyle) {
+			return true;
+		}
+
+		const style = window.getComputedStyle(overlay);
+
+		return style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0';
+	}
+
+	/**
 	 * Show the overlay.
 	 *
 	 * @param {boolean} shouldAnimate Whether to play the arc entrance animation.
 	 */
 	function showOverlay(shouldAnimate) {
+		overlay.removeAttribute('hidden');
+
+		if (!canRenderOverlay()) {
+			hideOverlay();
+			return;
+		}
+
 		if (isVisible) {
 			moveNewsletterForm(overlayFormSlot);
 			return;
 		}
 
 		moveNewsletterForm(overlayFormSlot);
-		overlay.removeAttribute('hidden');
 		isVisible = true;
 
 		if (shouldAnimate && !prefersReducedMotion && !hasAnimatedOnce) {
 			hasAnimatedOnce = true;
-			overlay.classList.add('newsletter-overlay--entering');
+			overlay.classList.add('signup-panel--entering');
 			overlay.addEventListener(
 				'animationend',
 				() => {
-					overlay.classList.remove('newsletter-overlay--entering');
+					overlay.classList.remove('signup-panel--entering');
 				},
 				{ once: true }
 			);
@@ -93,13 +114,13 @@
 	/** Hide the overlay (zone transition, not manual close). */
 	function hideOverlay() {
 		moveNewsletterForm(footerFormSlot);
+		overlay.setAttribute('hidden', '');
+		overlay.classList.remove('signup-panel--entering');
 
 		if (!isVisible) {
 			return;
 		}
 
-		overlay.setAttribute('hidden', '');
-		overlay.classList.remove('newsletter-overlay--entering');
 		isVisible = false;
 
 		if (announcement) {

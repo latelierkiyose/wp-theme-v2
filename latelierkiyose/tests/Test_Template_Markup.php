@@ -89,7 +89,9 @@ class Test_Template_Markup extends TestCase {
 		$result = $template;
 
 		// Then
-		$this->assertStringContainsString( 'data-newsletter-overlay-form', $result );
+		$this->assertStringContainsString( 'id="signup-panel"', $result );
+		$this->assertStringContainsString( 'data-signup-panel-form', $result );
+		$this->assertStringNotContainsString( 'newsletter-overlay', $result );
 		$this->assertStringNotContainsString( "do_shortcode( '[sibwp_form id=1]' )", $result );
 	}
 

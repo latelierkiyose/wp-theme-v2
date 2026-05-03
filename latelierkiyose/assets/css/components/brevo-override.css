@@ -117,22 +117,22 @@ form[id^="sib_signup_form_"] input[type="submit"]:active {
 }
 
 .site-footer__signup form[id^="sib_signup_form_"],
-.newsletter-overlay__form form[id^="sib_signup_form_"] {
+.signup-panel__form form[id^="sib_signup_form_"] {
 	margin: var(--kiyose-spacing-sm) auto 0;
 	max-width: 30rem;
 }
 
-.newsletter-overlay__form form[id^="sib_signup_form_"] {
+.signup-panel__form form[id^="sib_signup_form_"] {
 	max-width: 18rem;
 }
 
 .site-footer__signup form[id^="sib_signup_form_"] p,
-.newsletter-overlay__form form[id^="sib_signup_form_"] p {
+.signup-panel__form form[id^="sib_signup_form_"] p {
 	margin: var(--kiyose-spacing-sm) 0 0 !important;
 }
 
 .site-footer__signup form[id^="sib_signup_form_"] label,
-.newsletter-overlay__form form[id^="sib_signup_form_"] label {
+.signup-panel__form form[id^="sib_signup_form_"] label {
 	font-size: var(--kiyose-font-size-sm);
 	margin-bottom: var(--kiyose-spacing-xs);
 }
@@ -143,12 +143,12 @@ form[id^="sib_signup_form_"] input[type="submit"]:active {
 .site-footer__signup form[id^="sib_signup_form_"] input[type="url"],
 .site-footer__signup form[id^="sib_signup_form_"] select,
 .site-footer__signup form[id^="sib_signup_form_"] textarea,
-.newsletter-overlay__form form[id^="sib_signup_form_"] input[type="text"],
-.newsletter-overlay__form form[id^="sib_signup_form_"] input[type="email"],
-.newsletter-overlay__form form[id^="sib_signup_form_"] input[type="tel"],
-.newsletter-overlay__form form[id^="sib_signup_form_"] input[type="url"],
-.newsletter-overlay__form form[id^="sib_signup_form_"] select,
-.newsletter-overlay__form form[id^="sib_signup_form_"] textarea {
+.signup-panel__form form[id^="sib_signup_form_"] input[type="text"],
+.signup-panel__form form[id^="sib_signup_form_"] input[type="email"],
+.signup-panel__form form[id^="sib_signup_form_"] input[type="tel"],
+.signup-panel__form form[id^="sib_signup_form_"] input[type="url"],
+.signup-panel__form form[id^="sib_signup_form_"] select,
+.signup-panel__form form[id^="sib_signup_form_"] textarea {
 	font-size: var(--kiyose-font-size-sm) !important;
 	min-height: 44px !important;
 	padding: var(--kiyose-spacing-sm) var(--kiyose-spacing-md) !important;
@@ -156,8 +156,8 @@ form[id^="sib_signup_form_"] input[type="submit"]:active {
 
 .site-footer__signup form[id^="sib_signup_form_"] .sib-default-btn,
 .site-footer__signup form[id^="sib_signup_form_"] input[type="submit"],
-.newsletter-overlay__form form[id^="sib_signup_form_"] .sib-default-btn,
-.newsletter-overlay__form form[id^="sib_signup_form_"] input[type="submit"] {
+.signup-panel__form form[id^="sib_signup_form_"] .sib-default-btn,
+.signup-panel__form form[id^="sib_signup_form_"] input[type="submit"] {
 	font-size: var(--kiyose-font-size-sm) !important;
 	margin-top: var(--kiyose-spacing-sm) !important;
 	padding: var(--kiyose-spacing-sm) var(--kiyose-spacing-lg) !important;
@@ -212,22 +212,22 @@ form[id^="sib_signup_form_"] input[type="submit"]:active {
 /**
  * Dans l'overlay newsletter : formulaire compact dans un panneau étroit (360px)
  */
-.newsletter-overlay__form .sib-form {
+.signup-panel__form .sib-form {
 	margin-top: 0.5rem;
 }
 
-.newsletter-overlay__form .sib-form__container {
+.signup-panel__form .sib-form__container {
 	display: flex;
 	flex-direction: column;
 	gap: 0.75rem;
 }
 
-.newsletter-overlay__form .sib-form__field {
+.signup-panel__form .sib-form__field {
 	width: 100%;
 }
 
-.newsletter-overlay__form .sib-form button[type='submit'],
-.newsletter-overlay__form .sib-form input[type='submit'] {
+.signup-panel__form .sib-form button[type='submit'],
+.signup-panel__form .sib-form input[type='submit'] {
 	width: 100%;
 }
 

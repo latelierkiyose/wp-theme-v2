@@ -496,6 +496,9 @@ function createFakeWindow({ innerWidth = 1280, scrollY = 0, isReducedMotion = fa
 			const handlers = this.eventListeners.get(eventName) || [];
 			handlers.forEach((handler) => handler(event || {}));
 		},
+		getComputedStyle(element) {
+			return element.computedStyle || { display: 'block', opacity: '1', visibility: 'visible' };
+		},
 		matchMedia() {
 			return { matches: isReducedMotion };
 		},
@@ -615,15 +618,15 @@ function createAboutOverlayFixture() {
 
 function createNewsletterOverlayFixture() {
 	const closeButton = new FakeElement({
-		id: 'newsletter-overlay-close',
+		id: 'signup-panel-close',
 		tagName: 'button',
 	});
 	const overlayFormSlot = new FakeElement({
-		attributes: { 'data-newsletter-overlay-form': '' },
-		classes: ['newsletter-overlay__form'],
+		attributes: { 'data-signup-panel-form': '' },
+		classes: ['signup-panel__form'],
 	});
 	const overlay = new FakeElement({
-		id: 'newsletter-overlay',
+		id: 'signup-panel',
 		children: [closeButton, overlayFormSlot],
 	});
 	overlay.setAttribute('hidden', '');
@@ -1217,6 +1220,21 @@ test('NewsletterOverlay_whenZoneChangesBelow_movesFooterBrevoFormIntoOverlay', (
 	assert.deepEqual(fixture.footerFormSlot.children, []);
 });
 
+test('NewsletterOverlay_whenPanelIsHiddenByCss_keepsFooterBrevoFormInFooter', () => {
+	// Given
+	const fixture = createNewsletterOverlayFixture();
+	const window = createFakeWindow();
+	fixture.overlay.computedStyle = { display: 'none', opacity: '1', visibility: 'visible' };
+	loadOverlayScript(newsletterOverlayJs, fixture.document, window);
+
+	// When
+	fixture.document.dispatch('kiyose:overlay-zone', { detail: { zone: 'below' } });
+
+	// Then
+	assert.equal(fixture.brevoForm.parentElement, fixture.footerFormSlot);
+	assert.deepEqual(fixture.overlayFormSlot.children, []);
+});
+
 test('NewsletterOverlay_whenManuallyClosed_staysClosedUntilZoneChangesAgain', () => {
 	// Given
 	const fixture = createNewsletterOverlayFixture();
@@ -1449,10 +1467,10 @@ test('brevoOverrideCss_whenLegacySignupFormIsInNewsletterOverlay_usesCompactNews
 
 	// When
 	const hasOverlayFormSelector = css.includes(
-		'.newsletter-overlay__form form[id^="sib_signup_form_"]'
+		'.signup-panel__form form[id^="sib_signup_form_"]'
 	);
 	const hasOverlayCompactMaxWidth = css.includes(
-		'.newsletter-overlay__form form[id^="sib_signup_form_"] {\n\tmax-width: 18rem;'
+		'.signup-panel__form form[id^="sib_signup_form_"] {\n\tmax-width: 18rem;'
 	);
 	const hasCompactControlSize = css.includes('font-size: var(--kiyose-font-size-sm) !important;');
 	const preservesTapTarget = css.includes('min-height: 44px !important;');

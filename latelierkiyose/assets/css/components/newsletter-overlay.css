@@ -1,5 +1,5 @@
 /**
- * Overlay Newsletter - L'Atelier Kiyose
+ * Signup Panel - L'Atelier Kiyose
  *
  * Panneau flottant côté gauche (desktop) déclenché au scroll
  * au niveau de la section « Prochaines dates ».
@@ -14,7 +14,7 @@
    OVERLAY — CONTENEUR (DESKTOP)
    ============================================ */
 
-.newsletter-overlay {
+.signup-panel {
 	background-color: #ffffff;
 	border-radius: 12px;
 	box-shadow: 0 8px 32px rgb(93 5 5 / 15%);
@@ -29,13 +29,13 @@
 }
 
 /* Masquage via attribut [hidden] */
-.newsletter-overlay[hidden] {
+.signup-panel[hidden] {
 	display: none;
 }
 
 /* Jamais visible sur mobile */
 @media (width < 768px) {
-	.newsletter-overlay {
+	.signup-panel {
 		display: none !important; /* stylelint-disable-line declaration-no-important */
 	}
 }
@@ -44,7 +44,7 @@
    OVERLAY — BOUTON FERMER
    ============================================ */
 
-.newsletter-overlay__close {
+.signup-panel__close {
 	align-items: center;
 	background: none;
 	border: none;
@@ -64,11 +64,11 @@
 	width: 44px;
 }
 
-.newsletter-overlay__close:hover {
+.signup-panel__close:hover {
 	background-color: rgb(215 164 164 / 20%);
 }
 
-.newsletter-overlay__close:focus-visible {
+.signup-panel__close:focus-visible {
 	outline: 2px solid var(--kiyose-color-burgundy);
 	outline-offset: 2px;
 }
@@ -77,7 +77,7 @@
    OVERLAY — CORPS
    ============================================ */
 
-.newsletter-overlay__body {
+.signup-panel__body {
 	display: flex;
 	flex-direction: column;
 	gap: var(--kiyose-spacing-sm);
@@ -88,7 +88,7 @@
    OVERLAY — TITRE
    ============================================ */
 
-.newsletter-overlay__title {
+.signup-panel__title {
 	color: var(--kiyose-color-burgundy);
 	font-family: var(--kiyose-font-heading);
 	font-size: var(--kiyose-font-size-2xl);
@@ -99,7 +99,7 @@
    OVERLAY — DESCRIPTION
    ============================================ */
 
-.newsletter-overlay__description {
+.signup-panel__description {
 	color: var(--kiyose-color-text);
 	font-family: var(--kiyose-font-body);
 	font-size: var(--kiyose-font-size-sm);
@@ -111,7 +111,7 @@
    OVERLAY — FORMULAIRE
    ============================================ */
 
-.newsletter-overlay__form {
+.signup-panel__form {
 	width: 100%;
 }
 
@@ -119,7 +119,7 @@
    OVERLAY — ANIMATION D'ENTRÉE (MIROIR GAUCHE)
    ============================================ */
 
-@keyframes kiyose-newsletter-overlay-arc-enter {
+@keyframes kiyose-signup-panel-arc-enter {
 	0% {
 		opacity: 0;
 		transform: translate(-420px, -50%);
@@ -149,7 +149,7 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-	.newsletter-overlay.newsletter-overlay--entering {
-		animation: kiyose-newsletter-overlay-arc-enter 700ms ease-out forwards;
+	.signup-panel.signup-panel--entering {
+		animation: kiyose-signup-panel-arc-enter 700ms ease-out forwards;
 	}
 }

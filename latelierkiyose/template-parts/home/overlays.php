@@ -41,21 +41,21 @@ $kiyose_has_about_image = ! empty( $kiyose_about_image_id );
 	</div>
 </div>
 
-<div class="newsletter-overlay" id="newsletter-overlay" role="complementary" aria-label="<?php esc_attr_e( 'Inscription à la newsletter', 'kiyose' ); ?>" hidden>
+<div class="signup-panel" id="signup-panel" role="complementary" aria-label="<?php esc_attr_e( 'Inscription à la newsletter', 'kiyose' ); ?>" hidden>
 	<button
-		class="newsletter-overlay__close"
-		id="newsletter-overlay-close"
+		class="signup-panel__close"
+		id="signup-panel-close"
 		type="button"
 		aria-label="<?php esc_attr_e( 'Fermer le panneau Newsletter', 'kiyose' ); ?>"
 	>
 		<span aria-hidden="true">&times;</span>
 	</button>
-	<div class="newsletter-overlay__body">
-		<h2 class="newsletter-overlay__title"><?php esc_html_e( 'Restez informés', 'kiyose' ); ?></h2>
-		<p class="newsletter-overlay__description">
+	<div class="signup-panel__body">
+		<h2 class="signup-panel__title"><?php esc_html_e( 'Restez informés', 'kiyose' ); ?></h2>
+		<p class="signup-panel__description">
 			<?php esc_html_e( 'Recevez les prochaines dates et actualités directement dans votre boîte mail.', 'kiyose' ); ?>
 		</p>
-		<div class="newsletter-overlay__form" data-newsletter-overlay-form></div>
+		<div class="signup-panel__form" data-signup-panel-form></div>
 	</div>
 </div>
 
