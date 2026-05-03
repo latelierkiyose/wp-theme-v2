@@ -45,6 +45,7 @@ make lint          # Valider JS et CSS
 make lint-fix      # Corriger automatiquement JS et CSS
 make format-js     # Formater JavaScript avec Prettier
 make format-check  # Vérifier le formatage JavaScript
+make release       # Préparer une version et le tag Git associé
 make test          # Exécuter tous les tests (PHPCS + linters)
 make logs          # Afficher les logs WordPress
 make clean         # Nettoyer les fichiers générés

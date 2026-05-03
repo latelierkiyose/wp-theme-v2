@@ -447,16 +447,24 @@ rm latelierkiyose-{version}.zip
 - **PATCH**: Corrections de bugs
 
 **Mise à jour version**:
-```css
-/* style.css */
-/*
-Theme Name: L'Atelier Kiyose
-Version: 1.2.3
-*/
+```bash
+# Par défaut : crée d'abord le tag si la version actuelle n'est pas taguée,
+# sinon incrémente minor (1.2.3 -> 1.3.0)
+npm run release
+
+# Bump explicite
+npm run release -- patch
+npm run release -- --bump major
+
+# Version précise, utile si le tag Git et le header du thème ont divergé
+npm run release -- --version 1.2.3
 ```
+
+Le script met à jour le header `Version:` de `latelierkiyose/style.css`. Si cette modification n'est pas encore commitée, le tag est différé afin d'éviter un tag qui pointerait vers un commit ne contenant pas la version annoncée. Si la version actuelle est déjà commitée mais pas encore taguée, le script crée ce tag avant de proposer un nouveau bump.
 
 **Tags Git**:
 ```bash
-git tag -a v1.2.3 -m "Release 1.2.3"
+# Après commit de la version, relancer la même commande crée le tag annoté v1.2.3
+npm run release -- --version 1.2.3
 git push origin v1.2.3
 ```

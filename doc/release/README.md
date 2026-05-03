@@ -120,7 +120,7 @@ Résumé à cocher :
    ```
 5. Ajuster permissions si besoin : `chmod -R 755 latelierkiyose/` et `chown -R www-data:www-data latelierkiyose/` (adapter l'utilisateur au serveur).
 
-> Préparation développeur : si un ZIP doit exceptionnellement être préparé hors CI, lancer `npm run build`, puis `npm run build:check` avant de créer l'archive. Ne jamais générer les assets directement sur le serveur de production.
+> Préparation développeur : préparer la version avec `npm run release` (minor par défaut quand la version actuelle est déjà taguée), `npm run release -- patch` ou `npm run release -- --version 1.0.3`. Le script met à jour `latelierkiyose/style.css` puis diffère le tag si la version n'est pas encore commitée ; après le commit, relancer la même commande pour créer le tag annoté `vX.Y.Z`, puis pousser le tag. Si la version actuelle est déjà commitée mais pas encore taguée, le script crée ce tag avant de calculer un nouveau bump. Si un ZIP doit exceptionnellement être préparé hors CI, lancer `npm run build`, puis `npm run build:check` avant de créer l'archive. Ne jamais générer les assets directement sur le serveur de production.
 
 ### Via admin WordPress (alternative)
 

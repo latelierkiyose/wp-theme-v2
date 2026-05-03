@@ -4,10 +4,13 @@
 	"description": "Thème WordPress sur mesure pour L'Atelier Kiyose",
 	"private": true,
 	"scripts": {
+		"release": "node bin/release.js",
 		"lint:js": "eslint 'latelierkiyose/assets/js/**/*.js'",
 		"lint:css": "stylelint 'latelierkiyose/**/*.css'",
 		"lint": "npm run lint:js && npm run lint:css",
 		"test:build-check": "node --test tests/build-check.test.js",
+		"test:release": "node --test tests/release-script.test.js",
+		"test:scripts": "node --test tests/*.test.js",
 		"lint:fix": "npm run lint:js -- --fix && npm run lint:css -- --fix",
 		"format:js": "prettier --write 'latelierkiyose/assets/js/**/*.js'",
 		"format:check": "prettier --check 'latelierkiyose/assets/js/**/*.js'",

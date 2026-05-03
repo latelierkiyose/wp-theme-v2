@@ -64,8 +64,8 @@ jobs:
       - name: Run Stylelint
         run: npm run lint:css
 
-      - name: Run build check unit tests
-        run: npm run test:build-check
+      - name: Run Node.js unit tests
+        run: npm run test:scripts
 
       - name: Verify minified assets are current
         run: npm run build:check

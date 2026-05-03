@@ -1,7 +1,7 @@
 # L'Atelier Kiyose - WordPress Theme v2
 # Makefile pour simplifier les commandes de développement
 
-.PHONY: help install install-hooks phpcs phpcs-fix phpunit lint-js lint-css lint lint-fix format-js format-check build-css build-js build build-check build-clean test-build-check start stop clean test
+.PHONY: help install install-hooks phpcs phpcs-fix phpunit lint-js lint-css lint lint-fix format-js format-check release build-css build-js build build-check build-clean test-build-check test-release test-scripts start stop clean test
 
 # Couleurs pour l'aide
 BLUE := \033[0;34m
@@ -61,6 +61,9 @@ format-js: ## Formatter le code JavaScript avec Prettier
 format-check: ## Vérifier le formatage JavaScript sans modifier
 	@./bin/prettier.sh --check 'latelierkiyose/assets/js/**/*.js'
 
+release: ## Préparer une release (ex: make release ARGS="patch" ou ARGS="--version 1.0.3")
+	@npm run release -- $(ARGS)
+
 build-css: ## Minifier les fichiers CSS
 	@echo "$(BLUE)🎨 Minification des CSS...$(NC)"
 	@npm run build:css
@@ -79,6 +82,12 @@ build-check: ## Vérifier que les assets minifiés sont à jour sans les modifie
 
 test-build-check: ## Exécuter les tests unitaires des scripts de build
 	@npm run test:build-check
+
+test-release: ## Exécuter les tests unitaires du script de release
+	@npm run test:release
+
+test-scripts: ## Exécuter tous les tests unitaires Node.js
+	@npm run test:scripts
 
 build-clean: ## Supprimer tous les fichiers minifiés
 	@echo "$(BLUE)🧹 Suppression des fichiers minifiés...$(NC)"
@@ -105,7 +114,7 @@ clean: ## Nettoyer les fichiers générés (vendor/, cache)
 	@rm -rf node_modules/
 	@echo "$(GREEN)✓ Nettoyage terminé$(NC)"
 
-test: phpcs phpunit lint test-build-check build-check ## Exécuter tous les tests (PHPCS + PHPUnit + linters + assets)
+test: phpcs phpunit lint test-scripts build-check ## Exécuter tous les tests (PHPCS + PHPUnit + linters + scripts + assets)
 	@echo "$(GREEN)✓ Tous les tests sont passés$(NC)"
 
 .DEFAULT_GOAL := help
