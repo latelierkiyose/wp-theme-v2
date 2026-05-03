@@ -156,7 +156,7 @@
 					parallaxElements.push(el);
 				} else if (!entry.isIntersecting && idx !== -1) {
 					parallaxElements.splice(idx, 1);
-					el.style.transform = '';
+					el.style.removeProperty('--kiyose-deco-parallax-y');
 				}
 			});
 		}),
@@ -186,7 +186,7 @@
 			scrollProgress = Math.max(0, Math.min(1, scrollProgress));
 
 			const translateY = scrollProgress * -0.05 * elementHeight;
-			el.style.transform = 'translateY(' + translateY + 'px)';
+			el.style.setProperty('--kiyose-deco-parallax-y', translateY + 'px');
 		});
 	}
 

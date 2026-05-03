@@ -257,6 +257,7 @@
 .deco-shape {
 	pointer-events: none;
 	position: absolute;
+	transform: translateY(var(--kiyose-deco-parallax-y, 0));
 	z-index: 0;
 }
 
@@ -409,7 +410,7 @@
 
 	.deco-shape {
 		opacity: 0.8;
-		transform: scale(0.5);
+		transform: translateY(var(--kiyose-deco-parallax-y, 0)) scale(0.5);
 	}
 
 	.deco-shape--top-left {
