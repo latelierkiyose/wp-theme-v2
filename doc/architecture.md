@@ -460,11 +460,10 @@ npm run release -- --bump major
 npm run release -- --version 1.2.3
 ```
 
-Le script met à jour le header `Version:` de `latelierkiyose/style.css`. Si cette modification n'est pas encore commitée, le tag est différé afin d'éviter un tag qui pointerait vers un commit ne contenant pas la version annoncée. Si la version actuelle est déjà commitée mais pas encore taguée, le script crée ce tag avant de proposer un nouveau bump.
+Le script met à jour le header `Version:` de `latelierkiyose/style.css`, crée le commit `chore(release): vX.Y.Z`, puis crée le tag annoté `vX.Y.Z` dans la même exécution quand l'arbre Git est propre. Si la version actuelle est déjà commitée mais pas encore taguée, le script crée ce tag avant de proposer un nouveau bump. Pour préparer uniquement la modification de version sans commit automatique, ajouter `--no-commit` ; le tag sera alors différé.
 
 **Tags Git**:
 ```bash
-# Après commit de la version, relancer la même commande crée le tag annoté v1.2.3
-npm run release -- --version 1.2.3
-git push origin v1.2.3
+# Le tag annoté est créé par npm run release ; pousser le commit courant et le tag.
+git push origin HEAD v1.2.3
 ```

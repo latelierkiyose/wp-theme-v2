@@ -80,16 +80,19 @@ make lint-fix
 gh run download {run-id} -n theme-build
 
 # Préparer une release patch/minor/major
-# Si la version actuelle est commitée mais pas taguée, le script crée d'abord ce tag.
+# Sur un arbre Git propre, le script met à jour la version,
+# crée le commit chore(release) et le tag annoté.
 npm run release -- patch
 npm run release -- --bump major
 
 # Corriger ou définir une version précise
 npm run release -- --version 1.0.3
 
-# Après commit de la version, relancer la même commande pour créer le tag
-npm run release -- --version 1.0.3
-git push origin v1.0.3
+# Mode différé si tu veux préparer la version sans commit automatique
+npm run release -- --version 1.0.3 --no-commit
+
+# Pousser le commit courant et le tag créé
+git push origin HEAD v1.0.3
 
 # Récupérer un tag existant si la release permanente n'a pas été créée
 gh workflow run build.yml --ref main -f release_tag=v1.0.0

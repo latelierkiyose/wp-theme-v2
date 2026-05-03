@@ -75,7 +75,7 @@ test('writeThemeVersion_whenHeaderExists_updatesVersion', () => {
 	assert.match(fs.readFileSync(stylePath, 'utf8'), /^Version: 1\.0\.3$/mu);
 });
 
-test('prepareRelease_whenVersionChangesWithoutCommit_defersTagCreation', () => {
+test('prepareRelease_whenNoCommitIsRequestedWithVersionChange_defersTagCreation', () => {
 	// Given
 	const dir = createTempDir();
 	const stylePath = createThemeStyle(dir, '1.0.2');
@@ -83,7 +83,7 @@ test('prepareRelease_whenVersionChangesWithoutCommit_defersTagCreation', () => {
 
 	// When
 	const result = releaseScript.prepareRelease({
-		argv: ['--version', '1.0.3'],
+		argv: ['--version', '1.0.3', '--no-commit'],
 		cwd: dir,
 		stylePath,
 	});
@@ -148,7 +148,32 @@ test('prepareRelease_whenCurrentVersionIsUntaggedAndClean_createsCurrentVersionT
 	);
 });
 
-test('prepareRelease_whenCurrentVersionIsAlreadyTagged_bumpsMinorAndDefersTagCreation', () => {
+test('prepareRelease_whenNoCommitIsRequestedAndCurrentVersionIsAlreadyTagged_bumpsMinorAndDefersTagCreation', () => {
+	// Given
+	const dir = createTempDir();
+	const stylePath = createThemeStyle(dir, '1.0.3');
+	initializeGitRepository(dir);
+	execFileSync('git', ['tag', '-a', 'v1.0.3', '-m', 'Release 1.0.3'], {
+		cwd: dir,
+		stdio: 'ignore',
+	});
+
+	// When
+	const result = releaseScript.prepareRelease({
+		argv: ['--no-commit'],
+		cwd: dir,
+		stylePath,
+	});
+
+	// Then
+	assert.equal(result.targetVersion, '1.1.0');
+	assert.equal(result.isVersionUpdated, true);
+	assert.equal(result.isTagCreated, false);
+	assert.equal(result.isTagDeferred, true);
+	assert.match(fs.readFileSync(stylePath, 'utf8'), /^Version: 1\.1\.0$/mu);
+});
+
+test('prepareRelease_whenCurrentVersionIsAlreadyTagged_bumpsMinorCommitsAndCreatesAnnotatedTag', () => {
 	// Given
 	const dir = createTempDir();
 	const stylePath = createThemeStyle(dir, '1.0.3');
@@ -168,9 +193,22 @@ test('prepareRelease_whenCurrentVersionIsAlreadyTagged_bumpsMinorAndDefersTagCre
 	// Then
 	assert.equal(result.targetVersion, '1.1.0');
 	assert.equal(result.isVersionUpdated, true);
-	assert.equal(result.isTagCreated, false);
-	assert.equal(result.isTagDeferred, true);
+	assert.equal(result.isCommitCreated, true);
+	assert.equal(result.isTagCreated, true);
+	assert.equal(result.isTagDeferred, false);
 	assert.match(fs.readFileSync(stylePath, 'utf8'), /^Version: 1\.1\.0$/mu);
+	assert.equal(
+		execFileSync('git', ['log', '-1', '--pretty=%s'], { cwd: dir, encoding: 'utf8' }).trim(),
+		'chore(release): v1.1.0'
+	);
+	assert.equal(
+		execFileSync('git', ['tag', '--list', 'v1.1.0'], { cwd: dir, encoding: 'utf8' }).trim(),
+		'v1.1.0'
+	);
+	assert.equal(
+		execFileSync('git', ['cat-file', '-t', 'v1.1.0'], { cwd: dir, encoding: 'utf8' }).trim(),
+		'tag'
+	);
 });
 
 test('prepareRelease_whenCommitIsRequested_commitsVersionAndCreatesAnnotatedTag', () => {
@@ -205,7 +243,7 @@ test('prepareRelease_whenCommitIsRequested_commitsVersionAndCreatesAnnotatedTag'
 	);
 });
 
-test('releaseScript_whenRunWithVersion_updatesThemeVersion', () => {
+test('releaseScript_whenRunWithVersion_updatesThemeVersionCommitsAndTags', () => {
 	// Given
 	const dir = createTempDir();
 	const stylePath = createThemeStyle(dir, '0.2.3');
@@ -221,5 +259,15 @@ test('releaseScript_whenRunWithVersion_updatesThemeVersion', () => {
 	assert.equal(result.status, 0);
 	assert.match(fs.readFileSync(stylePath, 'utf8'), /^Version: 1\.0\.3$/mu);
 	assert.match(result.stdout, /Version updated to 1\.0\.3/u);
-	assert.match(result.stdout, /Tag deferred/u);
+	assert.match(result.stdout, /Release commit created for v1\.0\.3/u);
+	assert.match(result.stdout, /Created tag v1\.0\.3/u);
+	assert.doesNotMatch(result.stdout, /Tag deferred/u);
+	assert.equal(
+		execFileSync('git', ['log', '-1', '--pretty=%s'], { cwd: dir, encoding: 'utf8' }).trim(),
+		'chore(release): v1.0.3'
+	);
+	assert.equal(
+		execFileSync('git', ['tag', '--list', 'v1.0.3'], { cwd: dir, encoding: 'utf8' }).trim(),
+		'v1.0.3'
+	);
 });

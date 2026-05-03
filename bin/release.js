@@ -18,7 +18,7 @@ function validateVersion(version) {
 function parseArguments(argv = []) {
 	const options = {
 		bump: 'minor',
-		isCommitRequested: false,
+		isCommitRequested: true,
 		isHelpRequested: false,
 		version: null,
 	};
@@ -34,6 +34,11 @@ function parseArguments(argv = []) {
 
 		if (argument === '--commit') {
 			options.isCommitRequested = true;
+			continue;
+		}
+
+		if (argument === '--no-commit') {
+			options.isCommitRequested = false;
 			continue;
 		}
 
@@ -202,8 +207,9 @@ function prepareRelease({
 	stylePath = path.join(cwd, 'latelierkiyose/style.css'),
 } = {}) {
 	const options = parseArguments(argv);
+	const isGitRepo = isGitRepository(cwd);
 	const currentVersion = readThemeVersion(stylePath);
-	const hasCurrentVersionTag = isGitRepository(cwd) && gitTagExists(cwd, `v${currentVersion}`);
+	const hasCurrentVersionTag = isGitRepo && gitTagExists(cwd, `v${currentVersion}`);
 	const shouldResolveRequestedTarget = Boolean(options.version) || hasCurrentVersionTag;
 	const targetVersion = shouldResolveRequestedTarget
 		? resolveTargetVersion(currentVersion, options)
@@ -216,15 +222,15 @@ function prepareRelease({
 	let isTagDeferred = false;
 
 	if (currentVersion !== targetVersion) {
-		if (options.isCommitRequested && !isCleanBeforeUpdate) {
-			throw new Error('Working tree must be clean before using --commit.');
+		if (isGitRepo && options.isCommitRequested && !isCleanBeforeUpdate) {
+			throw new Error('Working tree must be clean before creating a release commit.');
 		}
 
 		writeThemeVersion(stylePath, targetVersion);
 		isVersionUpdated = true;
 	}
 
-	if (options.isCommitRequested && isVersionUpdated) {
+	if (isGitRepo && options.isCommitRequested && isVersionUpdated) {
 		createReleaseCommit(cwd, stylePath, targetVersion);
 		isCommitCreated = true;
 	}
@@ -253,13 +259,14 @@ function usage() {
   npm run release -- patch
   npm run release -- --bump major
   npm run release -- --version 1.0.3
-  npm run release -- --version 1.0.3 --commit
+  npm run release -- --version 1.0.3 --no-commit
 
 Options:
   major|minor|patch      Bump type. Defaults to minor.
   --bump <type>          Same as the positional bump type.
   --version <version>    Set an explicit MAJOR.MINOR.PATCH version.
-  --commit               Create chore(release) commit before tagging.
+  --commit               Create chore(release) commit before tagging (default).
+  --no-commit            Update the version without creating the release commit.
 `;
 }
 
@@ -289,7 +296,7 @@ function main() {
 
 		if (result.isTagDeferred) {
 			process.stdout.write(
-				`Tag deferred: commit the version update, then rerun "npm run release -- --version ${result.targetVersion}" to create ${result.tagName}.\n`
+				`Tag deferred: commit the version update, then create ${result.tagName}, or rerun without --no-commit on a clean Git worktree.\n`
 			);
 		}
 	} catch (error) {
