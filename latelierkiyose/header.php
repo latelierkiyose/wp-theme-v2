@@ -21,17 +21,15 @@
 
 <header class="site-header" role="banner">
 	<div class="site-header__container">
-	<?php if ( has_custom_logo() ) : ?>
-		<div class="site-header__logo">
-			<?php the_custom_logo(); ?>
-		</div>
-	<?php else : ?>
 		<div class="site-header__logo-bubble">
+		<?php if ( has_custom_logo() ) : ?>
+			<?php the_custom_logo(); ?>
+		<?php else : ?>
 			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-header__logo" aria-label="<?php echo esc_attr( get_bloginfo( 'name' ) . ' - ' . __( 'Accueil', 'kiyose' ) ); ?>">
 				<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logo-kiyose.png' ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" height="250" width="250">
 			</a>
+		<?php endif; ?>
 		</div>
-	<?php endif; ?>
 
 		<nav class="main-nav" role="navigation" aria-label="<?php esc_attr_e( 'Menu principal', 'kiyose' ); ?>">
 			<?php
@@ -81,5 +79,4 @@
 		?>
 	</nav>
 </div>
-
 

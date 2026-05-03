@@ -56,19 +56,22 @@
 	z-index: 10; /* Above header content */
 }
 
-.site-header__logo {
+.site-header__logo,
+.site-header__logo-bubble .custom-logo-link {
 	align-items: center;
 	display: flex;
 	flex-shrink: 0;
 	text-decoration: none;
 }
 
-.site-header__logo:focus-visible {
+.site-header__logo:focus-visible,
+.site-header__logo-bubble .custom-logo-link:focus-visible {
 	border-radius: 4px;
 	outline: 2px solid var(--kiyose-color-burgundy);
 	outline-offset: 4px;
 }
 
+.site-header__logo-bubble img,
 .site-header__logo img {
 	/* Responsive logo size: 60px mobile → scales → 250px desktop */
 	height: clamp(60px, 15vw, 250px);

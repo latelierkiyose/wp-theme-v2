@@ -28,6 +28,20 @@ class Test_Template_Markup extends TestCase {
 		$this->assertStringContainsString( 'aria-hidden="true"', $result );
 	}
 
+	public function test_headerTemplate_whenCustomLogoIsConfigured_keepsLogoInsideBubbleWrapper() {
+		// Given
+		$template = file_get_contents( __DIR__ . '/../header.php' );
+
+		// When
+		$has_logo_bubble_before_custom_logo_branch = preg_match(
+			'/<div class="site-header__logo-bubble">\s*<\?php if \( has_custom_logo\(\) \) : \?>/m',
+			$template
+		);
+
+		// Then
+		$this->assertSame( 1, $has_logo_bubble_before_custom_logo_branch );
+	}
+
 	public function test_contactTemplate_whenPhotoIsRendered_usesConfiguredAltText() {
 		// Given
 		$template = file_get_contents( __DIR__ . '/../templates/page-contact.php' );
