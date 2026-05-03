@@ -33,6 +33,9 @@ require_once get_template_directory() . '/inc/custom-post-types.php';
 // CTAs des pages de service.
 require_once get_template_directory() . '/inc/service-ctas.php';
 
+// Footer.
+require_once get_template_directory() . '/inc/footer.php';
+
 // Meta boxes.
 require_once get_template_directory() . '/inc/meta-boxes.php';
 

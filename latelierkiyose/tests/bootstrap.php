@@ -465,6 +465,22 @@ if ( ! function_exists( 'get_the_title' ) ) {
 	}
 }
 
+if ( ! function_exists( 'get_bloginfo' ) ) {
+	function get_bloginfo( $show = '' ) {
+		if ( 'name' === $show ) {
+			return 'L\'Atelier Kiyose';
+		}
+
+		return '';
+	}
+}
+
+if ( ! function_exists( 'wp_footer' ) ) {
+	function wp_footer() {
+		return true;
+	}
+}
+
 if ( ! function_exists( 'get_the_post_navigation' ) ) {
 	function get_the_post_navigation( $args = array() ) {
 		$GLOBALS['kiyose_test_last_post_navigation_args'] = $args;
@@ -960,6 +976,7 @@ require_once __DIR__ . '/../inc/components.php';
 require_once __DIR__ . '/../inc/customizer.php';
 require_once __DIR__ . '/../inc/custom-post-types.php';
 require_once __DIR__ . '/../inc/service-ctas.php';
+require_once __DIR__ . '/../inc/footer.php';
 require_once __DIR__ . '/../inc/shortcodes.php';
 require_once __DIR__ . '/../inc/meta-boxes.php';
 require_once __DIR__ . '/../inc/blog.php';

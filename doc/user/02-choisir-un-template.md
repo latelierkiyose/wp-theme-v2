@@ -32,7 +32,7 @@ Le contenu que tu tapes dans l'éditeur s'insère **dans** le template. Changer 
 | **À propos** | Page de présentation de Virginie. Mise en page centrée, texte long. | `/a-propos` |
 | **Page de contact** | Formulaire de contact + coordonnées + photo optionnelle. | `/contact` |
 | **Calendrier et tarifs** | Affiche le calendrier des ateliers via Events Manager. | `/calendrier` |
-| *(Modèle par défaut)* | Pour les pages standard (mentions légales, politique de confidentialité). N'apparaît pas dans la liste — c'est ce que WordPress utilise si tu ne choisis rien. | `/mentions-legales`, `/politique-de-confidentialite` |
+| *(Modèle par défaut)* | Pour les pages standard (mentions légales, politique de confidentialité). N'apparaît pas dans la liste — c'est ce que WordPress utilise si tu ne choisis rien. | Pages légales choisies dans le Customizer |
 
 ## Détails par template
 
@@ -67,6 +67,18 @@ Le contenu que tu tapes dans l'éditeur s'insère **dans** le template. Changer 
 ### Modèle par défaut
 - Utilisé automatiquement si tu ne choisis pas de template.
 - Affiche simplement le titre de la page et son contenu. Idéal pour : mentions légales, politique de confidentialité, toute page « texte pur » sans fonctionnalité particulière.
+- Les pages « Mentions légales » et « Politique de confidentialité » restent des pages WordPress standard : tu peux modifier leur slug sans modifier le thème.
+
+## Régler les liens légaux du footer
+
+Les liens du footer vers les pages légales se règlent une seule fois dans le Customizer :
+
+1. Ouvre **Apparence → Personnaliser → Footer — liens légaux**.
+2. Dans **Page « Mentions légales »**, choisis la page publiée qui contient les mentions légales.
+3. Dans **Page « Politique de confidentialité »**, choisis la page publiée qui contient la politique de confidentialité.
+4. Clique sur **Publier**.
+
+Exemple : si tu renommes ensuite l'URL de la page « Mentions légales » de `/mentions-legales/` vers `/informations-legales/`, le footer continue de pointer vers la bonne page automatiquement.
 
 ## Ce qui est automatique (pas à choisir)
 

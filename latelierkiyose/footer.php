@@ -6,6 +6,8 @@
  * @since   0.1.0
  */
 
+$kiyose_footer_legal_links = kiyose_get_footer_legal_links();
+
 ?>
 	<footer class="site-footer" role="contentinfo">
 		<div class="site-footer__container">
@@ -37,10 +39,13 @@
 			?>
 		</div>
 
-			<div class="site-footer__legal">
-				<a href="<?php echo esc_url( home_url( '/mentions-legales/' ) ); ?>"><?php esc_html_e( 'Mentions légales', 'kiyose' ); ?></a>
-				<a href="<?php echo esc_url( home_url( '/politique-de-confidentialite/' ) ); ?>"><?php esc_html_e( 'Politique de confidentialité', 'kiyose' ); ?></a>
-			</div>
+			<?php if ( ! empty( $kiyose_footer_legal_links ) ) : ?>
+				<div class="site-footer__legal">
+					<?php foreach ( $kiyose_footer_legal_links as $kiyose_footer_legal_link ) : ?>
+						<a href="<?php echo esc_url( $kiyose_footer_legal_link['url'] ); ?>"><?php echo esc_html( $kiyose_footer_legal_link['label'] ); ?></a>
+					<?php endforeach; ?>
+				</div>
+			<?php endif; ?>
 
 			<div class="site-footer__copyright">
 				<p>

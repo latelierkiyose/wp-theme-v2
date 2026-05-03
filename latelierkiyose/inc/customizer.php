@@ -61,5 +61,52 @@ function kiyose_customize_register( $wp_customize ): void {
 			'allow_addition' => true,
 		)
 	);
+
+	$wp_customize->add_section(
+		'kiyose_footer_legal_links',
+		array(
+			'title'       => __( 'Footer — liens légaux', 'kiyose' ),
+			'description' => __( 'Choisis les pages publiées utilisées par les liens légaux du footer.', 'kiyose' ),
+			'priority'    => 135,
+		)
+	);
+
+	$wp_customize->add_setting(
+		'kiyose_footer_legal_notice_page_id',
+		array(
+			'default'           => 0,
+			'sanitize_callback' => 'absint',
+			'transport'         => 'refresh',
+		)
+	);
+
+	$wp_customize->add_control(
+		'kiyose_footer_legal_notice_page_id',
+		array(
+			'label'          => __( 'Page « Mentions légales »', 'kiyose' ),
+			'section'        => 'kiyose_footer_legal_links',
+			'type'           => 'dropdown-pages',
+			'allow_addition' => true,
+		)
+	);
+
+	$wp_customize->add_setting(
+		'kiyose_footer_privacy_policy_page_id',
+		array(
+			'default'           => 0,
+			'sanitize_callback' => 'absint',
+			'transport'         => 'refresh',
+		)
+	);
+
+	$wp_customize->add_control(
+		'kiyose_footer_privacy_policy_page_id',
+		array(
+			'label'          => __( 'Page « Politique de confidentialité »', 'kiyose' ),
+			'section'        => 'kiyose_footer_legal_links',
+			'type'           => 'dropdown-pages',
+			'allow_addition' => true,
+		)
+	);
 }
 add_action( 'customize_register', 'kiyose_customize_register' );

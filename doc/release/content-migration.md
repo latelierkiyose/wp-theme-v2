@@ -11,13 +11,14 @@ Ce document décrit toutes les actions à réaliser sur le contenu existant du s
 | 1 | Assigner un template à chaque page | 10 min | ✅ oui (sinon rendu par défaut non stylé) |
 | 2 | Configurer Réglages → Lecture | 5 min | ✅ oui (home/blog peuvent utiliser le mauvais template) |
 | 3 | Configurer les boutons des pages de service | 5 min | ✅ oui (sinon CTAs masqués) |
-| 4 | Remplir les métadonnées de la page Accueil | 20 min | ⚠️ partiellement (sections vides) |
-| 5 | Remplir les métadonnées de la page Contact | 5 min | non |
-| 6 | Configurer les catégories calendrier des services | 5 min/page | non (vide = toutes les dates) |
-| 7 | Recréer les témoignages en CPT `kiyose_testimony` | 15-30 min | ⚠️ sinon carrousel vide |
-| 8 | Remplacer les anciens blocs « signets » | 10 min/page | non (rendu dégradé) |
-| 9 | Insérer les shortcodes des plugins tiers | 10 min | ✅ oui (formulaires cassés) |
-| 10 | Régénérer les miniatures | 5 min (+ attente) | non (images coupées sinon) |
+| 4 | Configurer les liens légaux du footer | 5 min | ✅ oui (sinon liens légaux absents) |
+| 5 | Remplir les métadonnées de la page Accueil | 20 min | ⚠️ partiellement (sections vides) |
+| 6 | Remplir les métadonnées de la page Contact | 5 min | non |
+| 7 | Configurer les catégories calendrier des services | 5 min/page | non (vide = toutes les dates) |
+| 8 | Recréer les témoignages en CPT `kiyose_testimony` | 15-30 min | ⚠️ sinon carrousel vide |
+| 9 | Remplacer les anciens blocs « signets » | 10 min/page | non (rendu dégradé) |
+| 10 | Insérer les shortcodes des plugins tiers | 10 min | ✅ oui (formulaires cassés) |
+| 11 | Régénérer les miniatures | 5 min (+ attente) | non (images coupées sinon) |
 
 ---
 
@@ -70,7 +71,23 @@ Si une page cible n'est pas configurée ou n'est pas publiée, le bouton corresp
 
 ---
 
-## 4. Métadonnées de la page Accueil
+## 4. Configurer les liens légaux du footer
+
+Dans l'admin WordPress :
+
+1. Ouvrir **Apparence → Personnaliser → Footer — liens légaux**.
+2. **Page « Mentions légales »** : choisir la page publiée des mentions légales.
+3. **Page « Politique de confidentialité »** : choisir la page publiée de politique de confidentialité.
+4. Publier les réglages du Customizer.
+5. Vérifier sur le front que les deux liens du footer pointent vers les pages choisies.
+
+Si une page cible n'est pas configurée ou n'est pas publiée, le lien correspondant est masqué dans le footer. Il ne faut pas modifier le template ni dépendre d'un slug précis pour changer ces liens.
+
+**Vérification** : ouvrir le footer sur le front et confirmer que les deux liens ne retournent pas de 404.
+
+---
+
+## 5. Métadonnées de la page Accueil
 
 Le template `page-home.php` lit ses contenus éditoriaux depuis des **meta fields** gérés dans une meta box dédiée (« Page d'accueil — Bienvenue & Overlay À propos »). Cette meta box n'apparaît qu'après avoir sélectionné le template « Page d'accueil », enregistré, puis rechargé l'éditeur si nécessaire.
 
@@ -130,7 +147,7 @@ Exemple : `« Heureux soient les fêlés, car ils laissent passer la lumière »
 
 ---
 
-## 5. Métadonnées de la page Contact
+## 6. Métadonnées de la page Contact
 
 Source de vérité : `latelierkiyose/inc/meta-boxes.php`.
 
@@ -154,7 +171,7 @@ Les coordonnées (téléphone, email, adresse, réseaux sociaux) sont **hardcod�
 
 ---
 
-## 6. Catégories calendrier des pages de service
+## 7. Catégories calendrier des pages de service
 
 Chaque page de service peut filtrer le calendrier sur une ou plusieurs catégories Events Manager.
 
@@ -178,7 +195,7 @@ Exemples :
 
 ---
 
-## 7. Témoignages — migration vers le CPT `kiyose_testimony`
+## 8. Témoignages — migration vers le CPT `kiyose_testimony`
 
 Source de vérité : `latelierkiyose/inc/custom-post-types.php:14-58`.
 
@@ -212,7 +229,7 @@ Documentation rédacteur complète : [`doc/user/05-temoignages.md`](../user/05-t
 
 ---
 
-## 8. Migration des signets de navigation intra-page
+## 9. Migration des signets de navigation intra-page
 
 Certaines pages actuelles (principalement les pages de service) utilisent un bloc « Colonnes » avec la classe `signets` pour créer un sommaire cliquable en haut de page :
 
@@ -264,7 +281,7 @@ Documentation rédacteur complète : [`doc/user/04-shortcodes.md`](../user/04-sh
 
 ---
 
-## 9. Insertion des shortcodes des plugins tiers
+## 10. Insertion des shortcodes des plugins tiers
 
 ### Page Contact — Contact Form 7
 
@@ -305,7 +322,7 @@ Rien à faire. Les blocs newsletter du footer (toute page) et de l'overlay homep
 
 ---
 
-## 10. Tailles d'images et régénération des miniatures
+## 11. Tailles d'images et régénération des miniatures
 
 Le thème déclare deux tailles personnalisées (source : `latelierkiyose/inc/setup.php:46-47`) :
 
@@ -342,6 +359,7 @@ Avant de considérer la migration comme terminée :
 - [ ] Toutes les pages ont leur template assigné (voir tableau § 1)
 - [ ] Réglages → Lecture : page d'accueil = `Accueil`, page des articles = `Actus / Blog` ou `Actualités`
 - [ ] Customizer : pages cibles « Me contacter » et « Voir le calendrier » configurées
+- [ ] Customizer : les deux liens légaux du footer sont configurés et ne retournent pas de 404
 - [ ] Page Accueil : titre bienvenue, slogan, Q&R, textes contenu 2 remplis
 - [ ] Page Accueil : overlay avec photo (optionnelle) et URL À propos correcte
 - [ ] Page Contact : photo + alt remplis, formulaire CF7 inséré, envoi testé

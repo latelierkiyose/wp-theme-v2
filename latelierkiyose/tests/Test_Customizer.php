@@ -28,6 +28,23 @@ class Test_Customizer extends TestCase {
 		$this->assertSame( 'absint', $customizer->settings['kiyose_service_contact_page_id']['sanitize_callback'] ?? '' );
 		$this->assertSame( 'absint', $customizer->settings['kiyose_service_calendar_page_id']['sanitize_callback'] ?? '' );
 	}
+
+	public function test_kiyose_customize_register_registersFooterLegalDropdownControls() {
+		// Given.
+		$customizer = new Kiyose_Test_Customizer_Manager();
+
+		// When.
+		if ( function_exists( 'kiyose_customize_register' ) ) {
+			kiyose_customize_register( $customizer );
+		}
+
+		// Then.
+		$this->assertArrayHasKey( 'kiyose_footer_legal_links', $customizer->sections );
+		$this->assertSame( 'dropdown-pages', $customizer->controls['kiyose_footer_legal_notice_page_id']['type'] ?? '' );
+		$this->assertSame( 'dropdown-pages', $customizer->controls['kiyose_footer_privacy_policy_page_id']['type'] ?? '' );
+		$this->assertSame( 'absint', $customizer->settings['kiyose_footer_legal_notice_page_id']['sanitize_callback'] ?? '' );
+		$this->assertSame( 'absint', $customizer->settings['kiyose_footer_privacy_policy_page_id']['sanitize_callback'] ?? '' );
+	}
 }
 
 /**

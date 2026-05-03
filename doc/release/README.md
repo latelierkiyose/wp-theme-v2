@@ -264,7 +264,7 @@ Les validations minimales à faire avant la bascule publique :
 
 ### Légal / RGPD
 
-- [ ] Mentions légales accessibles depuis le footer (SIRET `910 902 932 00010`, adresse `Le Grand Vron, 86510 Brux`, hébergeur)
+- [ ] Mentions légales et politique de confidentialité configurées dans le footer, accessibles sans 404
 - [ ] Bannière cookies fonctionnelle
 - [ ] Consentement RGPD explicite sur newsletter + formulaire contact
 

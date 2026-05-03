@@ -54,6 +54,19 @@ class Test_Template_Markup extends TestCase {
 		$this->assertStringNotContainsString( "home_url( '/calendrier-tarifs/' )", $result );
 	}
 
+	public function test_footerTemplate_usesConfiguredLegalLinksInsteadOfHardcodedUrls() {
+		// Given.
+		$template = file_get_contents( __DIR__ . '/../footer.php' );
+
+		// When.
+		$result = $template;
+
+		// Then.
+		$this->assertStringContainsString( 'kiyose_get_footer_legal_links', $result );
+		$this->assertStringNotContainsString( '/mentions-legales/', $result );
+		$this->assertStringNotContainsString( '/politique-de-confidentialite/', $result );
+	}
+
 	public function test_contentBlogTemplate_whenThumbnailLinkIsDecorative_hidesItFromAssistiveTech() {
 		// Given
 		$template = file_get_contents( __DIR__ . '/../template-parts/content-blog.php' );

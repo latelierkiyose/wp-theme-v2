@@ -1,6 +1,6 @@
 # PRD 0064 — Liens légaux du footer configurables
 
-- **Statut** : prêt à l'implémentation
+- **Statut** : terminé
 - **Criticité** : moyenne
 - **Version** : 1.0
 - **Date** : 2026-05-03
