@@ -313,7 +313,7 @@ Le site utilise trois plugins qui fournissent leurs propres shortcodes. Le thèm
 
 ### Brevo (newsletter)
 - Shortcode typique : `[sibwp_form id="1"]`
-- Le formulaire de newsletter est intégré dans le pied de page et sur la page d'accueil.
+- Le formulaire de newsletter est intégré dans le pied de page. Sur la page d'accueil, le même formulaire est déplacé dans le panneau newsletter quand il apparaît sur ordinateur.
 - Configurer : menu **Brevo** ou **Sendinblue** (anciennement).
 - Documentation : <https://help.brevo.com/>
 

@@ -318,7 +318,7 @@ Rien à faire sur la home, le shortcode `[events_list limit="4" scope="future"..
 
 ### Newsletter Brevo — automatique
 
-Rien à faire. Les blocs newsletter du footer (toute page) et de l'overlay homepage sont rendus automatiquement par le thème, à condition que le plugin Brevo soit actif et qu'un formulaire d'ID 1 existe. Voir [`plugins.md` § Brevo](plugins.md#1-brevo-newsletter).
+Rien à faire. Le formulaire newsletter du footer est rendu automatiquement par le thème, à condition que le plugin Brevo soit actif et qu'un formulaire d'ID 1 existe. Sur la homepage desktop, ce même formulaire est déplacé dans l'overlay newsletter quand il apparaît, puis replacé dans le footer quand l'overlay se ferme. Le shortcode Brevo n'est rendu qu'une seule fois afin d'éviter les doublons reCAPTCHA. Voir [`plugins.md` § Brevo](plugins.md#1-brevo-newsletter).
 
 ---
 

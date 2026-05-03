@@ -55,7 +55,7 @@ Certaines sections de la page d'accueil s'alimentent **toutes seules** — tu n'
 - Le **carrousel de témoignages** → se met à jour quand tu ajoutes un témoignage ([voir recette](ajouter-un-temoignage.md)).
 - Les **prochains événements** → se met à jour quand tu ajoutes un événement via Events Manager.
 - Les **derniers articles du blog** → se met à jour quand tu publies un article.
-- L'**inscription newsletter** → formulaire Brevo (pas de modification côté page d'accueil).
+- L'**inscription newsletter** → formulaire Brevo déplacé dans un panneau sur ordinateur, puis replacé dans le pied de page quand le panneau est fermé (pas de modification côté page d'accueil).
 
 ## Pour aller plus loin
 

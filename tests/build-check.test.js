@@ -109,6 +109,10 @@ class FakeElement {
 	}
 
 	appendChild(child) {
+		if (child.parentElement && child.parentElement !== this) {
+			child.parentElement.removeChild(child);
+		}
+
 		child.parentElement = this;
 		child.assignOwnerDocument(this.ownerDocument);
 		this.children.push(child);
@@ -248,7 +252,16 @@ class FakeElement {
 			return this.attributes.has('tabindex') && this.getAttribute('tabindex') !== '-1';
 		}
 
+		const attributeMatch = normalizedSelector.match(/^\[([a-zA-Z0-9_-]+)\]$/u);
+		if (attributeMatch) {
+			return this.attributes.has(attributeMatch[1]);
+		}
+
 		return this.tagName === normalizedSelector;
+	}
+
+	get firstChild() {
+		return this.children[0] || null;
 	}
 
 	setAttribute(attributeName, value) {
@@ -605,22 +618,42 @@ function createNewsletterOverlayFixture() {
 		id: 'newsletter-overlay-close',
 		tagName: 'button',
 	});
+	const overlayFormSlot = new FakeElement({
+		attributes: { 'data-newsletter-overlay-form': '' },
+		classes: ['newsletter-overlay__form'],
+	});
 	const overlay = new FakeElement({
 		id: 'newsletter-overlay',
-		children: [closeButton],
+		children: [closeButton, overlayFormSlot],
 	});
 	overlay.setAttribute('hidden', '');
 	const announcement = new FakeElement({ id: 'overlay-announcement' });
+	const brevoForm = new FakeElement({
+		attributes: { id: 'sib_signup_form_1' },
+		tagName: 'form',
+	});
+	const footerFormSlot = new FakeElement({
+		attributes: { 'data-newsletter-footer-form': '' },
+		children: [brevoForm],
+	});
+	const footerNewsletter = new FakeElement({
+		id: 'site-footer-newsletter',
+		children: [footerFormSlot],
+	});
 	const root = new FakeElement({
-		children: [overlay, announcement],
+		children: [overlay, announcement, footerNewsletter],
 	});
 	const document = createFakeDocument(root);
 
 	return {
 		announcement,
+		brevoForm,
 		closeButton,
 		document,
+		footerFormSlot,
+		footerNewsletter,
 		overlay,
+		overlayFormSlot,
 	};
 }
 
@@ -1170,6 +1203,20 @@ test('NewsletterOverlay_whenZoneChangesBelow_showsOverlay', () => {
 	assert.equal(fixture.announcement.textContent, 'Le panneau Newsletter est maintenant visible.');
 });
 
+test('NewsletterOverlay_whenZoneChangesBelow_movesFooterBrevoFormIntoOverlay', () => {
+	// Given
+	const fixture = createNewsletterOverlayFixture();
+	const window = createFakeWindow();
+	loadOverlayScript(newsletterOverlayJs, fixture.document, window);
+
+	// When
+	fixture.document.dispatch('kiyose:overlay-zone', { detail: { zone: 'below' } });
+
+	// Then
+	assert.equal(fixture.brevoForm.parentElement, fixture.overlayFormSlot);
+	assert.deepEqual(fixture.footerFormSlot.children, []);
+});
+
 test('NewsletterOverlay_whenManuallyClosed_staysClosedUntilZoneChangesAgain', () => {
 	// Given
 	const fixture = createNewsletterOverlayFixture();
@@ -1183,6 +1230,7 @@ test('NewsletterOverlay_whenManuallyClosed_staysClosedUntilZoneChangesAgain', ()
 
 	// Then
 	assert.equal(fixture.overlay.hidden, true);
+	assert.equal(fixture.brevoForm.parentElement, fixture.footerFormSlot);
 
 	// When
 	fixture.document.dispatch('kiyose:overlay-zone', { detail: { zone: 'above' } });

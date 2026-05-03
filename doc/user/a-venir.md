@@ -11,7 +11,7 @@ Si tu cherches ce qui est **déjà en place**, va directement dans les pages de 
 
 Sur ordinateur, un encart d'inscription à la newsletter apparaîtra sur le côté gauche de l'écran quand tu fais défiler la page d'accueil au niveau de la section **Événements**. Il disparaîtra ensuite pour laisser place à la suite du contenu.
 
-**Côté rédaction :** rien à faire. Le formulaire Brevo est déjà configuré — l'encart sera une nouvelle manière de l'afficher.
+**Côté rédaction :** rien à faire. Le formulaire Brevo est déjà configuré — l'encart affichera ce même formulaire sans le dupliquer.
 
 ## Si tu ne vois pas ici une fonctionnalité que tu attendais
 

@@ -27,6 +27,8 @@
 	const overlay = document.getElementById('newsletter-overlay');
 	const closeBtn = document.getElementById('newsletter-overlay-close');
 	const announcement = document.getElementById('overlay-announcement');
+	const overlayFormSlot = overlay ? overlay.querySelector('[data-newsletter-overlay-form]') : null;
+	const footerFormSlot = document.querySelector('[data-newsletter-footer-form]');
 
 	if (!overlay || !closeBtn) {
 		return;
@@ -40,15 +42,34 @@
 	let lastZone = null;
 
 	/**
+	 * Move the single Brevo form instance between footer and desktop overlay.
+	 *
+	 * @param {Element|null} targetSlot Destination slot.
+	 */
+	function moveNewsletterForm(targetSlot) {
+		if (!targetSlot || !overlayFormSlot || !footerFormSlot) {
+			return;
+		}
+
+		const sourceSlot = targetSlot === overlayFormSlot ? footerFormSlot : overlayFormSlot;
+
+		while (sourceSlot.firstChild) {
+			targetSlot.appendChild(sourceSlot.firstChild);
+		}
+	}
+
+	/**
 	 * Show the overlay.
 	 *
 	 * @param {boolean} shouldAnimate Whether to play the arc entrance animation.
 	 */
 	function showOverlay(shouldAnimate) {
 		if (isVisible) {
+			moveNewsletterForm(overlayFormSlot);
 			return;
 		}
 
+		moveNewsletterForm(overlayFormSlot);
 		overlay.removeAttribute('hidden');
 		isVisible = true;
 
@@ -71,6 +92,8 @@
 
 	/** Hide the overlay (zone transition, not manual close). */
 	function hideOverlay() {
+		moveNewsletterForm(footerFormSlot);
+
 		if (!isVisible) {
 			return;
 		}
@@ -99,6 +122,7 @@
 		const zone = event.detail && event.detail.zone;
 
 		if (window.innerWidth < DESKTOP_BREAKPOINT) {
+			moveNewsletterForm(footerFormSlot);
 			return;
 		}
 
@@ -127,7 +151,7 @@
 	});
 
 	window.addEventListener('resize', () => {
-		if (window.innerWidth < DESKTOP_BREAKPOINT && isVisible) {
+		if (window.innerWidth < DESKTOP_BREAKPOINT) {
 			hideOverlay();
 		}
 	});

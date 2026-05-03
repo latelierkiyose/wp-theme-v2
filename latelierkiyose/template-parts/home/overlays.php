@@ -55,19 +55,7 @@ $kiyose_has_about_image = ! empty( $kiyose_about_image_id );
 		<p class="newsletter-overlay__description">
 			<?php esc_html_e( 'Recevez les prochaines dates et actualités directement dans votre boîte mail.', 'kiyose' ); ?>
 		</p>
-		<div class="newsletter-overlay__form">
-			<?php
-			if ( shortcode_exists( 'sibwp_form' ) ) {
-				echo do_shortcode( '[sibwp_form id=1]' );
-			} else {
-				?>
-				<div class="home-newsletter__form-placeholder">
-					<p><?php esc_html_e( 'Le formulaire d\'inscription à la newsletter sera intégré ici une fois le plugin Brevo configuré.', 'kiyose' ); ?></p>
-				</div>
-				<?php
-			}
-			?>
-		</div>
+		<div class="newsletter-overlay__form" data-newsletter-overlay-form></div>
 	</div>
 </div>
 

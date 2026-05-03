@@ -81,6 +81,30 @@ class Test_Template_Markup extends TestCase {
 		$this->assertStringNotContainsString( '/politique-de-confidentialite/', $result );
 	}
 
+	public function test_homeOverlaysTemplate_whenNewsletterIsRendered_exposesMovableFormSlot() {
+		// Given
+		$template = file_get_contents( __DIR__ . '/../template-parts/home/overlays.php' );
+
+		// When
+		$result = $template;
+
+		// Then
+		$this->assertStringContainsString( 'data-newsletter-overlay-form', $result );
+		$this->assertStringNotContainsString( "do_shortcode( '[sibwp_form id=1]' )", $result );
+	}
+
+	public function test_footerTemplate_whenNewsletterIsRendered_exposesStableNewsletterTarget() {
+		// Given
+		$template = file_get_contents( __DIR__ . '/../footer.php' );
+
+		// When
+		$result = $template;
+
+		// Then
+		$this->assertStringContainsString( 'id="site-footer-newsletter"', $result );
+		$this->assertStringContainsString( 'data-newsletter-footer-form', $result );
+	}
+
 	public function test_contentBlogTemplate_whenThumbnailLinkIsDecorative_hidesItFromAssistiveTech() {
 		// Given
 		$template = file_get_contents( __DIR__ . '/../template-parts/content-blog.php' );

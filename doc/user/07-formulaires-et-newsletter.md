@@ -40,9 +40,11 @@ Menu **Brevo** (ou **Sendinblue** selon la version) dans l'admin. La configurati
 
 Le formulaire d'inscription à la newsletter est :
 - **Intégré dans le pied de page** de toutes les pages.
-- **Intégré sur la page d'accueil**.
+- **Déplacé dans le panneau newsletter** de la page d'accueil quand ce panneau apparaît sur ordinateur.
 
 Tu n'as **rien à faire** pour qu'il s'affiche — c'est déjà prêt.
+
+Le formulaire Brevo n'est rendu qu'une seule fois par page. Sur la page d'accueil, c'est le même formulaire qui passe du pied de page au panneau newsletter, afin d'éviter les conflits avec la protection anti-spam reCAPTCHA.
 
 ### Ajouter le formulaire d'inscription sur une autre page
 

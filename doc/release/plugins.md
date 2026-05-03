@@ -17,9 +17,9 @@ Trois plugins sont consommés par le thème ou par le contenu existant. Leur abs
 | **Nom officiel** | Brevo (anciennement Sendinblue) |
 | **Slug** | `mailin` |
 | **Installation** | Extensions → Ajouter → rechercher « Brevo » → Installer → Activer |
-| **Utilisé par le thème** | `latelierkiyose/footer.php` (bloc newsletter du footer, présent sur chaque page) et `latelierkiyose/template-parts/home/overlays.php` (overlay newsletter de la home) |
+| **Utilisé par le thème** | `latelierkiyose/footer.php` (rendu unique du formulaire newsletter). `latelierkiyose/template-parts/home/overlays.php` fournit un emplacement qui reçoit ce même formulaire sur la home desktop, sans rendre un second shortcode. |
 | **Shortcode utilisé** | `[sibwp_form id=1]` |
-| **Comportement si absent** | Les blocs newsletter disparaissent silencieusement (le thème vérifie `shortcode_exists()` avant d'afficher). Pas de texte cassé visible, mais plus aucun moyen de s'inscrire. |
+| **Comportement si absent** | Le thème affiche un message d'attente à la place du formulaire (il vérifie `shortcode_exists()` avant d'afficher). Pas de shortcode brut visible, mais plus aucun moyen de s'inscrire. |
 
 **Configuration minimale obligatoire** :
 
@@ -32,7 +32,7 @@ Trois plugins sont consommés par le thème ou par le contenu existant. Leur abs
 
 **Que faire si l'ID n'est pas 1** : deux options.
 - Créer dans Brevo un nouveau formulaire (le premier aura souvent l'ID 1 s'il n'y en a jamais eu d'autres) et supprimer l'ancien.
-- Ou modifier le thème pour pointer vers le bon ID dans les deux emplacements cités ci-dessus (nécessite une intervention développeur). Dans ce cas, penser à mettre à jour ce document.
+- Ou modifier le thème pour pointer vers le bon ID dans `latelierkiyose/footer.php` (nécessite une intervention développeur). Dans ce cas, penser à mettre à jour ce document.
 
 ---
 

@@ -14,29 +14,31 @@ $kiyose_footer_legal_links = kiyose_get_footer_legal_links();
 			
 			<?php echo kiyose_get_social_links_html( 'footer' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
-		<div class="site-footer__newsletter">
+		<div class="site-footer__newsletter" id="site-footer-newsletter">
 			<h3 class="site-footer__newsletter-title"><?php esc_html_e( 'Newsletter', 'kiyose' ); ?></h3>
-			<?php
-			/**
-			 * Formulaire newsletter Brevo.
-			 *
-			 * Le plugin Brevo expose le shortcode [sibwp_form].
-			 *
-			 * @since 0.1.13
-			 */
-			if ( shortcode_exists( 'sibwp_form' ) ) {
-				echo do_shortcode( '[sibwp_form id=1]' );
-			} else {
-				?>
-				<div class="site-footer__newsletter-placeholder">
-					<p><?php esc_html_e( 'Restez informé·e de nos actualités et prochains ateliers.', 'kiyose' ); ?></p>
-					<p class="site-footer__newsletter-notice">
-						<em><?php esc_html_e( 'Le formulaire d\'inscription à la newsletter sera disponible une fois le plugin Brevo configuré.', 'kiyose' ); ?></em>
-					</p>
-				</div>
+			<div class="site-footer__newsletter-form" data-newsletter-footer-form>
 				<?php
-			}
-			?>
+				/**
+				 * Formulaire newsletter Brevo.
+				 *
+				 * Le plugin Brevo expose le shortcode [sibwp_form].
+				 *
+				 * @since 0.1.13
+				 */
+				if ( shortcode_exists( 'sibwp_form' ) ) {
+					echo do_shortcode( '[sibwp_form id=1]' );
+				} else {
+					?>
+					<div class="site-footer__newsletter-placeholder">
+						<p><?php esc_html_e( 'Restez informé·e de nos actualités et prochains ateliers.', 'kiyose' ); ?></p>
+						<p class="site-footer__newsletter-notice">
+							<em><?php esc_html_e( 'Le formulaire d\'inscription à la newsletter sera disponible une fois le plugin Brevo configuré.', 'kiyose' ); ?></em>
+						</p>
+					</div>
+					<?php
+				}
+				?>
+			</div>
 		</div>
 
 			<?php if ( ! empty( $kiyose_footer_legal_links ) ) : ?>
