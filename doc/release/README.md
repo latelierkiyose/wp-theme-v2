@@ -44,6 +44,7 @@ Ne pas entamer la procédure tant que l'un des prérequis suivants n'est pas pr�
 - [ ] **Accès SFTP/SSH** au serveur de production (vérifier la connexion avec un `ls` dans `/wp-content/themes/`)
 - [ ] **Accès admin WordPress** avec un rôle Administrateur
 - [ ] **Artefact ZIP du thème** téléchargé depuis [Releases GitHub](https://github.com/latelierkiyose/wp-theme-v2/releases) : fichier nommé `latelierkiyose-theme-*.zip` ⚠️ **pas** « Source code (zip) ». Cet artefact est généré par la CI après un build explicite des assets CSS/JS.
+  Si le tag `vX.Y.Z` existe mais que la release permanente n'a pas été créée automatiquement, relancer le workflow **Build and Test** depuis GitHub Actions avec l'entrée `release_tag` (ex. `v1.0.0`) ou avec `gh workflow run build.yml --ref main -f release_tag=v1.0.0`.
 - [ ] **Fenêtre de maintenance** (2-3 h en heures creuses) communiquée au commanditaire
 - [ ] **Logins Brevo, Events Manager, Contact Form 7** disponibles (pour récupérer les formulaires/événements existants ou en créer de nouveaux)
 - [ ] **Plan de rollback lu** : [`rollback.md`](rollback.md)

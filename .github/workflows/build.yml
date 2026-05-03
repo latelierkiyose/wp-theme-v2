@@ -1,12 +1,18 @@
 name: Build and Test
 
 on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Existing vX.Y.Z tag to publish as a permanent release.'
+        required: true
+        type: string
   push:
     branches:
       - main
       - develop
     tags:
-      - 'v[0-9]*.[0-9]*.[0-9]*'
+      - 'v[0-9]+.[0-9]+.[0-9]+'
   pull_request:
     branches:
       - main
@@ -77,16 +83,35 @@ jobs:
     runs-on: ubuntu-latest
     needs: test
     if: >-
-      github.event_name == 'push' && (
-        github.ref == 'refs/heads/main' ||
-        startsWith(github.ref, 'refs/tags/v')
+      github.event_name == 'workflow_dispatch' ||
+      (
+        github.event_name == 'push' && (
+          github.ref == 'refs/heads/main' ||
+          startsWith(github.ref, 'refs/tags/v')
+        )
       )
     permissions:
       contents: write
 
     steps:
+      - name: Validate manual release tag
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          RELEASE_REF: ${{ inputs.release_tag }}
+        run: |
+          if [[ ! "$RELEASE_REF" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::release_tag must use the vX.Y.Z format, for example v1.0.0"
+            exit 1
+          fi
+
       - name: Checkout code
         uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.release_tag || github.ref }}
+
+      - name: Resolve build source
+        id: build_source
+        run: echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -110,8 +135,9 @@ jobs:
       - name: Create ZIP artifact
         run: |
           cd build
-          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
-            VERSION="${GITHUB_REF#refs/tags/v}"
+          RELEASE_REF="${{ inputs.release_tag || github.ref_name }}"
+          if [[ "$GITHUB_REF" == refs/tags/v* || "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
+            VERSION="${RELEASE_REF#v}"
             zip -r latelierkiyose-theme-${VERSION}.zip latelierkiyose/
           else
             SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
@@ -123,24 +149,26 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
-          name: theme-build-${{ github.sha }}
+          name: theme-build-${{ steps.build_source.outputs.sha }}
           path: build/latelierkiyose-theme-*.zip
           retention-days: 5
 
       - name: Generate release tag
         id: release_tag
         run: |
-          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
-            TAG="${GITHUB_REF#refs/tags/}"
+          RELEASE_REF="${{ inputs.release_tag || github.ref_name }}"
+          DATE=$(date +'%Y-%m-%d')
+          if [[ "$GITHUB_REF" == refs/tags/v* || "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
+            TAG="${RELEASE_REF}"
             VERSION="${TAG#v}"
             ZIPNAME="latelierkiyose-theme-${VERSION}.zip"
             echo "tag=${TAG}" >> $GITHUB_OUTPUT
+            echo "date=${DATE}" >> $GITHUB_OUTPUT
             echo "zipname=${ZIPNAME}" >> $GITHUB_OUTPUT
             echo "release_name=Release ${TAG}" >> $GITHUB_OUTPUT
             echo "is_prerelease=false" >> $GITHUB_OUTPUT
           else
             SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
-            DATE=$(date +'%Y-%m-%d')
             DATETIME=$(date +'%Y-%m-%d-%H%M%S')
             TAG="build-${DATE}-${SHORT_SHA}"
             ZIPNAME="latelierkiyose-theme-${DATE}-${SHORT_SHA}.zip"
@@ -158,10 +186,10 @@ jobs:
           tag_name: ${{ steps.release_tag.outputs.tag }}
           name: ${{ steps.release_tag.outputs.release_name }}
           body: |
-            Automated build from commit ${{ github.sha }}
+            Automated build from commit ${{ steps.build_source.outputs.sha }}
 
-            **Branch**: ${{ github.ref_name }}
-            **Commit**: ${{ github.sha }}
+            **Source ref**: ${{ inputs.release_tag || github.ref_name }}
+            **Commit**: ${{ steps.build_source.outputs.sha }}
             **Date**: ${{ steps.release_tag.outputs.date }}
 
             ## 📦 Download the WordPress Theme

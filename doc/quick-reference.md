@@ -82,6 +82,9 @@ gh run download {run-id} -n theme-build
 # Créer un tag de release
 git tag -a v1.0.0 -m "Release 1.0.0"
 git push origin v1.0.0
+
+# Récupérer un tag existant si la release permanente n'a pas été créée
+gh workflow run build.yml --ref main -f release_tag=v1.0.0
 ```
 
 **Important**: Seul l'artefact ZIP créé par la CI doit être déployé en production.

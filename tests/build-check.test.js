@@ -17,6 +17,7 @@ const brevoOverrideCss = path.join(
 	rootDir,
 	'latelierkiyose/assets/css/components/brevo-override.css'
 );
+const buildWorkflow = path.join(rootDir, '.github/workflows/build.yml');
 const carouselJs = path.join(rootDir, 'latelierkiyose/assets/js/modules/carousel.js');
 const dropdownJs = path.join(rootDir, 'latelierkiyose/assets/js/modules/dropdown.js');
 const headerCss = path.join(rootDir, 'latelierkiyose/assets/css/components/header.css');
@@ -1264,6 +1265,63 @@ test('packageScripts_includeReadOnlyBuildCheckCommands', () => {
 	assert.equal(scripts['build:css:check'], 'node bin/minify-css.js --check');
 	assert.equal(scripts['build:js:check'], 'node bin/minify-js.js --check');
 	assert.equal(scripts['build:check'], 'npm run build:css:check && npm run build:js:check');
+});
+
+test('buildWorkflow_whenManualReleaseIsNeeded_exposesWorkflowDispatchReleaseTagInput', () => {
+	// Given
+	const workflowSource = fs.readFileSync(buildWorkflow, 'utf8');
+
+	// When
+	const hasWorkflowDispatch = workflowSource.includes('workflow_dispatch:');
+	const hasReleaseTagInput = workflowSource.includes('release_tag:');
+	const hasReleaseTagDescription = workflowSource.includes(
+		"Existing vX.Y.Z tag to publish as a permanent release."
+	);
+	const hasStringType = workflowSource.includes('type: string');
+
+	// Then
+	assert.equal(hasWorkflowDispatch, true);
+	assert.equal(hasReleaseTagInput, true);
+	assert.equal(hasReleaseTagDescription, true);
+	assert.equal(hasStringType, true);
+});
+
+test('buildWorkflow_whenManualReleaseTagIsProvided_buildsVersionedPermanentRelease', () => {
+	// Given
+	const workflowSource = fs.readFileSync(buildWorkflow, 'utf8');
+
+	// When
+	const resolvesManualReleaseTag = workflowSource.includes(
+		'RELEASE_REF="${{ inputs.release_tag || github.ref_name }}"'
+	);
+	const buildsVersionedZip = workflowSource.includes(
+		'zip -r latelierkiyose-theme-${VERSION}.zip latelierkiyose/'
+	);
+	const publishesPermanentRelease = workflowSource.includes('echo "is_prerelease=false"');
+	const allowsManualBuildJob = workflowSource.includes("github.event_name == 'workflow_dispatch'");
+
+	// Then
+	assert.equal(resolvesManualReleaseTag, true);
+	assert.equal(buildsVersionedZip, true);
+	assert.equal(publishesPermanentRelease, true);
+	assert.equal(allowsManualBuildJob, true);
+});
+
+test('buildWorkflow_whenManualReleaseChecksOutTag_reportsCheckedOutCommitInReleaseBody', () => {
+	// Given
+	const workflowSource = fs.readFileSync(buildWorkflow, 'utf8');
+
+	// When
+	const resolvesBuildSource = workflowSource.includes('id: build_source');
+	const readsCheckedOutCommit = workflowSource.includes('git rev-parse HEAD');
+	const releaseBodyUsesCheckedOutCommit = workflowSource.includes(
+		'${{ steps.build_source.outputs.sha }}'
+	);
+
+	// Then
+	assert.equal(resolvesBuildSource, true);
+	assert.equal(readsCheckedOutCommit, true);
+	assert.equal(releaseBodyUsesCheckedOutCommit, true);
 });
 
 test('BrevoDocs_whenReferencingPluginShortcode_useOfficialSibwpShortcodeOnly', () => {
