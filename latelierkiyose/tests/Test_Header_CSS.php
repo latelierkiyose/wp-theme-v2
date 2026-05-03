@@ -25,6 +25,17 @@ class Test_Header_CSS extends TestCase {
 		$this->assert_css_rule_contains( $rules, 'width: auto;' );
 	}
 
+	public function test_headerCss_whenLogoUsesWordPressCustomLogoLink_hasCompactDesktopImageSize() {
+		// Given
+		$css = $this->get_header_css();
+
+		// When
+		$rules = $this->get_css_rules_for_selector( $css, '.site-header__logo-bubble img' );
+
+		// Then
+		$this->assert_css_rule_contains( $rules, 'height: clamp(60px, 12vw, 170px);' );
+	}
+
 	private function get_header_css() {
 		$css = file_get_contents( __DIR__ . '/../assets/css/components/header.css' );
 

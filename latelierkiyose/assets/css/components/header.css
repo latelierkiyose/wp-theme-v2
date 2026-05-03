@@ -190,7 +190,7 @@
 		width: clamp(80px, 14vw, 190px);
 	}
 
-	.site-header__logo img {
+	.site-header__logo-bubble img {
 		height: clamp(60px, 12vw, 170px);
 	}
 
