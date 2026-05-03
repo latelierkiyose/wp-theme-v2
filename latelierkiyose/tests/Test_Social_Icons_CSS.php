@@ -64,7 +64,7 @@ class Test_Social_Icons_CSS extends TestCase {
 	 */
 	private function get_compact_social_link_styles() {
 		return array(
-			'.site-footer__social a' => file_get_contents( __DIR__ . '/../assets/css/components/footer.css' ),
+			'.site-footer__networks a' => file_get_contents( __DIR__ . '/../assets/css/components/footer.css' ),
 			'.blog-single__share-link' => file_get_contents( __DIR__ . '/../assets/css/components/blog-single.css' ),
 		);
 	}

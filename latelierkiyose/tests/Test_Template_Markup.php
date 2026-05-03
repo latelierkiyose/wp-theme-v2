@@ -101,8 +101,9 @@ class Test_Template_Markup extends TestCase {
 		$result = $template;
 
 		// Then
-		$this->assertStringContainsString( 'id="site-footer-newsletter"', $result );
-		$this->assertStringContainsString( 'data-newsletter-footer-form', $result );
+		$this->assertStringContainsString( 'id="site-footer-signup"', $result );
+		$this->assertStringContainsString( 'data-footer-signup-form', $result );
+		$this->assertStringNotContainsString( 'site-footer__newsletter', $result );
 	}
 
 	public function test_contentBlogTemplate_whenThumbnailLinkIsDecorative_hidesItFromAssistiveTech() {

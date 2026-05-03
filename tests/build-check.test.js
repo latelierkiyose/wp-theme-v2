@@ -633,11 +633,11 @@ function createNewsletterOverlayFixture() {
 		tagName: 'form',
 	});
 	const footerFormSlot = new FakeElement({
-		attributes: { 'data-newsletter-footer-form': '' },
+		attributes: { 'data-footer-signup-form': '' },
 		children: [brevoForm],
 	});
 	const footerNewsletter = new FakeElement({
-		id: 'site-footer-newsletter',
+		id: 'site-footer-signup',
 		children: [footerFormSlot],
 	});
 	const root = new FakeElement({
@@ -1430,7 +1430,7 @@ test('brevoOverrideCss_whenLegacySignupFormIsInFooter_usesCompactNewsletterLayou
 
 	// When
 	const hasFooterFormSelector = css.includes(
-		'.site-footer__newsletter form[id^="sib_signup_form_"]'
+		'.site-footer__signup form[id^="sib_signup_form_"]'
 	);
 	const hasCompactMaxWidth = css.includes('max-width: 30rem;');
 	const hasCompactControlSize = css.includes('font-size: var(--kiyose-font-size-sm) !important;');

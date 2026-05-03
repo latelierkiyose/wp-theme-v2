@@ -30,13 +30,13 @@
    SOCIAL LINKS
    ============================================ */
 
-.site-footer__social {
+.site-footer__networks {
 	display: flex;
 	gap: var(--kiyose-spacing-md);
 	justify-content: center;
 }
 
-.site-footer__social a {
+.site-footer__networks a {
 	align-items: center;
 	background-color: var(--kiyose-color-primary);
 	border-radius: 50%;
@@ -50,23 +50,23 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-	.site-footer__social a {
+	.site-footer__networks a {
 		transition: background-color 0.2s ease, color 0.2s ease;
 	}
 }
 
-.site-footer__social a:hover,
-.site-footer__social a:focus-visible {
+.site-footer__networks a:hover,
+.site-footer__networks a:focus-visible {
 	background-color: var(--kiyose-color-burgundy);
 	color: #ffffff;
 }
 
-.site-footer__social a:focus-visible {
+.site-footer__networks a:focus-visible {
 	outline: 2px solid var(--kiyose-color-burgundy);
 	outline-offset: 2px;
 }
 
-.site-footer__social svg {
+.site-footer__networks svg {
 	height: 24px;
 	width: 24px;
 }
@@ -75,11 +75,11 @@
    NEWSLETTER
    ============================================ */
 
-.site-footer__newsletter {
+.site-footer__signup {
 	text-align: center;
 }
 
-.site-footer__newsletter-title {
+.site-footer__signup-title {
 	color: var(--kiyose-color-burgundy);
 	font-family: var(--kiyose-font-heading);
 	font-size: var(--kiyose-font-size-lg);
@@ -87,22 +87,22 @@
 	margin: 0 0 var(--kiyose-spacing-md);
 }
 
-.site-footer__newsletter-placeholder {
+.site-footer__signup-placeholder {
 	background-color: var(--kiyose-color-background);
 	border-radius: 8px;
 	padding: var(--kiyose-spacing-lg);
 }
 
-.site-footer__newsletter-placeholder p {
+.site-footer__signup-placeholder p {
 	color: var(--kiyose-color-text);
 	margin: 0 0 var(--kiyose-spacing-sm);
 }
 
-.site-footer__newsletter-placeholder p:last-child {
+.site-footer__signup-placeholder p:last-child {
 	margin-bottom: 0;
 }
 
-.site-footer__newsletter-notice {
+.site-footer__signup-notice {
 	color: var(--kiyose-color-text-light);
 	font-size: var(--kiyose-font-size-sm);
 }

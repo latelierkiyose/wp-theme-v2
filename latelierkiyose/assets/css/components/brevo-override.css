@@ -116,7 +116,7 @@ form[id^="sib_signup_form_"] input[type="submit"]:active {
 	transform: translateY(0);
 }
 
-.site-footer__newsletter form[id^="sib_signup_form_"],
+.site-footer__signup form[id^="sib_signup_form_"],
 .newsletter-overlay__form form[id^="sib_signup_form_"] {
 	margin: var(--kiyose-spacing-sm) auto 0;
 	max-width: 30rem;
@@ -126,23 +126,23 @@ form[id^="sib_signup_form_"] input[type="submit"]:active {
 	max-width: 18rem;
 }
 
-.site-footer__newsletter form[id^="sib_signup_form_"] p,
+.site-footer__signup form[id^="sib_signup_form_"] p,
 .newsletter-overlay__form form[id^="sib_signup_form_"] p {
 	margin: var(--kiyose-spacing-sm) 0 0 !important;
 }
 
-.site-footer__newsletter form[id^="sib_signup_form_"] label,
+.site-footer__signup form[id^="sib_signup_form_"] label,
 .newsletter-overlay__form form[id^="sib_signup_form_"] label {
 	font-size: var(--kiyose-font-size-sm);
 	margin-bottom: var(--kiyose-spacing-xs);
 }
 
-.site-footer__newsletter form[id^="sib_signup_form_"] input[type="text"],
-.site-footer__newsletter form[id^="sib_signup_form_"] input[type="email"],
-.site-footer__newsletter form[id^="sib_signup_form_"] input[type="tel"],
-.site-footer__newsletter form[id^="sib_signup_form_"] input[type="url"],
-.site-footer__newsletter form[id^="sib_signup_form_"] select,
-.site-footer__newsletter form[id^="sib_signup_form_"] textarea,
+.site-footer__signup form[id^="sib_signup_form_"] input[type="text"],
+.site-footer__signup form[id^="sib_signup_form_"] input[type="email"],
+.site-footer__signup form[id^="sib_signup_form_"] input[type="tel"],
+.site-footer__signup form[id^="sib_signup_form_"] input[type="url"],
+.site-footer__signup form[id^="sib_signup_form_"] select,
+.site-footer__signup form[id^="sib_signup_form_"] textarea,
 .newsletter-overlay__form form[id^="sib_signup_form_"] input[type="text"],
 .newsletter-overlay__form form[id^="sib_signup_form_"] input[type="email"],
 .newsletter-overlay__form form[id^="sib_signup_form_"] input[type="tel"],
@@ -154,8 +154,8 @@ form[id^="sib_signup_form_"] input[type="submit"]:active {
 	padding: var(--kiyose-spacing-sm) var(--kiyose-spacing-md) !important;
 }
 
-.site-footer__newsletter form[id^="sib_signup_form_"] .sib-default-btn,
-.site-footer__newsletter form[id^="sib_signup_form_"] input[type="submit"],
+.site-footer__signup form[id^="sib_signup_form_"] .sib-default-btn,
+.site-footer__signup form[id^="sib_signup_form_"] input[type="submit"],
 .newsletter-overlay__form form[id^="sib_signup_form_"] .sib-default-btn,
 .newsletter-overlay__form form[id^="sib_signup_form_"] input[type="submit"] {
 	font-size: var(--kiyose-font-size-sm) !important;
@@ -179,11 +179,11 @@ form[id^="sib_signup_form_"] input[type="submit"]:active {
  * Dans le footer : formulaire inline sur desktop (≥768px)
  * email + bouton sur une ligne
  */
-.site-footer__newsletter .sib-form {
+.site-footer__signup .sib-form {
 	margin-top: 1rem;
 }
 
-.site-footer__newsletter .sib-form__container {
+.site-footer__signup .sib-form__container {
 	display: flex;
 	flex-direction: column;
 	gap: 0.75rem;
@@ -191,16 +191,16 @@ form[id^="sib_signup_form_"] input[type="submit"]:active {
 
 /* Desktop : champs inline */
 @media (width >= 768px) {
-	.site-footer__newsletter .sib-form__container {
+	.site-footer__signup .sib-form__container {
 		align-items: flex-end;
 		flex-direction: row;
 	}
 
-	.site-footer__newsletter .sib-form__field {
+	.site-footer__signup .sib-form__field {
 		flex: 1;
 	}
 
-	.site-footer__newsletter .sib-form__button-wrapper {
+	.site-footer__signup .sib-form__button-wrapper {
 		flex-shrink: 0;
 	}
 }
@@ -314,8 +314,8 @@ form[id^="sib_signup_form_"] input[type="submit"]:active {
 
 /* Desktop footer : bouton auto-width */
 @media (width >= 768px) {
-	.site-footer__newsletter .sib-form button[type='submit'],
-	.site-footer__newsletter .sib-form input[type='submit'] {
+	.site-footer__signup .sib-form button[type='submit'],
+	.site-footer__signup .sib-form input[type='submit'] {
 		width: auto;
 	}
 }

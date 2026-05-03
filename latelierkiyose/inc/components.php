@@ -147,7 +147,7 @@ function kiyose_get_social_links_html( string $context ): string {
 function kiyose_get_footer_social_links_html( array $profiles ): string {
 	ob_start();
 	?>
-	<div class="site-footer__social">
+	<div class="site-footer__networks">
 		<?php foreach ( $profiles as $profile ) : ?>
 			<a href="<?php echo esc_url( $profile['url'] ); ?>" aria-label="<?php echo esc_attr( $profile['label'] ); ?>" target="_blank" rel="noopener noreferrer">
 				<?php echo $profile['icon']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>

@@ -28,7 +28,7 @@
 	const closeBtn = document.getElementById('newsletter-overlay-close');
 	const announcement = document.getElementById('overlay-announcement');
 	const overlayFormSlot = overlay ? overlay.querySelector('[data-newsletter-overlay-form]') : null;
-	const footerFormSlot = document.querySelector('[data-newsletter-footer-form]');
+	const footerFormSlot = document.querySelector('[data-footer-signup-form]');
 
 	if (!overlay || !closeBtn) {
 		return;
