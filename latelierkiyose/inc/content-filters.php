@@ -21,6 +21,13 @@ defined( 'ABSPATH' ) || exit;
  * @return string Modified content with IDs added to H2s.
  */
 function kiyose_auto_add_heading_ids( $content ) {
+	// Frontend-only: in admin (block editor previews, REST API renders surfaced
+	// to the editor), injected IDs would diverge from the saved source and may
+	// collide with IDs other plugins are about to apply on render.
+	if ( function_exists( 'is_admin' ) && is_admin() ) {
+		return $content;
+	}
+
 	// Only process if content contains H2 headings.
 	if ( false === strpos( $content, '<h2' ) ) {
 		return $content;

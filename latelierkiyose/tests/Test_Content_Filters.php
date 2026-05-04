@@ -17,6 +17,27 @@ class Test_Content_Filters extends TestCase {
 
 	private const NBSP = '&#8239;';
 
+	protected function setUp(): void {
+		parent::setUp();
+
+		kiyose_reset_test_state();
+	}
+
+	public function test_kiyose_auto_add_heading_ids_whenAdminContext_returnsContentUnchanged() {
+		// Given
+		// Avoid mutating content rendered for the block editor or REST surfaces
+		// where injected IDs would diverge from the saved source and may
+		// collide with IDs other plugins are about to apply.
+		$GLOBALS['kiyose_test_is_admin'] = true;
+		$content                         = '<p>Avant</p><h2>Une section</h2><p>Après</p>';
+
+		// When
+		$result = kiyose_auto_add_heading_ids( $content );
+
+		// Then
+		$this->assertSame( $content, $result );
+	}
+
 	public function test_kiyose_auto_add_heading_ids_ofPlainH2_addsSlugId() {
 		// Given
 		$content = '<p>Avant</p><h2>Art-thérapie créative</h2><p>Après</p>';

@@ -665,9 +665,17 @@ function kiyose_unique_resource_hints( array $urls ): array {
 /**
  * Dequeue exact duplicate external reCAPTCHA and Brevo SDK script URLs.
  *
+ * Frontend-only: admin screens may legitimately enqueue these scripts in
+ * different contexts (plugin settings pages) where dedupe assumptions don't
+ * hold.
+ *
  * @return void
  */
 function kiyose_dedupe_external_scripts(): void {
+	if ( function_exists( 'is_admin' ) && is_admin() ) {
+		return;
+	}
+
 	global $wp_scripts;
 
 	if ( ! is_object( $wp_scripts ) || empty( $wp_scripts->queue ) || empty( $wp_scripts->registered ) ) {

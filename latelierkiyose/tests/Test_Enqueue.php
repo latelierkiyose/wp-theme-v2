@@ -39,12 +39,6 @@ if ( ! function_exists( 'is_page' ) ) {
 	}
 }
 
-if ( ! function_exists( 'is_admin' ) ) {
-	function is_admin() {
-		return ! empty( $GLOBALS['kiyose_test_is_admin'] );
-	}
-}
-
 if ( ! function_exists( 'is_page_template' ) ) {
 	function is_page_template( $template = '' ) {
 		return in_array( $template, $GLOBALS['kiyose_test_page_templates'] ?? array(), true );
@@ -737,6 +731,28 @@ class Test_Enqueue extends TestCase {
 		$this->assertContains( 'brevo-recaptcha', $GLOBALS['kiyose_test_dequeued_scripts'] );
 		$this->assertNotContains( 'contact-form-7-recaptcha', $GLOBALS['kiyose_test_dequeued_scripts'] );
 		$this->assertSame( array( 'contact-form-7-recaptcha', 'kiyose-main' ), $GLOBALS['wp_scripts']->queue );
+	}
+
+	public function test_kiyose_dedupe_external_scripts_whenAdminContext_dequeuesNothing() {
+		// Given
+		// Admin pages may legitimately enqueue these scripts in plugin settings
+		// screens; dedupe assumptions don't hold in that context.
+		$GLOBALS['kiyose_test_is_admin'] = true;
+		$GLOBALS['wp_scripts']           = (object) array(
+			'queue'      => array( 'a', 'b' ),
+			'registered' => array(
+				'a' => (object) array( 'src' => 'https://www.google.com/recaptcha/api.js?render=k' ),
+				'b' => (object) array( 'src' => 'https://www.google.com/recaptcha/api.js?render=k' ),
+			),
+		);
+
+		// When
+		$this->assertTrue( function_exists( 'kiyose_dedupe_external_scripts' ) );
+		kiyose_dedupe_external_scripts();
+
+		// Then
+		$this->assertSame( array(), $GLOBALS['kiyose_test_dequeued_scripts'] );
+		$this->assertSame( array( 'a', 'b' ), $GLOBALS['wp_scripts']->queue );
 	}
 
 	public function test_kiyose_dedupe_external_scripts_whenDuplicateBrevoSdkUrls_dequeuesSecondHandle() {

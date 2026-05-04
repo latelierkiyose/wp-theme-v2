@@ -71,6 +71,17 @@ kiyose_reset_test_state();
  * we need to mock basic WordPress functions used in the theme.
  */
 
+if ( ! function_exists( 'is_admin' ) ) {
+	/**
+	 * Mock is_admin function — toggled via $GLOBALS['kiyose_test_is_admin'].
+	 *
+	 * @return bool
+	 */
+	function is_admin() {
+		return ! empty( $GLOBALS['kiyose_test_is_admin'] );
+	}
+}
+
 if ( ! function_exists( 'add_action' ) ) {
 	/**
 	 * Mock add_action function.
