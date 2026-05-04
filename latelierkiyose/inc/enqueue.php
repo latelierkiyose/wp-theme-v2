@@ -553,9 +553,18 @@ function kiyose_get_plugin_asset_handles(): array {
 /**
  * Dequeue native plugin assets when the current request does not render them.
  *
+ * Frontend-only optimization. Admin screens must keep plugin assets so their
+ * UIs (Events Manager ticket editor, CF7 admin, etc.) keep working — admin
+ * conditional tags like is_singular() return false and would otherwise dequeue
+ * scripts that admin pages legitimately need.
+ *
  * @return void
  */
 function kiyose_dequeue_unused_plugin_assets(): void {
+	if ( function_exists( 'is_admin' ) && is_admin() ) {
+		return;
+	}
+
 	foreach ( kiyose_get_plugin_asset_handles() as $asset_group ) {
 		$condition = $asset_group['condition'] ?? null;
 

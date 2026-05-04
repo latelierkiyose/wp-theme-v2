@@ -39,6 +39,12 @@ if ( ! function_exists( 'is_page' ) ) {
 	}
 }
 
+if ( ! function_exists( 'is_admin' ) ) {
+	function is_admin() {
+		return ! empty( $GLOBALS['kiyose_test_is_admin'] );
+	}
+}
+
 if ( ! function_exists( 'is_page_template' ) ) {
 	function is_page_template( $template = '' ) {
 		return in_array( $template, $GLOBALS['kiyose_test_page_templates'] ?? array(), true );
@@ -636,6 +642,30 @@ class Test_Enqueue extends TestCase {
 		$this->assertNotContains( 'contact-form-7', $GLOBALS['kiyose_test_dequeued_styles'] );
 		$this->assertContains( 'events-manager', $GLOBALS['kiyose_test_dequeued_scripts'] );
 		$this->assertContains( 'events-manager', $GLOBALS['kiyose_test_dequeued_styles'] );
+	}
+
+	public function test_kiyose_dequeue_unused_plugin_assets_whenAdminContext_dequeuesNothing() {
+		// Given
+		// Admin screens (e.g. /wp-admin/post.php?post_type=event) need plugin
+		// scripts to keep working. Frontend conditional tags return false in
+		// admin, so without this guard we would strip Events Manager admin JS
+		// and break ticket editing.
+		$GLOBALS['kiyose_test_is_admin']       = true;
+		$GLOBALS['kiyose_test_page_templates'] = array( 'templates/page-services.php' );
+		$GLOBALS['post']                       = (object) array(
+			'post_content' => '<p>Page sans shortcode plugin.</p>',
+			'post_type'    => 'page',
+		);
+
+		// When
+		$this->assertTrue( function_exists( 'kiyose_dequeue_unused_plugin_assets' ) );
+		kiyose_dequeue_unused_plugin_assets();
+
+		// Then
+		$this->assertSame( array(), $GLOBALS['kiyose_test_dequeued_scripts'] );
+		$this->assertSame( array(), $GLOBALS['kiyose_test_dequeued_styles'] );
+		$this->assertSame( array(), $GLOBALS['kiyose_test_deregistered_scripts'] );
+		$this->assertSame( array(), $GLOBALS['kiyose_test_deregistered_styles'] );
 	}
 
 	public function test_kiyose_add_recaptcha_resource_hints_whenNoPublicFormIsActive_returnsHintsUnchanged() {

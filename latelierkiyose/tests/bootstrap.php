@@ -50,6 +50,7 @@ function kiyose_reset_test_state(): void {
 	$GLOBALS['kiyose_test_titles']             = array();
 	$GLOBALS['kiyose_test_terms']              = array();
 	$GLOBALS['kiyose_test_is_404']             = false;
+	$GLOBALS['kiyose_test_is_admin']           = false;
 	$GLOBALS['kiyose_test_is_archive']         = false;
 	$GLOBALS['kiyose_test_is_home']            = false;
 	$GLOBALS['kiyose_test_is_page']            = false;
