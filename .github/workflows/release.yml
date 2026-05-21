@@ -15,6 +15,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: release
@@ -54,3 +55,10 @@ jobs:
 
       - name: Push commit and tag
         run: git push origin main --follow-tags
+
+      - name: Trigger build workflow
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG=$(git describe --tags --abbrev=0)
+          gh workflow run build.yml -f release_tag="$TAG"
