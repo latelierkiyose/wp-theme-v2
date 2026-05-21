@@ -88,6 +88,6 @@
 ## Notes importantes
 
 - ⚠️ **Limiter le nombre de plugins** - Chaque plugin ajoute du poids et des risques de sécurité
-- ⚠️ **Vérifier la compatibilité** - Tous les plugins doivent être compatibles avec WordPress 6.7+
+- ⚠️ **Vérifier la compatibilité** - Tous les plugins doivent être compatibles avec WordPress 7.0+
 - ⚠️ **Mises à jour régulières** - Maintenir tous les plugins à jour pour sécurité et performance
 - ⚠️ **Tests après installation** - Tester accessibilité et performance après chaque ajout de plugin

@@ -15,7 +15,7 @@ Thème WordPress classique (PHP, pas de Block Theme/FSE) pour un centre de bien-
 
 ## Stack technique
 
-- PHP 8.3+, WordPress 6.7+
+- PHP 8.3+, WordPress 7.0+
 - CSS natif moderne (variables, Grid, Flexbox)
 - Vanilla JS ES6+
 
