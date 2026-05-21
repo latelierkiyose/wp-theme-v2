@@ -1,7 +1,7 @@
 # L'Atelier Kiyose - WordPress Theme v2
 # Makefile pour simplifier les commandes de développement
 
-.PHONY: help install install-hooks phpcs phpcs-fix phpunit lint-js lint-css lint lint-fix format-js format-check release build-css build-js build build-check build-clean test-build-check test-release test-scripts start stop clean test
+.PHONY: help install install-hooks phpcs phpcs-fix phpunit lint-js lint-css lint lint-fix format-js format-check build-css build-js build build-check build-clean test-build-check test-release test-scripts start stop clean test
 
 # Couleurs pour l'aide
 BLUE := \033[0;34m
@@ -60,9 +60,6 @@ format-js: ## Formatter le code JavaScript avec Prettier
 
 format-check: ## Vérifier le formatage JavaScript sans modifier
 	@./bin/prettier.sh --check 'latelierkiyose/assets/js/**/*.js'
-
-release: ## Préparer une release (ex: make release ARGS="patch" ou ARGS="--version 1.0.3")
-	@npm run release -- $(ARGS)
 
 build-css: ## Minifier les fichiers CSS
 	@echo "$(BLUE)🎨 Minification des CSS...$(NC)"

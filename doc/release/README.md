@@ -122,7 +122,7 @@ Résumé à cocher :
    ```
 5. Ajuster permissions si besoin : `chmod -R 755 latelierkiyose/` et `chown -R www-data:www-data latelierkiyose/` (adapter l'utilisateur au serveur).
 
-> Préparation développeur : préparer la version avec `npm run release` (minor par défaut quand la version actuelle est déjà taguée), `npm run release -- patch` ou `npm run release -- --version 1.0.3`. Sur un arbre Git propre, le script met à jour `latelierkiyose/style.css`, crée le commit `chore(release): vX.Y.Z`, puis crée le tag annoté `vX.Y.Z` dans la même exécution. Ensuite, pousser le commit courant et le tag avec `git push origin HEAD vX.Y.Z`. Si la version actuelle est déjà commitée mais pas encore taguée, le script crée ce tag avant de calculer un nouveau bump. Pour préparer uniquement la modification de version sans commit automatique, ajouter `--no-commit` ; le tag sera alors différé. Si un ZIP doit exceptionnellement être préparé hors CI, lancer `npm run build`, puis `npm run build:check` avant de créer l'archive. Ne jamais générer les assets directement sur le serveur de production.
+> Préparation d'une release : déclencher le workflow **Release** depuis GitHub Actions — onglet **Actions** → **Release** → **Run workflow** → choisir le type de bump (`patch`, `minor` ou `major`) → confirmer. Ou en ligne de commande : `gh workflow run release.yml -f bump=patch`. L'action bump la version dans `latelierkiyose/style.css`, crée le commit `chore(release): vX.Y.Z` et le tag annoté `vX.Y.Z`, puis pousse sur `main`. Le push du tag déclenche automatiquement le workflow **Build and Test** qui produit le ZIP et publie la GitHub Release. Ne jamais générer les assets directement sur le serveur de production.
 
 ### Via admin WordPress (alternative)
 
