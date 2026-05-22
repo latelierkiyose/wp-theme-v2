@@ -8,6 +8,8 @@ const path = require('node:path');
 const BUMP_TYPES = new Set(['major', 'minor', 'patch']);
 const SEMVER_PATTERN = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/u;
 const THEME_VERSION_PATTERN = /^Version:\s*(\S+)\s*$/mu;
+const FUNCTIONS_VERSION_PATTERN = /define\(\s*'KIYOSE_VERSION'\s*,\s*'(\S+)'\s*\);/u;
+const PACKAGE_VERSION_PATTERN = /^(\s*)"version":\s*"([^"]+)"/mu;
 
 function validateVersion(version) {
 	if (!SEMVER_PATTERN.test(version)) {
@@ -147,6 +149,38 @@ function writeThemeVersion(stylePath, version) {
 	fs.writeFileSync(stylePath, content.replace(THEME_VERSION_PATTERN, `Version: ${version}`), 'utf8');
 }
 
+function writeFunctionsVersion(functionsPath, version) {
+	validateVersion(version);
+	const content = fs.readFileSync(functionsPath, 'utf8');
+
+	if (!FUNCTIONS_VERSION_PATTERN.test(content)) {
+		throw new Error(`KIYOSE_VERSION define not found in ${functionsPath}.`);
+	}
+
+	fs.writeFileSync(
+		functionsPath,
+		content.replace(FUNCTIONS_VERSION_PATTERN, `define( 'KIYOSE_VERSION', '${version}' );`),
+		'utf8'
+	);
+}
+
+function writePackageVersion(packagePath, version) {
+	validateVersion(version);
+	const content = fs.readFileSync(packagePath, 'utf8');
+
+	if (!PACKAGE_VERSION_PATTERN.test(content)) {
+		throw new Error(`Top-level "version" field not found in ${packagePath}.`);
+	}
+
+	// Regex-based replace (rather than JSON parse + stringify) so we preserve
+	// the file's existing indentation — package.json uses tabs per WPCS.
+	fs.writeFileSync(
+		packagePath,
+		content.replace(PACKAGE_VERSION_PATTERN, `$1"version": "${version}"`),
+		'utf8'
+	);
+}
+
 function runGit(cwd, args, options = {}) {
 	return execFileSync('git', args, {
 		cwd,
@@ -196,8 +230,8 @@ function createGitTag(cwd, version) {
 	return tagName;
 }
 
-function createReleaseCommit(cwd, stylePath, version) {
-	runGit(cwd, ['add', '--', stylePath]);
+function createReleaseCommit(cwd, paths, version) {
+	runGit(cwd, ['add', '--', ...paths]);
 	runGit(cwd, ['commit', '-m', `chore(release): v${version}`]);
 }
 
@@ -205,6 +239,8 @@ function prepareRelease({
 	argv = [],
 	cwd = process.cwd(),
 	stylePath = path.join(cwd, 'latelierkiyose/style.css'),
+	functionsPath = path.join(cwd, 'latelierkiyose/functions.php'),
+	packagePath = path.join(cwd, 'package.json'),
 } = {}) {
 	const options = parseArguments(argv);
 	const isGitRepo = isGitRepository(cwd);
@@ -227,11 +263,13 @@ function prepareRelease({
 		}
 
 		writeThemeVersion(stylePath, targetVersion);
+		writeFunctionsVersion(functionsPath, targetVersion);
+		writePackageVersion(packagePath, targetVersion);
 		isVersionUpdated = true;
 	}
 
 	if (isGitRepo && options.isCommitRequested && isVersionUpdated) {
-		createReleaseCommit(cwd, stylePath, targetVersion);
+		createReleaseCommit(cwd, [stylePath, functionsPath, packagePath], targetVersion);
 		isCommitCreated = true;
 	}
 
@@ -281,7 +319,9 @@ function main() {
 		const result = prepareRelease({ argv });
 
 		if (result.isVersionUpdated) {
-			process.stdout.write(`Version updated to ${result.targetVersion} in latelierkiyose/style.css\n`);
+			process.stdout.write(
+				`Version updated to ${result.targetVersion} in latelierkiyose/style.css, latelierkiyose/functions.php, package.json\n`
+			);
 		} else {
 			process.stdout.write(`Theme version already set to ${result.targetVersion}\n`);
 		}
@@ -316,5 +356,7 @@ module.exports = {
 	prepareRelease,
 	readThemeVersion,
 	resolveTargetVersion,
+	writeFunctionsVersion,
+	writePackageVersion,
 	writeThemeVersion,
 };

@@ -30,6 +30,41 @@ Text Domain: kiyose
 	return stylePath;
 }
 
+function createThemeFunctions(dir, version = '1.0.3') {
+	const themeDir = path.join(dir, 'latelierkiyose');
+	const functionsPath = path.join(themeDir, 'functions.php');
+	fs.mkdirSync(themeDir, { recursive: true });
+	fs.writeFileSync(
+		functionsPath,
+		`<?php
+// Theme version.
+define( 'KIYOSE_VERSION', '${version}' );
+`,
+		'utf8'
+	);
+
+	return functionsPath;
+}
+
+function createPackageJson(dir, version = '1.0.3') {
+	const packagePath = path.join(dir, 'package.json');
+	fs.writeFileSync(
+		packagePath,
+		`{\n\t"name": "latelierkiyose-wp-theme",\n\t"version": "${version}",\n\t"private": true\n}\n`,
+		'utf8'
+	);
+
+	return packagePath;
+}
+
+function createReleaseFixtures(dir, version = '1.0.3') {
+	return {
+		stylePath: createThemeStyle(dir, version),
+		functionsPath: createThemeFunctions(dir, version),
+		packagePath: createPackageJson(dir, version),
+	};
+}
+
 function initializeGitRepository(dir) {
 	execFileSync('git', ['init'], { cwd: dir, stdio: 'ignore' });
 	execFileSync('git', ['config', 'user.name', 'Release Test'], { cwd: dir, stdio: 'ignore' });
@@ -75,10 +110,74 @@ test('writeThemeVersion_whenHeaderExists_updatesVersion', () => {
 	assert.match(fs.readFileSync(stylePath, 'utf8'), /^Version: 1\.0\.3$/mu);
 });
 
+test('writeFunctionsVersion_whenDefineExists_updatesVersion', () => {
+	// Given
+	const dir = createTempDir();
+	const functionsPath = createThemeFunctions(dir, '0.2.4');
+
+	// When
+	releaseScript.writeFunctionsVersion(functionsPath, '1.0.3');
+
+	// Then
+	assert.match(
+		fs.readFileSync(functionsPath, 'utf8'),
+		/define\(\s*'KIYOSE_VERSION'\s*,\s*'1\.0\.3'\s*\);/u
+	);
+});
+
+test('writeFunctionsVersion_whenDefineMissing_throws', () => {
+	// Given
+	const dir = createTempDir();
+	const themeDir = path.join(dir, 'latelierkiyose');
+	fs.mkdirSync(themeDir, { recursive: true });
+	const functionsPath = path.join(themeDir, 'functions.php');
+	fs.writeFileSync(functionsPath, "<?php\n// no version define here\n", 'utf8');
+
+	// When / Then
+	assert.throws(() => releaseScript.writeFunctionsVersion(functionsPath, '1.0.3'), /KIYOSE_VERSION/u);
+});
+
+test('writePackageVersion_whenFieldExists_updatesVersion', () => {
+	// Given
+	const dir = createTempDir();
+	const packagePath = createPackageJson(dir, '2.0.0');
+
+	// When
+	releaseScript.writePackageVersion(packagePath, '2.1.0');
+
+	// Then
+	const updated = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
+	assert.equal(updated.version, '2.1.0');
+});
+
+test('writePackageVersion_whenFieldExists_preservesTabIndentation', () => {
+	// Given
+	const dir = createTempDir();
+	const packagePath = createPackageJson(dir, '2.0.0');
+
+	// When
+	releaseScript.writePackageVersion(packagePath, '2.1.0');
+
+	// Then
+	const content = fs.readFileSync(packagePath, 'utf8');
+	assert.match(content, /^\{\n\t"name":/u);
+	assert.match(content, /^\t"version": "2\.1\.0",$/mu);
+});
+
+test('writePackageVersion_whenFieldMissing_throws', () => {
+	// Given
+	const dir = createTempDir();
+	const packagePath = path.join(dir, 'package.json');
+	fs.writeFileSync(packagePath, '{\n\t"name": "x"\n}\n', 'utf8');
+
+	// When / Then
+	assert.throws(() => releaseScript.writePackageVersion(packagePath, '1.0.3'), /"version"/u);
+});
+
 test('prepareRelease_whenNoCommitIsRequestedWithVersionChange_defersTagCreation', () => {
 	// Given
 	const dir = createTempDir();
-	const stylePath = createThemeStyle(dir, '1.0.2');
+	const { stylePath, functionsPath, packagePath } = createReleaseFixtures(dir, '1.0.2');
 	initializeGitRepository(dir);
 
 	// When
@@ -86,6 +185,8 @@ test('prepareRelease_whenNoCommitIsRequestedWithVersionChange_defersTagCreation'
 		argv: ['--version', '1.0.3', '--no-commit'],
 		cwd: dir,
 		stylePath,
+		functionsPath,
+		packagePath,
 	});
 
 	// Then
@@ -95,13 +196,15 @@ test('prepareRelease_whenNoCommitIsRequestedWithVersionChange_defersTagCreation'
 	assert.equal(result.isTagCreated, false);
 	assert.equal(result.isTagDeferred, true);
 	assert.match(fs.readFileSync(stylePath, 'utf8'), /^Version: 1\.0\.3$/mu);
+	assert.match(fs.readFileSync(functionsPath, 'utf8'), /'KIYOSE_VERSION'\s*,\s*'1\.0\.3'/u);
+	assert.equal(JSON.parse(fs.readFileSync(packagePath, 'utf8')).version, '1.0.3');
 	assert.throws(() => execFileSync('git', ['rev-parse', 'v1.0.3'], { cwd: dir, stdio: 'pipe' }));
 });
 
 test('prepareRelease_whenVersionAlreadyCommitted_createsAnnotatedTag', () => {
 	// Given
 	const dir = createTempDir();
-	const stylePath = createThemeStyle(dir, '1.0.3');
+	const { stylePath, functionsPath, packagePath } = createReleaseFixtures(dir, '1.0.3');
 	initializeGitRepository(dir);
 
 	// When
@@ -109,6 +212,8 @@ test('prepareRelease_whenVersionAlreadyCommitted_createsAnnotatedTag', () => {
 		argv: ['--version', '1.0.3'],
 		cwd: dir,
 		stylePath,
+		functionsPath,
+		packagePath,
 	});
 
 	// Then
@@ -128,7 +233,7 @@ test('prepareRelease_whenVersionAlreadyCommitted_createsAnnotatedTag', () => {
 test('prepareRelease_whenCurrentVersionIsUntaggedAndClean_createsCurrentVersionTag', () => {
 	// Given
 	const dir = createTempDir();
-	const stylePath = createThemeStyle(dir, '1.0.3');
+	const { stylePath, functionsPath, packagePath } = createReleaseFixtures(dir, '1.0.3');
 	initializeGitRepository(dir);
 
 	// When
@@ -136,6 +241,8 @@ test('prepareRelease_whenCurrentVersionIsUntaggedAndClean_createsCurrentVersionT
 		argv: [],
 		cwd: dir,
 		stylePath,
+		functionsPath,
+		packagePath,
 	});
 
 	// Then
@@ -151,7 +258,7 @@ test('prepareRelease_whenCurrentVersionIsUntaggedAndClean_createsCurrentVersionT
 test('prepareRelease_whenNoCommitIsRequestedAndCurrentVersionIsAlreadyTagged_bumpsMinorAndDefersTagCreation', () => {
 	// Given
 	const dir = createTempDir();
-	const stylePath = createThemeStyle(dir, '1.0.3');
+	const { stylePath, functionsPath, packagePath } = createReleaseFixtures(dir, '1.0.3');
 	initializeGitRepository(dir);
 	execFileSync('git', ['tag', '-a', 'v1.0.3', '-m', 'Release 1.0.3'], {
 		cwd: dir,
@@ -163,6 +270,8 @@ test('prepareRelease_whenNoCommitIsRequestedAndCurrentVersionIsAlreadyTagged_bum
 		argv: ['--no-commit'],
 		cwd: dir,
 		stylePath,
+		functionsPath,
+		packagePath,
 	});
 
 	// Then
@@ -171,12 +280,14 @@ test('prepareRelease_whenNoCommitIsRequestedAndCurrentVersionIsAlreadyTagged_bum
 	assert.equal(result.isTagCreated, false);
 	assert.equal(result.isTagDeferred, true);
 	assert.match(fs.readFileSync(stylePath, 'utf8'), /^Version: 1\.1\.0$/mu);
+	assert.match(fs.readFileSync(functionsPath, 'utf8'), /'KIYOSE_VERSION'\s*,\s*'1\.1\.0'/u);
+	assert.equal(JSON.parse(fs.readFileSync(packagePath, 'utf8')).version, '1.1.0');
 });
 
 test('prepareRelease_whenCurrentVersionIsAlreadyTagged_bumpsMinorCommitsAndCreatesAnnotatedTag', () => {
 	// Given
 	const dir = createTempDir();
-	const stylePath = createThemeStyle(dir, '1.0.3');
+	const { stylePath, functionsPath, packagePath } = createReleaseFixtures(dir, '1.0.3');
 	initializeGitRepository(dir);
 	execFileSync('git', ['tag', '-a', 'v1.0.3', '-m', 'Release 1.0.3'], {
 		cwd: dir,
@@ -188,6 +299,8 @@ test('prepareRelease_whenCurrentVersionIsAlreadyTagged_bumpsMinorCommitsAndCreat
 		argv: [],
 		cwd: dir,
 		stylePath,
+		functionsPath,
+		packagePath,
 	});
 
 	// Then
@@ -197,10 +310,21 @@ test('prepareRelease_whenCurrentVersionIsAlreadyTagged_bumpsMinorCommitsAndCreat
 	assert.equal(result.isTagCreated, true);
 	assert.equal(result.isTagDeferred, false);
 	assert.match(fs.readFileSync(stylePath, 'utf8'), /^Version: 1\.1\.0$/mu);
+	assert.match(fs.readFileSync(functionsPath, 'utf8'), /'KIYOSE_VERSION'\s*,\s*'1\.1\.0'/u);
+	assert.equal(JSON.parse(fs.readFileSync(packagePath, 'utf8')).version, '1.1.0');
 	assert.equal(
 		execFileSync('git', ['log', '-1', '--pretty=%s'], { cwd: dir, encoding: 'utf8' }).trim(),
 		'chore(release): v1.1.0'
 	);
+	const changedFiles = execFileSync(
+		'git',
+		['show', '--name-only', '--pretty=format:', 'HEAD'],
+		{ cwd: dir, encoding: 'utf8' }
+	)
+		.split('\n')
+		.filter(Boolean)
+		.sort();
+	assert.deepEqual(changedFiles, ['latelierkiyose/functions.php', 'latelierkiyose/style.css', 'package.json']);
 	assert.equal(
 		execFileSync('git', ['tag', '--list', 'v1.1.0'], { cwd: dir, encoding: 'utf8' }).trim(),
 		'v1.1.0'
@@ -214,7 +338,7 @@ test('prepareRelease_whenCurrentVersionIsAlreadyTagged_bumpsMinorCommitsAndCreat
 test('prepareRelease_whenCommitIsRequested_commitsVersionAndCreatesAnnotatedTag', () => {
 	// Given
 	const dir = createTempDir();
-	const stylePath = createThemeStyle(dir, '1.0.3');
+	const { stylePath, functionsPath, packagePath } = createReleaseFixtures(dir, '1.0.3');
 	initializeGitRepository(dir);
 	execFileSync('git', ['tag', '-a', 'v1.0.3', '-m', 'Release 1.0.3'], {
 		cwd: dir,
@@ -226,6 +350,8 @@ test('prepareRelease_whenCommitIsRequested_commitsVersionAndCreatesAnnotatedTag'
 		argv: ['patch', '--commit'],
 		cwd: dir,
 		stylePath,
+		functionsPath,
+		packagePath,
 	});
 
 	// Then
@@ -246,7 +372,7 @@ test('prepareRelease_whenCommitIsRequested_commitsVersionAndCreatesAnnotatedTag'
 test('releaseScript_whenRunWithVersion_updatesThemeVersionCommitsAndTags', () => {
 	// Given
 	const dir = createTempDir();
-	const stylePath = createThemeStyle(dir, '0.2.3');
+	const { stylePath, functionsPath, packagePath } = createReleaseFixtures(dir, '0.2.3');
 	initializeGitRepository(dir);
 
 	// When
@@ -258,6 +384,8 @@ test('releaseScript_whenRunWithVersion_updatesThemeVersionCommitsAndTags', () =>
 	// Then
 	assert.equal(result.status, 0);
 	assert.match(fs.readFileSync(stylePath, 'utf8'), /^Version: 1\.0\.3$/mu);
+	assert.match(fs.readFileSync(functionsPath, 'utf8'), /'KIYOSE_VERSION'\s*,\s*'1\.0\.3'/u);
+	assert.equal(JSON.parse(fs.readFileSync(packagePath, 'utf8')).version, '1.0.3');
 	assert.match(result.stdout, /Version updated to 1\.0\.3/u);
 	assert.match(result.stdout, /Release commit created for v1\.0\.3/u);
 	assert.match(result.stdout, /Created tag v1\.0\.3/u);
