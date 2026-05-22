@@ -173,7 +173,7 @@ class Test_Shortcodes extends TestCase {
 			: '';
 
 		// Then.
-		$this->assertSame( '[events_list limit="20" scope="future" orderby="event_start_date" order="ASC"]', $html );
+		$this->assertSame( '[events_list_grouped limit="20" scope="future" orderby="event_start_date" order="ASC" mode="monthly"]', $html );
 	}
 
 	public function test_kiyose_events_list_shortcode_whenCategoryQueryIsValid_addsCategoryAttribute() {
@@ -192,7 +192,7 @@ class Test_Shortcodes extends TestCase {
 			: '';
 
 		// Then.
-		$this->assertSame( '[events_list limit="20" scope="future" orderby="event_start_date" order="ASC" category="art-therapie,ados"]', $html );
+		$this->assertSame( '[events_list_grouped limit="20" scope="future" orderby="event_start_date" order="ASC" mode="monthly" category="art-therapie,ados"]', $html );
 	}
 
 	public function test_kiyose_testimonials_shortcode_whenDisplayIsInvalid_fallsBackToGrid() {

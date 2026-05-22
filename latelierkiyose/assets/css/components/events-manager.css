@@ -152,11 +152,14 @@ body .calendar-page a:focus,
 	padding-bottom: var(--kiyose-spacing-sm);
 }
 
-/* Event card styling */
-.calendar-page__content .em-item {
-	background-color: #ffffff;
-	border-radius: 12px;
-	box-shadow: 0 4px 12px rgb(0 0 0 / 8%);
+/* Event card styling
+ * .em.pixelbones prefix raises specificity to (0,4,0) to beat the plugin's
+ * .em.em-list .em-item rule (0,3,0) which sets background via --meta-bg.
+ */
+.em.pixelbones .em-event.em-item {
+	background-color: var(--kiyose-color-white, #ffffff);
+	border-radius: 8px;
+	box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
 	display: flex;
 	flex-direction: column;
 	gap: var(--kiyose-spacing-md);
@@ -165,21 +168,39 @@ body .calendar-page a:focus,
 	transition: all var(--kiyose-transition-base);
 }
 
-.calendar-page__content .em-item:hover,
-.calendar-page__content .em-item:focus-within {
-	box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
+.em.pixelbones .em-event.em-item:hover,
+.em.pixelbones .em-event.em-item:focus-within {
+	box-shadow: 0 4px 16px rgb(0 0 0 / 15%);
 	transform: translateY(-4px);
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.calendar-page__content .em-item {
+	.em.pixelbones .em-event.em-item {
 		transition: none;
 	}
 
-	.calendar-page__content .em-item:hover,
-	.calendar-page__content .em-item:focus-within {
+	.em.pixelbones .em-event.em-item:hover,
+	.em.pixelbones .em-event.em-item:focus-within {
 		transform: none;
 	}
+}
+
+/* Event image — uniform fixed height
+ * Without this rule, images render at their intrinsic ratio, producing heights
+ * from ~309px to ~544px on the same row. We enforce a fixed 280px height with
+ * object-fit: contain so portrait images keep their full content visible
+ * (whitespace on the sides) instead of being cropped.
+ */
+.em.pixelbones .em-event.em-item .em-item-image {
+	height: 280px;
+	overflow: hidden;
+}
+
+.em.pixelbones .em-event.em-item .em-item-image img {
+	display: block;
+	height: 100%;
+	object-fit: contain;
+	width: 100%;
 }
 
 /* Event title */
@@ -303,17 +324,38 @@ body .calendar-page a:focus,
 	font-size: var(--kiyose-font-size-sm);
 }
 
-/* Booking button */
-.calendar-page__content .em-item-read-more,
-.calendar-page__content .em-booking-button,
-.calendar-page__content .em-item-link,
-.calendar-page__content .em-item a.button,
-.calendar-page__content .em-item input[type="submit"] {
+/* Action buttons row
+ * The plugin sets `.em-item-actions.input { display: block }` with high specificity,
+ * which leaves the two buttons relying on inline-flex baseline alignment. The
+ * "Réserver" button contains a `.em-icon-ticket` span that shifts its baseline, so
+ * the two buttons sit ~7.5px apart vertically. A flex container with align-items:
+ * center fixes the offset and removes the dependency on whitespace between elements.
+ *
+ * Scoped at (0,4,0) under .em.pixelbones .em-event.em-item to beat the plugin's
+ * (0,3,1) `.em.pixelbones .em-item-actions.input` rule without `!important`.
+ */
+.em.pixelbones .em-event.em-item .em-item-actions {
 	align-items: center;
-	background-color: var(--kiyose-color-primary);
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--kiyose-spacing-sm);
+}
+
+/* Booking button
+ * The plugin uses `!important` on background-color and color inside .em.pixelbones,
+ * so we must counter with !important here. This mirrors the pattern already used in
+ * this file for link colours (lines 204, 217).
+ */
+.em.pixelbones .em-event.em-item .em-item-read-more,
+.em.pixelbones .em-event.em-item .em-booking-button,
+.em.pixelbones .em-event.em-item .em-event-book-now,
+.em.pixelbones .em-event.em-item .em-item-link,
+.em.pixelbones .em-event.em-item input[type="submit"] {
+	align-items: center;
+	background-color: var(--kiyose-color-primary) !important;
 	border: 2px solid transparent;
 	border-radius: 4px;
-	color: var(--kiyose-color-burgundy);
+	color: var(--kiyose-color-burgundy) !important;
 	cursor: pointer;
 	display: inline-flex;
 	font-family: var(--kiyose-font-body);
@@ -322,42 +364,45 @@ body .calendar-page a:focus,
 	justify-content: center;
 	min-height: 44px;
 	min-width: 44px;
-	padding: var(--kiyose-spacing-md) var(--kiyose-spacing-xl);
-	text-decoration: none;
+	padding: var(--kiyose-spacing-sm) var(--kiyose-spacing-lg);
+	text-decoration: none !important;
 	transition: all var(--kiyose-transition-base);
 }
 
-.calendar-page__content .em-booking-button:hover,
-.calendar-page__content .em-booking-button:focus,
-.calendar-page__content .em-item-read-more:hover,
-.calendar-page__content .em-item-read-more:focus,
-.calendar-page__content .em-item a.button:hover,
-.calendar-page__content .em-item a.button:focus {
-	background-color: var(--kiyose-color-accent);
-	color: var(--kiyose-color-text);
-	transform: translateY(-2px);
+.em.pixelbones .em-event.em-item .em-item-read-more:hover,
+.em.pixelbones .em-event.em-item .em-item-read-more:focus,
+.em.pixelbones .em-event.em-item .em-booking-button:hover,
+.em.pixelbones .em-event.em-item .em-booking-button:focus,
+.em.pixelbones .em-event.em-item .em-event-book-now:hover,
+.em.pixelbones .em-event.em-item .em-event-book-now:focus,
+.em.pixelbones .em-event.em-item input[type="submit"]:hover,
+.em.pixelbones .em-event.em-item input[type="submit"]:focus {
+	background-color: var(--kiyose-color-accent) !important;
+	color: var(--kiyose-color-text) !important;
+	transform: translateX(4px);
 }
 
-.calendar-page__content .em-booking-button:focus,
-.calendar-page__content .em-item-read-more:focus,
-.calendar-page__content .em-item a.button:focus {
+.em.pixelbones .em-event.em-item .em-item-read-more:focus-visible,
+.em.pixelbones .em-event.em-item .em-booking-button:focus-visible,
+.em.pixelbones .em-event.em-item .em-event-book-now:focus-visible,
+.em.pixelbones .em-event.em-item input[type="submit"]:focus-visible {
 	outline: 2px solid var(--kiyose-color-burgundy);
 	outline-offset: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.calendar-page__content .em-booking-button,
-	.calendar-page__content .em-item-read-more,
-	.calendar-page__content .em-item a.button {
+	.em.pixelbones .em-event.em-item .em-item-read-more,
+	.em.pixelbones .em-event.em-item .em-booking-button,
+	.em.pixelbones .em-event.em-item .em-event-book-now {
 		transition: background-color var(--kiyose-transition-base), color var(--kiyose-transition-base);
 	}
 
-	.calendar-page__content .em-booking-button:hover,
-	.calendar-page__content .em-booking-button:focus,
-	.calendar-page__content .em-item-read-more:hover,
-	.calendar-page__content .em-item-read-more:focus,
-	.calendar-page__content .em-item a.button:hover,
-	.calendar-page__content .em-item a.button:focus {
+	.em.pixelbones .em-event.em-item .em-item-read-more:hover,
+	.em.pixelbones .em-event.em-item .em-item-read-more:focus,
+	.em.pixelbones .em-event.em-item .em-booking-button:hover,
+	.em.pixelbones .em-event.em-item .em-booking-button:focus,
+	.em.pixelbones .em-event.em-item .em-event-book-now:hover,
+	.em.pixelbones .em-event.em-item .em-event-book-now:focus {
 		transform: none;
 	}
 }

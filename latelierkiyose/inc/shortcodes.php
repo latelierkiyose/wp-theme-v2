@@ -276,7 +276,7 @@ add_shortcode( 'kiyose_signets', 'kiyose_signets_shortcode' );
  */
 function kiyose_events_list_shortcode(): string {
 	$category_slugs = kiyose_get_requested_event_category_slugs();
-	$shortcode      = '[events_list limit="20" scope="future" orderby="event_start_date" order="ASC"';
+	$shortcode      = '[events_list_grouped limit="20" scope="future" orderby="event_start_date" order="ASC" mode="monthly"';
 
 	if ( ! empty( $category_slugs ) ) {
 		$shortcode .= ' category="' . implode( ',', $category_slugs ) . '"';

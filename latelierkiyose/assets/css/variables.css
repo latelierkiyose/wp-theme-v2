@@ -18,6 +18,7 @@
 	/* ============================================
 	   COULEURS FONCTIONNELLES
 	   ============================================ */
+	--kiyose-color-white: #ffffff;            /* Blanc — fond de carte */
 	--kiyose-color-text: #333333;             /* Texte principal - Ratio 10.43:1 sur bg ✅ */
 	--kiyose-color-text-light: #666666;       /* Texte secondaire - Ratio 4.76:1 sur bg ✅ */
 	--kiyose-color-border: #C9ABA7;           /* Bordures */
