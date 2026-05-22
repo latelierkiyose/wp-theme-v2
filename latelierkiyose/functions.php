@@ -7,7 +7,7 @@
  */
 
 // Theme version.
-define( 'KIYOSE_VERSION', '2.1.0' );
+define( 'KIYOSE_VERSION', '2.2.1' );
 
 // URL de l'appel découverte.
 define( 'KIYOSE_DISCOVERY_CALL_URL', '/contact/' );
