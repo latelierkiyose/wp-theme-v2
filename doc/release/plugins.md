@@ -98,6 +98,14 @@ Le thème n'injecte **aucune** balise SEO custom (ni schema.org, ni Open Graph).
   - Générer et soumettre le sitemap XML à Google Search Console
   - Vérifier que le schema `LocalBusiness` est bien renseigné (adresse, horaires)
 
+> **Note technique — garde-fou schema (depuis v2.2.1)** : `latelierkiyose/inc/seo.php`
+> branche un filtre sur `wpseo_schema_graph` (priorité 20) pour retirer les nœuds
+> `BreadcrumbList` invalides (champ `itemListElement` absent ou vide) et nettoyer les
+> références `breadcrumb` orphelines. Cela corrige les erreurs Google Search Console
+> « itemListElement manquant » sur les pages d'archive de taxonomie Events Manager, où
+> Yoast génère une référence sans le nœud correspondant. Ce module est un no-op complet
+> si Yoast n'est pas actif.
+
 ### Performance / cache
 
 Les assets CSS/JS du thème sont déjà minifiés au build (`npm run build`), mais un cache de pages reste utile.

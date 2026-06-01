@@ -56,3 +56,6 @@ require_once get_template_directory() . '/inc/decorative-renderers.php';
 
 // Decorative shapes configuration.
 require_once get_template_directory() . '/inc/decorative-config.php';
+
+// Garde-fous SEO (schema Yoast).
+require_once get_template_directory() . '/inc/seo.php';
