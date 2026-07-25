@@ -88,6 +88,13 @@ La procédure de mise en production vit dans `doc/release/`. Quand une modificat
 - [ ] `doc/user/` mis à jour si l'évolution est visible côté rédaction
 - [ ] `doc/release/` mis à jour si la mise en production est impactée
 
+## Deux arborescences de documentation
+
+Ne pas confondre :
+
+- **`doc/`** — toute la documentation éditoriale et de référence : `prd/`, `user/`, `release/` et les fichiers listés ci-dessous. **C'est ici qu'on écrit par défaut.**
+- **`docs/`** — deux artefacts hérités, hors du flux courant : `docs/plans/` (documents de conception ponctuels) et `docs/design-system/` (export HTML statique du design system, avec ses polices et son logo). Ne rien y ajouter sans raison explicite.
+
 ## Documentation détaillée
 
 Consulter à la demande avec l'outil Read (ne pas importer avec @) :
