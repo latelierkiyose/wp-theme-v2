@@ -358,7 +358,7 @@ wp media regenerate --yes
 
 Le template **Landing page** (`latelierkiyose/templates/page-landing.php`) ne concerne aucune page existante : il sert à créer des pages d'acquisition ponctuelles, par exemple la diffusion d'un guide gratuit. Rien à migrer, mais deux points à connaître au moment de la mise en production.
 
-**Ce template ne charge pas le bundle du thème.** La page est rendue sans en-tête, sans navigation et sans pied de page, avec sa seule feuille `assets/css/components/landing.css`. Un shortcode tiers inséré dans une landing page peut donc apparaître sans style : c'est attendu, et le style doit être ajouté au template plutôt que réactivé globalement. Source de vérité : `kiyose_get_landing_style_handles()` dans `latelierkiyose/inc/enqueue.php`.
+**Ce template ne charge pas le bundle du thème.** La page est rendue sans en-tête, sans navigation et sans pied de page, avec seulement trois feuilles : `assets/css/components/landing.css`, `assets/css/components/plugins-common.css` et `assets/css/components/brevo-override.css` — ces deux dernières stylent le formulaire d'inscription Brevo (cibles tactiles, focus visible, contraste), présent sur toute landing page. Un shortcode tiers autre que Brevo, inséré dans une landing page, peut donc apparaître sans style : c'est attendu, et le style doit être ajouté au template plutôt que réactivé globalement. Source de vérité : `kiyose_get_landing_style_handles()` dans `latelierkiyose/inc/enqueue.php`.
 
 **Un champ meta est exposé à la rédaction.** Une fois le template assigné, enregistré, puis l'éditeur rechargé si nécessaire, la meta box « Landing page — Référencement » apparaît dans la colonne latérale :
 
@@ -368,7 +368,7 @@ Le template **Landing page** (`latelierkiyose/templates/page-landing.php`) ne co
 
 Quand la case est cochée, la page renvoie `noindex, follow` via le filtre `wp_robots` : elle disparaît des résultats de recherche mais reste accessible à qui possède le lien.
 
-**Vérification** : sur une landing publiée, afficher le code source de la page et constater qu'aucune feuille du thème autre que `fonts.css`, `variables.css` et `landing.css` n'est chargée.
+**Vérification** : sur une landing publiée, afficher le code source de la page et constater qu'aucune feuille du thème autre que `fonts.css`, `variables.css`, `landing.css`, `plugins-common.css` et `brevo-override.css` n'est chargée.
 
 ---
 
@@ -391,4 +391,4 @@ Avant de considérer la migration comme terminée :
 - [ ] Anciens blocs `wp-block-columns signets` remplacés par `[kiyose_signets]`
 - [ ] Miniatures régénérées
 - [ ] Les boutons des pages de service pointent vers les pages configurées et ne retournent pas de 404
-- [ ] Landing pages éventuelles : template assigné, case « Ne pas indexer cette page » réglée, et vue source sans feuille du thème autre que `fonts.css`, `variables.css` et `landing.css`
+- [ ] Landing pages éventuelles : template assigné, case « Ne pas indexer cette page » réglée, et vue source sans feuille du thème autre que `fonts.css`, `variables.css`, `landing.css`, `plugins-common.css` et `brevo-override.css`

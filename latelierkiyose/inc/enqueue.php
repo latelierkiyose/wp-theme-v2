@@ -406,14 +406,15 @@ function kiyose_enqueue_registered_asset( array $asset, string $suffix ): void {
 /**
  * Return the style handles allowed on the landing template.
  *
- * Seuls fonts.css (des @font-face) et variables.css (des custom properties)
- * sont conservés : aucun style peint, donc rien à neutraliser côté landing.
+ * Landing.css, plus les deux feuilles de normalisation des formulaires de
+ * plugins : une landing page contient toujours un formulaire d'inscription
+ * (Brevo), qui a besoin des cibles tactiles et du focus visible du thème.
  *
  * @return array<int, string> Allowed style handles.
  * @since 2.4.0
  */
 function kiyose_get_landing_style_handles(): array {
-	return array( 'kiyose-fonts', 'kiyose-variables', 'kiyose-landing' );
+	return array( 'kiyose-fonts', 'kiyose-variables', 'kiyose-landing', 'kiyose-plugins-common', 'kiyose-brevo-override' );
 }
 
 /**
