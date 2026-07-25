@@ -4,13 +4,14 @@ Thème WordPress classique (PHP, pas de Block Theme/FSE) pour un centre de bien-
 
 ## Conventions obligatoires
 
-- **Préfixe PHP** : `kiyose_` pour toutes les fonctions, hooks, handles
-- **Text domain** : `kiyose`
-- **CSS custom properties** : préfixe obligatoire `--kiyose-` (Stylelint pattern `^kiyose-.+`)
-- **CSS** : méthodologie BEM
-- **Indentation** : tabulations (pas d'espaces) — WPCS
-- **Sécurité** : sanitize inputs, escape outputs, use nonces
-- **Accessibilité** : WCAG 2.2 AA — priorité absolue (contraste ≥4.5:1 texte, ≥3:1 UI)
+Les conventions normatives vivent dans `.claude/rules/` (chargé automatiquement à chaque session) :
+
+- `.claude/rules/conventions.md` — préfixe `kiyose_`, text domain, `--kiyose-`, BEM, tabulations, JS
+- `.claude/rules/wordpress.md` — sanitize/escape/nonces, `$wpdb->prepare()`, enqueue, templates
+- `.claude/rules/accessibility.md` — WCAG 2.2 AA (priorité absolue), clavier, structure, touch
+
+Seule règle qui n'y figure pas :
+
 - **Langue de la documentation** : français ; termes techniques en anglais acceptés (overlay, hook, template, focus trap, etc.)
 
 ## Stack technique
