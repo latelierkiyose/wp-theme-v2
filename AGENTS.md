@@ -37,13 +37,17 @@ latelierkiyose/
 ```bash
 make start          # Démarrer WordPress (Docker)
 make stop           # Arrêter
+make install        # Installer les dépendances Composer
+make install-hooks  # Installer le hook pre-commit (PHPCS + ESLint + Stylelint)
 make phpcs          # Valider WPCS
 make phpcs-fix      # Corriger WPCS auto
-make test           # Tous les tests (PHPCS + linters)
+make phpunit        # Tests PHPUnit
 make lint-fix       # Corriger JS + CSS auto
+make build          # Minifier les assets (CSS + JS)
+make test           # phpcs + phpunit + lint + test-scripts + build-check
 ```
 
-Wrappers Docker (pas besoin de PHP local) : `./bin/phpcs.sh`, `./bin/phpcbf.sh`, `./bin/composer.sh`
+Wrappers Docker (pas besoin de PHP ni de Node local) : `./bin/phpcs.sh`, `./bin/phpcbf.sh`, `./bin/composer.sh`, `./bin/eslint.sh`, `./bin/stylelint.sh`, `./bin/phpunit.sh`, `./bin/prettier.sh`
 
 ## PRDs
 
