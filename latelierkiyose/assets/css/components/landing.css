@@ -1,0 +1,103 @@
+/**
+ * Landing Page Template Styles
+ * Template: page-landing.php
+ *
+ * Feuille autonome : le bundle du thème (main.css, header.css, footer.css…)
+ * n'est pas chargé sur ce template. Tout ce dont la page a besoin — reset,
+ * styles de base, skip link — doit donc figurer ici.
+ *
+ * @package Kiyose
+ */
+
+:root {
+	/* Colonne de lecture unique, mesurée sur la maquette */
+	--kiyose-landing-container-width: 50rem; /* 800px */
+}
+
+/* ============================================
+   RESET
+   ============================================ */
+
+/**
+ * Reset volontairement minimal : les marges par défaut du navigateur ne sont
+ * pas remises à zéro, pour que le contenu rédigé dans l'éditeur reste lisible
+ * tant que la mise en page du template n'est pas implémentée.
+ */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+/* Contrainte de largeur imposée par la barre d'administration WordPress */
+html,
+body {
+	max-width: 100%;
+	overflow-x: hidden;
+	width: 100%;
+}
+
+img {
+	display: block;
+	height: auto;
+	max-width: 100%;
+}
+
+/* ============================================
+   BASE
+   ============================================ */
+
+body {
+	background-color: var(--kiyose-color-background);
+	color: var(--kiyose-color-text); /* Ratio 10.43:1 sur le fond ✅ */
+	font-family: var(--kiyose-font-body);
+	font-size: var(--kiyose-font-size-base);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	line-height: var(--kiyose-line-height-relaxed);
+	margin: 0;
+}
+
+/* ============================================
+   LAYOUT
+   ============================================ */
+
+.landing__container {
+	margin-inline: auto;
+	max-width: var(--kiyose-landing-container-width);
+	padding-block: var(--kiyose-spacing-2xl);
+	padding-inline: var(--kiyose-spacing-md);
+	width: 100%;
+}
+
+/* ============================================
+   ACCESSIBILITÉ
+   ============================================ */
+
+/**
+ * Skip link — recopié depuis components/header.css, qui n'est pas chargé sur
+ * ce template. Sans ces règles, le lien resterait visible en permanence.
+ */
+.skip-link {
+	background: var(--kiyose-color-primary);
+	border-radius: 0 0 4px;
+	color: var(--kiyose-color-burgundy);
+	font-weight: 600;
+	left: 0;
+	padding: var(--kiyose-spacing-md) var(--kiyose-spacing-lg);
+	position: absolute;
+	text-decoration: none;
+	top: -999px;
+	z-index: var(--kiyose-z-index-skip-link);
+}
+
+.skip-link:focus {
+	outline: 2px solid var(--kiyose-color-burgundy);
+	outline-offset: 2px;
+	top: 0;
+}
+
+:focus-visible {
+	outline: 2px solid var(--kiyose-color-burgundy);
+	outline-offset: 2px;
+}

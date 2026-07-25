@@ -189,6 +189,13 @@ function kiyose_get_theme_assets(): array {
 		),
 		array(
 			'type'      => 'style',
+			'handle'    => 'kiyose-landing',
+			'path'      => '/assets/css/components/landing.css',
+			'deps'      => array( 'kiyose-fonts', 'kiyose-variables' ),
+			'condition' => 'kiyose_is_landing_template',
+		),
+		array(
+			'type'      => 'style',
 			'handle'    => 'kiyose-cf7-override',
 			'path'      => '/assets/css/components/cf7-override.css',
 			'deps'      => array( 'kiyose-variables' ),
@@ -834,6 +841,15 @@ function kiyose_is_about_template(): bool {
  */
 function kiyose_is_contact_template(): bool {
 	return function_exists( 'is_page_template' ) && is_page_template( 'templates/page-contact.php' );
+}
+
+/**
+ * Check if the current page uses the landing template.
+ *
+ * @return bool
+ */
+function kiyose_is_landing_template(): bool {
+	return function_exists( 'is_page_template' ) && is_page_template( 'templates/page-landing.php' );
 }
 
 /**
