@@ -68,4 +68,35 @@ class Test_Landing_CSS extends TestCase {
 		$this->assertStringContainsString( 'box-sizing: border-box;', $css );
 		$this->assertStringContainsString( 'max-width: 100%;', $css );
 	}
+
+	public function test_landingCss_whenTwoColumnSectionsAreNarrow_stackColumns() {
+		// Given
+		$css = $this->get_landing_css();
+
+		// When / Then
+		$this->assertStringContainsString( '.landing__columns {', $css );
+		$this->assertStringContainsString( 'display: flex;', $css );
+		$this->assertStringContainsString( 'flex-direction: column;', $css );
+		$this->assertStringContainsString( '@media (width >= 768px) {', $css );
+	}
+
+	public function test_landingCss_whenCtaBlockIsPainted_usesAccessibleGoldPair() {
+		// Given
+		$css = $this->get_landing_css();
+
+		// When / Then
+		$this->assertStringContainsString( '.landing__cta {', $css );
+		$this->assertStringContainsString( 'background-color: var(--kiyose-color-gold-light);', $css );
+		$this->assertStringContainsString( 'color: var(--kiyose-color-burgundy);', $css );
+	}
+
+	public function test_landingCss_whenBioPhotoIsDisplayed_cropsItToACircle() {
+		// Given
+		$css = $this->get_landing_css();
+
+		// When / Then
+		$this->assertStringContainsString( '.landing__photo--circle {', $css );
+		$this->assertStringContainsString( 'border-radius: 50%;', $css );
+		$this->assertStringContainsString( 'object-fit: cover;', $css );
+	}
 }

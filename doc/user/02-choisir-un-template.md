@@ -78,6 +78,22 @@ Pour en savoir plus et venir me rencontrer, c'est par ici : latelierkiyose.fr
 - Si tu ne vois pas ce panneau, enregistre la page puis recharge l'éditeur.
 - Crée **une page par ressource** : ne réutilise pas la même landing pour deux guides différents.
 
+#### Assembler la mise en page
+
+Cette page n'a pas accès aux classes générales du reste du site (`container`, `grid`, style d'image « Ronde »…) : elle utilise son propre petit jeu de classes, à taper dans **Classes CSS supplémentaires** (onglet **Bloc**, section **Avancé**).
+
+| Section | Bloc à utiliser | Classe à appliquer |
+|---|---|---|
+| Titre d'accueil (tout premier bloc de la page) | **Titre**, niveau **Titre 1** (à choisir toi-même dans la barre d'outils du bloc — un nouveau titre est en Titre 2 par défaut) | aucune |
+| Photo + texte d'accueil, section biographique | **Colonnes** (photo dans une colonne, texte dans l'autre) | `landing__hero landing__columns` pour l'accueil, `landing__bio landing__columns` pour la bio |
+| Liste « Tu trouveras dans ce guide » + visuel du guide | **Colonnes** à l'intérieur d'un bloc **Groupe** | `landing__offer` sur le Groupe, `landing__columns` sur le bloc Colonnes qu'il contient |
+| Encart d'inscription (répété deux fois) | **Groupe** contenant un Paragraphe puis un bloc **Court-code** avec `[sibwp_form id=1]` | `landing__cta` sur le Groupe |
+| Photo ronde de la section bio | Bloc **Image** | `landing__photo--circle` (le style « Ronde » du bloc Image n'a aucun effet sur cette page — utilise cette classe à la place) |
+
+**Pour le deuxième encart d'inscription**, ne le recrée pas : sélectionne le premier bloc **Groupe** `landing__cta`, ouvre son menu **⋮** dans la barre d'outils du bloc, choisis **Dupliquer**, puis déplace la copie après la section bio.
+
+Donne un texte légèrement différent aux deux encarts (par exemple une phrase d'intro différente) : cela aide les personnes qui naviguent au clavier ou avec un lecteur d'écran à distinguer les deux formulaires.
+
 ### Modèle par défaut
 - Utilisé automatiquement si tu ne choisis pas de template.
 - Affiche simplement le titre de la page et son contenu. Idéal pour : mentions légales, politique de confidentialité, toute page « texte pur » sans fonctionnalité particulière.

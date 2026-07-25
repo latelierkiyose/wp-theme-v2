@@ -70,6 +70,72 @@ body {
 	width: 100%;
 }
 
+/**
+ * Rythme vertical partagé entre les sections de la maquette.
+ */
+.landing__hero,
+.landing__offer,
+.landing__cta,
+.landing__bio {
+	margin-block-start: var(--kiyose-spacing-3xl);
+}
+
+/**
+ * Primitive de mise en page à deux colonnes (photo + texte), réutilisée par
+ * le hero, la section bio et la partie liste/visuel de l'offre. Empilée par
+ * défaut, côte à côte à partir de la tablette.
+ */
+.landing__columns {
+	display: flex;
+	flex-direction: column;
+	gap: var(--kiyose-spacing-lg);
+}
+
+@media (width >= 768px) {
+	.landing__columns {
+		align-items: center;
+		flex-direction: row;
+		gap: var(--kiyose-spacing-2xl);
+	}
+
+	.landing__columns > .wp-block-column {
+		flex: 1;
+	}
+}
+
+/**
+ * Bloc d'appel à l'action « blob » (encart e-mail). Répété deux fois sur la
+ * page : une fois après l'offre, une fois après la section bio.
+ *
+ * Les règles `.site-footer__signup`/`.signup-panel__form` de
+ * brevo-override.css ne ciblent aucun ancêtre présent ici : elles restent
+ * inertes, sans conflit avec ce bloc.
+ */
+.landing__cta {
+	background-color: var(--kiyose-color-gold-light);
+	border-radius: 40px 60px 50px 30px / 30px 40px 60px 50px;
+	color: var(--kiyose-color-burgundy);
+	padding: var(--kiyose-spacing-xl) var(--kiyose-spacing-2xl);
+	text-align: center;
+}
+
+/**
+ * Photo circulaire de la section bio. Le style Gutenberg « Ronde »
+ * (`is-style-kiyose-round`) vit dans gutenberg-blocks.css, absent de la
+ * liste blanche de ce template : cette classe le remplace.
+ */
+.landing__photo--circle {
+	aspect-ratio: 1 / 1;
+	border-radius: 50%;
+	overflow: hidden;
+}
+
+.landing__photo--circle img {
+	height: 100%;
+	object-fit: cover;
+	width: 100%;
+}
+
 /* ============================================
    ACCESSIBILITÉ
    ============================================ */
