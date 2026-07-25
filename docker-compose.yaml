@@ -1,3 +1,8 @@
+# Valeurs partagées entre les services db et wordpress : à modifier ici uniquement.
+x-kiyose-db-name: &kiyose-db-name rkcxncpkiyose
+x-kiyose-db-user: &kiyose-db-user wordpress
+x-kiyose-db-password: &kiyose-db-password wordpress
+
 services:
   db:
     image: mariadb
@@ -8,9 +13,9 @@ services:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: rootpress
-      MYSQL_DATABASE: rkcxncpkiyose
-      MYSQL_USER: wordpress
-      MYSQL_PASSWORD: wordpress
+      MYSQL_DATABASE: *kiyose-db-name
+      MYSQL_USER: *kiyose-db-user
+      MYSQL_PASSWORD: *kiyose-db-password
   phpmyadmin:
     image: phpmyadmin
     restart: always
@@ -37,9 +42,9 @@ services:
     restart: always
     environment:
       WORDPRESS_DB_HOST: db:3306
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: wordpress
-      WORDPRESS_DB_NAME: rkcxncpkiyose
+      WORDPRESS_DB_USER: *kiyose-db-user
+      WORDPRESS_DB_PASSWORD: *kiyose-db-password
+      WORDPRESS_DB_NAME: *kiyose-db-name
       WORDPRESS_TABLE_PREFIX: wp_akiy_
       WP_DEBUG: true
 volumes:
