@@ -32,6 +32,7 @@ Le contenu que tu tapes dans l'éditeur s'insère **dans** le template. Changer 
 | **À propos** | Page de présentation de Virginie. Mise en page centrée, texte long. | `/a-propos` |
 | **Page de contact** | Formulaire de contact + coordonnées + photo optionnelle. | `/contact` |
 | **Calendrier et tarifs** | Affiche le calendrier des ateliers via Events Manager. | `/calendrier` |
+| **Landing page** | Page d'acquisition pour offrir une ressource gratuite (un guide, un livret). Sans menu ni pied de page : la personne qui arrive n'a qu'un seul chemin, s'inscrire. | `/mon-guide-gratuit` (une page par ressource) |
 | *(Modèle par défaut)* | Pour les pages standard (mentions légales, politique de confidentialité). N'apparaît pas dans la liste — c'est ce que WordPress utilise si tu ne choisis rien. | Pages légales choisies dans le Customizer |
 
 ## Détails par template
@@ -63,6 +64,19 @@ Le contenu que tu tapes dans l'éditeur s'insère **dans** le template. Changer 
 - Le plugin **Events Manager** affiche automatiquement les événements à venir.
 - Le shortcode recommandé sur cette page est `[kiyose_events_list]`, car il peut recevoir les filtres de catégories envoyés depuis les pages de service.
 - Tu peux ajouter du contenu libre (intro, règlement, modalités de paiement) dans l'éditeur Gutenberg — il s'insère au-dessus ou autour du calendrier.
+
+### Landing page
+- Sert à offrir une ressource gratuite (un guide, un livret) en échange d'une adresse mail.
+- **Cette page ne ressemble pas au reste du site** : ni menu de navigation, ni logo, ni pied de page. C'est voulu — moins il y a de sorties possibles, plus les gens vont au bout de l'inscription. La seule façon de revenir au site est le lien que tu mets toi-même en bas de la page.
+- Tout le contenu se rédige dans l'éditeur Gutenberg. Pense à terminer par un lien vers le site, par exemple :
+
+```
+Pour en savoir plus et venir me rencontrer, c'est par ici : latelierkiyose.fr
+```
+
+- Dans la colonne de droite de l'éditeur, un panneau **Landing page — Référencement** propose une case **Ne pas indexer cette page**. Coche-la si la page est réservée à une campagne : elle n'apparaîtra pas dans les résultats Google, mais restera accessible à toutes les personnes qui ont le lien. Laisse-la décochée si tu veux que la page soit trouvable dans les moteurs de recherche.
+- Si tu ne vois pas ce panneau, enregistre la page puis recharge l'éditeur.
+- Crée **une page par ressource** : ne réutilise pas la même landing pour deux guides différents.
 
 ### Modèle par défaut
 - Utilisé automatiquement si tu ne choisis pas de template.

@@ -39,6 +39,8 @@ Dans l'admin WordPress, pour chaque page ci-dessous : **Pages → (page) → sid
 
 Les boutons des pages de service ne dépendent plus d'un slug précis. Ils utilisent les pages choisies dans le Customizer (voir § 3).
 
+Le template **Landing page** n'apparaît pas dans ce tableau : il ne concerne aucune page existante du site, mais les landings créées après la migration (voir § 12).
+
 **Vérification** : après l'assignment, afficher chaque page sur le front et constater que la mise en page correspond au design attendu.
 
 ---
@@ -352,6 +354,24 @@ wp media regenerate --yes
 
 ---
 
+## 12. Landing pages — ressources gratuites
+
+Le template **Landing page** (`latelierkiyose/templates/page-landing.php`) ne concerne aucune page existante : il sert à créer des pages d'acquisition ponctuelles, par exemple la diffusion d'un guide gratuit. Rien à migrer, mais deux points à connaître au moment de la mise en production.
+
+**Ce template ne charge pas le bundle du thème.** La page est rendue sans en-tête, sans navigation et sans pied de page, avec sa seule feuille `assets/css/components/landing.css`. Un shortcode tiers inséré dans une landing page peut donc apparaître sans style : c'est attendu, et le style doit être ajouté au template plutôt que réactivé globalement. Source de vérité : `kiyose_get_landing_style_handles()` dans `latelierkiyose/inc/enqueue.php`.
+
+**Un champ meta est exposé à la rédaction.** Une fois le template assigné, enregistré, puis l'éditeur rechargé si nécessaire, la meta box « Landing page — Référencement » apparaît dans la colonne latérale :
+
+| Champ admin | Clé meta | Obligatoire |
+|---|---|---|
+| Ne pas indexer cette page | `kiyose_landing_noindex` | non |
+
+Quand la case est cochée, la page renvoie `noindex, follow` via le filtre `wp_robots` : elle disparaît des résultats de recherche mais reste accessible à qui possède le lien.
+
+**Vérification** : sur une landing publiée, afficher le code source de la page et constater qu'aucune feuille du thème autre que `fonts.css`, `variables.css` et `landing.css` n'est chargée.
+
+---
+
 ## Checklist migration contenu
 
 Avant de considérer la migration comme terminée :
@@ -371,3 +391,4 @@ Avant de considérer la migration comme terminée :
 - [ ] Anciens blocs `wp-block-columns signets` remplacés par `[kiyose_signets]`
 - [ ] Miniatures régénérées
 - [ ] Les boutons des pages de service pointent vers les pages configurées et ne retournent pas de 404
+- [ ] Landing pages éventuelles : template assigné, case « Ne pas indexer cette page » réglée, et vue source sans feuille du thème autre que `fonts.css`, `variables.css` et `landing.css`

@@ -1,6 +1,6 @@
 # PRD 0065 — Landing page « ressource gratuite »
 
-- **Statut** : prêt à l'implémentation
+- **Statut** : terminé (fondations) — la mise en page de la maquette reste à implémenter
 - **Criticité** : moyenne
 - **Version** : 1.0
 - **Date** : 2026-07-25
