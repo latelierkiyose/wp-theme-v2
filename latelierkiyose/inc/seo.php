@@ -84,4 +84,33 @@ function kiyose_schema_piece_has_type( $piece, $type ) {
 	return in_array( $type, $types, true );
 }
 
+/**
+ * Retire une landing page de l'index des moteurs de recherche.
+ *
+ * Le retrait est décidé page par page depuis la meta box « Landing page —
+ * Référencement ». `follow` est conservé pour que les liens sortants de la
+ * page restent suivis.
+ *
+ * @param array $robots Directives robots (filtre wp_robots).
+ * @return array Directives filtrées.
+ * @since 2.4.0
+ */
+function kiyose_filter_landing_robots( $robots ) {
+	if ( ! is_array( $robots ) || ! kiyose_is_landing_template() ) {
+		return $robots;
+	}
+
+	if ( '1' !== (string) get_post_meta( get_the_ID(), 'kiyose_landing_noindex', true ) ) {
+		return $robots;
+	}
+
+	unset( $robots['index'] );
+
+	$robots['noindex'] = true;
+	$robots['follow']  = true;
+
+	return $robots;
+}
+
 add_filter( 'wpseo_schema_graph', 'kiyose_remove_invalid_breadcrumbs', 20 );
+add_filter( 'wp_robots', 'kiyose_filter_landing_robots', 20 );

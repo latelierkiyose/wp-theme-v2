@@ -8,6 +8,14 @@
 
 use PHPUnit\Framework\TestCase;
 
+if ( ! function_exists( 'is_page_template' ) ) {
+	function is_page_template( $template = '' ) {
+		return in_array( $template, $GLOBALS['kiyose_test_page_templates'] ?? array(), true );
+	}
+}
+
+// kiyose_filter_landing_robots() s'appuie sur le prédicat de template déclaré ici.
+require_once __DIR__ . '/../inc/enqueue.php';
 require_once __DIR__ . '/../inc/seo.php';
 
 /**
@@ -169,5 +177,62 @@ class Test_Seo extends TestCase {
 			// Then
 			$this->assertSame( $input, $result, "Failed for input: " . var_export( $input, true ) );
 		}
+	}
+
+	// ----------------------------------------------------------------
+	// kiyose_filter_landing_robots
+	// ----------------------------------------------------------------
+
+	public function test_kiyose_filter_landing_robots_whenLandingIsMarkedNoindex_replacesIndexWithNoindexFollow() {
+		// Given
+		$this->given_landing_page( true );
+
+		// When
+		$result = kiyose_filter_landing_robots( array( 'index' => true ) );
+
+		// Then
+		$this->assertArrayNotHasKey( 'index', $result );
+		$this->assertTrue( $result['noindex'] );
+		$this->assertTrue( $result['follow'] );
+	}
+
+	public function test_kiyose_filter_landing_robots_whenLandingIsIndexable_leavesDirectivesUnchanged() {
+		// Given
+		$this->given_landing_page( false );
+
+		// When
+		$result = kiyose_filter_landing_robots( array( 'index' => true ) );
+
+		// Then
+		$this->assertSame( array( 'index' => true ), $result );
+	}
+
+	public function test_kiyose_filter_landing_robots_whenTemplateIsNotLanding_leavesDirectivesUnchanged() {
+		// Given — la meta est présente mais la page utilise un autre template
+		$this->given_landing_page( true );
+		$GLOBALS['kiyose_test_page_templates'] = array( 'templates/page-about.php' );
+
+		// When
+		$result = kiyose_filter_landing_robots( array( 'index' => true ) );
+
+		// Then
+		$this->assertSame( array( 'index' => true ), $result );
+	}
+
+	/**
+	 * Place la requête courante sur une landing page.
+	 *
+	 * @param bool $is_noindex Whether the page is marked as noindex.
+	 * @return void
+	 */
+	private function given_landing_page( bool $is_noindex ): void {
+		$post     = new stdClass();
+		$post->ID = 42;
+
+		$GLOBALS['post']                       = $post;
+		$GLOBALS['kiyose_test_page_templates'] = array( 'templates/page-landing.php' );
+		$GLOBALS['kiyose_test_post_meta'][42]  = array(
+			'kiyose_landing_noindex' => $is_noindex ? '1' : '',
+		);
 	}
 }

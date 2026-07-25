@@ -125,6 +125,30 @@ class Test_Meta_Boxes extends TestCase {
 		$this->assertNotContains( 'kiyose_contact_photo', $this->registered_meta_box_ids() );
 	}
 
+	public function test_kiyose_add_landing_seo_meta_box_whenTemplateMatches_registersMetaBox() {
+		// Given.
+		$post = (object) array( 'ID' => 43 );
+		$this->set_page_template( 43, 'templates/page-landing.php' );
+
+		// When.
+		kiyose_add_landing_seo_meta_box( $post );
+
+		// Then.
+		$this->assertContains( 'kiyose_landing_seo', $this->registered_meta_box_ids() );
+	}
+
+	public function test_kiyose_add_landing_seo_meta_box_whenTemplateDiffers_doesNotRegisterMetaBox() {
+		// Given.
+		$post = (object) array( 'ID' => 43 );
+		$this->set_page_template( 43, 'templates/page-contact.php' );
+
+		// When.
+		kiyose_add_landing_seo_meta_box( $post );
+
+		// Then.
+		$this->assertNotContains( 'kiyose_landing_seo', $this->registered_meta_box_ids() );
+	}
+
 	public function test_kiyose_add_service_event_categories_meta_box_whenTemplateMatches_registersMetaBox() {
 		// Given.
 		$post = (object) array( 'ID' => 43 );
@@ -419,6 +443,54 @@ class Test_Meta_Boxes extends TestCase {
 
 		// Then.
 		$this->assertArrayNotHasKey( 'kiyose_contact_photo_id', $GLOBALS['kiyose_test_post_meta'][ $post_id ] );
+	}
+
+	public function test_kiyose_save_landing_seo_meta_whenCheckboxIsChecked_savesNoindexFlag() {
+		// Given.
+		$post_id = 43;
+		$this->set_page_template( $post_id, 'templates/page-landing.php' );
+		$_POST = array(
+			'kiyose_landing_seo_nonce' => 'nonce',
+			'kiyose_landing_noindex'   => '1',
+		);
+
+		// When.
+		kiyose_save_landing_seo_meta( $post_id );
+
+		// Then.
+		$this->assertSame( '1', $GLOBALS['kiyose_test_post_meta'][ $post_id ]['kiyose_landing_noindex'] );
+	}
+
+	public function test_kiyose_save_landing_seo_meta_whenCheckboxIsUnchecked_deletesNoindexFlag() {
+		// Given — une case décochée n'est pas envoyée par le navigateur.
+		$post_id = 43;
+		$this->set_page_template( $post_id, 'templates/page-landing.php' );
+		$GLOBALS['kiyose_test_post_meta'][ $post_id ]['kiyose_landing_noindex'] = '1';
+		$_POST = array(
+			'kiyose_landing_seo_nonce' => 'nonce',
+		);
+
+		// When.
+		kiyose_save_landing_seo_meta( $post_id );
+
+		// Then.
+		$this->assertArrayNotHasKey( 'kiyose_landing_noindex', $GLOBALS['kiyose_test_post_meta'][ $post_id ] );
+	}
+
+	public function test_kiyose_save_landing_seo_meta_whenTemplateDiffers_doesNotSave() {
+		// Given.
+		$post_id = 43;
+		$this->set_page_template( $post_id, 'templates/page-contact.php' );
+		$_POST = array(
+			'kiyose_landing_seo_nonce' => 'nonce',
+			'kiyose_landing_noindex'   => '1',
+		);
+
+		// When.
+		kiyose_save_landing_seo_meta( $post_id );
+
+		// Then.
+		$this->assertArrayNotHasKey( 'kiyose_landing_noindex', $GLOBALS['kiyose_test_post_meta'][ $post_id ] ?? array() );
 	}
 
 	public function test_kiyose_save_contact_photo_meta_whenTemplateDiffers_doesNotSave() {
