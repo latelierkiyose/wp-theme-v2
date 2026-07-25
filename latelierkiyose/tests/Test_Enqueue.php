@@ -241,6 +241,7 @@ class Test_Enqueue extends TestCase {
 			'kiyose-home-content',
 			'kiyose-about-overlay',
 			'kiyose-newsletter-overlay',
+			'kiyose-landing',
 		);
 
 		// When
@@ -252,6 +253,60 @@ class Test_Enqueue extends TestCase {
 			$this->assertArrayHasKey( 'condition', $assets_by_handle[ $handle ] );
 			$this->assertIsCallable( $assets_by_handle[ $handle ]['condition'] );
 		}
+	}
+
+	public function test_kiyose_asset_condition_matches_whenLandingTemplate_blocksThemeBundle() {
+		// Given
+		$GLOBALS['kiyose_test_page_templates'] = array( 'templates/page-landing.php' );
+
+		// When / Then
+		foreach ( array( 'kiyose-main', 'kiyose-header', 'kiyose-navigation', 'kiyose-footer', 'kiyose-kintsugi', 'kiyose-animations', 'kiyose-gutenberg-blocks' ) as $handle ) {
+			$this->assertFalse(
+				$this->call_asset_condition_matches( $this->get_theme_asset( 'style', $handle ) ),
+				sprintf( 'Expected %s to be blocked on the landing template.', $handle )
+			);
+		}
+
+		$this->assertFalse(
+			$this->call_asset_condition_matches( $this->get_theme_asset( 'script', 'kiyose-main' ) )
+		);
+	}
+
+	public function test_kiyose_asset_condition_matches_whenLandingTemplate_allowsWhitelistedStylesOnly() {
+		// Given
+		$GLOBALS['kiyose_test_page_templates'] = array( 'templates/page-landing.php' );
+
+		// When / Then
+		foreach ( kiyose_get_landing_style_handles() as $handle ) {
+			$this->assertTrue(
+				$this->call_asset_condition_matches( $this->get_theme_asset( 'style', $handle ) ),
+				sprintf( 'Expected %s to be allowed on the landing template.', $handle )
+			);
+		}
+	}
+
+	public function test_kiyose_asset_condition_matches_whenOtherTemplate_keepsBundleAndSkipsLanding() {
+		// Given
+		$GLOBALS['kiyose_test_page_templates'] = array( 'templates/page-about.php' );
+
+		// When
+		$is_main_loaded    = $this->call_asset_condition_matches( $this->get_theme_asset( 'style', 'kiyose-main' ) );
+		$is_landing_loaded = $this->call_asset_condition_matches( $this->get_theme_asset( 'style', 'kiyose-landing' ) );
+
+		// Then
+		$this->assertTrue( $is_main_loaded );
+		$this->assertFalse( $is_landing_loaded );
+	}
+
+	public function test_kiyose_is_dedicated_page_template_whenLandingTemplate_returnsTrue() {
+		// Given
+		$GLOBALS['kiyose_test_page_templates'] = array( 'templates/page-landing.php' );
+
+		// When
+		$result = kiyose_is_dedicated_page_template();
+
+		// Then
+		$this->assertTrue( $result );
 	}
 
 	public function test_kiyose_should_load_blog_single_styles_whenSingularEvent_returnsTrue() {
@@ -925,6 +980,16 @@ class Test_Enqueue extends TestCase {
 		}
 
 		return $assets_by_handle;
+	}
+
+	private function get_theme_asset( string $type, string $handle ): array {
+		foreach ( $this->get_theme_assets() as $asset ) {
+			if ( $type === $asset['type'] && $handle === $asset['handle'] ) {
+				return $asset;
+			}
+		}
+
+		$this->fail( sprintf( 'Expected a registered %1$s named %2$s.', $type, $handle ) );
 	}
 
 	private function call_asset_condition_matches( array $asset ): bool {

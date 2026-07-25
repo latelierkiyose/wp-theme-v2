@@ -404,6 +404,19 @@ function kiyose_enqueue_registered_asset( array $asset, string $suffix ): void {
 }
 
 /**
+ * Return the style handles allowed on the landing template.
+ *
+ * Seuls fonts.css (des @font-face) et variables.css (des custom properties)
+ * sont conservés : aucun style peint, donc rien à neutraliser côté landing.
+ *
+ * @return array<int, string> Allowed style handles.
+ * @since 2.4.0
+ */
+function kiyose_get_landing_style_handles(): array {
+	return array( 'kiyose-fonts', 'kiyose-variables', 'kiyose-landing' );
+}
+
+/**
  * Check whether an asset condition matches the current request.
  *
  * @param array<string, mixed> $asset Asset declaration.
@@ -411,6 +424,17 @@ function kiyose_enqueue_registered_asset( array $asset, string $suffix ): void {
  * @since 2.1.0
  */
 function kiyose_asset_condition_matches( array $asset ): bool {
+	/*
+	 * La landing page est volontairement coupée du bundle du thème : seuls les
+	 * styles de la liste blanche la traversent, et aucun script du thème. Le
+	 * filtrage est fait ici parce que toutes les décisions de chargement
+	 * passent par ce point, sans avoir à modifier chaque déclaration d'asset.
+	 */
+	if ( kiyose_is_landing_template() ) {
+		return 'style' === $asset['type']
+			&& in_array( (string) $asset['handle'], kiyose_get_landing_style_handles(), true );
+	}
+
 	if ( ! isset( $asset['condition'] ) ) {
 		return true;
 	}
@@ -871,7 +895,8 @@ function kiyose_is_dedicated_page_template(): bool {
 		|| kiyose_is_service_template()
 		|| kiyose_is_about_template()
 		|| kiyose_is_contact_template()
-		|| kiyose_is_calendar_template();
+		|| kiyose_is_calendar_template()
+		|| kiyose_is_landing_template();
 }
 
 /**
