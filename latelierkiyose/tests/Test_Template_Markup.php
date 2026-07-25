@@ -108,6 +108,52 @@ class Test_Template_Markup extends TestCase {
 		$this->assertStringNotContainsString( 'site-footer__newsletter', $result );
 	}
 
+	public function test_landingHeaderTemplate_keepsSkipLinkButDropsSiteChrome() {
+		// Given
+		$template = file_get_contents( __DIR__ . '/../header-landing.php' );
+
+		// When
+		$result = $template;
+
+		// Then
+		$this->assertStringContainsString( 'kiyose_get_skip_link()', $result );
+		$this->assertStringContainsString( 'wp_head()', $result );
+		$this->assertStringContainsString( 'wp_body_open()', $result );
+		$this->assertStringNotContainsString( 'wp_nav_menu', $result );
+		$this->assertStringNotContainsString( 'site-header', $result );
+		$this->assertStringNotContainsString( 'hamburger-button', $result );
+		$this->assertStringNotContainsString( 'mobile-menu', $result );
+	}
+
+	public function test_landingFooterTemplate_keepsFooterHookButDropsSiteFooter() {
+		// Given
+		$template = file_get_contents( __DIR__ . '/../footer-landing.php' );
+
+		// When
+		$result = $template;
+
+		// Then
+		$this->assertStringContainsString( 'wp_footer()', $result );
+		$this->assertStringNotContainsString( 'site-footer', $result );
+		$this->assertStringNotContainsString( 'sibwp_form', $result );
+	}
+
+	public function test_landingTemplate_usesDedicatedHeaderFooterAndFocusableMain() {
+		// Given
+		$template = file_get_contents( __DIR__ . '/../templates/page-landing.php' );
+
+		// When
+		$result = $template;
+
+		// Then
+		$this->assertStringContainsString( "get_header( 'landing' )", $result );
+		$this->assertStringContainsString( "get_footer( 'landing' )", $result );
+		$this->assertStringContainsString( 'id="main"', $result );
+		$this->assertStringContainsString( 'tabindex="-1"', $result );
+		$this->assertStringContainsString( 'landing__container', $result );
+		$this->assertStringNotContainsString( 'page-shapes', $result );
+	}
+
 	public function test_contentBlogTemplate_whenThumbnailLinkIsDecorative_hidesItFromAssistiveTech() {
 		// Given
 		$template = file_get_contents( __DIR__ . '/../template-parts/content-blog.php' );
