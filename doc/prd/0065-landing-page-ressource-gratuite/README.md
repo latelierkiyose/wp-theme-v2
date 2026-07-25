@@ -1,6 +1,6 @@
 # PRD 0065 — Landing page « ressource gratuite »
 
-- **Statut** : terminé (fondations) — la mise en page de la maquette reste à implémenter
+- **Statut** : terminé (fondations) — la mise en page de la maquette est traitée par [PRD 0066](../0066-mise-en-page-landing-ressource-gratuite/README.md)
 - **Criticité** : moyenne
 - **Version** : 1.0
 - **Date** : 2026-07-25
