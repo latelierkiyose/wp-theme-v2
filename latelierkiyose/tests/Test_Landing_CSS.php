@@ -79,10 +79,30 @@ class Test_Landing_CSS extends TestCase {
 		$css = $this->get_landing_css();
 
 		// When / Then
-		$this->assertStringContainsString( '--kiyose-landing-container-width: 50rem;', $css );
+		$this->assertStringContainsString( '--kiyose-landing-container-width: 64rem;', $css );
 		$this->assertStringContainsString( '.landing__container', $css );
 		$this->assertStringContainsString( 'max-width: var(--kiyose-landing-container-width);', $css );
 		$this->assertStringContainsString( 'margin-inline: auto;', $css );
+	}
+
+	public function test_landingCss_whenParagraphNeedsToBeNarrower_offersANarrowWidth() {
+		// Given
+		$css = $this->get_landing_css();
+
+		// When / Then
+		$this->assertStringContainsString( '--kiyose-landing-narrow-width: 34rem;', $css );
+		$this->assertStringContainsString( '.landing__narrow {', $css );
+		$this->assertStringContainsString( 'max-width: var(--kiyose-landing-narrow-width);', $css );
+	}
+
+	public function test_landingCss_whenHeroPhotoNeedsToReachTheEdge_offersABleedWidth() {
+		// Given
+		$css = $this->get_landing_css();
+
+		// When / Then
+		$this->assertStringContainsString( '.landing__bleed {', $css );
+		$this->assertStringContainsString( 'margin-inline: calc(50% - 50vw);', $css );
+		$this->assertStringContainsString( 'max-width: 100vw;', $css );
 	}
 
 	public function test_landingCss_whenThemeBundleIsAbsent_carriesItsOwnSkipLinkStyles() {

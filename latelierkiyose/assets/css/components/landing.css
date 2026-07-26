@@ -11,7 +11,10 @@
 
 :root {
 	/* Colonne de lecture unique, mesurée sur la maquette */
-	--kiyose-landing-container-width: 50rem; /* 800px */
+	--kiyose-landing-container-width: 64rem; /* 1024px */
+
+	/* Paragraphes plus étroits que le conteneur, mesurés sur la maquette */
+	--kiyose-landing-narrow-width: 34rem;
 }
 
 /* ============================================
@@ -142,6 +145,20 @@ a:focus-visible {
 	padding-block: var(--kiyose-spacing-2xl);
 	padding-inline: var(--kiyose-spacing-md);
 	width: 100%;
+}
+
+.landing__narrow {
+	max-width: var(--kiyose-landing-narrow-width);
+}
+
+/**
+ * Fond perdu : la photo du hero déborde jusqu'aux bords de la fenêtre.
+ * `calc(50% - 50vw)` se résout sur la content box du conteneur, sans
+ * compensation de padding nécessaire.
+ */
+.landing__bleed {
+	margin-inline: calc(50% - 50vw);
+	max-width: 100vw;
 }
 
 /**

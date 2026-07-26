@@ -87,6 +87,8 @@ Cette page n'a pas accès aux classes générales du reste du site (`container`,
 | Titre d'accueil (tout premier bloc de la page) | **Titre**, niveau **Titre 1** (à choisir toi-même dans la barre d'outils du bloc — un nouveau titre est en Titre 2 par défaut) | aucune |
 | Titre à mettre en valeur en doré (optionnel, sur n'importe quel bloc Titre) | **Titre** | `landing__title--gold` |
 | Photo + texte d'accueil, section biographique | **Colonnes** (photo dans une colonne, texte dans l'autre) | `landing__hero landing__columns` pour l'accueil, `landing__bio landing__columns` pour la bio |
+| Paragraphe plus étroit que le reste du texte (optionnel) | **Paragraphe** | `landing__narrow` |
+| Photo qui déborde jusqu'aux bords de l'écran (fond perdu) | Bloc **Image** | `landing__bleed` |
 | Liste « Tu trouveras dans ce guide » + visuel du guide | **Colonnes** à l'intérieur d'un bloc **Groupe** | `landing__offer` sur le Groupe, `landing__columns` sur le bloc Colonnes qu'il contient |
 | Encart d'inscription (répété deux fois) | **Groupe** contenant un Paragraphe puis un bloc **Court-code** avec `[sibwp_form id=1]` | `landing__cta` sur le Groupe |
 | Photo ronde de la section bio | Bloc **Image** | `landing__photo--circle` (le style « Ronde » du bloc Image n'a aucun effet sur cette page — utilise cette classe à la place) |
