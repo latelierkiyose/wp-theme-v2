@@ -144,6 +144,16 @@ class Test_Landing_CSS extends TestCase {
 		$this->assertStringContainsString( '@media (width >= 768px) {', $css );
 	}
 
+	public function test_landingCss_whenColumnWidthIsSetInTheEditor_respectsIt() {
+		// Given
+		$css = $this->get_landing_css();
+
+		// When / Then
+		$this->assertStringContainsString( '.landing__columns > .wp-block-column {', $css );
+		$this->assertStringContainsString( 'flex-grow: 1;', $css );
+		$this->assertStringNotContainsString( 'flex: 1;', $css );
+	}
+
 	public function test_landingCss_whenCtaBlockIsPainted_usesAccessibleGoldPair() {
 		// Given
 		$css = $this->get_landing_css();

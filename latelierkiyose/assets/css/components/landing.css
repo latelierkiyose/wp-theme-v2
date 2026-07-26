@@ -190,7 +190,7 @@ a:focus-visible {
 	}
 
 	.landing__columns > .wp-block-column {
-		flex: 1;
+		flex-grow: 1;
 	}
 }
 

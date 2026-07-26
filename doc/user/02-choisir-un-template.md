@@ -97,6 +97,8 @@ Cette page n'a pas accès aux classes générales du reste du site (`container`,
 
 Donne un texte légèrement différent aux deux encarts (par exemple une phrase d'intro différente) : cela aide les personnes qui naviguent au clavier ou avec un lecteur d'écran à distinguer les deux formulaires.
 
+Si tu règles une largeur de colonne dans l'éditeur (bloc **Colonnes**), elle est désormais respectée au rendu.
+
 **Visuel de couverture du guide** : c'est une image unique fournie par la commanditaire (couverture, illustrations et texte y sont déjà assemblés). Son `alt` doit restituer le texte qui y figure, par exemple « Le guide pour cultiver ta joie de vivre ».
 
 ### Modèle par défaut
