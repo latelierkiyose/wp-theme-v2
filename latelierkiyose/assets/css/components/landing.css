@@ -49,13 +49,87 @@ img {
 
 body {
 	background-color: var(--kiyose-color-background);
-	color: var(--kiyose-color-text); /* Ratio 10.43:1 sur le fond ✅ */
+	color: var(--kiyose-color-burgundy); /* Ratio 11.41:1 sur le fond ✅ */
 	font-family: var(--kiyose-font-body);
 	font-size: var(--kiyose-font-size-base);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	line-height: var(--kiyose-line-height-relaxed);
 	margin: 0;
+}
+
+/* ============================================
+   TYPOGRAPHIE
+   ============================================ */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	color: var(--kiyose-color-burgundy);
+	font-family: var(--kiyose-font-heading);
+	font-weight: 700;
+	line-height: var(--kiyose-line-height-tight);
+	margin-bottom: var(--kiyose-spacing-md);
+	text-wrap: balance;
+}
+
+h1 {
+	font-size: var(--kiyose-font-size-4xl);
+}
+
+h2 {
+	font-size: var(--kiyose-font-size-3xl);
+}
+
+h3 {
+	font-size: var(--kiyose-font-size-2xl);
+}
+
+/* Responsive headings */
+@media (width <= 767px) {
+	h1 {
+		font-size: 2.5rem;
+	}
+
+	h2 {
+		font-size: 2rem;
+	}
+
+	h3 {
+		font-size: 1.625rem;
+	}
+}
+
+.landing__title--gold {
+	color: var(--kiyose-color-gold-dark);
+}
+
+p {
+	margin-bottom: var(--kiyose-spacing-md);
+}
+
+ul,
+ol {
+	margin-bottom: var(--kiyose-spacing-md);
+	padding-inline-start: var(--kiyose-spacing-lg);
+}
+
+a {
+	color: var(--kiyose-color-burgundy);
+	text-decoration: underline;
+}
+
+a:hover {
+	text-decoration-thickness: 2px;
+}
+
+a:focus-visible {
+	border-radius: 2px;
+	outline: 2px solid var(--kiyose-color-burgundy);
+	outline-offset: 2px;
 }
 
 /* ============================================

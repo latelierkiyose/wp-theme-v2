@@ -85,6 +85,7 @@ Cette page n'a pas accès aux classes générales du reste du site (`container`,
 | Section | Bloc à utiliser | Classe à appliquer |
 |---|---|---|
 | Titre d'accueil (tout premier bloc de la page) | **Titre**, niveau **Titre 1** (à choisir toi-même dans la barre d'outils du bloc — un nouveau titre est en Titre 2 par défaut) | aucune |
+| Titre à mettre en valeur en doré (optionnel, sur n'importe quel bloc Titre) | **Titre** | `landing__title--gold` |
 | Photo + texte d'accueil, section biographique | **Colonnes** (photo dans une colonne, texte dans l'autre) | `landing__hero landing__columns` pour l'accueil, `landing__bio landing__columns` pour la bio |
 | Liste « Tu trouveras dans ce guide » + visuel du guide | **Colonnes** à l'intérieur d'un bloc **Groupe** | `landing__offer` sur le Groupe, `landing__columns` sur le bloc Colonnes qu'il contient |
 | Encart d'inscription (répété deux fois) | **Groupe** contenant un Paragraphe puis un bloc **Court-code** avec `[sibwp_form id=1]` | `landing__cta` sur le Groupe |
@@ -93,6 +94,8 @@ Cette page n'a pas accès aux classes générales du reste du site (`container`,
 **Pour le deuxième encart d'inscription**, ne le recrée pas : sélectionne le premier bloc **Groupe** `landing__cta`, ouvre son menu **⋮** dans la barre d'outils du bloc, choisis **Dupliquer**, puis déplace la copie après la section bio.
 
 Donne un texte légèrement différent aux deux encarts (par exemple une phrase d'intro différente) : cela aide les personnes qui naviguent au clavier ou avec un lecteur d'écran à distinguer les deux formulaires.
+
+**Visuel de couverture du guide** : c'est une image unique fournie par la commanditaire (couverture, illustrations et texte y sont déjà assemblés). Son `alt` doit restituer le texte qui y figure, par exemple « Le guide pour cultiver ta joie de vivre ».
 
 ### Modèle par défaut
 - Utilisé automatiquement si tu ne choisis pas de template.
