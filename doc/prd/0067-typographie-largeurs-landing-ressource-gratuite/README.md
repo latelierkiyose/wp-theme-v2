@@ -1,6 +1,6 @@
 # PRD 0067 — Typographie, largeurs et contrastes de la landing « ressource gratuite »
 
-- **Statut** : prêt à l'implémentation
+- **Statut** : terminé
 - **Criticité** : moyenne
 - **Version** : 1.0
 - **Date** : 2026-07-25
@@ -143,16 +143,16 @@ Aucun changement à `templates/page-landing.php`, `header-landing.php`, `footer-
 
 ### Tests automatisés
 
-- [ ] `variables.css` déclare `--kiyose-color-gold-dark: #8A5D00;`.
-- [ ] `landing.css` déclare, pour `h1`–`h6`, `font-family: var(--kiyose-font-heading);` et `color: var(--kiyose-color-burgundy);`.
-- [ ] `landing.css` déclare `.landing__title--gold` avec `color: var(--kiyose-color-gold-dark);`.
-- [ ] `landing.css` déclare `body { color: var(--kiyose-color-burgundy);` (mise à jour de l'assertion existante qui vérifiait `var(--kiyose-color-text)`).
-- [ ] `landing.css` déclare une règle `a {` avec `text-decoration: underline;`.
-- [ ] `landing.css` déclare `--kiyose-landing-container-width: 64rem;` et `--kiyose-landing-narrow-width: 34rem;`.
-- [ ] `landing.css` déclare `.landing__narrow` et `.landing__bleed` avec `calc(50% - 50vw)`.
-- [ ] `landing.css` déclare `.landing__columns > .wp-block-column { flex-grow: 1; }` et ne contient plus `flex: 1;` à cet endroit.
-- [ ] `landing.css` ne contient plus `text-align: center;` sous `.landing__cta`.
-- [ ] `landing.css` déclare, sous `.landing__cta`, une surcharge `background-color: var(--kiyose-color-burgundy) !important;` pour `input[type="submit"]`.
+- [x] `variables.css` déclare `--kiyose-color-gold-dark: #8A5D00;`.
+- [x] `landing.css` déclare, pour `h1`–`h6`, `font-family: var(--kiyose-font-heading);` et `color: var(--kiyose-color-burgundy);`.
+- [x] `landing.css` déclare `.landing__title--gold` avec `color: var(--kiyose-color-gold-dark);`.
+- [x] `landing.css` déclare `body { color: var(--kiyose-color-burgundy);` (mise à jour de l'assertion existante qui vérifiait `var(--kiyose-color-text)`).
+- [x] `landing.css` déclare une règle `a {` avec `text-decoration: underline;`.
+- [x] `landing.css` déclare `--kiyose-landing-container-width: 64rem;` et `--kiyose-landing-narrow-width: 34rem;`.
+- [x] `landing.css` déclare `.landing__narrow` et `.landing__bleed` avec `calc(50% - 50vw)`.
+- [x] `landing.css` déclare `.landing__columns > .wp-block-column { flex-grow: 1; }` et ne contient plus `flex: 1;` à cet endroit.
+- [x] `landing.css` ne contient plus `text-align: center;` sous `.landing__cta`.
+- [x] `landing.css` déclare, sous `.landing__cta`, une surcharge `background-color: var(--kiyose-color-burgundy) !important;` pour `input[type="submit"]`.
 
 ### Validation manuelle
 
