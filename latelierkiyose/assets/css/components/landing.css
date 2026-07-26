@@ -207,7 +207,32 @@ a:focus-visible {
 	border-radius: 40px 60px 50px 30px / 30px 40px 60px 50px;
 	color: var(--kiyose-color-burgundy);
 	padding: var(--kiyose-spacing-xl) var(--kiyose-spacing-2xl);
-	text-align: center;
+}
+
+/**
+ * brevo-override.css calibre le bouton et la bordure de champ pour un fond
+ * beige (--kiyose-color-primary/--kiyose-color-border) : posés sur le fond
+ * doré de ce bloc, ils échouent au contraste (1,38:1/1,36:1). Surcharge
+ * scopée avec !important, nécessaire car brevo-override.css l'emploie déjà
+ * sur ces propriétés.
+ */
+.landing__cta form[id^="sib_signup_form_"] input[type="text"],
+.landing__cta form[id^="sib_signup_form_"] input[type="email"],
+.landing__cta form[id^="sib_signup_form_"] textarea {
+	border-color: var(--kiyose-color-burgundy) !important;
+}
+
+.landing__cta form[id^="sib_signup_form_"] .sib-default-btn,
+.landing__cta form[id^="sib_signup_form_"] input[type="submit"] {
+	background-color: var(--kiyose-color-burgundy) !important;
+	border-color: var(--kiyose-color-burgundy) !important;
+	color: var(--kiyose-color-white) !important;
+}
+
+.landing__cta form[id^="sib_signup_form_"] .sib-default-btn:hover,
+.landing__cta form[id^="sib_signup_form_"] input[type="submit"]:hover {
+	background-color: #4a0404 !important;
+	border-color: #4a0404 !important;
 }
 
 /**
