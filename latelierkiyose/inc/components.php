@@ -79,13 +79,13 @@ function kiyose_get_social_profiles(): array {
 		array(
 			'key'   => 'facebook',
 			'label' => __( 'Facebook', 'kiyose' ),
-			'url'   => get_theme_mod( 'kiyose_social_facebook', 'https://www.facebook.com/latelierkiyose' ),
+			'url'   => get_theme_mod( 'kiyose_social_facebook', 'https://www.facebook.com/latelierkiyose.fr' ),
 			'icon'  => kiyose_social_icon_svg( 'facebook' ),
 		),
 		array(
 			'key'   => 'instagram',
 			'label' => __( 'Instagram', 'kiyose' ),
-			'url'   => get_theme_mod( 'kiyose_social_instagram', 'https://www.instagram.com/latelierkiyose' ),
+			'url'   => get_theme_mod( 'kiyose_social_instagram', 'https://www.instagram.com/virginie_happycultrice_rebelle/' ),
 			'icon'  => kiyose_social_icon_svg( 'instagram' ),
 		),
 		array(

@@ -125,7 +125,7 @@
 - Transition: 200-300ms, respecte `prefers-reduced-motion`
 
 **Footer:**
-- Liens réseaux sociaux (Facebook, Instagram, LinkedIn @latelierkiyose)
+- Liens réseaux sociaux (Facebook @latelierkiyose.fr, Instagram @virginie_happycultrice_rebelle, LinkedIn @latelierkiyose)
 - Newsletter Brevo
 - Mentions légales / Politique de confidentialité
 - Copyright

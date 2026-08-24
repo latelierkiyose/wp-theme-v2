@@ -169,7 +169,7 @@ Les coordonnées (téléphone, email, adresse, réseaux sociaux) sont **hardcod�
 - Téléphone : `06 58 37 32 05`
 - Email : `contact@latelierkiyose.fr`
 - Adresse : `Le Grand Vron, 86510 Brux, Nouvelle-Aquitaine`
-- Réseaux : Facebook / Instagram / LinkedIn `@latelierkiyose`
+- Réseaux : Facebook `@latelierkiyose.fr` / Instagram `@virginie_happycultrice_rebelle` / LinkedIn `@latelierkiyose`
 
 ---
 

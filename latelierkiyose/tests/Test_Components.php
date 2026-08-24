@@ -82,9 +82,9 @@ class Test_Components extends TestCase {
 		// Then
 		$this->assertCount( 3, $profiles );
 		$this->assertSame( 'facebook', $profiles[0]['key'] );
-		$this->assertSame( 'https://www.facebook.com/latelierkiyose', $profiles[0]['url'] );
+		$this->assertSame( 'https://www.facebook.com/latelierkiyose.fr', $profiles[0]['url'] );
 		$this->assertSame( 'instagram', $profiles[1]['key'] );
-		$this->assertSame( 'https://www.instagram.com/latelierkiyose', $profiles[1]['url'] );
+		$this->assertSame( 'https://www.instagram.com/virginie_happycultrice_rebelle/', $profiles[1]['url'] );
 		$this->assertSame( 'linkedin', $profiles[2]['key'] );
 		$this->assertSame( 'https://www.linkedin.com/company/latelierkiyose', $profiles[2]['url'] );
 	}

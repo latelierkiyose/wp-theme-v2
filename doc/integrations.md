@@ -57,7 +57,7 @@
 ## Réseaux sociaux
 
 **Custom implementation recommandée**
-- Liens footer: Facebook, Instagram, LinkedIn (@latelierkiyose)
+- Liens footer: Facebook (@latelierkiyose.fr), Instagram (@virginie_happycultrice_rebelle), LinkedIn (@latelierkiyose)
 - SVG icons optimisés
 - Accessible (`aria-label`)
 
