@@ -167,7 +167,7 @@ Une fois le template « Page de contact » assigné, enregistré, puis l'éditeu
 Les coordonnées (téléphone, email, adresse, réseaux sociaux) sont **hardcodées** dans `latelierkiyose/templates/page-contact.php:54-101`. Toute mise à jour nécessite une intervention développeur. Valeurs actuelles à vérifier avant déploiement :
 
 - Téléphone : `06 58 37 32 05`
-- Email : `contact@latelierkiyose.fr`
+- Email : `virginie@latelierkiyose.fr`
 - Adresse : `Le Grand Vron, 86510 Brux, Nouvelle-Aquitaine`
 - Réseaux : Facebook `@latelierkiyose.fr` / Instagram `@virginie_happycultrice_rebelle` / LinkedIn `@latelierkiyose`
 

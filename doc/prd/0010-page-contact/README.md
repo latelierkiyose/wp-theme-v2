@@ -73,7 +73,7 @@ get_header()
 
                 <div class="contact-info__item">
                     <h3>Email</h3>
-                    <a href="mailto:contact@latelierkiyose.fr">contact@latelierkiyose.fr</a>
+                    <a href="mailto:virginie@latelierkiyose.fr">virginie@latelierkiyose.fr</a>
                 </div>
 
                 <div class="contact-info__item">
