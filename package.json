@@ -24,7 +24,7 @@
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.0",
-		"cssnano": "^8.0.0",
+		"cssnano": "^9.0.0",
 		"eslint": "^10.0.0",
 		"eslint-config-prettier": "^10.0.0",
 		"globals": "^17.0.0",
@@ -36,7 +36,7 @@
 		"terser": "^5.37.0"
 	},
 	"engines": {
-		"node": ">=22.11.0",
+		"node": ">=22.22.3",
 		"npm": ">=9.0.0"
 	}
 }
