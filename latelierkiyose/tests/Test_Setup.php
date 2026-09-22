@@ -6,6 +6,8 @@
  * @since   2.1.0
  */
 
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -13,10 +15,8 @@ use PHPUnit\Framework\TestCase;
  */
 class Test_Setup extends TestCase {
 
-	/**
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 */
+	#[RunInSeparateProcess]
+	#[PreserveGlobalState( false )]
 	public function test_kiyose_register_block_styles_whenRegisterBlockStyleExists_registersRoundImageStyle() {
 		// Given
 		if ( ! function_exists( 'register_block_style' ) ) {
@@ -52,10 +52,8 @@ class Test_Setup extends TestCase {
 		);
 	}
 
-	/**
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 */
+	#[RunInSeparateProcess]
+	#[PreserveGlobalState( false )]
 	public function test_kiyose_register_block_styles_whenRegisterBlockStyleDoesNotExist_doesNothing() {
 		// Given
 		require_once __DIR__ . '/../inc/setup.php';

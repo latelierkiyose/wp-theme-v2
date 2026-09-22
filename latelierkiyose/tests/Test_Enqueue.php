@@ -6,6 +6,8 @@
  * @since   2.1.0
  */
 
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 
 if ( ! defined( 'KIYOSE_VERSION' ) ) {
@@ -166,10 +168,8 @@ class Test_Enqueue extends TestCase {
 		$this->assertSame( '.min', $result );
 	}
 
-	/**
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 */
+	#[RunInSeparateProcess]
+	#[PreserveGlobalState( false )]
 	public function test_kiyose_get_asset_suffix_whenWpDebugIsTrue_returnsEmptySuffix() {
 		// Given
 		define( 'WP_DEBUG', true );
