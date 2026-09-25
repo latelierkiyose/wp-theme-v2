@@ -84,8 +84,8 @@ h1 {
 }
 
 h2 {
-	font-size: var(--kiyose-font-size-3xl);
 	color: var(--kiyose-color-gold);
+	font-size: var(--kiyose-font-size-3xl);
 }
 
 h3 {
