@@ -54,7 +54,7 @@ body {
 	background-color: var(--kiyose-color-background);
 	color: var(--kiyose-color-burgundy); /* Ratio 11.41:1 sur le fond ✅ */
 	font-family: var(--kiyose-font-body);
-	font-size: var(--kiyose-font-size-base);
+	font-size: var(--kiyose-font-size-lg)
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	line-height: var(--kiyose-line-height-relaxed);
@@ -74,21 +74,22 @@ h6 {
 	color: var(--kiyose-color-burgundy);
 	font-family: var(--kiyose-font-heading);
 	font-weight: 700;
-	line-height: var(--kiyose-line-height-tight);
+	line-height: var(--kiyose-line-height-normal);
 	margin-bottom: var(--kiyose-spacing-md);
 	text-wrap: balance;
 }
 
 h1 {
-	font-size: var(--kiyose-font-size-4xl);
+	font-size: var(--kiyose-font-size-3xl);
 }
 
 h2 {
 	font-size: var(--kiyose-font-size-3xl);
+	color: var(--kiyose-color-gold);
 }
 
 h3 {
-	font-size: var(--kiyose-font-size-2xl);
+	font-size: var(--kiyose-font-size-lg);
 }
 
 /* Responsive headings */
@@ -216,21 +217,21 @@ a:focus-visible {
  * scopée avec !important, nécessaire car brevo-override.css l'emploie déjà
  * sur ces propriétés.
  */
-.landing__cta form[id^="sib_signup_form_"] input[type="text"],
-.landing__cta form[id^="sib_signup_form_"] input[type="email"],
-.landing__cta form[id^="sib_signup_form_"] textarea {
+.landing__cta form[id^='sib_signup_form_'] input[type='text'],
+.landing__cta form[id^='sib_signup_form_'] input[type='email'],
+.landing__cta form[id^='sib_signup_form_'] textarea {
 	border-color: var(--kiyose-color-burgundy) !important;
 }
 
-.landing__cta form[id^="sib_signup_form_"] .sib-default-btn,
-.landing__cta form[id^="sib_signup_form_"] input[type="submit"] {
+.landing__cta form[id^='sib_signup_form_'] .sib-default-btn,
+.landing__cta form[id^='sib_signup_form_'] input[type='submit'] {
 	background-color: var(--kiyose-color-burgundy) !important;
 	border-color: var(--kiyose-color-burgundy) !important;
 	color: var(--kiyose-color-white) !important;
 }
 
-.landing__cta form[id^="sib_signup_form_"] .sib-default-btn:hover,
-.landing__cta form[id^="sib_signup_form_"] input[type="submit"]:hover {
+.landing__cta form[id^='sib_signup_form_'] .sib-default-btn:hover,
+.landing__cta form[id^='sib_signup_form_'] input[type='submit']:hover {
 	background-color: #4a0404 !important;
 	border-color: #4a0404 !important;
 }
