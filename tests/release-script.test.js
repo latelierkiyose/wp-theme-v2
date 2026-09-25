@@ -57,11 +57,29 @@ function createPackageJson(dir, version = '1.0.3') {
 	return packagePath;
 }
 
+function createPackageLock(dir, version = '1.0.3') {
+	const packageLockPath = path.join(dir, 'package-lock.json');
+	const lock = {
+		name: 'latelierkiyose-wp-theme',
+		version,
+		lockfileVersion: 3,
+		requires: true,
+		packages: {
+			'': { name: 'latelierkiyose-wp-theme', version },
+			'node_modules/foo': { version: '9.9.9' },
+		},
+	};
+	fs.writeFileSync(packageLockPath, `${JSON.stringify(lock, null, '\t')}\n`, 'utf8');
+
+	return packageLockPath;
+}
+
 function createReleaseFixtures(dir, version = '1.0.3') {
 	return {
 		stylePath: createThemeStyle(dir, version),
 		functionsPath: createThemeFunctions(dir, version),
 		packagePath: createPackageJson(dir, version),
+		packageLockPath: createPackageLock(dir, version),
 	};
 }
 
@@ -174,10 +192,28 @@ test('writePackageVersion_whenFieldMissing_throws', () => {
 	assert.throws(() => releaseScript.writePackageVersion(packagePath, '1.0.3'), /"version"/u);
 });
 
+test('writePackageLockVersion_updatesRootVersionsOnly', () => {
+	// Given
+	const dir = createTempDir();
+	const packageLockPath = createPackageLock(dir, '2.0.0');
+
+	// When
+	releaseScript.writePackageLockVersion(packageLockPath, '2.1.0');
+
+	// Then
+	const content = fs.readFileSync(packageLockPath, 'utf8');
+	const updated = JSON.parse(content);
+	assert.equal(updated.version, '2.1.0');
+	assert.equal(updated.packages[''].version, '2.1.0');
+	assert.equal(updated.packages['node_modules/foo'].version, '9.9.9');
+	assert.match(content, /^\{\n\t"name":/u);
+	assert.match(content, /\}\n$/u);
+});
+
 test('prepareRelease_whenNoCommitIsRequestedWithVersionChange_defersTagCreation', () => {
 	// Given
 	const dir = createTempDir();
-	const { stylePath, functionsPath, packagePath } = createReleaseFixtures(dir, '1.0.2');
+	const { stylePath, functionsPath, packagePath, packageLockPath } = createReleaseFixtures(dir, '1.0.2');
 	initializeGitRepository(dir);
 
 	// When
@@ -187,6 +223,7 @@ test('prepareRelease_whenNoCommitIsRequestedWithVersionChange_defersTagCreation'
 		stylePath,
 		functionsPath,
 		packagePath,
+		packageLockPath,
 	});
 
 	// Then
@@ -204,7 +241,7 @@ test('prepareRelease_whenNoCommitIsRequestedWithVersionChange_defersTagCreation'
 test('prepareRelease_whenVersionAlreadyCommitted_createsAnnotatedTag', () => {
 	// Given
 	const dir = createTempDir();
-	const { stylePath, functionsPath, packagePath } = createReleaseFixtures(dir, '1.0.3');
+	const { stylePath, functionsPath, packagePath, packageLockPath } = createReleaseFixtures(dir, '1.0.3');
 	initializeGitRepository(dir);
 
 	// When
@@ -214,6 +251,7 @@ test('prepareRelease_whenVersionAlreadyCommitted_createsAnnotatedTag', () => {
 		stylePath,
 		functionsPath,
 		packagePath,
+		packageLockPath,
 	});
 
 	// Then
@@ -233,7 +271,7 @@ test('prepareRelease_whenVersionAlreadyCommitted_createsAnnotatedTag', () => {
 test('prepareRelease_whenCurrentVersionIsUntaggedAndClean_createsCurrentVersionTag', () => {
 	// Given
 	const dir = createTempDir();
-	const { stylePath, functionsPath, packagePath } = createReleaseFixtures(dir, '1.0.3');
+	const { stylePath, functionsPath, packagePath, packageLockPath } = createReleaseFixtures(dir, '1.0.3');
 	initializeGitRepository(dir);
 
 	// When
@@ -243,6 +281,7 @@ test('prepareRelease_whenCurrentVersionIsUntaggedAndClean_createsCurrentVersionT
 		stylePath,
 		functionsPath,
 		packagePath,
+		packageLockPath,
 	});
 
 	// Then
@@ -258,7 +297,7 @@ test('prepareRelease_whenCurrentVersionIsUntaggedAndClean_createsCurrentVersionT
 test('prepareRelease_whenNoCommitIsRequestedAndCurrentVersionIsAlreadyTagged_bumpsMinorAndDefersTagCreation', () => {
 	// Given
 	const dir = createTempDir();
-	const { stylePath, functionsPath, packagePath } = createReleaseFixtures(dir, '1.0.3');
+	const { stylePath, functionsPath, packagePath, packageLockPath } = createReleaseFixtures(dir, '1.0.3');
 	initializeGitRepository(dir);
 	execFileSync('git', ['tag', '-a', 'v1.0.3', '-m', 'Release 1.0.3'], {
 		cwd: dir,
@@ -272,6 +311,7 @@ test('prepareRelease_whenNoCommitIsRequestedAndCurrentVersionIsAlreadyTagged_bum
 		stylePath,
 		functionsPath,
 		packagePath,
+		packageLockPath,
 	});
 
 	// Then
@@ -287,7 +327,7 @@ test('prepareRelease_whenNoCommitIsRequestedAndCurrentVersionIsAlreadyTagged_bum
 test('prepareRelease_whenCurrentVersionIsAlreadyTagged_bumpsMinorCommitsAndCreatesAnnotatedTag', () => {
 	// Given
 	const dir = createTempDir();
-	const { stylePath, functionsPath, packagePath } = createReleaseFixtures(dir, '1.0.3');
+	const { stylePath, functionsPath, packagePath, packageLockPath } = createReleaseFixtures(dir, '1.0.3');
 	initializeGitRepository(dir);
 	execFileSync('git', ['tag', '-a', 'v1.0.3', '-m', 'Release 1.0.3'], {
 		cwd: dir,
@@ -301,6 +341,7 @@ test('prepareRelease_whenCurrentVersionIsAlreadyTagged_bumpsMinorCommitsAndCreat
 		stylePath,
 		functionsPath,
 		packagePath,
+		packageLockPath,
 	});
 
 	// Then
@@ -324,7 +365,13 @@ test('prepareRelease_whenCurrentVersionIsAlreadyTagged_bumpsMinorCommitsAndCreat
 		.split('\n')
 		.filter(Boolean)
 		.sort();
-	assert.deepEqual(changedFiles, ['latelierkiyose/functions.php', 'latelierkiyose/style.css', 'package.json']);
+	assert.deepEqual(changedFiles, [
+		'latelierkiyose/functions.php',
+		'latelierkiyose/style.css',
+		'package-lock.json',
+		'package.json',
+	]);
+	assert.equal(JSON.parse(fs.readFileSync(packageLockPath, 'utf8')).packages[''].version, '1.1.0');
 	assert.equal(
 		execFileSync('git', ['tag', '--list', 'v1.1.0'], { cwd: dir, encoding: 'utf8' }).trim(),
 		'v1.1.0'
@@ -338,7 +385,7 @@ test('prepareRelease_whenCurrentVersionIsAlreadyTagged_bumpsMinorCommitsAndCreat
 test('prepareRelease_whenCommitIsRequested_commitsVersionAndCreatesAnnotatedTag', () => {
 	// Given
 	const dir = createTempDir();
-	const { stylePath, functionsPath, packagePath } = createReleaseFixtures(dir, '1.0.3');
+	const { stylePath, functionsPath, packagePath, packageLockPath } = createReleaseFixtures(dir, '1.0.3');
 	initializeGitRepository(dir);
 	execFileSync('git', ['tag', '-a', 'v1.0.3', '-m', 'Release 1.0.3'], {
 		cwd: dir,
@@ -352,6 +399,7 @@ test('prepareRelease_whenCommitIsRequested_commitsVersionAndCreatesAnnotatedTag'
 		stylePath,
 		functionsPath,
 		packagePath,
+		packageLockPath,
 	});
 
 	// Then
@@ -372,7 +420,7 @@ test('prepareRelease_whenCommitIsRequested_commitsVersionAndCreatesAnnotatedTag'
 test('releaseScript_whenRunWithVersion_updatesThemeVersionCommitsAndTags', () => {
 	// Given
 	const dir = createTempDir();
-	const { stylePath, functionsPath, packagePath } = createReleaseFixtures(dir, '0.2.3');
+	const { stylePath, functionsPath, packagePath, packageLockPath } = createReleaseFixtures(dir, '0.2.3');
 	initializeGitRepository(dir);
 
 	// When
@@ -386,6 +434,7 @@ test('releaseScript_whenRunWithVersion_updatesThemeVersionCommitsAndTags', () =>
 	assert.match(fs.readFileSync(stylePath, 'utf8'), /^Version: 1\.0\.3$/mu);
 	assert.match(fs.readFileSync(functionsPath, 'utf8'), /'KIYOSE_VERSION'\s*,\s*'1\.0\.3'/u);
 	assert.equal(JSON.parse(fs.readFileSync(packagePath, 'utf8')).version, '1.0.3');
+	assert.equal(JSON.parse(fs.readFileSync(packageLockPath, 'utf8')).version, '1.0.3');
 	assert.match(result.stdout, /Version updated to 1\.0\.3/u);
 	assert.match(result.stdout, /Release commit created for v1\.0\.3/u);
 	assert.match(result.stdout, /Created tag v1\.0\.3/u);

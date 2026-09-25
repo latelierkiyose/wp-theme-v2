@@ -181,6 +181,17 @@ function writePackageVersion(packagePath, version) {
 	);
 }
 
+function writePackageLockVersion(packageLockPath, version) {
+	validateVersion(version);
+	const lock = JSON.parse(fs.readFileSync(packageLockPath, 'utf8'));
+
+	lock.version = version;
+	lock.packages[''].version = version;
+	// npm writes lockfiles as tab-indented JSON with a trailing newline, so a
+	// stringify round-trip is byte-identical outside the two changed fields.
+	fs.writeFileSync(packageLockPath, `${JSON.stringify(lock, null, '\t')}\n`, 'utf8');
+}
+
 function runGit(cwd, args, options = {}) {
 	return execFileSync('git', args, {
 		cwd,
@@ -241,6 +252,7 @@ function prepareRelease({
 	stylePath = path.join(cwd, 'latelierkiyose/style.css'),
 	functionsPath = path.join(cwd, 'latelierkiyose/functions.php'),
 	packagePath = path.join(cwd, 'package.json'),
+	packageLockPath = path.join(cwd, 'package-lock.json'),
 } = {}) {
 	const options = parseArguments(argv);
 	const isGitRepo = isGitRepository(cwd);
@@ -265,11 +277,12 @@ function prepareRelease({
 		writeThemeVersion(stylePath, targetVersion);
 		writeFunctionsVersion(functionsPath, targetVersion);
 		writePackageVersion(packagePath, targetVersion);
+		writePackageLockVersion(packageLockPath, targetVersion);
 		isVersionUpdated = true;
 	}
 
 	if (isGitRepo && options.isCommitRequested && isVersionUpdated) {
-		createReleaseCommit(cwd, [stylePath, functionsPath, packagePath], targetVersion);
+		createReleaseCommit(cwd, [stylePath, functionsPath, packagePath, packageLockPath], targetVersion);
 		isCommitCreated = true;
 	}
 
@@ -320,7 +333,7 @@ function main() {
 
 		if (result.isVersionUpdated) {
 			process.stdout.write(
-				`Version updated to ${result.targetVersion} in latelierkiyose/style.css, latelierkiyose/functions.php, package.json\n`
+				`Version updated to ${result.targetVersion} in latelierkiyose/style.css, latelierkiyose/functions.php, package.json, package-lock.json\n`
 			);
 		} else {
 			process.stdout.write(`Theme version already set to ${result.targetVersion}\n`);
@@ -357,6 +370,7 @@ module.exports = {
 	readThemeVersion,
 	resolveTargetVersion,
 	writeFunctionsVersion,
+	writePackageLockVersion,
 	writePackageVersion,
 	writeThemeVersion,
 };
