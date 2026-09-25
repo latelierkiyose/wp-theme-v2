@@ -54,7 +54,7 @@ body {
 	background-color: var(--kiyose-color-background);
 	color: var(--kiyose-color-burgundy); /* Ratio 11.41:1 sur le fond ✅ */
 	font-family: var(--kiyose-font-body);
-	font-size: var(--kiyose-font-size-lg)
+	font-size: var(--kiyose-font-size-lg);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	line-height: var(--kiyose-line-height-relaxed);
