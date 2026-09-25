@@ -54,7 +54,7 @@ class Test_Landing_CSS extends TestCase {
 		// When / Then
 		$this->assertStringContainsString( 'font-family: var(--kiyose-font-heading);', $css );
 		$this->assertStringContainsString( 'color: var(--kiyose-color-burgundy);', $css );
-		$this->assertStringContainsString( 'font-size: var(--kiyose-font-size-4xl);', $css );
+		$this->assertStringContainsString( 'font-size: var(--kiyose-font-size-3xl);', $css );
 	}
 
 	public function test_landingCss_whenTitleNeedsEmphasis_offersAccessibleGoldModifier() {
@@ -170,9 +170,9 @@ class Test_Landing_CSS extends TestCase {
 		$css = $this->get_landing_css();
 
 		// When / Then
-		$this->assertStringContainsString( '.landing__cta form[id^="sib_signup_form_"] input[type="text"],', $css );
+		$this->assertStringContainsString( ".landing__cta form[id^='sib_signup_form_'] input[type='text'],", $css );
 		$this->assertStringContainsString( 'border-color: var(--kiyose-color-burgundy) !important;', $css );
-		$this->assertStringContainsString( '.landing__cta form[id^="sib_signup_form_"] .sib-default-btn,', $css );
+		$this->assertStringContainsString( ".landing__cta form[id^='sib_signup_form_'] .sib-default-btn,", $css );
 		$this->assertStringContainsString( 'background-color: var(--kiyose-color-burgundy) !important;', $css );
 		$this->assertStringContainsString( 'color: var(--kiyose-color-white) !important;', $css );
 	}
