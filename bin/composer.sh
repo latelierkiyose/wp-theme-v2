@@ -30,6 +30,7 @@ docker run --rm \
 	--volume "$PWD":/app \
 	--user "$(id -u):$(id -g)" \
 	--env COMPOSER_ALLOW_SUPERUSER=1 \
+	--env HOME=/tmp \
 	composer:2 \
 	sh -c "git config --global --add safe.directory /app 2>/dev/null || true; composer $*"
 
