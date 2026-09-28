@@ -6,6 +6,8 @@ Thème WordPress sur mesure pour [L'Atelier Kiyose](https://www.latelierkiyose.f
 
 **Prérequis** : Docker et Docker Compose installés. Aucune installation de PHP ou Composer n'est requise.
 
+- Node.js ≥ 22.22.3 pour `make build` et le hook pre-commit (`nvm use` lit `.nvmrc`). `npm ci` refuse de s'exécuter avec une version plus ancienne.
+
 ```bash
 # Installer les dépendances
 make install
