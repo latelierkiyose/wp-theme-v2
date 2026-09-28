@@ -105,6 +105,10 @@ h3 {
 	h3 {
 		font-size: 1.625rem;
 	}
+
+	.intro {
+		font-size: 24px;
+	}
 }
 
 .landing__title--gold {
