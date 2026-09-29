@@ -296,11 +296,3 @@ a:focus-visible {
 .bloc-brevo iframe {
 	height: 410px;
 }
-
-.bloc-brevo iframe body {
-	overflow: hidden;
-}
-
-.bloc-brevo iframe .sib-container--medium {
-	border-radius: 10px;
-}
