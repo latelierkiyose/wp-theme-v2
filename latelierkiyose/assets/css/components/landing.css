@@ -109,10 +109,6 @@ h3 {
 	.intro {
 		font-size: 24px;
 	}
-
-	.flex-direction-column {
-		flex-direction: column;
-	}
 }
 
 .landing__title--gold {
@@ -295,4 +291,16 @@ a:focus-visible {
 
 .pl-40 {
 	padding-left: 40px;
+}
+
+.bloc-brevo iframe {
+	height: 410px;
+}
+
+.bloc-brevo iframe body {
+	overflow: hidden;
+}
+
+.bloc-brevo iframe .sib-container {
+	border-radius: 10px;
 }
