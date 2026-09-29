@@ -109,6 +109,10 @@ h3 {
 	.intro {
 		font-size: 24px;
 	}
+
+	.bloc-brevo iframe {
+		height: 350px;
+	}
 }
 
 .landing__title--gold {
@@ -147,7 +151,6 @@ a:focus-visible {
 .landing__container {
 	margin-inline: auto;
 	max-width: var(--kiyose-landing-container-width);
-	padding-block: var(--kiyose-spacing-2xl);
 	padding-inline: var(--kiyose-spacing-md);
 	width: 100%;
 }
