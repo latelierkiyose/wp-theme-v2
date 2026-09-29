@@ -109,6 +109,10 @@ h3 {
 	.intro {
 		font-size: 24px;
 	}
+
+	.flex-direction-column {
+		flex-direction: column;
+	}
 }
 
 .landing__title--gold {
@@ -287,4 +291,8 @@ a:focus-visible {
 :focus-visible {
 	outline: 2px solid var(--kiyose-color-burgundy);
 	outline-offset: 2px;
+}
+
+.pl-40 {
+	padding-left: 40px;
 }
