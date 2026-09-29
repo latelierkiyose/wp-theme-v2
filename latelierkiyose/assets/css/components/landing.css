@@ -301,6 +301,6 @@ a:focus-visible {
 	overflow: hidden;
 }
 
-.bloc-brevo iframe .sib-container {
+.bloc-brevo iframe .sib-container--medium {
 	border-radius: 10px;
 }
