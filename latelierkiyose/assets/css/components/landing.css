@@ -92,6 +92,9 @@ h3 {
 	font-size: var(--kiyose-font-size-lg);
 }
 
+.only-desktop {
+	display: none !important;
+}
 /* Responsive headings */
 @media (width <= 767px) {
 	h1 {
@@ -112,6 +115,9 @@ h3 {
 
 	.bloc-brevo iframe {
 		height: 500px;
+	}
+	.only-mobile {
+		display: none !important;
 	}
 }
 
