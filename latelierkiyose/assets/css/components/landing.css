@@ -93,7 +93,7 @@ h3 {
 }
 
 .bloc-brevo iframe {
-	height: 410px;
+	height: 4180px;
 }
 
 /* Visible uniquement sur mobile */
@@ -122,7 +122,7 @@ h3 {
 	}
 
 	.bloc-brevo iframe {
-		height: 500px;
+		height: 570px;
 	}
 	.only-desktop {
 		display: none !important;
@@ -303,11 +303,6 @@ a:focus-visible {
 	outline: 2px solid var(--kiyose-color-burgundy);
 	outline-offset: 2px;
 	top: 0;
-}
-
-:focus-visible {
-	outline: 2px solid var(--kiyose-color-burgundy);
-	outline-offset: 2px;
 }
 
 .pl-40 {
