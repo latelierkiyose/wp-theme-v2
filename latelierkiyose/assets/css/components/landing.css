@@ -127,6 +127,10 @@ h3 {
 	.only-desktop {
 		display: none !important;
 	}
+
+	.flex-direction-column {
+		flex-direction: column;
+	}
 }
 
 .landing__title--gold {
