@@ -92,6 +92,10 @@ h3 {
 	font-size: var(--kiyose-font-size-lg);
 }
 
+.bloc-brevo iframe {
+	height: 410px;
+}
+
 /* Visible uniquement sur mobile */
 @media (width >= 768px) {
 	.only-mobile {
@@ -304,8 +308,4 @@ a:focus-visible {
 
 .pl-40 {
 	padding-left: 40px;
-}
-
-.bloc-brevo iframe {
-	height: 410px;
 }
