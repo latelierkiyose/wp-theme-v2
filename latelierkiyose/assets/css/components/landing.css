@@ -84,7 +84,7 @@ h1 {
 }
 
 h2 {
-	color: #915959;
+	color: var(--kiyose-color-gold-heading);
 	font-size: var(--kiyose-font-size-3xl);
 }
 

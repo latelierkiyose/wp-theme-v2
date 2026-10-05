@@ -46,6 +46,9 @@
 	/* Titres dorés sur fond beige — Ratio #8A5D00 sur #EFE5E4 = 4.66:1 ✅ (texte normal et grand texte) */
 	--kiyose-color-gold-dark: #8A5D00;
 
+	/* Titres dorés sur fond beige — choix cliente. Ratio #B17906 sur #EFE5E4 = 3.03:1  grand texte UNIQUEMENT */
+	--kiyose-color-gold-heading: #B17906;
+
 	/* Ratio #5D0505 sur #D7A4A4 = 6.54:1 ✅ (suffisant pour tout type de texte) */
 
 	/* Solution: Utiliser --kiyose-color-primary-dark pour le texte des boutons */
