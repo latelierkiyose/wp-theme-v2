@@ -16,16 +16,16 @@
  * Normalisation des champs de saisie (input, textarea, select)
  * pour tous les plugins de formulaires
  */
-.sib-form input[type="text"],
-.sib-form input[type="email"],
-.sib-form input[type="tel"],
-.sib-form input[type="url"],
+.sib-form input[type='text'],
+.sib-form input[type='email'],
+.sib-form input[type='tel'],
+.sib-form input[type='url'],
 .sib-form textarea,
 .sib-form select,
-.wpcf7 input[type="text"],
-.wpcf7 input[type="email"],
-.wpcf7 input[type="tel"],
-.wpcf7 input[type="url"],
+.wpcf7 input[type='text'],
+.wpcf7 input[type='email'],
+.wpcf7 input[type='tel'],
+.wpcf7 input[type='url'],
 .wpcf7 textarea,
 .wpcf7 select {
 	background-color: #ffffff;
@@ -38,23 +38,25 @@
 	line-height: 1.5;
 	margin: 0;
 	padding: 0.75rem 1rem;
-	transition: border-color 0.3s ease, box-shadow 0.3s ease;
+	transition:
+		border-color 0.3s ease,
+		box-shadow 0.3s ease;
 }
 
 /**
  * État focus pour tous les champs de saisie
  * WCAG 2.2 AA : Focus visible avec contraste ≥3:1
  */
-.sib-form input[type="text"]:focus,
-.sib-form input[type="email"]:focus,
-.sib-form input[type="tel"]:focus,
-.sib-form input[type="url"]:focus,
+.sib-form input[type='text']:focus,
+.sib-form input[type='email']:focus,
+.sib-form input[type='tel']:focus,
+.sib-form input[type='url']:focus,
 .sib-form textarea:focus,
 .sib-form select:focus,
-.wpcf7 input[type="text"]:focus,
-.wpcf7 input[type="email"]:focus,
-.wpcf7 input[type="tel"]:focus,
-.wpcf7 input[type="url"]:focus,
+.wpcf7 input[type='text']:focus,
+.wpcf7 input[type='email']:focus,
+.wpcf7 input[type='tel']:focus,
+.wpcf7 input[type='url']:focus,
 .wpcf7 textarea:focus,
 .wpcf7 select:focus {
 	border-color: var(--kiyose-color-gold);
@@ -84,10 +86,10 @@
  * Base commune pour tous les boutons de plugins
  * Reprend les styles du design system (.button)
  */
-.sib-form button[type="submit"],
-.sib-form input[type="submit"],
-.wpcf7 input[type="submit"],
-.em-booking-form input[type="submit"] {
+.sib-form button[type='submit'],
+.sib-form input[type='submit'],
+.wpcf7 input[type='submit'],
+.em-booking-form input[type='submit'] {
 	background-color: var(--kiyose-color-primary);
 	border: 2px solid var(--kiyose-color-primary);
 	border-radius: 4px;
@@ -108,10 +110,10 @@
 /**
  * État hover pour les boutons
  */
-.sib-form button[type="submit"]:hover,
-.sib-form input[type="submit"]:hover,
-.wpcf7 input[type="submit"]:hover,
-.em-booking-form input[type="submit"]:hover {
+.sib-form button[type='submit']:hover,
+.sib-form input[type='submit']:hover,
+.wpcf7 input[type='submit']:hover,
+.em-booking-form input[type='submit']:hover {
 	background-color: var(--kiyose-color-primary-dark, #c08d8d);
 	border-color: var(--kiyose-color-primary-dark, #c08d8d);
 	box-shadow: 0 4px 8px rgb(0 0 0 / 10%);
@@ -122,10 +124,10 @@
  * État focus pour les boutons
  * WCAG 2.2 AA : Focus visible avec contraste ≥3:1
  */
-.sib-form button[type="submit"]:focus,
-.sib-form input[type="submit"]:focus,
-.wpcf7 input[type="submit"]:focus,
-.em-booking-form input[type="submit"]:focus {
+.sib-form button[type='submit']:focus,
+.sib-form input[type='submit']:focus,
+.wpcf7 input[type='submit']:focus,
+.em-booking-form input[type='submit']:focus {
 	outline: 2px solid var(--kiyose-color-gold);
 	outline-offset: 2px;
 }
@@ -133,20 +135,20 @@
 /**
  * État active pour les boutons
  */
-.sib-form button[type="submit"]:active,
-.sib-form input[type="submit"]:active,
-.wpcf7 input[type="submit"]:active,
-.em-booking-form input[type="submit"]:active {
+.sib-form button[type='submit']:active,
+.sib-form input[type='submit']:active,
+.wpcf7 input[type='submit']:active,
+.em-booking-form input[type='submit']:active {
 	transform: translateY(0);
 }
 
 /**
  * État disabled pour les boutons
  */
-.sib-form button[type="submit"]:disabled,
-.sib-form input[type="submit"]:disabled,
-.wpcf7 input[type="submit"]:disabled,
-.em-booking-form input[type="submit"]:disabled {
+.sib-form button[type='submit']:disabled,
+.sib-form input[type='submit']:disabled,
+.wpcf7 input[type='submit']:disabled,
+.em-booking-form input[type='submit']:disabled {
 	cursor: not-allowed;
 	opacity: 0.6;
 	transform: none;
@@ -159,10 +161,10 @@
 /**
  * Wrapper des checkboxes et radios
  */
-.sib-form input[type="checkbox"],
-.sib-form input[type="radio"],
-.wpcf7 input[type="checkbox"],
-.wpcf7 input[type="radio"] {
+.sib-form input[type='checkbox'],
+.sib-form input[type='radio'],
+.wpcf7 input[type='checkbox'],
+.wpcf7 input[type='radio'] {
 	margin-right: 0.5rem;
 	vertical-align: middle;
 }
@@ -170,10 +172,10 @@
 /**
  * État focus pour checkboxes et radios
  */
-.sib-form input[type="checkbox"]:focus,
-.sib-form input[type="radio"]:focus,
-.wpcf7 input[type="checkbox"]:focus,
-.wpcf7 input[type="radio"]:focus {
+.sib-form input[type='checkbox']:focus,
+.sib-form input[type='radio']:focus,
+.wpcf7 input[type='checkbox']:focus,
+.wpcf7 input[type='radio']:focus {
 	outline: 2px solid var(--kiyose-color-gold);
 	outline-offset: 2px;
 }
@@ -265,3 +267,18 @@
 .em-booking-form .em-powered-by {
 	display: none !important;
 }
+
+/* stylelint-disable selector-max-id, selector-id-pattern, selector-class-pattern -- Sélecteurs imposés par tarteaucitron (bibliothèque tierce). */
+/* tarteaucitron : boutons aux couleurs du thème */
+html body #tarteaucitronRoot button {
+	background: var(--kiyose-color-gold-light);
+}
+
+/* tarteaucitron : bloc « Autoriser » du formulaire ebook */
+html body .tac_activate,
+html body .tac_activate .tac_float strong {
+	background: var(--kiyose-color-cream-gold);
+	color: var(--kiyose-color-burgundy);
+	font-size: var(--kiyose-font-size-lg);
+}
+/* stylelint-enable selector-max-id, selector-id-pattern, selector-class-pattern */
