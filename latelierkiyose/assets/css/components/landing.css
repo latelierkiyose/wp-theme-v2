@@ -96,6 +96,12 @@ h3 {
 	height: 490px;
 }
 
+.bloc-brevo .brevo-iframe {
+	margin-inline: auto;
+	max-width: 540px;
+	width: 100%;
+}
+
 /* Visible uniquement sur mobile */
 @media (width >= 768px) {
 	.only-mobile {

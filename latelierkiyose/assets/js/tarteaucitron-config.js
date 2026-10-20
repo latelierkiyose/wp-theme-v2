@@ -33,7 +33,7 @@ tarteaucitron.services.brevoform = {
 	cookies: ['_GRECAPTCHA'],
 	js: function () {
 		'use strict';
-		tarteaucitron.fallback(['brevo_iframe'], (x) => {
+		tarteaucitron.fallback(['brevo-iframe'], (x) => {
 			const width = x.getAttribute('data-width'),
 				height = x.getAttribute('data-height'),
 				url = x.getAttribute('data-url');
@@ -50,7 +50,7 @@ tarteaucitron.services.brevoform = {
 	},
 	fallback: function () {
 		'use strict';
-		tarteaucitron.fallback(['brevo_iframe'], () => {
+		tarteaucitron.fallback(['brevo-iframe'], () => {
 			return tarteaucitron.engage('brevoform');
 		});
 	},
