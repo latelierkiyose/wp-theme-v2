@@ -97,9 +97,10 @@ h3 {
 }
 
 .bloc-brevo .brevo-iframe {
+	height: auto !important;
 	margin-inline: auto;
 	max-width: 540px;
-	width: 100%;
+	width: 100% !important;
 }
 
 /* Visible uniquement sur mobile */
