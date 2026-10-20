@@ -270,8 +270,11 @@
 
 /* stylelint-disable selector-max-id, selector-id-pattern, selector-class-pattern -- Sélecteurs imposés par tarteaucitron (bibliothèque tierce). */
 /* tarteaucitron : boutons aux couleurs du thème */
-html body #tarteaucitronRoot button {
+/* tarteaucitron : boutons aux couleurs du thème */
+html body #tarteaucitronRoot #tarteaucitronAlertBig button,
+html body .tac_activate .tac_float .tarteaucitronAllow {
 	background: var(--kiyose-color-gold-light);
+	color: var(--kiyose-color-burgundy);
 }
 
 /* tarteaucitron : bloc « Autoriser » du formulaire ebook */
