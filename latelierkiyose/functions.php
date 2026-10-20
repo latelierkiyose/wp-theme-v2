@@ -59,3 +59,6 @@ require_once get_template_directory() . '/inc/decorative-config.php';
 
 // Garde-fous SEO (schema Yoast).
 require_once get_template_directory() . '/inc/seo.php';
+
+// Consentement cookies (tarteaucitron).
+require_once get_template_directory() . '/inc/cookies.php';
