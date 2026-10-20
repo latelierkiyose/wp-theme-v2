@@ -93,11 +93,11 @@ h3 {
 }
 
 .bloc-brevo iframe {
-	height: 490px;
+	height: 480px;
 }
 
 .bloc-brevo .brevo-iframe {
-	height: auto !important;
+	height: 480px !important;
 	margin-inline: auto;
 	max-width: 540px;
 	width: 100% !important;
@@ -128,9 +128,11 @@ h3 {
 		font-size: 1.5rem;
 	}
 
-	.bloc-brevo iframe {
-		height: 590px;
+	.bloc-brevo iframe,
+	.bloc-brevo .brevo-iframe {
+		height: 570px !important;
 	}
+
 	.only-desktop {
 		display: none !important;
 	}
