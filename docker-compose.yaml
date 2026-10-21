@@ -33,7 +33,7 @@ services:
   wordpress:
     depends_on:
       - db
-    image: wordpress:php8.3
+    image: wordpress:php8.5
     volumes:
       - ./latelierkiyose:/var/www/html/wp-content/themes/latelierkiyose
       - ./uploads:/var/www/html/wp-content/uploads
