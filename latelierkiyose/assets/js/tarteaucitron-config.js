@@ -21,6 +21,7 @@ tarteaucitron.init({
 	removeCredit: false,
 	moreInfoLink: true,
 	mandatory: true,
+	googleConsentMode: false,
 });
 
 /* ---------- Formulaire ebook (iframe Brevo + Google reCAPTCHA) ---------- */
