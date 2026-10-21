@@ -56,3 +56,7 @@ tarteaucitron.services.brevoform = {
 	},
 };
 (tarteaucitron.job = tarteaucitron.job || []).push('brevoform');
+
+/* ---------- Google Analytics ---------- */
+tarteaucitron.user.gtagUa = 'GT-5MRPMQ3Q';
+(tarteaucitron.job = tarteaucitron.job || []).push('gtag');
