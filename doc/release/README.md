@@ -42,7 +42,7 @@ Personne qui va installer le thème en production et reconnecter le contenu exis
 Ne pas entamer la procédure tant que l'un des prérequis suivants n'est pas prêt :
 
 - [ ] **WordPress 7.0+** sur le serveur cible (minimum requis depuis le déploiement de mai 2026 — voir [Audit de compatibilité WP 7.0](#audit-compatibilité-wordpress-70-2026-05-21) ci-dessous)
-- [ ] **PHP 8.3+** sur le serveur cible
+- [ ] **PHP 8.5+** sur le serveur cible
 - [ ] **Accès SFTP/SSH** au serveur de production (vérifier la connexion avec un `ls` dans `/wp-content/themes/`)
 - [ ] **Accès admin WordPress** avec un rôle Administrateur
 - [ ] **Artefact ZIP du thème** téléchargé depuis [Releases GitHub](https://github.com/latelierkiyose/wp-theme-v2/releases) : fichier nommé `latelierkiyose-theme-*.zip` ⚠️ **pas** « Source code (zip) ». Cet artefact est généré par la CI après un build explicite des assets CSS/JS.
@@ -322,7 +322,7 @@ Vérifications effectuées :
 | CF7 (formulaire contact) fonctionnel | ✅ |
 | Events Manager (liste événements) fonctionnel | ✅ |
 | `add_theme_support('html5', ...)` — tableau sans `'script'` (seul breaking change WP 7.0 pour les thèmes classiques, Trac #64442) | ✅ non concerné |
-| PHP 8.3 ≥ plancher WP 7.0 (7.4 minimum) | ✅ |
+| PHP 8.5 ≥ plancher WP 7.0 (7.4 minimum) | ✅ |
 | Aucune fonction dépréciée connue utilisée | ✅ |
 
 **Reste à vérifier par l'administrateur du site (accès admin requis) :**

@@ -16,7 +16,7 @@ Seule règle qui n'y figure pas :
 
 ## Stack technique
 
-- PHP 8.3+, WordPress 7.0+
+- PHP 8.5+, WordPress 7.0+
 - CSS natif moderne (variables, Grid, Flexbox)
 - Vanilla JS ES6+
 
