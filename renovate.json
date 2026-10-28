@@ -3,7 +3,6 @@
   "extends": [
     "config:recommended"
   ],
-  "postUpdateOptions": ["composerLockUpdate"],
   "packageRules": [
     {
       "description": "Auto-merge minor and patch updates when CI passes",
