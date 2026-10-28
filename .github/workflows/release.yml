@@ -24,7 +24,7 @@ concurrency:
 jobs:
   release:
     name: Bump version, tag and push
-    runs-on: ubuntu-26.04
+    runs-on: ubuntu-slim
 
     steps:
       - name: Checkout main

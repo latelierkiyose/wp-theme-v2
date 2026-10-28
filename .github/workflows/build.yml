@@ -83,7 +83,7 @@ jobs:
 
   build:
     name: Build Theme Artifact
-    runs-on: ubuntu-26.04
+    runs-on: ubuntu-slim
     needs: test
     if: >-
       github.event_name == 'workflow_dispatch' ||
