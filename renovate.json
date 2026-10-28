@@ -31,6 +31,12 @@
         "dealerdirect/phpcodesniffer-composer-installer"
       ],
       "groupName": "PHP_CodeSniffer ecosystem"
+    },
+    {
+      "description": "PHPCS 4 blocked until WPCS supports it (wpcs 3.x requires phpcs ^3)",
+      "matchManagers": ["composer"],
+      "matchPackageNames": ["squizlabs/php_codesniffer"],
+      "allowedVersions": "<4.0.0"
     }
   ]
 }
